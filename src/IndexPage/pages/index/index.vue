@@ -3,7 +3,7 @@
 
         <platform ref="platformRef" v-if="data.tabbarId == 1" :showrecommend="data.showrecommend" @showLifeMenu="showMenu" @showRightMenu="showRightMenu"></platform>
 
-        <service ref="serviceRef" v-if="data.tabbarId == 2" @showServiceMenu="showServiceMenu"></service>
+        <goodsCategory ref="serviceRef" v-if="data.tabbarId == 2" @showServiceMenu="showServiceMenu"></goodsCategory>
 
         <news v-if="data.tabbarId == 4"></news>
 
@@ -70,7 +70,7 @@ import { ref, reactive, watch, computed, getCurrentInstance } from 'vue'
 import { onLoad, onShow, onReady, onHide } from '@dcloudio/uni-app'
 import { useCustomerSessions } from '@bc/msg'
 import platform from '../platform/platform.vue'
-import service from '../service/service.vue'
+import goodsCategory from "../sort/sort.vue"
 import news from '../news/news.vue'
 import my from '../my/my.vue'
 import customTabbar from '@/components/custom-tabbar/custom-tabbar.vue'
@@ -125,7 +125,7 @@ interface Data {
 const data = reactive<Data>({
     tablist: [
         { id: 1, icon: '/leyou/static/tabbar-icon/show-recommend.svg', activeIcon: '/leyou/static/tabbar-icon/hide-recommend.svg', name: '首页' },
-        { id: 2, icon: '/leyou/static/tabbar-icon/good-icon.svg', activeIcon: '/leyou/static/tabbar-icon/health-good-icon.svg', name: '' },
+        { id: 2, icon: '/leyou/assets//actNewShi.png', activeIcon: '/leyou/assets/actNewShi.png', name: '' },
         { id: 3, icon: '/leyou/static/tabbar-icon/creator-icon.svg', activeIcon: '/leyou/static/tabbar-icon/creator-icon.svg', name: '' },
         { id: 4, icon: '', activeIcon: '', name: '消息' },
         { id: 5, icon: '', activeIcon: '', name: '我的', hoticon: '/leyou/icon/hot-enjoy-icon.svg' }
