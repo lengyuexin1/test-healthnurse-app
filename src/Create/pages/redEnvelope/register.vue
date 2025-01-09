@@ -94,7 +94,7 @@
         </view>
     <!-- 新人领取优惠券弹窗 -->
       <!-- <TnOverlay v-model:show="showOverlay" :duration="250" :opacity="0.4" /> -->
-	<TnOverlay v-if="packerState != 3&&homeUser" v-model:show="homeUser"  mode="center" bgColor="transparent" >
+	<TnOverlay v-if="packerState != 3 && homeUser" v-model:show="homeUser"  mode="center" bgColor="transparent" >
     <view class="regbox">
     <block v-if="packerState != 3">
 		<view class="packer-box flex-column">
@@ -116,11 +116,11 @@
 				<view v-else class="packer-btn packer-btn-pos" @click="openPacker">開</view>
 			</view>
 		</view>
-    </block>   
+    </block>
         <view class="regclos"  v-if="packerState != 3"  @click="homeUser = false">
 			   	<TnIcon name="close-circle" color="#FFFFFF" size="68rpx" ></TnIcon>
 	    </view>
-         
+
 	    </view>
     </TnOverlay>
     <TnPopup  v-if="packerState == 3"  v-model="registerUser"  mode="center" bgColor="transparent">
@@ -187,12 +187,12 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnOverlay from '@tuniao/tnui-vue3-uniapp/components/overlay/src/overlay.vue'
 import PageTopbg from "@/components/page-topbg/page-topbg.vue"
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
-import { onShow,onLoad,onShareAppMessage} from '@dcloudio/uni-app'
-import { gotoChannel,gotouparticle} from '@/routes/create-routes'
+import { onShow, onLoad, onShareAppMessage } from '@dcloudio/uni-app'
+import { gotoChannel, gotouparticle } from '@/routes/create-routes'
 import BCNotify from '@/components/notify/index.vue'
-import { gotoctivityRules,gotoWithdrawall,gotoSignWithdrawal } from "@/routes/user-routes"
+import { gotoctivityRules, gotoWithdrawall, gotoSignWithdrawal } from "@/routes/user-routes"
 
-import { gotoIndex,gotoLogin } from "@/routes/public-routes"
+import { gotoIndex, gotoLogin } from "@/routes/public-routes"
 import { recommendList } from '@/api/goods-api'
 import { getAssetsPic } from '@/common/setPicture'
 import { gotoCommentList } from '@/routes/user-routes'
@@ -201,97 +201,97 @@ import { PlatformManage } from '@bc/sys'
 import { gotogoodsDetail } from '@/routes/goods-routes'
 import { gotoServiceStore, gotoShopDetail } from '@/routes/service-routes'
 import luoLinePress from '@/components/luo-linePress/luo-linePress'
-import { rewardExist, rewardInfo, rewardAdvance, rewardTask, rewardtoTask,happyUnfollowed } from '@/api/user-api'
+import { rewardExist, rewardInfo, rewardAdvance, rewardTask, rewardtoTask, happyUnfollowed } from '@/api/user-api'
 import { Upcontent, gotoNewUpcontentPage } from '@/routes/create-routes'
 
 import {
-  ref,
-  reactive,
-  onMounted,
-  onUnmounted,
-  watch,
-  computed
-} from 'vue'; // 引入Vue 3的Composition API
+    ref,
+    reactive,
+    onMounted,
+    onUnmounted,
+    watch,
+    computed
+} from 'vue' // 引入Vue 3的Composition API
 const bcNotify = ref()
 const paging = ref() as any
 // 响应式数据
-const registerUser =ref()
-const showFlag = ref(false);
-const dataList = ref([]);
-const packerState = ref<number>(1);
-const homeUser = ref(false);
-const rewardObj = reactive<any>({});
-const loadPage = ref(1);
-let activityId:string|null = null;
-const taskItem = reactive<any>({});
-const defaultPageSize = ref(10);
-const inviteId =ref<string|null>('');
+const registerUser = ref()
+const showFlag = ref(false)
+const dataList = ref([])
+const packerState = ref<number>(1)
+const homeUser = ref(false)
+const rewardObj = reactive<any>({})
+const loadPage = ref(1)
+let activityId:string|null = null
+const taskItem = reactive<any>({})
+const defaultPageSize = ref(10)
+const inviteId = ref<string|null>('')
 const obj = reactive<any>({
-  lv: 1,
-  lvNum: 6,
-  lvNowNum: 1
-});
-const unseal = ref(false);
+    lv: 1,
+    lvNum: 6,
+    lvNowNum: 1
+})
+const unseal = ref(false)
 // 计算属性
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 // 生命周期钩子
 onLoad((option:any) => {
-  PlatformManage.isRequireLogin().then((needlogin:any) => {
-    if (needlogin) {
-      bcNotify.value.show('登录失效,请重新登录')
-            setTimeout(()=>{
+    PlatformManage.isRequireLogin().then((needlogin:any) => {
+        if (needlogin) {
+            bcNotify.value.show('登录失效,请重新登录')
+            setTimeout(() => {
                 gotoLogin({})
-            },1000)
-     return
-    }
-  });
-    inviteId.value = option.id; // 通过props获取id
-});
+            }, 1000)
+            return
+        }
+    })
+    inviteId.value = option.id // 通过props获取id
+})
 
 onShow(() => {
-  rewardExist({ platformType: 2 }).then((res:any) => {
-    activityId = res;
-    initGetInfo(res,inviteId.value);
-  });
-    
-});
+    rewardExist({ platformType: 2 }).then((res:any) => {
+        activityId = res
+        initGetInfo(res, inviteId.value)
+    })
 
-const toEnvelope=(item:any)=>{
-       if(item.isGet==2){
-            bcNotify.value.show('还未获得，获得红包可开启')
-       }
-       homeUser.value = item.isGet == 0
-       packerState.value=0
-       Object.assign(taskItem,item)
+})
+
+const toEnvelope = (item:any) => {
+    if (item.isGet == 2) {
+        bcNotify.value.show('还未获得，获得红包可开启')
+    }
+    homeUser.value = item.isGet == 0
+    packerState.value = 0
+    Object.assign(taskItem, item)
 }
 // 转发到私信
- onShareAppMessage(():any => {
-  return {
-    title: '签到抢红包',
-    path: `/Create/pages/redEnvelope/register?id=${rewardObj.advanceId}`,
-    imageUrl: getAssetsUrl.value('/share/register_share.png'),
-    content: '签到抢红包',
-    success:( res:any) => {
-      console.info(res);
+onShareAppMessage(():any => {
+    return {
+        title: '签到抢红包',
+        path: `/Create/pages/redEnvelope/register?id=${rewardObj.advanceId}`,
+        imageUrl: getAssetsUrl.value('/share/register_share.png'),
+        content: '签到抢红包',
+        success: (res:any) => {
+            console.info(res)
+        }
     }
-  };
 })
-const clickwaterItem = (item:any) =>{
-       console.log('item',item);
-       item.businessType == 2 && gotogoodsDetail(item.id)
-       item.businessType == 3 && gotoServiceStore({shopId:item.id,isAd:0})
+const clickwaterItem = (item:any) => {
+    console.log('item', item)
+    item.businessType == 2 && gotogoodsDetail(item.id)
+    item.businessType == 3 && gotoServiceStore({ shopId: item.id, isAd: 0 })
 }
 
 
 
 // 方法
 const gotoPAge = (index:number) => {
-  if (index === 0) {
-    gotoctivityRules({ ruleDesc: rewardObj.ruleDesc });
-  }
-};
+    if (index === 0) {
+        gotoctivityRules({ ruleDesc: rewardObj.ruleDesc })
+    }
+}
 
 const goback = () => {
     const pages = getCurrentPages()
@@ -304,162 +304,165 @@ const goback = () => {
 }
 
 const goWithdrawal = () => {
-  if (!rewardObj) {
-    bcNotify.value.error('请稍后重试!')
-    return;
-  }
-  if (rewardObj.dayTransfer > rewardObj.consecutiveDays) {
+    if (!rewardObj) {
+        bcNotify.value.error('请稍后重试!')
+        return
+    }
+    if (rewardObj.dayTransfer > rewardObj.consecutiveDays) {
         bcNotify.value.error(`连续签到${rewardObj.dayTransfer || ''}天 得微信提现特权`)
-    return;
-  }
-//   gotoWithdrawall({activityId});
-  gotoSignWithdrawal()
-};
+        return
+    }
+    //   gotoWithdrawall({activityId});
+    gotoSignWithdrawal()
+}
 
 const goComplete = (item:any) => {
     if (item.isGet == 1 || item.isGet == 3) {
-        return;
+        return
     }
     if (item.isGet == 0) {
         rewardTask({ id: item.id }).then(res => {
             bcNotify.value.success('领取成功')
-            initGetInfo(activityId, inviteId.value);
+            initGetInfo(activityId, inviteId.value)
         }).catch(err => {
-            bcNotify.value.error(err.message);
-        }); 
-        return;
+            bcNotify.value.error(err.message)
+            initGetInfo(activityId, inviteId.value)
+        })
+        return
     }
+
     if (item.taskId == 6) {
         // #ifdef APP-PLUS || H5
-        Upcontent({taskId: item.taskId})
+        Upcontent({ taskId: item.taskId })
         // #endif
 
-        // #ifdef MP-WEIXIN 
-        gotoNewUpcontentPage({taskId: item.taskId})
+        // #ifdef MP-WEIXIN
+        gotoNewUpcontentPage({ taskId: item.taskId })
         // #endif
 
-    } else if (item.taskId ==9) {
-        happyUnfollowed().then(res=>{
+    }
+    else if (item.taskId == 9) {
+        happyUnfollowed().then((res) => {
             gotoauthor({
-                taskId:item.taskId,
-                accountId:res,
+                taskId: item.taskId,
+                accountId: res
             })
         })
-
-    } else if (item.taskId == 7||item.taskId == 8) {
+    }
+    else if (item.taskId == 7 || item.taskId == 8) {
         rewardtoTask({ taskId: item.taskId, platformType: 2 }).then(res => {
-            gotoChannel();
-        });
+            gotoChannel()
+        })
     }
     uni.navigateTo({
         url: item.url
     })
-};
+}
 
 const initGetInfo = (rewardId:string|null, invId:any) => {
-  rewardInfo({ rewardId, inviteId:invId }).then((info:any) => {
-    console.log('info1',info);
+    rewardInfo({ rewardId, inviteId: invId }).then((info:any) => {
+        console.log('info1', info)
 
-    if(!info){
-        return
-    }
+        if (!info) {
+            return
+        }
 
-    if (info.taskList.length != 0) {
-        info.taskList[0].icon = getAssetsUrl.value('/leyou/static/upChannel_task.png');
-        info.taskList[1].icon = getAssetsUrl.value('/leyou/static/preview_task.png');
-        info.taskList[2].icon = getAssetsUrl.value('/leyou/static/curriculum_task.png');
-        info.taskList[3].icon = getAssetsUrl.value('/leyou/static/follow_task.png');
-    }
-    
+        if (info.taskList.length != 0) {
+            info.taskList[0].icon = getAssetsUrl.value('/leyou/static/upChannel_task.png')
+            info.taskList[1].icon = getAssetsUrl.value('/leyou/static/preview_task.png')
+            info.taskList[2].icon = getAssetsUrl.value('/leyou/static/curriculum_task.png')
+            info.taskList[3].icon = getAssetsUrl.value('/leyou/static/follow_task.png')
+        }
 
-    console.log('info2',info);
-    
 
-    
+        console.log('info2', info)
 
-    inviteId.value=null
-    Object.assign(rewardObj,info) // 更新响应式对象的值
-    obj.lv = info.consecutiveDays ? info.consecutiveDays : 1;
-    obj.lvNum = info.dayTransfer || 1;
-    obj.dayTransfer = info.dayTransfer || 1;
-    obj.lvNowNum = info.consecutiveDays ? info.consecutiveDays : 1;
+
+
+
+        inviteId.value = null
+        Object.assign(rewardObj, info) // 更新响应式对象的值
+        obj.lv = info.consecutiveDays ? info.consecutiveDays : 1
+        obj.lvNum = info.dayTransfer || 1
+        obj.dayTransfer = info.dayTransfer || 1
+        obj.lvNowNum = info.consecutiveDays ? info.consecutiveDays : 1
         //  if(info.inviteMsg){
         //     bcNotify.value.show(info.inviteMsg);
-        //   }     
-          if(info.isSignIn==0){
-            registerUser.value=true
+        //   }
+        if (info.isSignIn == 0) {
+            registerUser.value = true
             packerState.value = 3
-            taskItem.reward =info.signInReward
-          }
-  }).catch(error => {
-      bcNotify.value.error(error.message);
-  });
-};
+            taskItem.reward = info.signInReward
+        }
+    }).catch(error => {
+        bcNotify.value.error(error.message)
+    })
+}
 
 const queryList = (pageNumber:number, pageSize = 10) => {
-  if (pageNumber === 1) {
-    loadPage.value = 1;
-  }
-      recommendList({
-            pageSize,
-            pageNumber,
-            query:{
-                categoryIds:null,
-                lat:null,
-                lng:null,
-                businessTypeIds: [2, 3],
-                sortType:7,
-          
-            }
-        }).then((res:any)=>{
-            (paging.value as any).complete(res.data)
-        })
+    if (pageNumber === 1) {
+        loadPage.value = 1
+    }
+    recommendList({
+        pageSize,
+        pageNumber,
+        query: {
+            categoryIds: null,
+            lat: null,
+            lng: null,
+            businessTypeIds: [2, 3],
+            sortType: 7
 
-};
+        }
+    }).then((res:any) => {
+        (paging.value as any).complete(res.data)
+    })
+
+}
 
 const gotake = (scene = 'WXSceneSession') => {
-  if (!rewardObj.advanceId) {
-    bcNotify.value.error('请稍后重试!');
-    return;
-  }
-  console.log(rewardObj.advanceId,11)
-  // #ifdef APP-PLUS || MP-WEIXIN
-  const shareType = import.meta.env.VITE_WEIXIN_OPEN
-
-  uni.share({
-    provider: 'weixin',
-    scene: "WXSceneSession",
-    type: 5,
-    imageUrl: getAssetsUrl.value('/share/register_share.png'),
-    title: '签到抢红包',
-    miniProgram: {
-      id: 'gh_fd20b530cb94', //微信小程序原始id
-      path: `/Create/pages/redEnvelope/register?id=${rewardObj.advanceId}`,
-      type:shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
-      webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接
-    },
-    success: ret => {
-      console.log(JSON.stringify(ret));
-    },
-    fail: err => {
-      console.log(err);
+    if (!rewardObj.advanceId) {
+        bcNotify.value.error('请稍后重试!')
+        return
     }
-  });
-  // #endif
-};
+    console.log(rewardObj.advanceId, 11)
+    // #ifdef APP-PLUS || MP-WEIXIN
+    const shareType = import.meta.env.VITE_WEIXIN_OPEN
+
+    uni.share({
+        provider: 'weixin',
+        scene: "WXSceneSession",
+        type: 5,
+        imageUrl: getAssetsUrl.value('/share/register_share.png'),
+        title: '签到抢红包',
+        miniProgram: {
+            id: 'gh_fd20b530cb94', //微信小程序原始id
+            path: `/Create/pages/redEnvelope/register?id=${rewardObj.advanceId}`,
+            type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
+            webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接
+        },
+        success: ret => {
+            console.log(JSON.stringify(ret))
+        },
+        fail: err => {
+            console.log(err)
+        }
+    })
+    // #endif
+}
 
 const openPacker = () => {
-  packerState.value = 1;
-  rewardAdvance({ id: taskItem.id }).then((res:any) => {
-       packerState.value = 2;
-       packerState.value = 3;
-       registerUser.value = true
-    initGetInfo(activityId, inviteId.value);
-  }).catch((error:any) => {
-      bcNotify.value.error(error.message);
-  });
- 
-};
+    packerState.value = 1
+    rewardAdvance({ id: taskItem.id }).then((res:any) => {
+        packerState.value = 2
+        packerState.value = 3
+        registerUser.value = true
+        initGetInfo(activityId, inviteId.value)
+    }).catch((error:any) => {
+        bcNotify.value.error(error.message)
+    })
+
+}
 </script>
 
 <style lang="scss" scoped>
@@ -528,7 +531,7 @@ const openPacker = () => {
     padding-bottom: 20rpx;
     padding: 10rpx 20rpx;
 
-    
+
 }
 .outserve{
     padding: 0rpx 10rpx;

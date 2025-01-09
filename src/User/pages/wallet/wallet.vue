@@ -50,26 +50,47 @@
                     </view>
                 </view>
             </view>
+            <view class="box promotion-income">
+                <view class="tn-flex-center-between">
+                    <view>推广收益</view>
+                    <view class="right" @tap="clickWithdrawal(3)">去提现<TnIcon name="right" color="#FFFFFF" /></view>
+                </view>
+                <view class="tn-flex-row detail">
+                    <view class="balance">
+                        <view>现金余额</view>
+                        <view class="num">￥{{ formatAmount(data.cashData.money) }}</view>
+                    </view>
+                    <view class="line">
+
+                    </view>
+                    <view class="entry">
+                        <view>入账中</view>
+                        <view class="num">￥{{ formatAmount(data.cashData.transferring) }}</view>
+                    </view>
+                </view>
+            </view>
         </view>
     </z-paging>
-    
+
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { onShow } from "@dcloudio/uni-app"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
-import { gotoSignWithdrawal, gotoContentWithdrawal } from '@/routes/user-routes'
-import { getMoneyDetail, getmoneyDetail } from '@/api/user-api'
+import { gotoSignWithdrawal, gotoContentWithdrawal, gotoWithdWallet } from '@/routes/user-routes'
+import { getMoneyDetail, getmoneyDetail, getMoneyInfo } from '@/api/user-api'
 
 interface Data {
     dataList: any
     signDetail: any
     contentDetail: any
+    cashData:any
 }
 const data = reactive<Data>({
     dataList: [],
     signDetail: {},
+    cashData: {},
     contentDetail: {}
 })
 
@@ -99,15 +120,19 @@ const getWalletData = () => {
     getmoneyDetail().then((res) => {
         data.contentDetail = res
     })
+    getMoneyInfo().then((res:any) => {
+        data.cashData = res
+    })
 }
 
 const clickWithdrawal = (type: number) => {
     type == 1 && gotoSignWithdrawal()
     type == 2 && gotoContentWithdrawal()
+    type == 3 && gotoWithdWallet()
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .wrap {
     display: flex;
@@ -131,6 +156,9 @@ const clickWithdrawal = (type: number) => {
 
 .content-income {
     background: linear-gradient( 135deg, #4896E4 0%, #6DAEF2 100%);
+}
+.promotion-income{
+    background: linear-gradient( 135deg, #FBA02B 0%, #FFB95E 100%);
 }
 
 .right {
@@ -164,4 +192,4 @@ const clickWithdrawal = (type: number) => {
     background-color: #FFFFFF;
 }
 </style>
- 
+

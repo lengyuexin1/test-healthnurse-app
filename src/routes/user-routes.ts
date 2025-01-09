@@ -3,10 +3,10 @@ import { pageController } from '@bc/uni-tools'
 
 /**
  * 个人中心相关路由
- * 
+ *
  */
 
- export const gotoelderlyFiles = () => {
+export const gotoelderlyFiles = () => {
     const route = {
         path: '/User/pages/elderlyFiles/elderlyFiles',
         query: {}
@@ -33,6 +33,14 @@ export const gotoctivityRules = (query?:any) => {
 export const gotoWithdrawall = (query?:any) => {
     const route = {
         path: '/Create/pages/redEnvelope/withdrawal',
+        query
+    } as any
+    return pageController.push(route)
+}
+//分销提现
+export const gotoWithdWallet = (query?:any) => {
+    const route = {
+        path: '/Create/pages/redEnvelope/withdrawalWallet',
         query
     } as any
     return pageController.push(route)
@@ -73,7 +81,7 @@ export const gotoAddressList = () => {
 }
 
 interface IAddressMangage {
-    
+
 }
 
 /** 跳转到 地址管理 */
@@ -125,7 +133,7 @@ export const gotoLike = (type: string) => {
 export const gotoCitychange = () => {
     const route = {
         path: "/User/pages/cityPage/cityPage",
-        query:{}
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -149,14 +157,15 @@ export const gotoEditProfile = () => {
 }
 
 /* 沙龙我创建的 */
-export const gotosalonManage = (query:any,type:number = 1) => {
+export const gotosalonManage = (query:any, type:number = 1) => {
     const route = {
         path: '/User/pages/salonManage/salonManage',
         query
     } as any
     if (type == 1) {
         return pageController.push(route)
-    }else{
+    }
+    else {
         return pageController.replace(route)
     }
 }
@@ -252,10 +261,10 @@ export const gotoCommentGoods = (query: any) => {
 }
 
 /** 跳转到 我的评价 */
-export const gotoCommentList = (currentTabIndex: number,taskId?:string) => {
+export const gotoCommentList = (currentTabIndex: number, taskId?:string) => {
     const route = {
         path: "/User/pages/comment/commentList",
-        query: { currentTabIndex,taskId }
+        query: { currentTabIndex, taskId }
     } as any
     return pageController.push(route)
 }
@@ -297,17 +306,17 @@ export const gotoExpressageAdd = (query:any) => {
 }
 
 /** 售后详情
- * 
+ *
  * query内接收 id ==> 表示售后id
  * isdel ==> 表示页面定向模式
- * 
+ *
  */
-export const gotosalesDetail = (query:any,isdel:boolean = false) => {
+export const gotosalesDetail = (query:any, isdel:boolean = false) => {
     const route = {
         path: "/User/pages/sales/salesDetail",
         query
     } as any
-    return isdel ? pageController.replace(route) : pageController.push(route) 
+    return isdel ? pageController.replace(route) : pageController.push(route)
 }
 
 /** 售后记录 */
@@ -321,12 +330,12 @@ export const minutesDetail = (query:any) => {
 
 
 /** 申请售后/修改售后/再次售后(商品)
- * 
+ *
  * 接受salesObj临时对象
  * 包含info ==> 表示商品卡片 包含商品单品id
  * afterSaleId ==> 表示售后id
  * align ==> 表示操作类型 0表示再次售后/申请售后  1表示修改售后
- * 
+ *
  */
 export const upSales = (query:any) => {
     const route = {
@@ -339,14 +348,14 @@ export const upSales = (query:any) => {
 
 
 /** 申请售后/修改售后/再次售后(商品)
- * 
+ *
  * 接受salesObj临时对象
  * 包含info ==> 表示商品卡片 包含商品单品id
  * afterSaleId ==> 表示售后id
  * align ==> 表示操作类型 0表示再次售后/申请售后  1表示修改售后
- * 
+ *
  */
- export const upServiceSales = (query:any) => {
+export const upServiceSales = (query:any) => {
     const route = {
         path: "/User/pages/sales/upServiceSales",
         query
@@ -356,12 +365,12 @@ export const upSales = (query:any) => {
 
 
 /** 申请仲裁
- * 
+ *
  * 接受
  * id ==> 表示售后id
- * 
+ *
  */
-export const gotoAfterArbitrate = (query:any) =>{
+export const gotoAfterArbitrate = (query:any) => {
     const route = {
         path: "/User/pages/sales/arbitrate",
         query
@@ -379,14 +388,15 @@ export const gotowaitingSales = (query:any) => {
 }
 
 /* 聊天号我的发布 */
-export const gotochatManage = (query:any,type:number = 1) => {
+export const gotochatManage = (query:any, type:number = 1) => {
     const route = {
         path: '/User/pages/chatManage/chatManage',
         query
     } as any
     if (type == 1) {
         return pageController.push(route)
-    }else{
+    }
+    else {
         return pageController.replace(route)
     }
 }

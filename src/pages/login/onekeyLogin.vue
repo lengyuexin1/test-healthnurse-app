@@ -1,13 +1,14 @@
 <template>
     <view class="main" >
         <view class="input" >
-            <image
+            <!-- <image
                 class="inp_login"
                 :src="getAssetsUrl('/leyou/logo/leyou_logo.png')"
                 mode="scaleToFill"
-            />
+            /> -->
+            <image class="inp_login" src="/static/bc_logo.png" mode="aspectFit"></image>
             <view class="login_title">保椿生活</view>
-                
+
             <view class="log_btn" @click="loginNext">一键登录/注册</view>
 
             <view class="protocol_box tn-flex-row">
@@ -24,14 +25,14 @@
 
             <view class="number_login" @click="numberLogin">其他方式登录</view>
 
-            
+
         </view>
 
         <view v-if="data.phoneShow" class="getPhone">
             <view class="getPhone-content">
                 <view class="getPhone-content-title u-border-bottom">手机号快捷登录</view>
                 <view class="">
-                    <image class="getPhone-content-image" :src="getAssetsUrl('/leyou/logo/leyou_logo.png')" mode="widthFix"></image>
+                    <image class="getPhone-content-image" src="/static/bc_logo.png" mode="aspectFit"></image>
                 </view>
                 <view class="getPhone-content-list">
                     <text style="font-size: 34rpx;color: #303133;">保椿生活申请获得以下权限</text>
@@ -92,8 +93,8 @@ interface Data {
 const data = reactive<Data>({
     mobile: '',
     agent: false,
-    openid:'',
-    unionid:'',
+    openid: '',
+    unionid: '',
     phoneShow: false,
     privacyShow: false,
     inviteId: '',
@@ -102,17 +103,17 @@ const data = reactive<Data>({
 
     userList: [],
 
-    toSaveRoute: 0,
+    toSaveRoute: 0
 
 })
 
 const bcNotify = ref()
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
-onLoad((option:any)=>{
+onLoad((option:any) => {
 
     // #ifdef H5
     numberLogin()
@@ -124,9 +125,9 @@ onLoad((option:any)=>{
     data.toSaveRoute = option.toSaveRoute ? option.toSaveRoute : 0
     login()
 
-    
+
     const pages = getCurrentPages()
-    console.log('onekeylogin',pages);
+    console.log('onekeylogin', pages)
 })
 
 const clickAgreement = (type: string) => {
@@ -151,7 +152,7 @@ const numberLogin = () => {
 }
 
 const login = () => {
-    
+
     // #ifdef MP-WEIXIN
     wx.login({
         success: (res : any) => {
@@ -160,13 +161,13 @@ const login = () => {
                     code: res.code,
                     appid: 'wxba2158972baec41b'
                 }).then((res:any) => {
-                    console.log('获取openid', res.openid);
-                    
+                    console.log('获取openid', res.openid)
+
                     uni.setStorageSync('openid', res.openid)
                     data.openid = res.openid
                     data.unionid = res.unionid
 
-                }).catch((err)=>{
+                }).catch((err) => {
                     bcNotify.value.err('登录请求失败')
                 })
             }
@@ -202,7 +203,7 @@ const decryptPhoneNumber = (e:any) => {
 
     if (e.detail.code) {
 
-        console.log('e.detail.code',e.detail.code);
+        console.log('e.detail.code', e.detail.code)
 
         getWxPhoneNumber({
             code: e.detail.code
@@ -213,17 +214,17 @@ const decryptPhoneNumber = (e:any) => {
     }
     else {
         bcNotify.value.error('获取手机号失败')
-        setTimeout(()=>{
+        setTimeout(() => {
             numberLogin()
-        },2000)
+        }, 2000)
     }
 }
 
 const loginApi = (mobile:number) => {
-    console.log('number',mobile);
-    console.log('openid',data.openid);
-    console.log('unionid',data.unionid);
-    
+    console.log('number', mobile)
+    console.log('openid', data.openid)
+    console.log('unionid', data.unionid)
+
     userLogin({
         mobile,
         unionid: data.unionid,
@@ -231,15 +232,15 @@ const loginApi = (mobile:number) => {
         inviteId: data.inviteId, //邀请id
         scene: 0, //场景id
         appid: 'wxba2158972baec41b',
-        platformType:2,
+        platformType: 2
 
-    }).then((res:any)=>{
-        let newObj = {
+    }).then((res:any) => {
+        const newObj = {
             ...res,
-            city:'广州',
-            cityId:11
+            city: '广州',
+            cityId: 11
         }
-        console.log('newObj',newObj);
+        console.log('newObj', newObj)
 
         PlatformManage.setToken(newObj).then(() => {
             uni.setStorageSync('userHistory', [])
@@ -252,25 +253,25 @@ const loginApi = (mobile:number) => {
 
 
             bcNotify.value.success('登录成功')
-            addContentAccount({}).then(()=>{})
+            addContentAccount({}).then(() => {})
             data.phoneShow = false
 
-            setTimeout(()=>{
+            setTimeout(() => {
                 if (data.retainPage == 1) {
                     uni.navigateBack()
                     return
                 }
                 if (data.toSaveRoute == 1) {
-                    let urlStr = uni.getStorageSync('saveCurRoute');
-                    console.log('urlStr',urlStr);
-                    
+                    const urlStr = uni.getStorageSync('saveCurRoute')
+                    console.log('urlStr', urlStr)
+
                     uni.redirectTo({
                         url: "/" + urlStr
-                    })   
+                    })
                     return
                 }
                 gotoIndex()
-            },2000)
+            }, 2000)
         })
     }).catch((err: any) => {
         bcNotify.value.error(err.message)
@@ -325,9 +326,8 @@ page {
     flex-direction: column;
     .inp_login{
         margin: auto;
-        width: 160rpx;
-        height: 160rpx;
-        border-radius: 50%;
+        width: 161rpx;
+        height: 161rpx;
         margin-bottom: 36rpx;
     }
     .login_title{

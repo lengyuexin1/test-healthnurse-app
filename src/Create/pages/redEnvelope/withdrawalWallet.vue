@@ -15,41 +15,40 @@
                 <PageTopbg></PageTopbg>
                 <bc-page-navbar :title="'提现管理'" bg-color="#F2F3F5"></bc-page-navbar>
             </template>
+
             <view class="withdrawal">
-                <view class="withdrawal_notice" v-if="cashData">
+                <view class="withdrawal_notice">
                     <view class="notice_left">
                         <view class="notice_left_title">现在余额</view>
                         <view class="notice_left_price">
                             <text style="font-size: 50rpx;">￥</text>
-                            {{ toFixedNumber(cashData.money / 100) }}
-                            <!-- {{ (cashData.money / 100).toFixed(2) }} -->
+                            {{ (Number(cashData.money) / 100).toFixed(2) }}
                         </view>
                     </view>
 
                     <view class="notice_right" @click="clickWithd">立即提现</view>
                 </view>
                 <view class="redEnvelope">
-                    <!-- <view class="redEnvelope_left">入账中: ¥{{ (cashData.transferring / 100).toFixed(2) }}</view> -->
-                    <view class="redEnvelope_left">入账中: ¥{{ toFixedNumber((cashData?.transferring / 100)) }}</view>
-                    <!-- <view class="redEnvelope_right" @click="gotaskRecord">任务记录 ></view> -->
+                    <view class="redEnvelope_left">入账中: ¥{{ (Number(cashData.transferring) / 100).toFixed(2) }}</view>
+                    <view class="redEnvelope_right" @click="gotaskRecord">任务记录 ></view>
                 </view>
             </view>
               <TnTabs
                 :scroll="false" :bottom-shadow="false" font-size="30rpx" active-font-size="32rpx" bg-color="rgba(243, 244, 246, 1)" color="#333333" bar-color="#29C86F" active-color="#29C86F" @change="changeTabList">
                     <TnTabsItem v-for="(item, index) in list" :key="index" :title="item.name" />
               </TnTabs>
+
             <view class="menu" v-if="dataList.length">
                 <view class="menu-list row i-center j-between" v-for="(item,index) in dataList" :key="index">
                     <view class="menu-list-left">
-                        <view class="menu_left_title">{{ item.desc }}<text :style="item.transferStatus == 1 ? 'color: #31B045;background: #ECF7EC;' : ''" v-if="item.moneyType == 3">{{item.transferStatus == 1 ? '提现成功' : '提现中'}}</text></view>
+                        <view class="menu_left_title">{{ item.rewardName }}</view>
                         <view class="menu_left_time">{{ formatTime(item.utcCreated) }}</view>
                     </view>
-                    <!-- {{(item.money / 100).toFixed(2)}} -->
-                    <view class="menu_list_right" :style="item.incomeExpense != 1 ? 'color:#FB4140' : ''">{{item.incomeExpense == 1 ? '+' : '-'}}{{ toFixedNumber((item.money / 100)) }}元</view>
+                    <view class="menu_list_right">{{item.incomeExpense == 1 ? '+' : '-'}}{{(Number(item.reward) / 100).toFixed(2)}}元</view>
                 </view>
             </view>
-            <!-- 首页弹窗广告 -->
-            <TnPopup v-model="homeUser" closeable mode="center"  bg-color="transparent"  :overlayOpacity="0.7" @close="homeUser = false">
+          <!-- 首页弹窗广告 -->
+          <TnPopup v-model="homeUser" closeable mode="center"  bg-color="transparent"  :overlayOpacity="0.7" @close="homeUser = false">
                 <view class="regboxs">
                     <view class="withdrawal_proup">
                         <view class="Withdrawal_title">提现金额</view>
@@ -88,19 +87,19 @@
                 </view>
             </TnPopup>
             <BCNotify ref="bcNotify"></BCNotify>
+
             <!-- <TnPopup v-model="show">
                 <view class="popup_box">
                     <view class="content_text">
                         是否前往小程序完成提现操作
                     </view>
                     <view class="bottom_box">
-                        <view class="cancel_btn" @click="show = false">取消</view>
+                        <view class="cancel_btn"  @click="show = false">取消</view>
                         <view class="confirm_btn" @click="confirm">确认</view>
                     </view>
                 </view>
+
             </TnPopup> -->
-
-
 
         </z-paging>
         <ReflectPopup ref="reflectPopup" @startReflect="startReflect" @startFacial="startFacial"></ReflectPopup>
@@ -114,13 +113,13 @@ import TnTabsItem from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.v
 import BCNotify from '@/components/notify/index.vue'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import { getAssetsPic } from '@/common/setPicture'
-import { getmoneyList, moneytransfer, getmoneyDetail } from '@/api/user-api'
+import { getMoneyInfo, getMoneyRecord, getUserTransfer } from '@/api/user-api'
 import { ref, reactive, computed, defineProps } from 'vue' // Import ref and reactive from Vue 3 Composition API
 import dayjs from 'dayjs'
 import { gotoTaskRecord } from '@/routes/user-routes'
 import { onShow, onLoad } from '@dcloudio/uni-app'
-import { homePage, initFaceVerifyIdPlus, certificateByCertifyId } from '@/api/create-api'
 import ReflectPopup from './components/reflect-popup.vue'
+import { homePage, initFaceVerifyIdPlus, certificateByCertifyId } from '@/api/create-api'
 import { getWechatOpenid } from '@/api/open-api'
 import { callApiLocal } from "@/utils/client"
 
@@ -131,145 +130,18 @@ const list = ref([
     { name: '收入', id: 1 }
 ])
 const bcNotify = ref()
+const reflectPopup = ref()
+
 const paging = ref() as any
-const cashData = ref<any>(null)
+const cashData = ref<any>({})
 const withdIndex = ref<number>(0)
-const dataList = ref([]) as any
+const dataList = ref([])
 const incomeExpense = ref<number|string>('')
 const show = ref(false)
 const defaultPageSize = 10
 const rewardId = ref()
 const homeUser = ref(false)
-const getClient = ref<string>('')
-
-// Computed properties
-// 计算属性
-const getAssetsUrl = computed(() => {
-    return (str:any) => {
-        return getAssetsPic(str)
-    }
-})
-const formatTime = (number:number) => {
-    return dayjs(number * 1000).format('YYYY-MM-DD HH:mm')
-}
-
-const toFixedNumber = computed(() => (number:number) => {
-    const val = number.toFixed(2)
-    return val
-})
-
-// Lifecycle hook: onLoad
-onLoad((options:any) => {
-    rewardId.value = options.activityId
-    initReward()
-
-    // #ifdef APP-PLUS
-    getClient.value = 'APP-PLUS'
-    // #endif
-
-    // #ifdef MP-WEIXIN
-    getClient.value = 'MP-WEIXIN'
-    // #endif
-
-})
-
-// Methods
-const clickWithd = () => {
-    // #ifdef APP-PLUS
-    show.value = true
-    // #endif
-
-    // #ifdef MP-WEIXIN
-    homeUser.value = true
-    // #endif
-}
-const confirm = () => {
-    plus.share.getServices((res:any) => {
-        let sweixin = null
-        for (const i in res) {
-            if (res[i].id == 'weixin') {
-                sweixin = res[i]
-            }
-        }
-        // 唤醒微信小程序
-        if (sweixin) {
-            uni.hideLoading()
-            show.value = false
-            sweixin.launchMiniProgram({
-                id: 'gh_fd20b530cb94', // 小程序的原始ID
-                type: 1, // 小程序版本
-                path: '/Create/pages/redEnvelope/withdrawalIncome' // 小程序的页面路径
-            })
-        }
-    })
-}
-
-// 确认提现
-const submit = () => {
-    // #ifdef APP-PLUS
-    // Handle APP-PLUS specific logic
-    show.value = true
-    // #endif
-
-
-    // #ifdef MP-WEIXIN
-    weixinInitSubmit()
-    // #endif
-}
-
-const gotaskRecord = () => {
-    gotoTaskRecord({ rewardId: rewardId.value })
-}
-// 判断是否实名认证
-const getCardId = () => {
-    homePage({}).then((res: any) => {
-        if (!res.cardId) {
-            if (getClient.value == 'MP-WEIXIN') {
-                bcNotify.value.show('因技术升级原因,请您前往保椿生活APP进行实名认证')
-                return
-            }
-            // #ifdef APP-VUE
-            const n = uni.requireNativePlugin('AP-FaceDetectModule')
-
-            const platform = uni.getSystemInfoSync().platform
-
-            let metaInfo = n.getMetaInfo()
-            if (platform == 'ios') {
-                metaInfo = JSON.stringify(metaInfo)
-            }
-            console.log('metaInfo', metaInfo)
-            initFaceVerifyIdPlus({ metaInfo }).then((res: any) => {
-                // this.certifyId = res.certifyId
-                n.verify({ certifyId: res.certifyId }, (v: any) => {
-                    if (v.code == 1000) {
-                        console.log('人脸识别成功。。。请求接口', res.certifyId)
-                        certificateByCertifyId({
-                            certifyId: res.certifyId
-                        }).then((res: any) => {
-                            console.log('实名认证提交成功', res)
-                            bcNotify.value.show(getResultString(v.code))
-                        }).catch((err: any) => {
-                            console.log('实名认证提交失败', err)
-                            bcNotify.value.error(getResultString(v.code))
-                        })
-                        return
-                    }
-                    bcNotify.value.error(getResultString(v.code))
-                })
-            }).finally(() => {
-                bcNotify.value.show('正在调起人脸识别')
-            }).catch(() => {
-                bcNotify.value.error('人脸识别调用失败')
-            })
-            // #endif
-
-        }
-        else {
-            weixinInitSubmit()
-        }
-    })
-}
-
+const getClient = ref('')
 const getResultString = (code: any) => {
     const statusCode = {
         1000: '认证成功',
@@ -281,13 +153,166 @@ const getResultString = (code: any) => {
     }
     return statusCode[code]
 }
+// Computed properties
+// 计算属性
+const getAssetsUrl = computed(() => {
+    return (str:any) => {
+        return getAssetsPic(str)
+    }
+})
+const formatTime = (number:number) => {
+    return dayjs(number * 1000).format('YYYY-MM-DD HH:mm')
+}
+const toFixedNumber = computed(() => (number:number) => {
+    const val = number.toFixed(2)
+    return val
+})
+
+// Lifecycle hook: onLoad
+onLoad((options:any) => {
+
+    // #ifdef MP-WEIXIN
+    getClient.value = 'WEIXIN'
+    // #endif
+
+    // #ifdef APP-PLUS
+    getClient.value = 'APP'
+    // #endif
+
+    rewardId.value = options.activityId
+    initReward(rewardId.value)
+})
+
+// 立即提现
+const clickWithd = () => {
+
+    homePage({}).then((res: any) => {
+        if (!res.cardId) {
+            if (getClient.value == 'WEIXIN') {
+                bcNotify.value.show('因技术升级原因,请您前往保椿生活APP进行实名认证')
+                return
+            }
+            else if (getClient.value == 'APP') {
+                // #ifdef APP-VUE
+                const n = uni.requireNativePlugin('AP-FaceDetectModule')
+
+                const platform = uni.getSystemInfoSync().platform
+
+                let metaInfo = n.getMetaInfo()
+                if (platform == 'ios') {
+                    metaInfo = JSON.stringify(metaInfo)
+                }
+                console.log('metaInfo', metaInfo)
+                initFaceVerifyIdPlus({ metaInfo }).then((res: any) => {
+                    // this.certifyId = res.certifyId
+                    n.verify({ certifyId: res.certifyId }, (v: any) => {
+                        if (v.code == 1000) {
+                            console.log('人脸识别成功。。。请求接口', res.certifyId)
+                            certificateByCertifyId({
+                                certifyId: res.certifyId
+                            }).then((res: any) => {
+                                // initSubmit()
+                                homeUser.value = true
+                                console.log('实名认证提交成功', res)
+                                bcNotify.value.show(getResultString(v.code))
+                            }).catch((err: any) => {
+                                console.log('实名认证提交失败', err)
+                                bcNotify.value.error(getResultString(v.code))
+                            })
+                            return
+                        }
+                        bcNotify.value.error(getResultString(v.code))
+                    })
+                }).finally(() => {
+                    bcNotify.value.show('正在调起人脸识别')
+                }).catch(() => {
+                    bcNotify.value.error('人脸识别调用失败')
+                })
+                // #endif
+            }
+        }
+        else {
+            reflectPopup.value.open(1)
+        }
+    })
+
+
+    // #ifdef APP-PLUS
+    // #endif
+
+    // #ifdef MP-WEIXIN
+    // #endif
+}
+
+// const confirm = () => {
+//     plus.share.getServices((res:any) => {
+//         let sweixin = null;
+//         for (const i in res) {
+//             if (res[i].id == 'weixin') {
+//                 sweixin = res[i];
+//             }
+//         }
+//         // 唤醒微信小程序
+//         if (sweixin) {
+//             uni.hideLoading();
+//             // show.value = false;
+//             sweixin.launchMiniProgram({
+//                 id: 'gh_fd20b530cb94', // 小程序的原始ID
+//                 type: 1, // 小程序版本
+//                 path: '/Create/pages/redEnvelope/withdrawal' // 小程序的页面路径
+//             });
+//         }
+//     });
+// };
+
+const submit = () => {
+    console.log('提现', cashData.value)
+
+    if (!cashData.value.cashList[withdIndex.value]?.cash) {
+        homeUser.value = false
+
+        bcNotify.value.error('请选择提现金额')
+        return
+    }
+
+    // #ifdef APP-PLUS
+    uni.login({
+        onlyAuthorize: true,
+        provider: 'weixin',
+        success: (res) => {
+            console.log('reslogin', res)
+            if (res.code) { //微信登录成功 已拿到code
+                getWechatOpenid({
+                    code: res.code
+                }).then((res1) => {
+                    uni.setStorageSync('openid', res1)
+                    weixinInitSubmit()
+                })
+            }
+        },
+        fail: (err:any) => {
+            console.log('err', err)
+
+        }
+    })
+    // #endif
+
+    // #ifdef MP-WEIXIN
+    weixinInitSubmit()
+    // #endif
+}
+
+// 任务记录
+const gotaskRecord = () => {
+    gotoTaskRecord({ rewardId: rewardId.value })
+}
 
 const weixinInitSubmit = () => {
-
     const openid = uni.getStorageSync('openid')
-    moneytransfer({
+    getUserTransfer({
         openid,
-        platformType: 2
+        rewardId: rewardId.value,
+        cash: Number(cashData.value.cashList[withdIndex.value]?.cash)
     }).then((res:any) => {
         console.log('res', res)
 
@@ -298,7 +323,7 @@ const weixinInitSubmit = () => {
         else {
             bcNotify.value.success('提现成功')
         }
-        initReward()
+        initReward(rewardId.value)
         queryList(1, 10)
     }).catch((error) => {
         homeUser.value = false
@@ -307,29 +332,29 @@ const weixinInitSubmit = () => {
     })
 }
 
-const initReward = () => {
-    getmoneyDetail().then((res) => {
+const changewithdIndex = (index:number) => {
+    withdIndex.value = index
+}
+
+const initReward = (id:any) => {
+    getMoneyInfo({ id }).then((res) => {
         cashData.value = res
-        console.log('初始化钱包数据cashData.value', cashData.value)
-        console.log('cashData.value.money', cashData.value.money)
-
-
-    }).catch(() => {
-        cashData.value = null
+        console.log(cashData.value)
     })
 }
 
 
 
 const changeTabList = (e:any) => {
-    incomeExpense.value = e == 1 ? 2 : e == 2 ? 1 : ''
+    incomeExpense.value = e == 1 ? 2 : e == 2 ? 1 : 0
     console.log(incomeExpense.value, e)
     queryList(1, 10)
 }
 
 const queryList = (pageNumber:number, pageSize:number) => {
-    getmoneyList({
+    getMoneyRecord({
         query: {
+            rewardId: rewardId.value,
             incomeExpense: incomeExpense.value
         },
         pageNumber,
@@ -342,7 +367,9 @@ const queryList = (pageNumber:number, pageSize:number) => {
 }
 
 const startReflect = () => {
-    initSubmit()
+    homeUser.value = true
+    reflectPopup.value.close()
+    // initSubmit()
 }
 
 const initSubmit = () => {
@@ -377,6 +404,7 @@ const startFacial = () => {
     })
 }
 
+
 </script>
 
 <style lang="scss" scoped>
@@ -396,6 +424,49 @@ const startFacial = () => {
         line-height: 44rpx;
         padding: 0 32rpx 50rpx 32rpx;
     }
+    .withdrawal_proup_content {
+        padding: 40rpx 24rpx;
+        display: flex;
+        flex-wrap: wrap;
+        .withdrawal_proup_row {
+            width: 187rpx;
+            height: 136rpx;
+            margin-bottom: 12rpx;
+            background: #f6f7fa;
+            border-radius: 12rpx;
+            color: #888888;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-left: 12rpx;
+            .withdrawal_proup_price {
+                font-size: 48rpx;
+                color: #333333;
+                padding-bottom: 10rpx;
+                text {
+                    font-size: 30rpx;
+                }
+            }
+            .withdrawal_proup_desc {
+                font-size: 20rpx;
+                color: #888888;
+            }
+        }
+        .withdrawal_proup_but {
+            width: 570rpx;
+            height: 90rpx;
+            margin: 0rpx auto;
+            margin-top: 40rpx;
+            background: #29c86f;
+            display: flex;
+            font-size: 32rpx;
+            color: #ffffff;
+            justify-content: center;
+            align-items: center;
+            border-radius: 46rpx;
+        }
+    }
     .withdrawal_proup {
         display: flex;
         flex-direction: column;
@@ -408,67 +479,6 @@ const startFacial = () => {
             margin-top: 26rpx;
             margin-bottom: 20rpx;
             color: #333333;
-        }
-        .withdrawal_proup_user{
-            width: 100%;
-            .withdrawal_proup_tax_desc{
-                font-size: 28rpx;
-                color: #666666;
-                padding: 50rpx 0;
-                padding-left: 40rpx;
-                text{
-                    font-size: 28rpx;
-                    color: #0083F6;
-                    padding-left: 8rpx;
-                }
-            }
-            .withdrawal_proup_tax{
-                display: flex;
-                height: 102rpx;
-                margin: 0 40rpx;
-                border-bottom: 2rpx solid rgba(242, 242, 242, 1);
-                justify-content: space-between;
-                align-items: center;
-                font-size: 30rpx;
-                color: #333333;
-                .withdrawal_tax_right{
-                    display: flex;
-                    align-items: center;
-                    .withdrawal_tax_img{
-                        width: 36rpx;
-                        height: 36rpx;
-                        margin-right: 12rpx;
-                    }
-                }
-            }
-        }
-    }
-    .confirm_withdrawal{
-        display: flex;
-        padding: 60rpx 30rpx 20rpx 30rpx;
-        .confirm_withdrawal_cencel{
-            width: 330rpx;
-            height: 80rpx;
-            background: #FFFFFF;
-            border-radius: 40rpx;
-            border: 2rpx solid #D1D1D1;
-            margin-right: 30rpx;
-            display: flex;
-            font-size: 32rpx;
-            color: #666666;
-            justify-content: center;
-            align-items: center;
-        }
-        .withdrawal_proup_but{
-            display: flex;
-            font-size: 32rpx;
-            justify-content: center;
-            align-items: center;
-            color: #FFFFFF;
-            width: 330rpx;
-            height: 80rpx;
-            background: #29C86F;
-            border-radius: 40rpx;
         }
     }
 }
@@ -493,14 +503,6 @@ const startFacial = () => {
                 font-size: 30rpx;
                 padding-top: 8tpx;
                 color: #333333;
-                text{
-                    margin-left: 12rpx;
-                    font-size: 24rpx;
-                    color: #F69C00;
-                    background: #FFF5D8;
-                    border-radius: 4rpx;
-                    padding: 6rpx 10rpx;
-                }
             }
             .menu_left_time {
                 font-size: 24rpx;

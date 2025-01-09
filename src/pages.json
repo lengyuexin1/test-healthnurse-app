@@ -1056,6 +1056,15 @@
 					}
 				},
 				{
+
+                    "path": "pages/redEnvelope/withdrawalWallet",
+                    "style": {
+                        "navigationBarTitleText": "分销提现",
+                        "enablePullDownRefresh": false,
+                        "navigationStyle": "custom"
+                    }
+                },
+				{
 					"path" : "pages/redEnvelope/withdrawal",
 					"style": {
 						"navigationBarTitleText": "提现",
@@ -1326,15 +1335,6 @@
 						"enablePullDownRefresh": false
 					}
 				},
-				{
-		            "path": "pages/anchorCenter/anchorCenter",
-		            "style": {
-						"navigationBarTitleText": "主播中心",
-						"navigationStyle": "default",
-						"enablePullDownRefresh": false,
-						"navigationBarBackgroundColor": "#FFFFFF"
-					}
-		        },
 				{
 		            "path": "pages/anchorCenter/dataCenter",
 		            "style": {
