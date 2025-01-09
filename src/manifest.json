@@ -1,0 +1,323 @@
+{
+    "name" : "保椿生活",
+    "appid" : "__UNI__DD0D89D",
+    "description" : "保椿生活APP",
+    "versionName" : "1.0.0",
+    "versionCode" : 100,
+    "transformPx" : false,
+    /* 5+App特有相关 */
+    "app-plus" : {
+        "usingComponents" : true,
+        "compatible" : {
+            "ignoreVersion" : true,
+            "runtimeVersion" : "3.8.12",
+            "compilerVersion" : "3.8.12"
+        },
+        "privacy" : {
+            "prompt" : "template",
+            "template" : {
+                "title" : "服务协议和隐私政策",
+                "message" : "欢迎使用保椿生活APP, 在你使用时, 需要连接数据网络或者WIFI, 产生的流量请咨询当地运营商。非常重视你的隐私保护和个人信息保护。在使用App服务前, 请认真阅读<a href='https://res.baochuncare.com/web/protocol/user_agreement_ly_app.html'>《用户协议》</a>及<a href='https://res.baochuncare.com/web/protocol/user_privacy_agreement_ly_app.html'>《隐私政策》</a>, 全部条款。你同意并接受全部条款后开始使用我们的服务<br/>",
+                "buttonAccept" : "同意并继续",
+                "buttonRefuse" : "不同意",
+                "styles" : {
+                    "backgroundColor" : "#FFFFFF",
+                    "borderRadius" : "12px",
+                    "buttonAccept" : {
+                        "color" : "#41A0FE"
+                    },
+                    "buttonRefuse" : {
+                        "color" : "#666666"
+                    }
+                }
+            }
+        },
+        "nvueStyleCompiler" : "uni-app",
+        "compilerVersion" : 3,
+        "splashscreen" : {
+            "alwaysShowBeforeRender" : false,
+            "waiting" : true,
+            "autoclose" : false,
+            "delay" : 0
+        },
+        /* 模块配置 */
+        "modules" : {
+            "Camera" : {},
+            "Record" : {},
+            "Push" : {},
+            "Payment" : {},
+            "VideoPlayer" : {},
+            "Contacts" : {},
+            "Share" : {},
+            "OAuth" : {},
+            "Geolocation" : {},
+            "Maps" : {},
+            "Barcode" : {}
+        },
+        /* 应用发布信息 */
+        "distribute" : {
+            /* android打包配置 */
+            "android" : {
+                "permissions" : [
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>"
+                ],
+                "abiFilters" : [ "armeabi-v7a", "arm64-v8a" ],
+                "targetSdkVersion" : 30,
+                "minSdkVersion" : 28,
+                "schemes" : "bclifehome,xizoibq7s"
+            },
+            /* ios打包配置 */
+            "ios" : {
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "”保椿生活”需要使用您的相册，以便上传头像和动态，是否允许？",
+                    "NSPhotoLibraryAddUsageDescription" : "”保椿生活”需要使用您的相册，以便保存图片，是否允许？",
+                    "NSCameraUsageDescription" : "”保椿生活”需要使用您的相机，以便拍照上传头像和动态，是否允许？",
+                    "NSMicrophoneUsageDescription" : "”保椿生活”需要使用您的麦克风，以便用于语音通话，是否允许？",
+                    "NSLocationWhenInUseUsageDescription" : "”保椿生活”访问位置信息，以便发送定位和显示当前位置，是否允许？"
+                },
+                "dSYMs" : false
+            },
+            /* SDK配置 */
+            "sdkConfigs" : {
+                "push" : {},
+                "ad" : {},
+                "payment" : {
+                    "weixin" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appid" : "wx503d0b79e2a259fd",
+                        "UniversalLinks" : "https://res.baochuncare.com/apple-app-site-association"
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx503d0b79e2a259fd",
+                        "UniversalLinks" : "https://res.baochuncare.com/apple-app-site-association"
+                    }
+                },
+                "speech" : {},
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "wx503d0b79e2a259fd",
+                        "UniversalLinks" : "https://res.baochuncare.com/apple-app-site-association"
+                    }
+                },
+                "geolocation" : {
+                    "amap" : {
+                        "name" : "amap_18924119651A434XcwXr",
+                        "__platform__" : [ "ios", "android" ],
+                        "appkey_ios" : "aabc789a7e7579faff284d7e55bb7780",
+                        "appkey_android" : "79dcc87eb3b7430bff52c084319f52e8"
+                    }
+                },
+                "maps" : {
+                    "amap" : {
+                        "name" : "amap_18924119651A434XcwXr",
+                        "appkey_ios" : "aabc789a7e7579faff284d7e55bb7780",
+                        "appkey_android" : "79dcc87eb3b7430bff52c084319f52e8"
+                    }
+                }
+            },
+            "icons" : {
+                "android" : {
+                    "hdpi" : "unpackage/res/icons/72x72.png",
+                    "xhdpi" : "unpackage/res/icons/96x96.png",
+                    "xxhdpi" : "unpackage/res/icons/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
+                },
+                "ios" : {
+                    "appstore" : "unpackage/res/icons/1024x1024.png",
+                    "ipad" : {
+                        "app" : "unpackage/res/icons/76x76.png",
+                        "app@2x" : "unpackage/res/icons/152x152.png",
+                        "notification" : "unpackage/res/icons/20x20.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "proapp@2x" : "unpackage/res/icons/167x167.png",
+                        "settings" : "unpackage/res/icons/29x29.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "spotlight" : "unpackage/res/icons/40x40.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
+                    },
+                    "iphone" : {
+                        "app@2x" : "unpackage/res/icons/120x120.png",
+                        "app@3x" : "unpackage/res/icons/180x180.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "notification@3x" : "unpackage/res/icons/60x60.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "settings@3x" : "unpackage/res/icons/87x87.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
+                    }
+                }
+            },
+            "splashscreen" : {
+                "useOriginalMsgbox" : true,
+                "androidStyle" : "common",
+                "iosStyle" : "common"
+            }
+        },
+        "nativePlugins" : {
+            "NIMUniPlugin" : {
+                "PUSH_VIVO_APPID" : "",
+                "PUSH_VIVO_APPKEY" : "",
+                "__plugin_info__" : {
+                    "name" : "NIMUniPlugin",
+                    "description" : "uni消息推送插件",
+                    "platforms" : "Android,iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {
+                        "PUSH_VIVO_APPID" : {
+                            "des" : "厂商VIVO-app_id",
+                            "key" : "app_id",
+                            "value" : ""
+                        },
+                        "PUSH_VIVO_APPKEY" : {
+                            "des" : "厂商VIVO-app_key",
+                            "key" : "api_key",
+                            "value" : ""
+                        }
+                    }
+                }
+            },
+            "AP-FaceDetectModule" : {
+                "__plugin_info__" : {
+                    "name" : "APFaceDetectPlugin",
+                    "description" : "阿里云金融级实人认证SDK",
+                    "platforms" : "Android,iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
+            },
+            "AliCloud-NirvanaPns" : {
+                "__plugin_info__" : {
+                    "name" : "阿里云号码认证SDK",
+                    "description" : "阿里云号码认证SDK，包含一键登录和本机号码校验两个功能。",
+                    "platforms" : "Android,iOS",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=4297",
+                    "android_package_name" : "com.baochun.ly.user",
+                    "ios_bundle_id" : "com.baochun.ly.user",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "4297",
+                    "parameters" : {}
+                }
+            },
+            "KJ-VideoThumbnail" : {
+                "__plugin_info__" : {
+                    "name" : "获取本地和网络视频缩略图、封面、第几帧图片(ios 、andorid)",
+                    "description" : "KJ-VideoThumbnail获取本地和网络视频缩略图、封面、第几帧图片、支持andorid10+、请试用合适再购买、请试用合适再购买、请试用合适再购买",
+                    "platforms" : "Android,iOS",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=1577",
+                    "android_package_name" : "com.baochun.ly.user",
+                    "ios_bundle_id" : "com.baochun.ly.user",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "1577",
+                    "parameters" : {}
+                }
+            },
+            "TX-TRTCCloud" : {
+                "__plugin_info__" : {
+                    "name" : "腾讯实时音视频插件 qq群： 791338999",
+                    "description" : "腾讯ios,android原生sdk，插件永久维护，欢迎提需求",
+                    "platforms" : "Android,iOS",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=824",
+                    "android_package_name" : "com.baochun.ly.user",
+                    "ios_bundle_id" : "com.baochun.ly.user",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "824",
+                    "parameters" : {}
+                }
+            },
+            "NERTCUniPluginSDK" : {
+                "__plugin_info__" : {
+                    "name" : "NERTC音视频SDK",
+                    "description" : "uniapp网易云信NERTC音视频原生插件",
+                    "platforms" : "Android,iOS",
+                    "url" : "",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : false,
+                    "bought" : -1,
+                    "pid" : "",
+                    "parameters" : {}
+                }
+            }
+        }
+    },
+    /* 快应用特有相关 */
+    "quickapp" : {},
+    /* 小程序特有相关 */
+    "mp-weixin" : {
+        "appid" : "wxba2158972baec41b",
+        "lazyCodeLoading" : "requiredComponents",
+        "setting" : {
+            "urlCheck" : false,
+            "minified" : true
+        },
+        "usingComponents" : true,
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "你的位置信息将用于小程序位置接口的效果展示"
+            }
+        },
+        "requiredPrivateInfos" : [ "chooseLocation", "getLocation" ],
+        "optimization" : {
+            "subPackages" : true
+        },
+        "runmode" : "liberate",
+        "uniStatistics" : {
+            "enable" : false,
+            "debug" : true
+        }
+    },
+    "mp-alipay" : {
+        "usingComponents" : true
+    },
+    "mp-baidu" : {
+        "usingComponents" : true
+    },
+    "mp-toutiao" : {
+        "usingComponents" : true
+    },
+    "uniStatistics" : {
+        "enable" : false
+    },
+    "vueVersion" : "3",
+    "h5" : {
+        "title" : "保椿生活",
+        "router" : {
+            "base" : "./"
+        },
+        "sdkConfigs" : {
+            "maps" : {}
+        }
+    }
+}

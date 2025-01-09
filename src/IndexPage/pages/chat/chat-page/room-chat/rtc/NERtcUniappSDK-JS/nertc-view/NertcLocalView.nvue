@@ -1,0 +1,27 @@
+<template>
+	<NERTCUniPluginSDK-NERTCLocalViewComponent :mediaType="mediaType" :channel="channel" :viewID="viewID"></NERTCUniPluginSDK-NERTCLocalViewComponent>
+</template>
+
+<script>
+	export default {
+		name: 'NertcLocalView',
+		props: {
+			mediaType: {
+				type: String,
+				default: ''
+			},
+			channel: {
+				type: String,
+				default: ""
+			},
+			viewID: {
+				type: String,
+				default: ""
+			}
+		},
+	}
+</script>
+
+<style>
+
+</style>

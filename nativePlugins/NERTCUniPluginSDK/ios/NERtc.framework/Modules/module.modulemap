@@ -1,0 +1,6 @@
+framework module NERtc {
+  umbrella header "NERTC.h"
+  export *
+
+  module * { export * }
+}

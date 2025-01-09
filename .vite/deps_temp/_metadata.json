@@ -1,0 +1,47 @@
+{
+  "hash": "6faa0f4d",
+  "browserHash": "c688050c",
+  "optimized": {
+    "axios": {
+      "src": "../../node_modules/.pnpm/axios@1.6.7/node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "bcdc77d8",
+      "needsInterop": false
+    },
+    "dayjs": {
+      "src": "../../node_modules/.pnpm/dayjs@1.11.12/node_modules/dayjs/dayjs.min.js",
+      "file": "dayjs.js",
+      "fileHash": "cb0e8cd9",
+      "needsInterop": true
+    },
+    "mitt": {
+      "src": "../../node_modules/.pnpm/mitt@3.0.1/node_modules/mitt/dist/mitt.mjs",
+      "file": "mitt.js",
+      "fileHash": "1ca12316",
+      "needsInterop": false
+    },
+    "nim-web-sdk-ng/dist/NIM_UNIAPP_SDK": {
+      "src": "../../node_modules/.pnpm/nim-web-sdk-ng@0.15.0/node_modules/nim-web-sdk-ng/dist/NIM_UNIAPP_SDK.js",
+      "file": "nim-web-sdk-ng_dist_NIM_UNIAPP_SDK.js",
+      "fileHash": "e60ae944",
+      "needsInterop": true
+    },
+    "numeral": {
+      "src": "../../node_modules/.pnpm/numeral@2.0.6/node_modules/numeral/numeral.js",
+      "file": "numeral.js",
+      "fileHash": "d32d1550",
+      "needsInterop": true
+    },
+    "uuid": {
+      "src": "../../node_modules/.pnpm/uuid@9.0.1/node_modules/uuid/dist/esm-browser/index.js",
+      "file": "uuid.js",
+      "fileHash": "58b6a5b6",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-FAW2VN4A": {
+      "file": "chunk-FAW2VN4A.js"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+    //===============================================================
+    //eslint 配置
+    //===============================================================
+    "eslint.validate": [
+        "javascript", // 用eslint的规则检测js文件
+        "typescript",
+        "vue"
+    ],
+    // 启用保存时自动修复eslint,默认只支持.js文件
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    //===============================================================
+    //path 配置
+    //===============================================================
+    "typescript.suggest.paths": false, //关闭自带提示, 使用
+    "javascript.suggest.paths": false,
+    "javascript.suggestionActions.enabled": false,
+    "path-autocomplete.pathMappings": {
+        "@": "${folder}/src/",
+        // "@bc": "${folder}/packages/"
+    },
+}

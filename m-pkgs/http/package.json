@@ -1,0 +1,8 @@
+{
+  "name": "@bc/http",
+  "version": "1.0.0",
+  "description": "http请求封装库",
+  "type": "module",
+  "main": "./index.ts",
+  "types": "@types/*.d.ts"
+}

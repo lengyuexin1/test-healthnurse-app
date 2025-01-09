@@ -1,0 +1,8 @@
+{
+  "name": "@bc/msg",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "公共库, 消息服务",
+  "main": "./index.ts",
+  "types": "@types/*.d.ts"
+}

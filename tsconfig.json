@@ -1,0 +1,29 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.json",
+  "compilerOptions": {
+    "ignoreDeprecations": "5.0",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [ "src/*" ],
+      "@bc/*": [ "m-pkgs/*" ],
+      // "NERtcUniappSDK-JS": [ "src/IndexPage/pages/chat/interest-chat/rtc/NERtcUniappSDK-JS" ]
+    },
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "types": [
+      "@dcloudio/types",
+      "@tuniao/tnui-vue3-uniapp/global.d.ts",
+      "@bc/ui/global.d.ts"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "@types/**/*.d.ts",
+    "m-pkgs/**/@types/*.d.ts"
+  ]
+}

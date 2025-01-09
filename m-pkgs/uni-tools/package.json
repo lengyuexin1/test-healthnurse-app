@@ -1,0 +1,12 @@
+{
+  "name": "@bc/uni-tools",
+  "version": "1.0.0",
+  "description": "uniapp工具方法的二次封装库",
+  "type": "module",
+  "main": "./index.ts",
+  "types": "@types/*.d.ts",
+  "peerDependencies": {
+    "@bc/base": "workspace:^",
+    "axios": "^1.6.2"
+  }
+}

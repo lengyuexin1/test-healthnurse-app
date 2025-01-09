@@ -1,0 +1,9 @@
+{
+  "name": "@bc/ui",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "公共UI组件, 业务组件, 主要为商家端、平台运营端使用",
+  "peerDependencies": {
+    "sass": "^1.70.0"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@bc/api",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "公共接口请求库, 接口请求响应types, 消息服务初始化",
+  "main": "./index.ts",
+  "types": "@types/*.d.ts"
+}

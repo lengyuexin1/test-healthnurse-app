@@ -1,0 +1,103 @@
+{
+	"name": "NERTC音视频SDK",
+	"id": "NERTCUniPluginSDK",
+	"version": "5.6.33",
+	"description": "uniapp网易云信NERTC音视频原生插件",
+	"_dp_type": "nativeplugin",
+	"_dp_nativeplugin": {
+		"ios": {
+			"plugins": [{
+				"type": "module",
+				"name": "NERTCUniPluginSDK-NERTCEngineImpl",
+				"class": "NERTC"
+			}, {
+				"type": "component",
+				"name": "NERTCUniPluginSDK-NERTCLocalViewComponent",
+				"class": "NERtcLocalViewComponent"
+			}, {
+				"type": "component",
+				"name": "NERTCUniPluginSDK-NERTCRemoteViewComponent",
+				"class": "NERtcRemoteViewComponent"
+			}],
+			"frameworks": [
+				"NERtc.framework",
+				"NERtcSDK.framework",
+				"NERtcReplayKit.framework",
+				"NERtcAiDenoise.framework",
+				"NERtcBeauty.framework",
+				"NERtcFaceDetect.framework",
+				"NERtcnn.framework",
+				"Accelerate.framework",
+				"AssetsLibrary.framework",
+				"AudioToolBox.framework",
+				"AVFoundation.framework",
+				"CoreGraphics.framework",
+				"CoreMedia.framework",
+				"CoreTelephony.framework",
+				"Foundation.framework",
+				"MediaPlayer.framework",
+				"Security.framework",
+				"SystemConfiguration.framework",
+				"VideoToolbox.framework",
+				"UIKit.framework",
+				"CFNetwork.framework",
+				"Masonry.framework",
+				"ReplayKit.framework",
+				"CoreServices.framework"
+			],
+			"embedFrameworks":[
+				"NERtc.framework",
+				"NERtcSDK.framework",
+				"NERtcAiDenoise.framework",
+				"NERtcReplayKit.framework",
+				"NERtcBeauty.framework",
+				"NERtcFaceDetect.framework",
+				"NERtcnn.framework"
+			],
+			"integrateType": "framework",
+			"deploymentTarget": "11.0",
+			"validArchitectures": [
+				"arm64", "armv7"
+			],
+			"privacies": [
+				"NSPhotoLibraryUsageDescription", "NSPhotoLibraryAddUsageDescription", "NSCameraUsageDescription", "NSMicrophoneUsageDescription"
+			]
+		},
+		"android": {
+			"plugins": [
+				{
+					"type": "component",
+					"name": "NERTCUniPluginSDK-NERTCLocalViewComponent",
+					"class": "com.netease.nertc.NERtcLocalViewComponent"
+				},
+				{
+					"type": "component",
+					"name": "NERTCUniPluginSDK-NERTCRemoteViewComponent",
+					"class": "com.netease.nertc.NERtcRemoteViewComponent"
+				},
+				{
+					"type": "module",
+					"name": "NERTCUniPluginSDK-NERTCEngineImpl",
+					"class": "com.netease.nertc.NERtcModule"
+				}
+			],
+			"hooksClass": "com.netease.nertc.NERtcModule",
+			"dependencies": [
+				"com.netease.yunxin:nertc:5.5.21",
+				"androidx.multidex:multidex:2.0.1",
+				"androidx.legacy:legacy-support-v4:1.0.0",
+				"androidx.recyclerview:recyclerview:1.0.0",
+				"com.android.support:recyclerview-v7:28.0.0",
+				"com.android.support:support-v4:28.0.0",
+				"com.android.support:appcompat-v7:28.0.0",
+				"com.facebook.fresco:fresco:1.13.0",
+				"com.alibaba:fastjson:1.2.83"
+			],
+			"abis": [
+				"armeabi-v7a",
+				"arm64-v8a"
+			],
+			"integrateType": "aar"
+		}
+	}
+}
