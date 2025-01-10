@@ -35,7 +35,7 @@ const statusBarHeight = computed(() => {
     top: 0;
     left: 0;
     // background: linear-gradient(180deg, #DFF7EF 0%, #F2F3F5 100%);
-    background: linear-gradient(180deg, #FDD9CD 0%, #F2F3F5 100%);
+    background: linear-gradient(180deg, #DFF7EF 0%, #F2F3F5 100%);
     z-index: 0;
     
 }

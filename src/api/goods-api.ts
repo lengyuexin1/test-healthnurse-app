@@ -109,6 +109,11 @@ export const recommendList = (req:any) => {
     return openHttp.post('api/search/v1/bc/public/es/recommend/index',req)
 }
 
+export const recomLikeList = (req:any) => {
+    return openHttp.post('api/search/v1/bc/public/es/item/list',req)
+}
+
+
 /** 康养囤关注店铺列表 */
 export const goodsfavoriteList = (req:any) => {
     return http.user.post('/v1/bc/app/favorite/favoriteList',req)

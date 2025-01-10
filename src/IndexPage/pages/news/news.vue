@@ -38,6 +38,13 @@
                     <!-- 会话列表 -->
                     <SessionItem class="tn-flex-column" v-for="(item, index) in sessionList.sessions" :key="index" :customer="item" @gotoChat="gotoChat"></SessionItem>
                 </view>
+                <!-- 精选好物 -->
+                <view class="foryou">
+                    <view class="newTitle">猜你喜欢</view>
+                    <view class="foryouUl">
+                        <ListItem :wfList="data.moreGoodList"> </ListItem>
+                    </view>
+                </view>
             </view>
         </z-paging>
         <BCNotify ref="bcNotify"></BCNotify>
@@ -45,6 +52,7 @@
 </template>
     
 <script setup lang="ts">
+import ListItem from "@/components/recommended/listItem.vue"
 import { computed } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { ref, reactive, watch, onMounted } from 'vue'
@@ -60,8 +68,10 @@ import BCNotify from '@/components/notify/index.vue'
 import { PlatformManage } from "@bc/sys"
 import { createTeam } from "@/api/nim-api"
 import { IMWEB_ENV } from '@/utils/handleEnv'
- 
+import { recomLikeList } from "@/api/goods-api" 
+
 interface Data {
+    moreGoodList: any
     isRequireLogin: boolean,
     dataList: any,
     /** 已读动画 */
@@ -74,15 +84,16 @@ interface Data {
 }
 
 const data = reactive<Data>({
+    moreGoodList: [],
     isRequireLogin: false,
     dataList: [],
     clearAnimate: false,
     noticeList: [
-        { id: 'p2p-3', to: '3', unread: 0, name: '互动消息', image: '/leyou/static/message/message_icon_interaction.png' },
-        { id: 'p2p-8', to: '8', unread: 0, name: '社交消息', image: '/leyou/static/message/message_icon_contact.png' },
-        { id: 'p2p-2', to: '2', unread: 0, name: '交易物流', image: '/leyou/static/message/message_icon_logistics.png' },
-        { id: 'p2p-1', to: '1', unread: 0, name: '系统通知', image: '/leyou/static/message/message_icon_system.png' },
-        { id: 'p2p-4', to: '4', unread: 0, name: '平台公告', image: '/leyou/static/message/message_icon_plateform.png' },
+        { id: 'p2p-2', to: '2', unread: 0, name: '交易/物流', image: '/leyou/assets/message_icon_logistics.png' },
+        { id: 'p2p-1', to: '1', unread: 0, name: '系统通知', image: '/leyou/assets/message_icon_system.png' },
+        { id: 'p2p-3', to: '3', unread: 0, name: '互动消息', image: '/leyou/assets/message_icon_interaction.png' },
+        // { id: 'p2p-8', to: '8', unread: 0, name: '社交消息', image: '/leyou/static/message/message_icon_contact.png' },
+        { id: 'p2p-4', to: '4', unread: 0, name: '平台公告', image: '/leyou/assets/message_icon_plateform.png' },
     ],
     activitySession: { id: 'p2p-5', to: '5', unread: 0, lastMsg: { fromNick: '活动消息' }, updateTime: null },
     safeBotomHeight: 0
@@ -206,6 +217,17 @@ onMounted(() => {
             data.safeBotomHeight = res.safeAreaInsets.bottom
         }
     })
+
+    recomLikeList({
+        pageSize: 10,
+        pageNumber: 1,
+        query: {}
+    }).then((res: any) => {
+        data.moreGoodList = res.data
+        console.log('data.moreGoodList', data.moreGoodList);
+
+
+    })
 })
 
 onShow(() => {
@@ -250,6 +272,17 @@ onShow(() => {
     background-color: #f2f3f5;
     border-radius: 16rpx;
     margin-top: 20rpx;
+}
+.foryou {
+    margin: 40rpx 20rpx 20rpx 20rpx;
+    margin-bottom: 20rpx;
+
+    .newTitle {
+        font-weight: 600;
+        margin: 0 0 20rpx 8rpx;
+        font-size: 32rpx;
+        color: #0B0B0B;
+    }
 }
 </style>
   
