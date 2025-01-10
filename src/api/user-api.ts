@@ -293,6 +293,10 @@ export const happylike = (req:any) => {
     return http.get('api/search/v1/bc/public/es/happy/like', req)
 }
 
+export const featuredList = (req:any) => {
+    return http.post('api/order/v1/bc/public/search/featured/list', req)
+}
+
 /** 搜索结果列表 */
 // changev2
 export const happysearch = (req:any, isRequireLogin:boolean) => {
