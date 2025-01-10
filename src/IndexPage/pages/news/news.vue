@@ -1,19 +1,10 @@
 <template>
     <view class="container">
-        <z-paging 
-            ref="paging"
-            v-model="data.dataList"
-            :auto="true"
-            :fixed="true"
-            @query="queryList"
-            :defaultPageSize="10"
-            :auto-show-system-loading="true"
-            :auto-scroll-to-top-when-reload="false"
-            :hide-empty-view="true"
-            >
+        <z-paging ref="paging" v-model="data.dataList" :auto="true" :fixed="true" @query="queryList" :defaultPageSize="10"
+            :auto-show-system-loading="true" :auto-scroll-to-top-when-reload="false" :hide-empty-view="true">
             <template #top>
                 <PageTopbg></PageTopbg>
-                <bc-page-navbar :title="'消息'" iconType="clear" @clickBtn="readAll">
+                <bc-page-navbar :title="'消息'">
                     <template #back>
                         <view></view>
                     </template>
@@ -21,10 +12,22 @@
             </template>
 
             <view class="content" :style="{ paddingBottom: data.safeBotomHeight + 150 + 'rpx' }">
+
+                <view class="message">
+                    <view class="title">
+                        <text class="title_txt">消息列表</text>
+                    </view>
+                    <view class="clean" @tap="readAll">
+                        <!-- <image class="clean_icon" src="/static/message/message_icon_clean.png" mode="scaleToFill" /> -->
+                        <text class="clean_txt">一键已读</text>
+                    </view>
+                </view>
+
                 <view class="row block">
                     <block v-for="(item, index) in data.noticeList" :key="index">
                         <view class="noticeItem column i-center" @tap="clickNoticeList(item.to, item.name)">
-                            <TnBadge :value="item.unread" type="danger" size="33" max="9" absolute :absolute-position="{ top: '40rpx', right: '40rpx' }" v-if="item.unread > 0" />
+                            <TnBadge :value="item.unread" type="danger" size="33" max="9" absolute
+                                :absolute-position="{ top: '40rpx', right: '40rpx' }" v-if="item.unread > 0" />
                             <image :src="getAssetsUrl(item.image)" mode="widthFix" />
                             <text>{{ item.name }}</text>
                         </view>
@@ -34,9 +37,11 @@
                     <!-- 活动组件 -->
                     <ActivityItem :activitySession="getActivitySession" @gotoNoticeList="clickNoticeList"></ActivityItem>
                     <!-- 客服组件 -->
-                    <PlateformItem v-if="isExitPlateformSession" @gotoPlateformSession="gotoPlateformSession"></PlateformItem>
+                    <PlateformItem v-if="isExitPlateformSession" @gotoPlateformSession="gotoPlateformSession">
+                    </PlateformItem>
                     <!-- 会话列表 -->
-                    <SessionItem class="tn-flex-column" v-for="(item, index) in sessionList.sessions" :key="index" :customer="item" @gotoChat="gotoChat"></SessionItem>
+                    <SessionItem class="tn-flex-column" v-for="(item, index) in sessionList.sessions" :key="index"
+                        :customer="item" @gotoChat="gotoChat"></SessionItem>
                 </view>
                 <!-- 精选好物 -->
                 <view class="foryou">
@@ -68,7 +73,7 @@ import BCNotify from '@/components/notify/index.vue'
 import { PlatformManage } from "@bc/sys"
 import { createTeam } from "@/api/nim-api"
 import { IMWEB_ENV } from '@/utils/handleEnv'
-import { recomLikeList } from "@/api/goods-api" 
+import { recomLikeList } from "@/api/goods-api"
 
 interface Data {
     moreGoodList: any
@@ -103,8 +108,8 @@ const bcNotify = ref()
 
 const paging = ref()
 
-const getAssetsUrl = computed(() => (src : string) => {
-	return getAssetsPic(src)
+const getAssetsUrl = computed(() => (src: string) => {
+    return getAssetsPic(src)
 })
 
 const getActivitySession = computed(() => {
@@ -171,7 +176,7 @@ const gotoPlateformSession = () => {
         bcNotify.value.show('你还没登录')
         return
     }
-    PlatformManage.getToken().then((token:any) => {
+    PlatformManage.getToken().then((token: any) => {
         createTeam({
             userId: token?.id,
             userName: token?.nickname,
@@ -179,9 +184,9 @@ const gotoPlateformSession = () => {
             flag: 1, //1小程序用户，2服务人员
             shopId: token?.shopId ?? 0,
             type: 1 // 1平台，2店铺
-        }).then((res:any) => {
+        }).then((res: any) => {
             gotoChat(res.tid, 'customer')
-        }).catch((err:any) => {
+        }).catch((err: any) => {
             bcNotify.value.show(err.message)
         })
     })
@@ -198,7 +203,7 @@ const gotoChat = (to: string, scene: string) => {
 const getUnreadBadge = () => {
     for (const i in data.noticeList) {
         for (const j in noticeSession.sessions) {
-            if (`${IMWEB_ENV()}${data.noticeList[i].to}`=== noticeSession.sessions[j].session.to) {
+            if (`${IMWEB_ENV()}${data.noticeList[i].to}` === noticeSession.sessions[j].session.to) {
                 data.noticeList[i].unread = noticeSession.sessions[j].session.unread
             }
         }
@@ -241,6 +246,7 @@ onShow(() => {
 .content {
     padding-bottom: 150rpx;
 }
+
 .block {
     margin-top: 20rpx;
     background-color: white;
@@ -273,6 +279,7 @@ onShow(() => {
     border-radius: 16rpx;
     margin-top: 20rpx;
 }
+
 .foryou {
     margin: 40rpx 20rpx 20rpx 20rpx;
     margin-bottom: 20rpx;
@@ -282,6 +289,42 @@ onShow(() => {
         margin: 0 0 20rpx 8rpx;
         font-size: 32rpx;
         color: #0B0B0B;
+    }
+}
+.message {
+    width: 96%;
+    margin-left: 2%;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    padding: 24rpx 40rpx 24rpx 40rpx;
+    border-radius: 16rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    .title {
+        .title_txt {
+            font-size: 33rpx;
+            font-weight: bold;
+            color: #333333;
+        }
+    }
+
+    .clean {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .clean_txt {
+            font-size: 25rpx;
+            color: #29c86f;
+        }
+
+        .clean_icon {
+            width: 32rpx;
+            height: 32rpx;
+            margin-right: 5rpx;
+        }
     }
 }
 </style>
