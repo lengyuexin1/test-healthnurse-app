@@ -888,13 +888,13 @@ const getDetails = (contentId:string) => {
 
             data.articledetailsObj.detail = data.articledetailsObj.detail.replace(/>&nbsp;</g, "><")
 
-            if (data.articledetailsObj.status == 4) {
-                bcNotify.value.error('文章已下架')
-                setTimeout(() => {
-                    goback()
-                }, 2000)
-                return
-            }
+            // if (data.articledetailsObj.status == 4) {
+            //     bcNotify.value.error('文章已下架')
+            //     setTimeout(() => {
+            //         goback()
+            //     }, 2000)
+            //     return
+            // }
 
             // data.commentTopList[0].number = data.articledetailsObj.cntComment
             // data.commentTopList[1].number = data.articledetailsObj.cntLike
@@ -947,11 +947,11 @@ const getDetails = (contentId:string) => {
             console.log('errerrerr', err)
 
             data.articledetailsObj = {}
-            bcNotify.value.error('文章不存在')
+            // bcNotify.value.error('文章不存在')
 
-            setTimeout(() => {
-                goback()
-            }, 2000)
+            // setTimeout(() => {
+            //     goback()
+            // }, 2000)
 
         })
 

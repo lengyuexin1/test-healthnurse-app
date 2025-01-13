@@ -121,7 +121,7 @@ export class HttpRequest implements HttpInstance {
     get(url: string, params?: any, options?: ReqOptions) {
         const config = options || {} as ReqOptions
         config.url = url
-        config.headers = { 'platformKind': '2' } // 平台划分 1表示照护 2表示乐悠
+        config.headers = { 'platformKind': '1' } // 平台划分 1表示照护 2表示乐悠
         config.params = params
         config.method = config.method || 'get'
         return this.__createRequest(config)

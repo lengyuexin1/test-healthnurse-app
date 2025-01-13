@@ -1,5 +1,10 @@
 <template>
-    <image class="telbg_img" src="/static/bc_logo.png" mode="aspectFit"></image>
+    <!-- <image class="telbg_img" src="/static/bc_logo.png" mode="aspectFit"></image> -->
+    <image
+        class="telbg_img"
+        :src="getAssetsUrl('/leyou/static/telbg.png')"
+        mode="scaleToFill"
+    />
     <view class="main" >
         <view class="input" v-if="data.currentTabIndex == 0">
             <view class="input_title">手机号登录/注册</view>

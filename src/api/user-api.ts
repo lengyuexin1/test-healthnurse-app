@@ -25,7 +25,7 @@ export const getpatientList = () => {
 }
 
 /** 用户金额信息 **/
-export const getMoneyInfo = async (req: _v1_bc_app_money_info_get_req) => {
+export const getMoneyInfo = async (req?: _v1_bc_app_money_info_get_req) => {
     return http.user.get('/v1/bc/app/money/info', req)
 }
 /** 用户金额信息 **/

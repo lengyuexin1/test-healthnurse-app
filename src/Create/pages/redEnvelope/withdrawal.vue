@@ -15,7 +15,7 @@
                 <PageTopbg></PageTopbg>
                 <bc-page-navbar :title="'提现管理'" bg-color="#F2F3F5"></bc-page-navbar>
             </template>
-            
+
             <view class="withdrawal">
                 <view class="withdrawal_notice">
                     <view class="notice_left">
@@ -37,7 +37,6 @@
                 :scroll="false" :bottom-shadow="false" font-size="30rpx" active-font-size="32rpx" bg-color="rgba(243, 244, 246, 1)" color="#333333" bar-color="#29C86F" active-color="#29C86F" @change="changeTabList">
                     <TnTabsItem v-for="(item, index) in list" :key="index" :title="item.name" />
               </TnTabs>
-            
             <view class="menu" v-if="dataList.length">
                 <view class="menu-list row i-center j-between" v-for="(item,index) in dataList" :key="index">
                     <view class="menu-list-left">
@@ -79,7 +78,7 @@
                 </view>
             </TnPopup>
             <BCNotify ref="bcNotify"></BCNotify>
-            
+
             <!-- <TnPopup v-model="show">
                 <view class="popup_box">
                     <view class="content_text">
@@ -92,7 +91,7 @@
                 </view>
 
             </TnPopup> -->
-           
+
         </z-paging>
         <ReflectPopup ref="reflectPopup" @startReflect="startReflect" @startFacial="startFacial"></ReflectPopup>
 
@@ -106,10 +105,10 @@ import BCNotify from '@/components/notify/index.vue'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { recordList, rewardTransfer, rewardCash } from '@/api/user-api'
-import { ref, reactive,computed,defineProps } from 'vue'; // Import ref and reactive from Vue 3 Composition API
-import dayjs from 'dayjs';
+import { ref, reactive, computed, defineProps } from 'vue' // Import ref and reactive from Vue 3 Composition API
+import dayjs from 'dayjs'
 import { gotoTaskRecord } from '@/routes/user-routes'
-import { onShow,onLoad } from '@dcloudio/uni-app'
+import { onShow, onLoad } from '@dcloudio/uni-app'
 import ReflectPopup from './components/reflect-popup.vue'
 import { homePage, initFaceVerifyIdPlus, certificateByCertifyId } from '@/api/create-api'
 import { getWechatOpenid } from '@/api/open-api'
@@ -120,31 +119,31 @@ const list = ref([
     { name: '全部', id: '' },
     { name: '支出', id: 2 },
     { name: '收入', id: 1 }
-]);
+])
 const bcNotify = ref()
 const reflectPopup = ref()
 
 const paging = ref() as any
-const cashData = ref<any>({});
-const withdIndex = ref<number>(0);
-const dataList = ref([]);
-const incomeExpense = ref<number|string>('');
-const show = ref(false);
-const defaultPageSize = 10;
-const rewardId = ref();
-const homeUser = ref(false);
+const cashData = ref<any>({})
+const withdIndex = ref<number>(0)
+const dataList = ref([])
+const incomeExpense = ref<number|string>('')
+const show = ref(false)
+const defaultPageSize = 10
+const rewardId = ref()
+const homeUser = ref(false)
 const getClient = ref('')
 
 // Computed properties
 // 计算属性
 const getAssetsUrl = computed(() => {
     return (str:any) => {
-        return getAssetsPic(str);
-    };
-});
+        return getAssetsPic(str)
+    }
+})
 const formatTime = (number:number) => {
-    return dayjs(number * 1000).format('YYYY-MM-DD HH:mm');
-};
+    return dayjs(number * 1000).format('YYYY-MM-DD HH:mm')
+}
 
 // Lifecycle hook: onLoad
 onLoad((options:any) => {
@@ -157,9 +156,9 @@ onLoad((options:any) => {
     getClient.value = 'APP'
     // #endif
 
-    rewardId.value = options.activityId;
-    initReward(rewardId.value);
-});
+    rewardId.value = options.activityId
+    initReward(rewardId.value)
+})
 
 // 立即提现
 const clickWithd = () => {
@@ -178,23 +177,23 @@ const clickWithd = () => {
 
                 let metaInfo = n.getMetaInfo()
                 if (platform == 'ios') {
-                    metaInfo=JSON.stringify(metaInfo)
+                    metaInfo = JSON.stringify(metaInfo)
                 }
-                console.log('metaInfo',metaInfo)
+                console.log('metaInfo', metaInfo)
                 initFaceVerifyIdPlus({ metaInfo }).then((res: any) => {
                     // this.certifyId = res.certifyId
-                    n.verify({ certifyId: res.certifyId}, (v: any) => {
-                        if(v.code == 1000) {
-                            console.log('人脸识别成功。。。请求接口',res.certifyId)
+                    n.verify({ certifyId: res.certifyId }, (v: any) => {
+                        if (v.code == 1000) {
+                            console.log('人脸识别成功。。。请求接口', res.certifyId)
                             certificateByCertifyId({
                                 certifyId: res.certifyId
                             }).then((res: any) => {
                                 // initSubmit()
-                                homeUser.value = true;
-                                console.log('实名认证提交成功',res)
+                                homeUser.value = true
+                                console.log('实名认证提交成功', res)
                                 bcNotify.value.show(getResultString(v.code))
                             }).catch((err: any) => {
-                                console.log('实名认证提交失败',err)
+                                console.log('实名认证提交失败', err)
                                 bcNotify.value.error(getResultString(v.code))
                             })
                             return
@@ -208,8 +207,9 @@ const clickWithd = () => {
                 })
                 // #endif
             }
-        }else {
-            reflectPopup.value.open(1);
+        }
+        else {
+            reflectPopup.value.open(1)
         }
     })
 
@@ -219,7 +219,7 @@ const clickWithd = () => {
 
     // #ifdef MP-WEIXIN
     // #endif
-};
+}
 
 // const confirm = () => {
 //     plus.share.getServices((res:any) => {
@@ -243,13 +243,13 @@ const clickWithd = () => {
 // };
 
 const submit = () => {
-    console.log('提现',cashData.value);
+    console.log('提现', cashData.value)
 
     if (!cashData.value.cashList[withdIndex.value]?.cash) {
-        homeUser.value = false;
+        homeUser.value = false
 
-        bcNotify.value.error('请选择提现金额');
-        return;
+        bcNotify.value.error('请选择提现金额')
+        return
     }
 
     // #ifdef APP-PLUS
@@ -257,8 +257,8 @@ const submit = () => {
         onlyAuthorize: true,
         provider: 'weixin',
         success: (res) => {
-            console.log('reslogin',res);
-            
+            console.log('reslogin', res)
+
             if (res.code) { //微信登录成功 已拿到code
                 getWechatOpenid({
                     code: res.code
@@ -268,46 +268,47 @@ const submit = () => {
                 })
             }
         },
-        fail:(err:any) => {
-            console.log('err',err);
-            
+        fail: (err:any) => {
+            console.log('err', err)
+
         }
     })
     // #endif
 
     // #ifdef MP-WEIXIN
-    weixinInitSubmit();
+    weixinInitSubmit()
     // #endif
-};
+}
 
 // 任务记录
-const gotaskRecord =() =>{
-    gotoTaskRecord({rewardId:rewardId.value})
+const gotaskRecord = () => {
+    gotoTaskRecord({ rewardId: rewardId.value })
 }
 
 const weixinInitSubmit = () => {
-    const openid = uni.getStorageSync('openid');
+    const openid = uni.getStorageSync('openid')
     rewardTransfer({
         openid,
-        rewardId:rewardId.value,
+        rewardId: rewardId.value,
         cash: Number(cashData.value.cashList[withdIndex.value]?.cash)
     }).then((res:any) => {
-        console.log('res',res);
-        
-        homeUser.value = false;
+        console.log('res', res)
+
+        homeUser.value = false
         if (!res) {
-            bcNotify.value.success('提现中...')            
-        }else{
-            bcNotify.value.success('提现成功')            
+            bcNotify.value.success('提现中...')
         }
-        initReward(rewardId.value);
-        queryList(1, 10);
+        else {
+            bcNotify.value.success('提现成功')
+        }
+        initReward(rewardId.value)
+        queryList(1, 10)
     }).catch((error) => {
-        homeUser.value = false;
+        homeUser.value = false
 
         bcNotify.value.error(error.message)
-    });
-};
+    })
+}
 
 const changewithdIndex = (index:number) => {
     withdIndex.value = index
@@ -315,23 +316,23 @@ const changewithdIndex = (index:number) => {
 
 const initReward = (id:any) => {
     rewardCash({ id }).then((res) => {
-        cashData.value = res;
+        cashData.value = res
         console.log(cashData.value)
-    });
-};
+    })
+}
 
 
 
 const changeTabList = (e:any) => {
-    incomeExpense.value = e==1?2:e==2?1:0;
-    console.log(incomeExpense.value,e)
-    queryList(1, 10);
-};
+    incomeExpense.value = e == 1 ? 2 : e == 2 ? 1 : 0
+    console.log(incomeExpense.value, e)
+    queryList(1, 10)
+}
 
 const queryList = (pageNumber:number, pageSize:number) => {
     recordList({
         query: {
-            rewardId:rewardId.value,
+            rewardId: rewardId.value,
             incomeExpense: incomeExpense.value
         },
         pageNumber,
@@ -340,31 +341,31 @@ const queryList = (pageNumber:number, pageSize:number) => {
         (paging.value as any).complete(res.data)
     }).catch(() => {
         (paging.value as any).complete(false)
-    });
-};
+    })
+}
 
 const startReflect = () => {
-    homeUser.value = true;
-    reflectPopup.value.close();
+    homeUser.value = true
+    reflectPopup.value.close()
     // initSubmit()
 }
 
 const initSubmit = () => {
     // #ifdef APP-PLUS
-        uni.login({
-            onlyAuthorize: true,
-            provider: 'weixin',
-            success: (res) => {
-                if (res.code) { //微信登录成功 已拿到code
-                    getWechatOpenid({
-                        code: res.code
-                    }).then((res1) => {
-                        uni.setStorageSync('openid', res1)
-                        weixinInitSubmit()
-                    })
-                }
+    uni.login({
+        onlyAuthorize: true,
+        provider: 'weixin',
+        success: (res) => {
+            if (res.code) { //微信登录成功 已拿到code
+                getWechatOpenid({
+                    code: res.code
+                }).then((res1) => {
+                    uni.setStorageSync('openid', res1)
+                    weixinInitSubmit()
+                })
             }
-        })
+        }
+    })
     // #endif
 
     // #ifdef MP-WEIXIN

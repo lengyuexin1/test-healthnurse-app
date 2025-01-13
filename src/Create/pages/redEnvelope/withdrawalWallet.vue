@@ -13,7 +13,7 @@
         >
             <template #top>
                 <PageTopbg></PageTopbg>
-                <bc-page-navbar :title="'提现管理'" bg-color="#F2F3F5"></bc-page-navbar>
+                <bc-page-navbar :title="'分销提现'" bg-color="#F2F3F5"></bc-page-navbar>
             </template>
 
             <view class="withdrawal">
@@ -26,11 +26,10 @@
                         </view>
                     </view>
 
-                    <view class="notice_right" @click="clickWithd">立即提现</view>
+                    <view class="notice_right" @click="homeUser = true">立即提现</view>
                 </view>
                 <view class="redEnvelope">
                     <view class="redEnvelope_left">入账中: ¥{{ (Number(cashData.transferring) / 100).toFixed(2) }}</view>
-                    <view class="redEnvelope_right" @click="gotaskRecord">任务记录 ></view>
                 </view>
             </view>
               <TnTabs
@@ -55,7 +54,6 @@
                         <!-- <view class="Withdrawal_desc">金额提现需要扣除{{cashData.commission}}%手续费</view> -->
                         <view class="Withdrawal_desc">
                             ￥
-                            <!-- <text style="font-size: 50rpx;">{{(cashData.cash / 100).toFixed(2)}}</text> -->
                             <text style="font-size: 50rpx;">{{toFixedNumber((cashData?.cash / 100))}}</text>
                         </view>
 
@@ -65,11 +63,10 @@
                                 <!-- <view class="withdrawal_tax_price">{{(cashData.money / 100).toFixed(2)}} 元</view> -->
                                 <view class="withdrawal_tax_price">{{toFixedNumber((cashData?.money / 100))}} 元</view>
                             </view>
-                             <view class="withdrawal_proup_tax">
+                             <!-- <view class="withdrawal_proup_tax">
                                 <view class="withdrawal_tax_left">扣税金额</view>
-                                <!-- <view class="withdrawal_tax_price">{{((cashData.money - cashData.cash) / 100).toFixed(2)}} 元</view> -->
                                 <view class="withdrawal_tax_price">{{toFixedNumber(((cashData?.money - cashData?.cash) / 100))}} 元</view>
-                            </view>
+                            </view> -->
                              <view class="withdrawal_proup_tax">
                                 <view class="withdrawal_tax_left">到账方式</view>
                                 <view class="withdrawal_tax_right">
@@ -82,12 +79,11 @@
                     </view>
                     <view class="confirm_withdrawal">
                         <view class="confirm_withdrawal_cencel" @click="homeUser = false">取消</view>
-                        <view class="withdrawal_proup_but" @click="submit">确认提现</view>
+                        <view class="withdrawal_proup_but" @click="clickWithd">确认提现</view>
                     </view>
                 </view>
             </TnPopup>
             <BCNotify ref="bcNotify"></BCNotify>
-
             <!-- <TnPopup v-model="show">
                 <view class="popup_box">
                     <view class="content_text">
