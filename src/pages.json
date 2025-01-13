@@ -1256,30 +1256,6 @@
 					}
 				},
 				{
-					"path": "pages/wisdom/xm_home",
-					"style": {
-						"navigationBarTitleText": "家庭管理"
-					}
-				},
-				{
-					"path": "pages/wisdom/xm_user",
-					"style": {
-						"navigationBarTitleText": "用户管理"
-					}
-				},
-				{
-					"path": "pages/wisdom/xm_config",
-					"style": {
-						"navigationBarTitleText": "用户管理"
-					}
-				},
-				{
-					"path": "pages/wisdom/xm_tuya",
-					"style": {
-						"navigationBarTitleText": "用户管理"
-					}
-				},
-				{
 					"path": "pages/wisdom/layaNet",
 					"style": {
 						"navigationBarTitleText": "蓝牙配网",
