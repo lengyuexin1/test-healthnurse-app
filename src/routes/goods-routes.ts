@@ -8,7 +8,7 @@ import { pageController } from '@bc/uni-tools'
 
  export const gotogoodsDetail = (itemId:string, livePlayId?: string) => {
     const route = {
-        path: '/Goods/pages/goodsDetail/goodsDetail',
+        path: '/pagesGoods/pages/goodsDetail/goodsDetail',
         query: { itemId, livePlayId }
     } as any
     return pageController.push(route)
@@ -17,7 +17,7 @@ import { pageController } from '@bc/uni-tools'
 // 跳转到 购物车
 export const gotoShoppingCart = () => {
     const route = {
-        path: '/Goods/pages/shoppingCart/shoppingCart',
+        path: '/pagesGoods/pages/shoppingCart/shoppingCart',
         query: {}
     } as any
     return pageController.push(route)
@@ -51,7 +51,7 @@ export const gotoGoodsPerferShop = () => {
 // 订单物流
 export const gotoSalePutlogis = (query:any) => {
     const route = {
-        path: '/Goods/pages/logistics/logistics',
+        path: '/pagesGoods/pages/logistics/logistics',
         query
     } as any
     return pageController.push(route)
@@ -60,7 +60,7 @@ export const gotoSalePutlogis = (query:any) => {
  // 商品评论列表
 export const gotogoodsComment = (query:any) => {
     const route = {
-        path: '/Goods/pages/goodsComment/goodsComment',
+        path: '/pagesGoods/pages/goodsComment/goodsComment',
         query
     } as any
     return pageController.push(route)
@@ -69,7 +69,7 @@ export const gotogoodsComment = (query:any) => {
 // 跳转点评列表
 export const gotogoodsRanking = () => {
     const route = {
-        path: '/Goods/pages/goodsRanking/goodsRanking',
+        path: '/pagesGoods/pages/goodsRanking/goodsRanking',
         query : {}
     } as any
     return pageController.push(route)
@@ -78,7 +78,7 @@ export const gotogoodsRanking = () => {
 // 点评规格
 export const gotorankingDetail = () => {
     const route = {
-        path: '/Goods/pages/goodsRanking/rankingDetail',
+        path: '/pagesGoods/pages/goodsRanking/rankingDetail',
         query : {}
     } as any
     return pageController.push(route)
@@ -87,7 +87,7 @@ export const gotorankingDetail = () => {
 // 积分商城
 export const gotointegralMallGoods = () => {
     const route = {
-        path: '/Goods/pages/integralMall/integralMallGoods',
+        path: '/pagesGoods/pages/integralMall/integralMallGoods',
         query : {}
     } as any
     return pageController.push(route)
@@ -96,7 +96,7 @@ export const gotointegralMallGoods = () => {
 // 积分明细/兑换记录
 export const gotomyIntegral = () => {
     const route = {
-        path: '/Goods/pages/integralMall/myIntegral',
+        path: '/pagesGoods/pages/integralMall/myIntegral',
         query : {}
     } as any
     return pageController.push(route)
@@ -105,7 +105,7 @@ export const gotomyIntegral = () => {
 // 积分商品详情
 export const gotointegralGoodsDetail = (query:any) => {
     const route = {
-        path: '/Goods/pages/integralMall/integralGoodsDetail',
+        path: '/pagesGoods/pages/integralMall/integralGoodsDetail',
         query
     } as any
     return pageController.push(route)
@@ -114,7 +114,7 @@ export const gotointegralGoodsDetail = (query:any) => {
 // 兑换积分商品
 export const tobalanceRule = (query:any) => {
     const route = {
-        path: '/Goods/pages/integralMall/balanceRule',
+        path: '/pagesGoods/pages/integralMall/balanceRule',
         query
     } as any
     return pageController.push(route)
@@ -123,7 +123,7 @@ export const tobalanceRule = (query:any) => {
 // 积分物流详情
 export const gotointegralLogistics = (query:any) => {
     const route = {
-        path: '/Goods/pages/integralLogistics/integralLogistics',
+        path: '/pagesGoods/pages/integralLogistics/integralLogistics',
         query
     } as any
     return pageController.push(route)
@@ -132,7 +132,7 @@ export const gotointegralLogistics = (query:any) => {
 // 积分规则
 export const gotointegralRule = () => {
     const route = {
-        path: '/Goods/pages/integralMall/integralRule',
+        path: '/pagesGoods/pages/integralMall/integralRule',
         query: {}
     } as any
     return pageController.push(route)
