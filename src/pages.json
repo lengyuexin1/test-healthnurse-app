@@ -1002,14 +1002,7 @@
 						"enablePullDownRefresh": false
 					}
 				},
-				{
-					"path": "pages/exchangeDetail/exchangeDetail",
-					"style": {
-						"navigationBarTitleText": "积分商品兑换详情",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
+		
 			
 				{
 					"path": "pages/refundDetail/refundDetail",
