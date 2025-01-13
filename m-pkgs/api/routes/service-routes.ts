@@ -10,7 +10,7 @@ import { pageController } from '@bc/uni-tools'
 
 export const gotoserviceDetail = (itemId: string) => {
     const route = {
-        path: '/Service/pages/serviceDetail/serviceDetail',
+        path: '/pagesService/pages/serviceDetail/serviceDetail',
         query: { itemId }
     } as any
     return pageController.push(route)

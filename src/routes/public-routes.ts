@@ -126,7 +126,7 @@ export const gotoUpdate = () => {
 /** 跳转到 设置 */
 export const gotoSetting = () => {
     const route = {
-        path: '/User/pages/setting/setting'
+        path: '/pagesUser/pages/setting/setting'
     } as any
     return pageController.push(route)
 }
@@ -134,7 +134,7 @@ export const gotoSetting = () => {
 /** 通用设置 */
 export const gotonotice = () => {
     const route = {
-        path: '/User/pages/notice/notice'
+        path: '/pagesUser/pages/notice/notice'
     } as any
     return pageController.push(route)
 }
@@ -142,7 +142,7 @@ export const gotonotice = () => {
 /** 隐私管理 */
 export const gotoPrivacySetting = () => {
     const route = {
-        path: '/User/pages/privacySetting/privacySetting'
+        path: '/pagesUser/pages/privacySetting/privacySetting'
     } as any
     return pageController.push(route)
 }
@@ -150,7 +150,7 @@ export const gotoPrivacySetting = () => {
 /** 举报管理 */
 export const gotoReportList = () => {
     const route = {
-        path: '/User/pages/reportList/reportList'
+        path: '/pagesUser/pages/reportList/reportList'
     } as any
     return pageController.push(route)
 }
@@ -158,7 +158,7 @@ export const gotoReportList = () => {
 /** 举报管理 */
 export const gotoReportDetail = (query: any) => {
     const route = {
-        path: '/User/pages/reportList/reportDetail',
+        path: '/pagesUser/pages/reportList/reportDetail',
         query
     } as any
     return pageController.push(route)
@@ -167,7 +167,7 @@ export const gotoReportDetail = (query: any) => {
 /** 关于乐悠 */
 export const gotoAboutLeyou = () => {
     const route = {
-        path: '/User/pages/aboutleyou/aboutleyou'
+        path: '/pagesUser/pages/aboutleyou/aboutleyou'
     } as any
     return pageController.push(route)
 }

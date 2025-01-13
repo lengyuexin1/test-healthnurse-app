@@ -20,7 +20,7 @@ import { pageController } from '@bc/uni-tools'
 /** 跳转到 去评价 */
 export const gotoComment = (query: any) => {
     const route = {
-        path: "/User/pages/comment/comment",
+        path: "/pagesUser/pages/comment/comment",
         query
     } as any
     return pageController.push(route)
@@ -29,7 +29,7 @@ export const gotoComment = (query: any) => {
 /** 跳转到 去评价 */
 export const gotoCommentGoods = (query: any) => {
     const route = {
-        path: "/User/pages/comment/commentGoods",
+        path: "/pagesUser/pages/comment/commentGoods",
         query
     } as any
     return pageController.push(route)

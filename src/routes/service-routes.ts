@@ -12,7 +12,7 @@ export const gotoserviceDetail = (itemId: string) => {
     return
 
     const route = {
-        path: '/Service/pages/serviceDetail/serviceDetail',
+        path: '/pagesService/pages/serviceDetail/serviceDetail',
         query: { itemId }
     } as any
     return pageController.push(route)
@@ -36,7 +36,7 @@ export const gotoShopDetail = (shopId: string) => {
 // 乐悠机构详情
 export const gotoServiceStore = (query:any) => {
     const route = {
-        path: '/Service/pages/Servicestore/ServicestoreDetail',
+        path: '/pagesService/pages/Servicestore/ServicestoreDetail',
         query
     } as any
     return pageController.push(route) 
@@ -47,7 +47,7 @@ export const gotoServiceStore = (query:any) => {
 // 超值券详情
 export const voucherDetails = (query:any) => {
     const route = {
-        path: '/Service/pages/Servicestore/voucherDetails',
+        path: '/pagesService/pages/Servicestore/voucherDetails',
         query
     } as any
     return pageController.push(route) 
@@ -56,7 +56,7 @@ export const voucherDetails = (query:any) => {
 // 乐悠产品详情
 export const gotohealthproductDetails = (query:any) => {
     const route = {
-        path: '/Service/pages/Servicestore/healthproductDetails',
+        path: '/pagesService/pages/Servicestore/healthproductDetails',
         query
     } as any
     return pageController.push(route) 
@@ -65,7 +65,7 @@ export const gotohealthproductDetails = (query:any) => {
 // 机构以及产品评论列表
 export const serviceComment = (id:string,son:number = 1) => {
     const route = {
-        path: '/Service/pages/Servicestore/serviceComment',
+        path: '/pagesService/pages/Servicestore/serviceComment',
         query:{
             id,
             son
@@ -77,7 +77,7 @@ export const serviceComment = (id:string,son:number = 1) => {
 // 机构图集列表
 export const toimgInstitution = (query:any) => {
     const route = {
-        path: '/Service/pages/Servicestore/imgInstitution',
+        path: '/pagesService/pages/Servicestore/imgInstitution',
         query
     }as any
     return pageController.push(route) 
@@ -86,7 +86,7 @@ export const toimgInstitution = (query:any) => {
 // 机构列表内页
 export const toInnerPage = (query:any) => {
     const route = {
-        path: '/Service/pages/InnerPage/InnerPage',
+        path: '/pagesService/pages/InnerPage/InnerPage',
         query
     }as any
     return pageController.push(route) 
@@ -104,7 +104,7 @@ export const toInnerPage = (query:any) => {
  */
 export const gotosearch = (query?:any) => {
     const route = {
-        path: '/Service/pages/search/search',
+        path: '/pagesService/pages/search/search',
         query
     } as any
     return pageController.push(route)
@@ -115,7 +115,7 @@ export const gotosearch = (query?:any) => {
  */
 export const gotoserviceLnnerPage = (query:any) => {
     const route = {
-        path: '/Service/pages/InnerPage/serviceLnnerPage',
+        path: '/pagesService/pages/InnerPage/serviceLnnerPage',
         query
     } as any
     return pageController.push(route)
@@ -126,7 +126,7 @@ export const gotoserviceLnnerPage = (query:any) => {
  */
  export const gotoserviceLnnerSonPage = (query:any) => {
     const route = {
-        path: '/Service/pages/InnerPage/serviceLnnerSonPage',
+        path: '/pagesService/pages/InnerPage/serviceLnnerSonPage',
         query
     } as any
     return pageController.push(route)
@@ -138,7 +138,7 @@ export const gotoserviceLnnerPage = (query:any) => {
  */
 export const gotoServiceExpo = () => {
     const route = {
-        path: '/Service/pages/serviceExpo/serviceExpo',
+        path: '/pagesService/pages/serviceExpo/serviceExpo',
         query: {}
     } as any
     return pageController.push(route)
@@ -166,7 +166,7 @@ export const gotoScanCode = (path:any,query:any) => {
  */
 export const gotoLiveSelection = () => {
     const route = {
-        path: '/Service/pages/liveSelection/liveSelection',
+        path: '/pagesService/pages/liveSelection/liveSelection',
         query: {}
     } as any
     return pageController.push(route)

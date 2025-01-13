@@ -109,7 +109,7 @@
 			]
 		},
 		{
-            "root": "Service",
+            "root": "pagesService",
             "pages": [
 				{
 					"path": "pages/search/search",
@@ -249,7 +249,7 @@
 			]
 		},
 		{
-			"root": "User",
+			"root": "pagesUser",
 			"pages": [
 				{
 					"path": "pages/setting/setting",
@@ -833,6 +833,55 @@
 					}
 				},
 				{
+					"path" : "pages/redEnvelope/register",
+					"style": {
+						"navigationBarTitleText": "签到红包",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "pages/redEnvelope/withdrawalIncome",
+					"style": {
+						"navigationBarTitleText": "商户提现",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+
+                    "path": "pages/redEnvelope/withdrawalWallet",
+                    "style": {
+                        "navigationBarTitleText": "分销提现",
+                        "enablePullDownRefresh": false,
+                        "navigationStyle": "custom"
+                    }
+                },
+				{
+					"path" : "pages/redEnvelope/withdrawal",
+					"style": {
+						"navigationBarTitleText": "提现",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path" : "pages/redEnvelope/taskRecord",
+					"style": {
+						"navigationBarTitleText": "任务记录",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path" : "pages/redEnvelope/activityRules",
+					"style": {
+						"navigationBarTitleText": "活动规则",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "pages/functionPage/functionPage",
 					"style": {
 						"navigationBarTitleText": "全部功能",
@@ -878,7 +927,7 @@
 			]
 		},
 		{
-			"root": "Order",
+			"root": "pagesOrder",
 			"pages": [
 				{
 					"path": "pages/orderList/orderList",
@@ -961,6 +1010,7 @@
 						"enablePullDownRefresh": false
 					}
 				},
+			
 				{
 					"path": "pages/refundDetail/refundDetail",
 					"style": {
@@ -973,49 +1023,8 @@
 			]
 		},
 		{
-			"root": "Create",
+			"root": "pagesCnt",
 			"pages": [
-				{
-					"path" : "pages/redEnvelope/register",
-					"style": {
-						"navigationBarTitleText": "签到红包",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-
-                    "path": "pages/redEnvelope/withdrawalWallet",
-                    "style": {
-                        "navigationBarTitleText": "分销提现",
-                        "enablePullDownRefresh": false,
-                        "navigationStyle": "custom"
-                    }
-                },
-				{
-					"path" : "pages/redEnvelope/withdrawal",
-					"style": {
-						"navigationBarTitleText": "提现",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path" : "pages/redEnvelope/taskRecord",
-					"style": {
-						"navigationBarTitleText": "任务记录",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path" : "pages/redEnvelope/activityRules",
-					"style": {
-						"navigationBarTitleText": "活动规则",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
 				{
 					"path" : "pages/channel/channel",
 					"style": {
@@ -1071,63 +1080,7 @@
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false
 					}
-				},
-				{
-					"path" : "pages/course/course",
-					"style": {
-						"navigationBarTitleText": "已购课程",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path" : "pages/course/courseVideo",
-					"style": {
-						"navigationBarTitleText": "竖屏视频",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path" : "pages/salon/detail",
-					"style": {
-						"navigationBarTitleText": "沙龙详情",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path" : "pages/salon/upsalonPosts",
-					"style": {
-						"navigationBarTitleText": "创建沙龙",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-					"path" : "pages/salon/UpPosts",
-					"style": {
-						"navigationBarTitleText": "创建沙龙帖子",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
-				{
-                    "path": "pages/salon/salonPostsDetail",
-                    "style": {
-                        "navigationBarTitleText": "沙龙帖子详情",
-                        "enablePullDownRefresh": false,
-                        "navigationStyle": "custom"
-                    }
-                },
-				{
-                    "path": "pages/salon/inviteFriends",
-                    "style": {
-                        "navigationBarTitleText": "邀请好友入组",
-                        "enablePullDownRefresh": false,
-                        "navigationStyle": "custom"
-                    }
-                },
+				},		
 				{
                     "path": "pages/activity/index",
                     "style": {
@@ -1255,14 +1208,7 @@
                         "navigationStyle": "custom"
 					}
 				},
-				{
-					"path": "pages/redEnvelope/withdrawalIncome",
-					"style": {
-						"navigationBarTitleText": "商户提现",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
+				
 				{
 		            "path": "pages/anchorCenter/dataCenter",
 		            "style": {

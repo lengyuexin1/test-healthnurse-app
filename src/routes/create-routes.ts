@@ -10,7 +10,7 @@ import { pageController } from '@bc/uni-tools'
 // 频道列表页
 export const gotoChannel = () => {
     const route = {
-        path: '/Create/pages/channel/channel'
+        path: '/pagesCnt/pages/channel/channel'
     } as any
     return pageController.push(route)
 }
@@ -18,7 +18,7 @@ export const gotoChannel = () => {
 // 频道关注列表页
 export const gotoChannelFollow = () => {
     const route = {
-        path: '/Create/pages/channelFollow/channelFollow'
+        path: '/pagesCnt/pages/channelFollow/channelFollow'
     } as any
     return pageController.push(route)
 }
@@ -27,7 +27,7 @@ export const gotoChannelFollow = () => {
 // articleId?: string, type?: number, ischange?:number
 export const gotouparticle = (query:any, del:boolean = false) => {
     const route = {
-        path: '/Create/pages/uparticle/uparticle',
+        path: '/pagesCnt/pages/uparticle/uparticle',
         query
     } as any
 
@@ -42,7 +42,7 @@ export const gotouparticle = (query:any, del:boolean = false) => {
 // 内容详情
 export const gotoarticledetails = (query:any) => {
     const route = {
-        path: '/Create/pages/articledetails/articledetails',
+        path: '/pagesCnt/pages/articledetails/articledetails',
         query
     } as any
     return pageController.push(route)
@@ -51,7 +51,7 @@ export const gotoarticledetails = (query:any) => {
 // 内容播报页
 export const gotoarticledetailVoice = (query:any) => {
     const route = {
-        path: '/Create/pages/articledetails/articledtailsVoice',
+        path: '/pagesCnt/pages/articledetails/articledtailsVoice',
         query
     } as any
     return pageController.push(route)
@@ -73,7 +73,7 @@ export const gotoarticledetailVoice = (query:any) => {
 
 export const gotodataManage = (query:dataQuery) => {
     const route = {
-        path: "/Create/pages/followPage/follow",
+        path: "/pagesCnt/pages/followPage/follow",
         query,
     } as any
     return pageController.push(route)
@@ -82,7 +82,7 @@ export const gotodataManage = (query:dataQuery) => {
 // 创作者首页
 export const gotoauthor = (query:any) => {
     const route = {
-        path: "/Create/pages/author/author",
+        path: "/pagesCnt/pages/author/author",
         query,
     } as any
     return pageController.push(route)
@@ -91,7 +91,7 @@ export const gotoauthor = (query:any) => {
 // 云课堂已购买课程
 export const gotocourseList = (query:any) => {
     const route = {
-        path: "/Create/pages/course/course",
+        path: "/pagesCnt/pages/course/course",
         query,
     } as any
     return pageController.push(route)
@@ -108,7 +108,7 @@ export const gotocourseList = (query:any) => {
 // 云课堂竖屏视频
 export const gotocourseVideo = (listId:string) => {
     const route = {
-        path: "/Create/pages/course/courseVideo",
+        path: "/pagesCnt/pages/course/courseVideo",
         query: {listId},
     } as any
     return pageController.push(route)
@@ -117,7 +117,7 @@ export const gotocourseVideo = (listId:string) => {
 // 沙龙详情
 export const gotoSalonDetail = (query:any) => {
     const route = {
-        path: "/Create/pages/salon/detail",
+        path: "/pagesCnt/pages/salon/detail",
         query,
     } as any
     return pageController.push(route)
@@ -126,7 +126,7 @@ export const gotoSalonDetail = (query:any) => {
 // 沙龙管理
 export const gotoSalonManage = (query:any) => {
     const route = {
-        path: "/Create/pages/salon/manage",
+        path: "/pagesCnt/pages/salon/manage",
         query,
     } as any
     return pageController.push(route)
@@ -135,7 +135,7 @@ export const gotoSalonManage = (query:any) => {
 /* 邀请好友入组 */
 export const gotoInviteFriends = (query: any) => {
     const route = {
-        path: '/Create/pages/salon/inviteFriends',
+        path: '/pagesCnt/pages/salon/inviteFriends',
         query
     } as any
     return pageController.push(route)
@@ -152,7 +152,7 @@ export const gotoInviteFriends = (query: any) => {
 
 export const gotoUpsalonPostsPage = (query:any) => {
     const route = {
-        path: "/Create/pages/salon/upsalonPosts",
+        path: "/pagesCnt/pages/salon/upsalonPosts",
         query,
     } as any
     return pageController.push(route)
@@ -170,7 +170,7 @@ export const gotoUpsalonPostsPage = (query:any) => {
 */
 export const gotoUpPosts = (query:any) => {
     const route = {
-        path: "/Create/pages/salon/UpPosts",
+        path: "/pagesCnt/pages/salon/UpPosts",
         query,
     } as any
     return pageController.push(route)
@@ -179,7 +179,7 @@ export const gotoUpPosts = (query:any) => {
 // 沙龙详情帖子
 export const gotosalonPostsDetailPage = (query:any) => {
     const route = {
-        path: "/Create/pages/salon/salonPostsDetail",
+        path: "/pagesCnt/pages/salon/salonPostsDetail",
         query,
     } as any
     return pageController.push(route)
@@ -187,7 +187,7 @@ export const gotosalonPostsDetailPage = (query:any) => {
 
 export const gotoActivityDetail = (query:any) => {
     const route = {
-        path: "/Create/pages/activity/activityDetail",
+        path: "/pagesCnt/pages/activity/activityDetail",
         query,
     } as any
     return pageController.push(route)
@@ -196,7 +196,7 @@ export const gotoActivityDetail = (query:any) => {
 // 创作学堂-详情
 export const gotoSchoolArticleDetail = (query: any) => {
     const route = {
-        path: "/Create/pages/school/schoolArticleDetail",
+        path: "/pagesCnt/pages/school/schoolArticleDetail",
         query,
     } as any
     return pageController.push(route)
@@ -205,7 +205,7 @@ export const gotoSchoolArticleDetail = (query: any) => {
 // 创作中心
 export const gotocreationPage = () => {
     const route = {
-        path: "/Create/pages/creative/creationPage",
+        path: "/pagesCnt/pages/creative/creationPage",
         query: {},
     } as any
     return pageController.push(route)
@@ -214,7 +214,7 @@ export const gotocreationPage = () => {
 // 评论管理
 export const gotoCommentSetting = (type: string) => {
     const route = {
-        path: "/Create/pages/comment/comment",
+        path: "/pagesCnt/pages/comment/comment",
         query: { type },
     } as any
     return pageController.push(route)
@@ -223,7 +223,7 @@ export const gotoCommentSetting = (type: string) => {
 // 活动广场
 export const gotoActivityIndex = () => {
     const route = {
-        path: "/Create/pages/activity/index",
+        path: "/pagesCnt/pages/activity/index",
         query: {},
     } as any
     return pageController.push(route)
@@ -232,7 +232,7 @@ export const gotoActivityIndex = () => {
 // 草稿箱
 export const gotoDraftList = () => {
     const route = {
-        path: "/Create/pages/draft/draft",
+        path: "/pagesCnt/pages/draft/draft",
         query: {},
     } as any
     return pageController.push(route)
@@ -241,7 +241,7 @@ export const gotoDraftList = () => {
 // 创作学堂
 export const gotoCreateSchool = () => {
     const route = {
-        path: "/Create/pages/school/school",
+        path: "/pagesCnt/pages/school/school",
         query: {},
     } as any
     return pageController.push(route)
@@ -256,7 +256,7 @@ export const gotoCreateSchool = () => {
  */
 export const assistantDetail = (query:any) => {
     const route = {
-        path: "/Create/pages/dataAssistant/dataAssistant",
+        path: "/pagesCnt/pages/dataAssistant/dataAssistant",
         query,
     } as any
     return pageController.push(route)
@@ -265,7 +265,7 @@ export const assistantDetail = (query:any) => {
 // 商户入驻
 export const gotoAddMerchant = (type: string) => {
     const route = {
-        path: "/Create/pages/addMerchant/addMerchant",
+        path: "/pagesCnt/pages/addMerchant/addMerchant",
         query: { type },
     } as any
     return pageController.push(route)
@@ -273,7 +273,7 @@ export const gotoAddMerchant = (type: string) => {
 
 export const gotoAddMerchantSuccess = () => {
     const route = {
-        path: "/Create/pages/addMerchant/success",
+        path: "/pagesCnt/pages/addMerchant/success",
         query: {},
     } as any
     return pageController.push(route)
@@ -282,7 +282,7 @@ export const gotoAddMerchantSuccess = () => {
 /** 发布聊天号 */
 export const upChatPage = (query:any) => {
     const route = {
-        path: "/Create/pages/likechat/upChat",
+        path: "/pagesCnt/pages/likechat/upChat",
         query,
     } as any
     return pageController.push(route)
@@ -291,7 +291,7 @@ export const upChatPage = (query:any) => {
 /** 聊天号详情 */
 export const gotochatDetail = (query:any) => {
     const route = {
-        path: "/Create/pages/likechat/chatDetail",
+        path: "/pagesCnt/pages/likechat/chatDetail",
         query,
     } as any
     return pageController.push(route)
@@ -309,7 +309,7 @@ export const gotochatDetail = (query:any) => {
  */
 export const gotovideoPreview = (query:any) => {
     const route = {
-        path: "/Create/pages/videoPreview/videoPreview",
+        path: "/pagesCnt/pages/videoPreview/videoPreview",
         query,
     } as any
     return pageController.push(route)
@@ -492,7 +492,7 @@ export const gotoenjoyJurisdiction = (query:any) => {
 /** 商户提现(收益提现) */
 export const gotowithdrawalIncome = () => {
     const route = {
-        path: "/Create/pages/redEnvelope/withdrawalIncome",
+        path: "/pagesCnt/pages/redEnvelope/withdrawalIncome",
         query: {}
     } as any
     return pageController.push(route)
@@ -558,7 +558,7 @@ export const gotoNewUpcontentPage = (query:QueryParams) => {
 
 export const gotoReportPage = (query:any) => {
     const  route = {
-        path: "/Create/pages/report/reportPage",
+        path: "/pagesCnt/pages/report/reportPage",
         query
     } as any
     return pageController.push(route)
@@ -566,7 +566,7 @@ export const gotoReportPage = (query:any) => {
 
 export const gotosubmitReport = (query:any) => {
     const  route = {
-        path: "/Create/pages/report/submitReport",
+        path: "/pagesCnt/pages/report/submitReport",
         query
     } as any
     return pageController.replace(route)

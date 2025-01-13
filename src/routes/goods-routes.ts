@@ -25,7 +25,7 @@ export const gotoShoppingCart = () => {
 // 跳转到 签到红包
 export const gotoRegister = (query? : any) => {
     const route = {
-        path: '/Create/pages/redEnvelope/register',
+        path: '/pagesCnt/pages/redEnvelope/register',
         query
     } as any
     return pageController.push(route)

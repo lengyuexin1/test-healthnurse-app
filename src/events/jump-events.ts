@@ -421,34 +421,34 @@ routeTable.activity_detail_shop = (route: TNoticeExt) => {
 enum MarkLinkEvents {
 
     /** 邀请成员加入沙龙 */
-    salon_detail = '/Create/pages/salon/detail',
+    salon_detail = '/pagesCnt/pages/salon/detail',
 
     /** 内容详情(频道) */
-    channel_content_detail = '/Create/pages/articledetails/articledetails',
+    channel_content_detail = '/pagesCnt/pages/articledetails/articledetails',
 
     /** 内容详情(沙龙) */
-    salon_content_detail = '/Create/pages/salon/salonPostsDetail',
+    salon_content_detail = '/pagesCnt/pages/salon/salonPostsDetail',
 
     /** 内容详情(云课堂) */
-    course_content_detail = '/Create/pages/course/courseVideo',
+    course_content_detail = '/pagesCnt/pages/course/courseVideo',
 
     /** 个人主页 */
-    home_page = '/Create/pages/author/author',
+    home_page = '/pagesCnt/pages/author/author',
 
     /** 粉丝列表 */
-    fans_list = '/Create/pages/followPage/follow',
+    fans_list = '/pagesCnt/pages/followPage/follow',
 
     /** 评论 */
-    comment_list = '/Create/pages/articledetails/articledetails',
+    comment_list = '/pagesCnt/pages/articledetails/articledetails',
 
     /** 评论回复 */
-    comment_reply_list = '/Create/pages/articledetails/articledetails',
+    comment_reply_list = '/pagesCnt/pages/articledetails/articledetails',
 
     /** 加入群聊 */
     team_detail = '/IndexPage/pages/chat/chat-container',
 
     /** 订单详情-云课堂 */
-    order_detail = '/Create/pages/course/course',
+    order_detail = '/pagesCnt/pages/course/course',
 
     /** 商品订单详情 */
     goods_order_detail = '/Order/pages/goodsOrderDetail/goodsOrderDetail',
@@ -457,49 +457,49 @@ enum MarkLinkEvents {
     service_order_detail = '/Order/pages/serviceOrderDetail/serviceOrderDetail',
 
     /** 发布消息-文章 */
-    publish_list_article = '/Create/pages/course/course',
+    publish_list_article = '/pagesCnt/pages/course/course',
 
     /** 发布消息-视频 */
-    publish_list_video = '/Create/pages/course/course',
+    publish_list_video = '/pagesCnt/pages/course/course',
 
     /** 发布消息-图片 */
-    publish_list_image = '/Create/pages/course/course',
+    publish_list_image = '/pagesCnt/pages/course/course',
 
     /** 视频详情 */
-    video_detail = '/Create/pages/videoPreview/videoPreview',
+    video_detail = '/pagesCnt/pages/videoPreview/videoPreview',
 
     /** 康养百科内容详情 */
-    channel_detail = '/Create/pages/articledetails/articledetails',
+    channel_detail = '/pagesCnt/pages/articledetails/articledetails',
 
     /** 沙龙详情 */
-    salo_detail = '/Create/pages/salon/detail',
+    salo_detail = '/pagesCnt/pages/salon/detail',
 
     /** 沙龙帖子详情 */
-    salo_posts_detail = '/Create/pages/salon/salonPostsDetail',
+    salo_posts_detail = '/pagesCnt/pages/salon/salonPostsDetail',
 
     /** 聊天详情 */
-    chat_detail = '/Create/pages/likechat/chatDetail',
+    chat_detail = '/pagesCnt/pages/likechat/chatDetail',
 
     /** 发现详情 */
-    find_detail = '/Create/pages/createFind/findDetail',
+    find_detail = '/pagesCnt/pages/createFind/findDetail',
 
     /** 频道内容修改 */
-    change_channel = '/Create/pages/uparticle/uparticle',
+    change_channel = '/pagesCnt/pages/uparticle/uparticle',
 
     /** 修改沙龙 */
-    change_salo = '/Create/pages/salon/upsalonPosts',
+    change_salo = '/pagesCnt/pages/salon/upsalonPosts',
 
     /** 修改沙龙帖子 */
-    change_salo_posts = '/Create/pages/salon/UpPosts',
+    change_salo_posts = '/pagesCnt/pages/salon/UpPosts',
 
     /** 修改聊天内容 */
-    change_chat = '/Create/pages/likechat/upChat',
+    change_chat = '/pagesCnt/pages/likechat/upChat',
 
     /** 修改发现内容 */
-    change_find = '/Create/pages/createFind/upcreateFind',
+    change_find = '/pagesCnt/pages/createFind/upcreateFind',
 
     /** 修改创意短片 */
-    change_video = '/Create/pages/createVideo/upcreateVideo',
+    change_video = '/pagesCnt/pages/createVideo/upcreateVideo',
 
     /** 修改享老记 */
     change_enjoy = '/CreateSplit/pages/enjoyRecord/upEnjoyRecord',
@@ -508,10 +508,10 @@ enum MarkLinkEvents {
     enjoy_detail = '/CreateSplit/pages/enjoyRecord/enjoyEventDetail',
 
     /** 售后 */
-    aftersale_detail = '/User/pages/sales/salesDetail',
+    aftersale_detail = '/pagesUser/pages/sales/salesDetail',
 
     /** 活动-邀请好友 */
-    activity_detail_user = '/User/pages/invitation/invitation',
+    activity_detail_user = '/pagesUser/pages/invitation/invitation',
 
     /** 活动-优选店铺 */
     activity_detail_shop = '/Mall/pages/perferShop/perferShop',
