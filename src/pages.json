@@ -1240,6 +1240,129 @@
 			]
 		},
 		{
+			"root": "pagesTuya",
+			"pages": [
+				{
+					"path": "pages/wisdom/tuyaList",
+					"style": {
+						"navigationBarTitleText": "涂鸦",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/index",
+					"style": {
+						"navigationBarTitleText": "涂鸦插件"
+					}
+				},
+				{
+					"path": "pages/wisdom/xm_home",
+					"style": {
+						"navigationBarTitleText": "家庭管理"
+					}
+				},
+				{
+					"path": "pages/wisdom/xm_user",
+					"style": {
+						"navigationBarTitleText": "用户管理"
+					}
+				},
+				{
+					"path": "pages/wisdom/xm_config",
+					"style": {
+						"navigationBarTitleText": "用户管理"
+					}
+				},
+				{
+					"path": "pages/wisdom/xm_tuya",
+					"style": {
+						"navigationBarTitleText": "用户管理"
+					}
+				},
+				{
+					"path": "pages/wisdom/layaNet",
+					"style": {
+						"navigationBarTitleText": "蓝牙配网",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/light",
+					"style": {
+						"navigationBarTitleText": "照明开关",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/curtain",
+					"style": {
+						"navigationBarTitleText": "窗帘伴侣",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/airClear",
+					"style": {
+						"navigationBarTitleText": "空气净化器",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/airCond",
+					"style": {
+						"navigationBarTitleText": "空调伴侣",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/airList",
+					"style": {
+						"navigationBarTitleText": "空调品牌",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/airSelect",
+					"style": {
+						"navigationBarTitleText": "匹配空调",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/airLook",
+					"style": {
+						"navigationBarTitleText": "匹配空调",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/temAndWater",
+					"style": {
+						"navigationBarTitleText": "温湿度机",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/editLightName",
+					"style": {
+						"navigationBarTitleText": "按键设置",
+						"navigationStyle": "custom"
+					}
+				}
+
+			],
+			"plugins": {
+				"tuya-ap-plugin": {
+					"version": "4.5.9",
+					"provider": "wxd2aa51ffacc3ff86"
+				},
+				"tuya-message-center": {
+					"version": "1.0.2",
+					"provider": "wx88a79b7ae36fcbf5"
+				}
+			}
+		},
+		{
 			"root": "Mall",
 			"pages": [
 				{
