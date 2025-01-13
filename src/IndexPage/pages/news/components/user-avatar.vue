@@ -35,7 +35,7 @@
         <template v-else>
             <view class="avatar-box">
                 <image :src="processAvatar" class="img" v-if="showAvatar" />
-                <image :src="getAssetsUrl('/leyou/static/sh_logo.png')" class="img" v-else-if="plateFormService" />
+                <image :src="getAssetsUrl('/leyou/assets/message_icon_service_avatar.png')" class="img" v-else-if="plateFormService" />
                 <image :src="getAssetsUrl('/leyou/static/user-def-avatar.png')" class="img" v-else-if="!isRobot" />
                 <image :src="getAssetsUrl('/leyou/static/robot-def-avatar.png')" class="img" v-else />
             </view>
