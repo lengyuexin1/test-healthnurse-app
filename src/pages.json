@@ -1324,7 +1324,195 @@
 						"navigationBarTitleText": "按键设置",
 						"navigationStyle": "custom"
 					}
-				}
+				},
+				{
+					"path": "pages/wisdom/roomManage",
+					"style": {
+						"navigationBarTitleText": "房间管理",
+						"navigationStyle": "default",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#F1F3F5"
+					}
+				},
+				{
+					"path": "pages/wisdom/deviceChoice",
+					"style": {
+						"navigationBarTitleText": "添加设备",
+						"navigationStyle": "default",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#F1F3F5"
+					}
+				},
+				{
+					"path": "pages/wisdom/deviceCreate",
+					"style": {
+						"navigationBarTitleText": "添加设备",
+						"navigationStyle": "default",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#F1F3F5"
+					}
+				},
+				{
+					"path": "pages/wisdom/setTemLaya",
+					"style": {
+						"navigationBarTitleText": "配置设备",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/bloodDev",
+					"style": {
+						"navigationBarTitleText": "血压",
+						"navigationStyle": "default",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#F1F3F5"
+					}
+				},
+				{
+					"path": "pages/wisdom/deviceSetup",
+					"style": {
+						"navigationBarTitleText": "通知设置",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/alarmDetail",
+					"style": {
+						"navigationBarTitleText": "跌倒报警器",
+						"navigationStyle": "default",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#F1F3F5"
+					}
+				},
+				{
+					"path": "pages/wisdom/sleepDetail",
+					"style": {
+						"navigationBarTitleText": "智能睡眠检测器",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/deviceNet",
+					"style": {
+						"navigationBarTitleText": "配置设备上网",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/ezviz_video",
+					"style": {
+						"navigationBarTitleText": "摄像头",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/ezviz_video_player",
+					"style": {
+						"navigationBarTitleText": "视频播放"
+					}
+				},
+				{
+					"path": "pages/wisdom/ezviz_talk",
+					"style": {
+						"navigationBarTitleText": "语音对话"
+					}
+				},
+				{
+					"path": "pages/wisdom/ezviz_video_playback",
+					"style": {
+						"navigationBarTitleText": "视频回放"
+					}
+				},
+				{
+					"path": "pages/wisdom/addLayaDev",
+					"style": {
+						"navigationBarTitleText": "添加设备",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/tempResult",
+					"style": {
+						"navigationBarTitleText": "测量结果",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/bodyTem",
+					"style": {
+						"navigationBarTitleText": "体温枪",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/recodeList",
+					"style": {
+						"navigationBarTitleText": "体温记录",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/startLiang",
+					"style": {
+						"navigationBarTitleText": "开始测量",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/tuyaGetnet",
+					"style": {
+						"navigationBarTitleText": "配置网络",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/wisdom/deviceManag",
+					"style": {
+						"navigationBarTitleText": "设备管理",
+						"navigationStyle": "custom"
+					}
+				},
+				{
+					"path": "pages/shop/shopDetail",
+					"style": {
+						"navigationBarTitleText": "店铺详情"
+					}
+				},
+				{
+                    "path": "pages/wisdom/caller",
+                    "style": {
+						"navigationBarTitleText": "接警人",
+						"navigationStyle": "custom"
+					}
+                },
+				{
+                    "path": "pages/wisdom/noticeRecord",
+                    "style": {
+						"navigationBarTitleText": "通知记录",
+						"navigationStyle": "custom"
+					}
+                },
+				{
+                    "path": "pages/wisdom/noticeDetail",
+                    "style": {
+						"navigationBarTitleText": "通知详情",
+						"navigationStyle": "custom"
+					}
+                },
+				{
+                    "path": "pages/wisdom/noticeStaff",
+                    "style": {
+						"navigationBarTitleText": "通知人员设置",
+						"navigationStyle": "custom"
+					}
+                },
+				{
+                    "path": "pages/wisdom/expendList",
+                    "style": {
+						"navigationBarTitleText": "消费明细",
+						"navigationStyle": "custom"
+					}
+                }
 
 			],
 			"plugins": {

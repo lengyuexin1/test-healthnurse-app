@@ -1,0 +1,198 @@
+<template>
+	<view>
+		<ezviz_video_view ref="videoPlayer" :style="`width: 100%;height: 200px;`"></ezviz_video_view>
+		<view id="ezviz_video_fullscreen_view" style="width: 100%;height: 0px;background-color:#F0AD4E;">
+			<view>
+				<view style="width: 100%;height: 100px;background-color:#4CD964;"></view>
+				<button type="primary" @click="quitFullScreen()">退出全屏</button>
+			</view>
+		</view>
+		<ezviz_timebar_view ref="timebar" :style="`width: 100%;height: 100px;`"></ezviz_timebar_view>
+		<view class="tasds">
+			<button class="btn1" type="primary" @click="startPlayBack()">开始回放</button>
+			<button class="btn2" @click="stopPlayback()">停止播放</button>
+		</view>
+	</view>
+</template>
+
+<script>
+	//SDK插件对象
+	var Ezviz = uni.requireNativePlugin('Ezviz-SDK');
+	var videoPlayer;
+	var timebar;
+	var that;
+	export default {
+		data() {
+			return {
+				//deviceSerial:"D94955350",
+				deviceSerial:"",
+				verifyCode: "", //设备验证码
+				cameraNo:1,
+				videoAreaList:[],
+				videoIndex:0
+			}
+		},
+		onLoad(options) {
+		    this.deviceSerial = options.deviceSerial
+		    this.verifyCode = options.verifyCode
+			that = this;
+		},
+		mounted() {
+			//播放器
+			videoPlayer = this.$refs.videoPlayer;
+			timebar = this.$refs.timebar;
+			
+			this.onViewCreated();
+			this.onTimeBarCreated();
+			
+			var nowTime = Math.ceil((new Date()).getTime() / 1000);
+			console.log(nowTime);
+			//搜索回放记录
+			var deviceSerial = this.deviceSerial;
+			var cameraNo = this.cameraNo;
+			var startTime = nowTime - 60 * 60 * 1000; 
+			var endTime = nowTime;
+			Ezviz.searchRecordFileFromDevice(deviceSerial, cameraNo, startTime, endTime, function(res){
+				console.log(res);
+				that.videoAreaList = res;
+				timebar.setVideoTimeAreaList(res);
+				timebar.reloadTimeBar();
+			});
+			console.log("searchRecordFileFromDevice");
+		},
+		methods: {
+			onViewCreated() {
+				//设置回调事件处理
+				videoPlayer.setHandler(function(res){
+					console.log(res);
+					if (res.type == "onPlayReady") {
+						//这个回调之后开始播放
+						videoPlayer.startRealPlay(function(res){
+							console.log(res);
+						});
+					} else if (res.type == "onVideoSizeChanged") {
+						var width = res.data.width;
+						var height = res.data.height;
+					} else if (res.type == "onPlaySuccess") {
+						
+					}
+				});
+				
+				//创建播放器
+				var deviceSerial = this.deviceSerial;
+				var cameraNo = this.cameraNo;
+				videoPlayer.createPlayer(deviceSerial, cameraNo);
+				
+				//设置设备验证码
+				//var verifyCode = "VCNTLJ";
+				videoPlayer.setPlayVerifyCode(this.verifyCode);
+			},
+			onTimeBarCreated() {
+				timebar.setTimeBarCallback(function(res){
+					console.log(res);
+					if (res.type == "onTimeChangedEnd") {
+						var time = res.data.time;
+						var videoArea = res.data.videoArea;//true视频区域 非视频区域
+						if (videoArea == true) {
+							videoPlayer.startPlaybackFromDevice({
+								startTime:time, 
+								stopTime:time + 10000000
+							}, function(res2){
+								console.log(res2);
+							});
+						}
+					} else if (res.type == "onTimeChanged") {
+						var time = res.data;
+					}
+				});
+				timebar.setTimeBarConfig({
+					
+				});//*/
+				timebar.clearVideoTimeArea();
+				var nowTime = Math.ceil((new Date()).getTime() / 1000);
+				timebar.setCurrentTime(nowTime);
+				//timebar.setVideoTimeArea(1644870765, 1644908400);
+				//timebar.setVideoTimeAreaList([]);
+				timebar.reloadTimeBar();
+			},
+			startPlayBack() {
+				//先停止播放
+				videoPlayer.stopPlayback(function(res) {
+					console.log(res);
+				});
+				//再开始回放放
+				//var startTime = 1646064469;
+				//var stopTime =  1646066026;
+				var params = {
+					"cameraType": "D",
+					"type": 1,
+					"stopTime": 1647927851,
+					"startTime": 1647925708
+				};
+				videoPlayer.startPlaybackFromDevice(this.videoAreaList[this.videoIndex], function(res2){
+					console.log(res2);
+				});
+				this.videoIndex++;
+				if (this.videoIndex == this.videoAreaList.length) {
+					this.videoIndex = 0;
+				}
+			},
+			stopPlayback() {
+				//停止播放
+				videoPlayer.stopPlayback(function(res){
+					console.log(res);
+					if (res == true) {
+						setTimeout(function() {
+							//开始播放
+							videoPlayer.startRealPlay(function(res){
+								console.log(res);
+							});//*/
+						}, 300);
+					}
+				});
+			},
+			fullScreen() {
+				//全屏
+				videoPlayer.fullScreen();
+			},
+			quitFullScreen() {
+				//退出全屏
+				videoPlayer.quitFullScreen();
+			},
+			openSound() {
+				//声音开
+				videoPlayer.openSound(function(res){
+					console.log(res);
+				});
+			},
+			closeSound() {
+				//静音
+				videoPlayer.closeSound(function(res){
+					console.log(res);
+				});
+			},
+			switchToHour() {
+				timebar.switchToHour();
+			},
+			switchToMinute() {
+				timebar.switchToMinute();
+			}
+		}
+	}
+</script>
+
+<style>
+.tasds {
+	padding-top: 50rpx;
+	display: flex;
+    flex-direction: row;
+	align-items: center;
+    justify-content: center;
+}
+.btn1 {
+	margin-right: 100rpx;
+}
+.btn2 {
+
+}
+</style>

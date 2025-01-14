@@ -1,0 +1,493 @@
+<template>
+	<view>
+		<view class="smalvio">
+			<ezviz_video_view ref="videoPlayer" :style="`width: 100%;height: 200px;`"></ezviz_video_view>
+			<view id="ezviz_video_fullscreen_view" style="width: 100%;height: 0px;">
+				<view style="flex-direction: row;height:90px">
+					<view class="btn1" @click="quitFullScreen()" v-if="isQuan">
+						<text class="btnzi" style="color:#fff;">退出</text>
+					</view>
+				</view>
+			</view>
+			<view class="botBox">
+				<image v-if="!autoPlay" class="pro_img" @click="startRealPlay()" src="@/static/timed/ez2.png" mode="scaleToFill" />
+				<image v-if="autoPlay" class="pro_img" @click="stopRealPlay()" src="@/static/timed/ez3.png" mode="scaleToFill" />
+			</view>
+			<view class="rightBig">
+				<image @click="fullScreen()" class="pro_img" src="@/static/timed/ez1.png" mode="scaleToFill" />
+			</view>
+			<view class="soudBig">
+				<image @click="openSound()" v-if="!showSound" class="pro_img" src="@/static/timed/ez4.png" mode="scaleToFill" />
+				<image @click="closeSound()" v-if="showSound" class="pro_img" src="@/static/timed/ez5.png" mode="scaleToFill" />
+			</view>
+		</view>
+		<view class="tasds">
+			<view class="nowLook" :class="flags == 1?'flaGreen':''">实时视频</view>
+			<view class="historyLook" :class="flags == 2?'flaGreen':''" @click="playback()">回放录像</view>
+		</view>
+		<view @click="onClickFullScreen()" class="postAll">
+			<view class="itemLis">
+				<view class="btn3" @click="toFangxiang(0)">
+					<text class="btnzi btnzi2"> ▲ </text>
+				</view>
+					<view class="btn3 towsd" @click="toFangxiang(2)">
+						<text class="btnzi"> ◀ </text>
+					</view>
+					<view class="btn3 towss" @click="toFangxiang(3)">
+						<text class="btnzi"> ▶ </text>
+					</view>
+					<view class="busBox"></view>
+				
+				<view class="btn3" @click="toFangxiang(1)">
+					<text class="btnzi btnzi2"> ▼ </text>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	var SDK = uni.requireNativePlugin('Ezviz-SDK')
+	var EzvizTalk = uni.requireNativePlugin('Ezviz-Talk')
+	  //SDK 初始化
+	const tokensd = uni.getStorageSync('ysToken')
+	console.log(tokensd)
+    SDK.initLib("9c910ec6d20d4496a9b1c32ad34a57c7")
+    SDK.setAccessToken(tokensd)
+    SDK.showSDKLog(true)
+	
+	SDK.checkPermission(function(res){
+    console.log(res, '声音权限');
+    if (res.result == true) {
+        //授权成功
+    } else {
+        //权限被拒绝
+    }
+});
+
+
+	var videoPlayer;
+	var that;
+	export default {
+		data() {
+			return {
+				isQuan: false,
+				showSound: false,
+				autoPlay: true,
+				screenWidth:uni.getSystemInfoSync().screenWidth,
+				screenHeight:uni.getSystemInfoSync().screenHeight,
+				marginTop:uni.getSystemInfoSync().screenWidth - 90,
+				luzhi:true,
+				deviceSerial:"",
+                verifyCode: "", //设备验证码
+				cameraNo:1,
+				videoPath:"",
+                ptzType: "",
+				flags: 1
+			}
+		},
+		onLoad(options) {
+			console.log(options)
+            this.deviceSerial = options.deviceSerial
+            this.verifyCode = options.verifyCode
+			EzvizTalk.createPlayer(options.deviceSerial, 1)
+			//设置回调事件处理
+			EzvizTalk.setHandler(function(res){
+				console.log(res, '设置回调事件处理');
+			});
+			console.log(EzvizTalk.createPlayer, '创建对讲播放器')
+			that = this;
+			if (plus.os.name.toLowerCase() === 'android') {
+			    plus.key.addEventListener('backbutton', e => {
+					videoPlayer.isFullScreen(function(ret){
+						if (ret == true) {
+							videoPlayer.quitFullScreen();
+						} else {
+							uni.navigateBack();
+						}
+					});
+			    });
+			}
+		},
+		mounted() {
+			console.log(uni.getStorageSync('ysToken'),7777)
+			//播放器
+			videoPlayer = this.$refs.videoPlayer;
+			console.log(videoPlayer);
+			this.onViewCreated();
+		},
+		onBackPress() {
+			//退出全屏
+			videoPlayer.quitFullScreen();
+		},
+		methods: {
+			playback(){
+				uni.navigateTo({
+					url: `./ezviz_video_playback?deviceSerial=${this.deviceSerial}&verifyCode=${this.verifyCode}`
+				});
+			},
+            toFangxiang(position) {
+                // 调用接口控制云台转向
+                this.ptzType = this.ptzType === 'start' ? "stop" : "start"
+                this.handlePtzControl(position, this.ptzType)
+            },
+            handlePtzControl(position, type){
+                console.log("----转向----",type)
+                var url = 'https://open.ys7.com/api/lapp/device/ptz/start';
+                if(type == 'stop'){
+                  url = 'https://open.ys7.com/api/lapp/device/ptz/stop'
+                }
+                wx.request({
+                  url: url, //仅为示例，并非真实的接口地址
+                  method: 'POST',
+                  data: {
+                    "accessToken": uni.getStorageSync('ysToken'),
+                    "deviceSerial": this.deviceSerial,
+                    "channelNo": 1,
+                    "direction": position,
+                    speed:1,
+                  },
+                  header: {
+                    'content-type': 'application/x-www-form-urlencoded' // 默认值
+                  },
+                  success: (res) => {
+					console.log(res)
+                    const code = res.data.code;
+                    if(code == 10029){
+                      wx.showToast({
+                        title: '个人版接口调用超限，请升级企业版',
+                        icon: 'none',
+                      })
+                    }else if(code != 200){
+                     
+                    }
+					if (code == 60005) {
+						uni.showToast({
+							title: '转向已达到极限',
+							icon: 'none'
+						})
+					}
+                    if(type == 'stop'){
+                      
+                    }else{
+                      // code==200 Do something
+                    }
+                  },
+                  error:(err) =>{
+                    
+                  }
+                })
+            },
+			onViewCreated() {
+				//设置回调事件处理
+				console.log(videoPlayer.setHandler)
+				videoPlayer.setHandler(function(res){
+					console.log(res);
+					if (res.type == "onPlayReady") {
+						//这个回调之后开始播放
+						videoPlayer.startRealPlay(function(res){
+							console.log(res);
+						});
+					} else if (res.type == "onVideoSizeChanged") {
+						var width = res.data.width;
+						var height = res.data.height;
+					} else if (res.type == "onPlaySuccess") {
+						
+					}
+				});//*/
+				
+				//创建播放器
+				var deviceSerial = this.deviceSerial;
+				var cameraNo = this.cameraNo;
+				videoPlayer.createPlayer(deviceSerial, cameraNo);
+				
+				//设置设备验证码
+				// videoPlayer.setPlayVerifyCode(this.verifyCode);
+			},
+			onClickFullScreen() {
+				console.log("onClickFullScreen");
+				this.controlPTZStart()
+			},
+			luzhishipin() {
+				this.luzhi = !this.luzhi;
+			},
+			startRealPlay() {
+				console.log("startRealPlay");
+				this.autoPlay = true
+				//开始播放
+				videoPlayer.startRealPlay(function(res){
+					console.log(res);
+				});
+			},
+			stopRealPlay() {
+				console.log("stopRealPlay");
+				//停止播放
+				videoPlayer.stopRealPlay();
+				this.autoPlay = false
+			},
+			fullScreen() {
+				console.log("fullScreen");
+				//全屏
+				videoPlayer.fullScreen();
+				this.isQuan = true
+			},
+			quitFullScreen() {
+				console.log("quitFullScreen");
+				//退出全屏
+				videoPlayer.quitFullScreen();
+				this.isQuan = false
+			},
+			startLocalRecordWithFile() {
+				console.log("startLocalRecordWithFile");
+				//开始录制
+				this.videoPath = "_doc/video_" + Math.round(new Date() / 1000) + ".mp4";
+				var path = plus.io.convertLocalFileSystemURL(this.videoPath);
+				console.log(path);
+				videoPlayer.startLocalRecordWithFile(path, function(res){
+					console.log(res);
+				});
+			},
+			stopLocalRecord() {
+				console.log("stopLocalRecord" + this.videoPath);
+				//停止录制
+				videoPlayer.stopLocalRecord(function(res){
+					console.log(res);
+					//保存相册
+					//that.videoPath = "_doc/video.mp4"
+					uni.saveVideoToPhotosAlbum({
+						filePath:that.videoPath,
+						success: function () {
+							console.log('save success');
+					    },
+						fail() {
+							console.log('save fail');
+						}
+					});
+				});
+			},
+			startVoiceTalk() {
+				//开始对讲
+				videoPlayer.startVoiceTalk(true);
+			},
+			stopVoiceTalk() {
+				//停止对讲
+				videoPlayer.stopVoiceTalk();
+			},
+			openSound() {
+				//声音开
+				console.log(videoPlayer.startVoiceTalk,EzvizTalk, 123456)
+				this.showSound = true
+				videoPlayer.openSound(function(res){
+					console.log(res);
+				});
+				 EzvizTalk.startVoiceTalk(true)
+			},
+			closeSound() {
+				//静音
+				this.showSound = false
+				videoPlayer.closeSound(function(res){
+					console.log(res);
+				});
+				 EzvizTalk.stopVoiceTalk()
+			},
+			setSpeakerphoneOn(on) {
+				//切换模式
+				videoPlayer.setSpeakerphoneOn(on);
+			},
+			controlPTZStart() {
+				//PTZ 云台控制
+				var deviceSerial = this.deviceSerial;
+				var channelNo = this.cameraNo;//设备通道号
+				var command = 3;//ptz控制命令
+				var action = 1;//控制启动 1 / 停止 2
+				var speed = 2;//速度（0-2）
+				console.log(deviceSerial, channelNo)
+				videoPlayer.controlPTZ(deviceSerial, channelNo, command, action, speed, function(res){
+					console.log(res);
+					if (res.type == "onSuccess") {
+						//初始化成功
+					} else if (res.type == "onFailed") {
+						//初始化失败
+					}
+				});
+			},
+			controlPTZStop() {
+				//PTZ 云台控制
+				var deviceSerial = this.deviceSerial;
+				var channelNo = this.cameraNo;//设备通道号
+				var command = 1;//ptz控制命令
+				var action = 2;//控制启动 1 / 停止 2
+				var speed = 1;//速度（0-2）
+				videoPlayer.controlPTZ(deviceSerial, channelNo, command, action, speed, function(res){
+					console.log(res);
+					if (res.type == "onSuccess") {
+						//初始化成功
+					} else if (res.type == "onFailed") {
+						//初始化失败
+					}
+				});
+			},
+			setVideoLevel() {
+				// 设置指定监控点视频清晰度
+				var deviceSerial = this.deviceSerial;
+				var cameraNo = this.cameraNo;
+				var videoLevel = 3;// 清晰度 0-流畅 1-均衡 2-高品质 3-超清
+				videoPlayer.setVideoLevel(deviceSerial, cameraNo, videoLevel, function(ret){
+					console.log(ret);
+				});
+			}
+		}
+	}
+</script>
+
+<style>
+page {
+	background-color: #ffffff;	
+}
+.postAll {
+		margin-top: 120rpx;
+		display: felx;
+		align-items: center;
+        justify-content: space-between;
+		
+	}
+.itemLis {
+	position:relative;
+	display:flex;
+	align-items: center;
+    justify-content: space-between;
+	width: 400rpx;
+	height: 400rpx;
+	background-color: #e6e6e6;
+	border-radius: 400rpx;
+	padding: 20rpx;
+}
+.towsd {
+	position:absolute;
+	left: 10rpx;
+	margin-top: 70%;
+}
+.tasds {
+	padding-top: 24rpx;
+	display: flex;
+    flex-direction: row;
+	align-items: center;
+    justify-content: center;
+	border-bottom: 2rpx solid #E8E8E8;
+}
+.nowLook {
+	margin-right: 100rpx;
+	padding-bottom: 24rpx;
+}
+.historyLook {
+	padding-bottom: 24rpx;
+	color: #949494;
+}
+.towss {
+	position:absolute;
+	right: 30rpx;
+	margin-top: 70%;
+}
+.flaGreen {
+	border-bottom: 4rpx solid #EA3E1A;
+}
+.busBox {
+	width:80rpx;
+	height: 80rpx;
+	background-color: #d9d9d9;
+	border-radius: 50%;
+}
+	.btn1 {
+		justify-content: center;
+		align-items: center;
+		width: 60px;
+		height: 40px;
+		background-color: #03b8ff;
+		border-radius: 8px;
+		margin: 0px 8px;
+	}
+
+	.btn2 {
+		justify-content: center;
+		align-items: center;
+		width: 110rpx;
+		height: 62rpx;
+		background-color: #03b8ff;
+		border-radius: 8rpx;
+		margin: 0rpx 15rpx;
+	}
+
+	.btn21 {
+		justify-content: center;
+		align-items: center;
+		width: 110rpx;
+		height: 62rpx;
+		background-color: #03b8ff;
+		border-radius: 8rpx;
+		margin: 0rpx 12rpx;
+	}
+
+	.btn22 {
+		justify-content: center;
+		align-items: center;
+		width: 110rpx;
+		height: 62rpx;
+		background-color: #ff0000;
+		border-radius: 8rpx;
+		margin: 0rpx 12rpx;
+	}
+
+	.btn3 {
+		justify-content: center;
+		align-items: center;
+		width: 62rpx;
+		height: 62rpx;
+		border-radius: 8rpx;
+		margin: 0rpx 12rpx;
+
+	}
+
+	.btnzi {
+		font-size: 18px;
+		font-weight: 500;
+		color: ##9c9c9c;
+	}
+
+	.btnzi2 {
+		font-size: 22px;
+	}
+
+	.videocss {
+		display: flex;
+		width: 750rpx;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		background-color: #FFFFFF;
+		margin-top: 10upx;
+	}
+	.smalvio {
+		position: relative;
+	}
+	.botBox {
+		position:absolute;
+		bottom: 20rpx;
+		width: 100%;
+	}
+	.pro_img {
+		width: 40rpx;
+		height: 40rpx;
+		margin-left: 20rpx;
+	}
+	.rightBig {
+		position:absolute;
+		bottom: 20rpx;
+		right: 20rpx;
+	}
+	.soudBig {
+		position:absolute;
+		bottom: 20rpx;
+		right: 80rpx;
+	}
+
+</style>
