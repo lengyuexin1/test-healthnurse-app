@@ -122,37 +122,38 @@ routeTable.fans_list = (route: TNoticeExt) => {
 /** 评论 */
 routeTable.comment_list = (route: any) => {
     // video_detail
-    
-    console.log('评论跳转详情',route);
+
+    console.log('评论跳转详情', route)
 
     let path = ''
     let query = {}
 
     if (route.query.articleType == 2) {
-        path = MarkLinkEvents['video_detail']
-        
+        path = MarkLinkEvents.video_detail
+
         query = {
             videoId: route.query.contentId,
-            videoPagetype: 0,
+            videoPagetype: 0
         }
-        
-    }else{
-        
+
+    }
+    else {
+
         if (route.query.happyType == 98) {
             // path = MarkLinkEvents['home_page']
-            path = MarkLinkEvents['channel_detail']
+            path = MarkLinkEvents.channel_detail
             query = {
-                accountId: route.query.accountId,
+                accountId: route.query.accountId
             }
         }
-        
+
     }
 
-    console.log('path',path);
-    console.log('query',query);
-    
+    console.log('path', path)
+    console.log('query', query)
+
     pageController.push({
-        path ,
+        path,
         query
     })
 }
@@ -160,40 +161,41 @@ routeTable.comment_list = (route: any) => {
 
 /** 评论回复 */
 routeTable.comment_reply_list = (route: any) => {
-    console.log('评论回复跳转详情',route);
+    console.log('评论回复跳转详情', route)
     let path = ''
     let query = {}
 
     if (route.query.articleType == 2) {
-        path = MarkLinkEvents['video_detail']
+        path = MarkLinkEvents.video_detail
         query = {
             videoId: route.query.contentId,
-            videoPagetype: 0,
+            videoPagetype: 0
         }
-        
-    }else{
-        
+
+    }
+    else {
+
         if (route.query.happyType == 3) {
-            console.log('沙龙');
-            path = MarkLinkEvents['salo_posts_detail']
+            console.log('沙龙')
+            path = MarkLinkEvents.salo_posts_detail
             query = {
-                id: route.query.contentId,
+                id: route.query.contentId
             }
         }
-        
+
         if (route.query.happyType == 98) {
-            console.log('内容');
+            console.log('内容')
             // path = MarkLinkEvents['comment_reply_list']
-            path = MarkLinkEvents['channel_detail']
+            path = MarkLinkEvents.channel_detail
             query = {
-                id: route.query.contentId,
+                id: route.query.contentId
             }
         }
     }
 
 
     pageController.push({
-        path ,
+        path,
         query
     })
 }
@@ -240,14 +242,14 @@ routeTable.order_detail = (route: TNoticeExt) => {
 routeTable.publish_list = (route: any) => {
     let path = ''
     let query = {}
-    
+
     if (route.query.articleType == 2) {
-        
+
         if (route.query.moduleType == 8) {
-            console.log('享老记');
-            path = MarkLinkEvents['enjoy_detail']
+            console.log('享老记')
+            path = MarkLinkEvents.enjoy_detail
             query = {
-                id: route.query.id,
+                id: route.query.id
             }
         }
         if (route.query.moduleType == 98) {
@@ -255,33 +257,34 @@ routeTable.publish_list = (route: any) => {
             // query = {
             //     id: route.query.id,
             // }
-            path = MarkLinkEvents['video_detail']
+            path = MarkLinkEvents.video_detail
             query = {
                 videoId: route.query.contentId,
-                videoPagetype: 0,
+                videoPagetype: 0
             }
         }
-    }else{
-        
+    }
+    else {
+
         if (route.query.moduleType == 3) {
-            console.log('沙龙');
-            path = MarkLinkEvents['salo_detail']
+            console.log('沙龙')
+            path = MarkLinkEvents.salo_detail
             query = {
-                id: route.query.contentId,
+                id: route.query.contentId
             }
         }
         if (route.query.moduleType == 4) {
-            console.log('沙龙帖子');
-            path = MarkLinkEvents['salo_posts_detail']
+            console.log('沙龙帖子')
+            path = MarkLinkEvents.salo_posts_detail
             query = {
-                id: route.query.contentId,
+                id: route.query.contentId
             }
         }
-        
+
         if (route.query.moduleType == 8) {
-            path = MarkLinkEvents['enjoy_detail']
+            path = MarkLinkEvents.enjoy_detail
             query = {
-                id: route.query.id,
+                id: route.query.id
             }
         }
         if (route.query.moduleType == 98) {
@@ -289,9 +292,9 @@ routeTable.publish_list = (route: any) => {
             // query = {
             //     id: route.query.id,
             // }
-            path = MarkLinkEvents['channel_detail']
+            path = MarkLinkEvents.channel_detail
             query = {
-                id: route.query.contentId,
+                id: route.query.contentId
             }
         }
     }
@@ -310,7 +313,7 @@ routeTable.publish_detail = (route: any) => {
 
 
     if (route.query.moduleType == 1) {
-        path = MarkLinkEvents['change_channel']
+        path = MarkLinkEvents.change_channel
         query = {
             articleId: route.query.contentId,
             type: route.query.articleType == 2 ? 2 : 3,
@@ -318,21 +321,21 @@ routeTable.publish_detail = (route: any) => {
         }
     }
     if (route.query.moduleType == 3) {
-        path = MarkLinkEvents['change_salo']
+        path = MarkLinkEvents.change_salo
         query = {
             id: route.query.dataId,
-            ischange: 1,
+            ischange: 1
         }
     }
     if (route.query.moduleType == 4) {
-        path = MarkLinkEvents['change_salo_posts']
+        path = MarkLinkEvents.change_salo_posts
         query = {
             id: route.query.dataId,
-            ischange: 1,
+            ischange: 1
         }
     }
     if (route.query.moduleType == 5) {
-        path = MarkLinkEvents['change_chat']
+        path = MarkLinkEvents.change_chat
         query = {
             auditId: route.query.dataId,
             type: route.query.articleType == 2 ? 2 : 3,
@@ -340,15 +343,15 @@ routeTable.publish_detail = (route: any) => {
         }
     }
     if (route.query.moduleType == 6) {
-        path = MarkLinkEvents['change_find']
+        path = MarkLinkEvents.change_find
         query = {
             auditId: route.query.dataId,
             type: route.query.articleType == 2 ? 2 : 3,
-            ischange: 2,
+            ischange: 2
         }
     }
     if (route.query.moduleType == 7) {
-        path = MarkLinkEvents['change_video']
+        path = MarkLinkEvents.change_video
         query = {
             auditId: route.query.dataId,
             type: route.query.articleType == 2 ? 2 : 3,
@@ -356,7 +359,7 @@ routeTable.publish_detail = (route: any) => {
         }
     }
     if (route.query.moduleType == 8) {
-        path = MarkLinkEvents['change_enjoy']
+        path = MarkLinkEvents.change_enjoy
         query = {
             auditId: route.query.dataId,
             type: route.query.articleType == 2 ? 2 : 3,
@@ -454,7 +457,7 @@ enum MarkLinkEvents {
     goods_order_detail = '/Order/pages/goodsOrderDetail/goodsOrderDetail',
 
     /** 服务订单详情 */
-    service_order_detail = '/Order/pages/serviceOrderDetail/serviceOrderDetail',
+    service_order_detail = '/Order/pages/service/orderDetail/serviceOrderDetail',
 
     /** 发布消息-文章 */
     publish_list_article = '/pagesCnt/pages/course/course',

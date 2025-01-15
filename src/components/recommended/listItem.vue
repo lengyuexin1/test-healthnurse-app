@@ -32,12 +32,13 @@ import { ref, computed, reactive, onMounted, watch, nextTick, getCurrentInstance
 import { PlatformManage } from "@bc/sys"
 import { gotoLogin } from "@/routes/public-routes"
 import { gotogoodsDetail } from '@/routes/goods-routes'
+import { gotoserviceDetail } from '@/routes/service-routes'
 import { moneyFilter } from "@/common/filters"
 
 const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
-const linePrice = computed(() =>(item:any) => {
+const linePrice = computed(() => (item:any) => {
     return moneyFilter(item.fakePrice / item.quantity)
 })
 
@@ -59,7 +60,13 @@ const gotoDetail = (item: any) => {
             }, 1000)
             return
         }
-        gotogoodsDetail(item.id)
+        if (item.businessType == 1) {
+            gotoserviceDetail(item.id)
+        }
+        else {
+            gotogoodsDetail(item.id)
+        }
+
     })
 }
 

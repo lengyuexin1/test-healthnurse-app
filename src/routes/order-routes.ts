@@ -1,13 +1,13 @@
 import { pageController } from '@bc/uni-tools'
 
 /**
- * 
+ *
  * 订单相关路由
- * 
+ *
  */
 
 // 订单管理列表
- export const gotoorderList = (typeIndex:number = 0) => {
+export const gotoorderList = (typeIndex:number = 0) => {
     const route = {
         path: '/Order/pages/orderList/orderList',
         query: {
@@ -21,14 +21,14 @@ import { pageController } from '@bc/uni-tools'
 /**
  * itemId ==> 表示订单id
  * isdel ==> 表示路由切换模式
- * 
+ *
  */
 
 // 服务订单详情
-export const gotoOrderDetail = (itemId:string, isdel:boolean = false) =>{
+export const gotoOrderDetail = (itemId:string, isdel:boolean = false) => {
     const route = {
-        path: '/Order/pages/serviceOrderDetail/serviceOrderDetail',
-        query: {itemId}
+        path: '/Order/pages/service/orderDetail/serviceOrderDetail',
+        query: { itemId }
     }as any
     return isdel ? pageController.replace(route) : pageController.push(route)
 }
@@ -37,14 +37,25 @@ export const gotoOrderDetail = (itemId:string, isdel:boolean = false) =>{
 /**
  * itemId ==> 表示订单id
  * isdel ==> 表示路由切换模式
- * 
+ *
  */
-
+/** 跳转到 服务确认订单页
+ *  query: { optionId: string, adresMation?: string  }
+ * handle： 1默认值表示正常的服务下单，2表示找康养服务下单
+ *
+ */
+export const gotoServiceBalanceOrder = (uniqueId: string, handle = 1, typeId = 1, convenType?:any) => {
+    const route = {
+        path: '/pagesOrder/pages/confirmOrder/balanceOrder',
+        query: { uniqueId, handle, typeId, convenType }``
+    }
+    return pageController.isTokenPush(route)
+}
 // 适品订单详情
 export const GoodsOrderDetail = (itemId:string, isdel:boolean = false) => {
     const route = {
         path: '/Order/pages/goodsOrderDetail/goodsOrderDetail',
-        query: {itemId}
+        query: { itemId }
     }as any
     return isdel ? pageController.replace(route) : pageController.push(route)
 }
@@ -52,8 +63,8 @@ export const GoodsOrderDetail = (itemId:string, isdel:boolean = false) => {
 // 服务下单结算
 export const gotoBalanceOrder = (uniqueId:any, handle:number = 1) => {
     const route = {
-        path : '/Order/pages/balanceOrder/balanceOrder',
-        query: {uniqueId,handle}
+        path: '/Order/pages/balanceOrder/balanceOrder',
+        query: { uniqueId, handle }
     }as any
     return pageController.push(route)
 }
@@ -61,8 +72,8 @@ export const gotoBalanceOrder = (uniqueId:any, handle:number = 1) => {
 // 商品下单结算
 export const gotoBalanceGood = (uniqueId:any) => {
     const route = {
-        path : '/Order/pages/balanceGoods/balanceGoods',
-        query: {uniqueId}
+        path: '/Order/pages/balanceGoods/balanceGoods',
+        query: { uniqueId }
     }as any
     return pageController.push(route)
 }
@@ -70,8 +81,8 @@ export const gotoBalanceGood = (uniqueId:any) => {
 // 课程下单结算
 export const gotoBalanceCourse = (itemId:string) => {
     const route = {
-        path : '/Order/pages/balanceOrder/balanceCourse',
-        query: {itemId}
+        path: '/Order/pages/balanceOrder/balanceCourse',
+        query: { itemId }
     }as any
     return pageController.push(route)
 }
@@ -79,8 +90,8 @@ export const gotoBalanceCourse = (itemId:string) => {
 // 课程订单详情
 export const courseOrderDetail = (orderId:string) => {
     const route = {
-        path : '/Order/pages/courseOrderDetail/courseOrderDetail',
-        query: {orderId}
+        path: '/Order/pages/courseOrderDetail/courseOrderDetail',
+        query: { orderId }
     }as any
     return pageController.push(route)
 }
@@ -88,7 +99,7 @@ export const courseOrderDetail = (orderId:string) => {
 // 康养订单退款
 export const torefundOrder = (query:any) => {
     const route = {
-        path : '/Order/pages/refundOrder/refundOrder',
+        path: '/Order/pages/refundOrder/refundOrder',
         query
     }as any
     return pageController.push(route)
@@ -98,12 +109,12 @@ export const torefundOrder = (query:any) => {
 
 /**
  * 商品订单退款
- * 接收订单中 商品整个单品对象(临时对象) 
- * 
+ * 接收订单中 商品整个单品对象(临时对象)
+ *
  */
 export const gotorefundShopOrder = (query:any) => {
     const route = {
-        path : '/Order/pages/refundOrder/refundGoodsOrder',
+        path: '/Order/pages/refundOrder/refundGoodsOrder',
         query
     }as any
     return pageController.push(route)
@@ -112,24 +123,24 @@ export const gotorefundShopOrder = (query:any) => {
 
 /**
  * 积分商品兑换记录详情
- * 
+ *
  */
 export const gotoexchangeDetail = (query:any) => {
     const route = {
-        path : '/Order/pages/exchangeDetail/exchangeDetail',
+        path: '/Order/pages/exchangeDetail/exchangeDetail',
         query
     }as any
     return pageController.push(route)
 }
 
-/** 
+/**
  * 适品退款详情
- * 
- * 
+ *
+ *
  */
 export const gotorefundDetail = (query:any) => {
     const route = {
-        path : '/Order/pages/refundDetail/refundDetail',
+        path: '/Order/pages/refundDetail/refundDetail',
         query
     }as any
     return pageController.push(route)
