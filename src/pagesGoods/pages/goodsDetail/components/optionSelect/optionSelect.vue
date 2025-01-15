@@ -328,7 +328,7 @@ const balance = () => {
                 sweixin.launchMiniProgram({
                     id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
-                    path: `/Order/pages/balanceGoods/balanceGoods?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
+                    path: `/pagesOrder/pages/balanceGoods/balanceGoods?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
                         'payJSON': payJSON,
                     }
