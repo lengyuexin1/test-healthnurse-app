@@ -166,7 +166,7 @@ const getAssetsUrl = computed(() => (src: string) => {
 
 // 获取设备列表
 const getDeviceList = () => {
-    deviceList(this.roomId).then(res => {
+    deviceList(data.roomId).then(res => {
         const list = res.map(x => {
             return ({
                 ...x,
@@ -194,15 +194,15 @@ const linkAlarmDetail = (item: any) => {
 
 // 房间实时数据 按秒进行更新
 const getLastData = () => {
-    patientLastData(this.roomId).then(res => {
+    patientLastData(data.roomId).then(res => {
         if (!res.data) { return }
         const data = res.data.match(/.{2}/g)
         if (data.length != 15) {
             throw new Error("数据错误")
         }
         // 0x03-在床 0x04-离床 0x05-打鼾 0x06-体动
-        const stus = { "03": "在床", "04": "离床", "05": "打鼾", "06": "体动" }
-        this.realInfo = {
+        const stus:any = { "03": "在床", "04": "离床", "05": "打鼾", "06": "体动" }
+        data.realInfo = {
             heartRate: parseInt(data[11], 16), //转成十进制
             breathing: parseInt(data[12], 16),
             status: stus[data[13]]
@@ -228,7 +228,7 @@ const getRoomInfo = () => {
         data.roomWeather = res.stateList
         data.roomName = res.name
     }).catch((err) => {
-        this.$refs.uToast.error(err.message)
+       console.log(err.message)
     })
 }
 // 添加设备
