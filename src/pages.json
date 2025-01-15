@@ -1329,11 +1329,22 @@
 					"path": "pages/wisdom/roomManage",
 					"style": {
 						"navigationBarTitleText": "房间管理",
-						"navigationStyle": "default",
-						"enablePullDownRefresh": false,
-						"navigationBarBackgroundColor": "#F1F3F5"
+						// "navigationStyle": "default",
+						// "enablePullDownRefresh": false,
+						// "navigationBarBackgroundColor": "#F1F3F5"
+						"navigationStyle": "custom"
 					}
 				},
+				{
+                    "path": "pages/wisdom/roomDetail",
+                    "style": {
+						"navigationBarTitleText": "房间详情",
+						// "navigationStyle": "default",
+						// "enablePullDownRefresh": false,
+						// "navigationBarBackgroundColor": "#F1F3F5"
+						"navigationStyle": "custom"
+					}
+                }, 
 				{
 					"path": "pages/wisdom/deviceChoice",
 					"style": {

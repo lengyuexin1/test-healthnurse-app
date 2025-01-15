@@ -108,6 +108,9 @@ onSysEvent('REFLESH_TOKEN_FAIL', () => {
 page {
     background-color: #F2F4F5;
 }
+.page-public-bg {
+    background: linear-gradient(#dff7ef 0%, rgba(255, 255, 255, 0) 300rpx);
+}
 .row {
     display: flex;
     flex-direction: row;

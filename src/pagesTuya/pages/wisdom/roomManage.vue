@@ -4,7 +4,8 @@
             :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="暂无数据~"
             :empty-view-img-style="{ width: '320rpx', height: '320rpx' }">
             <template #top>
-                <!-- <bc-page-navbar :title="'房间管理'"></bc-page-navbar> -->
+                <PageTopbg :zIndex="-1"></PageTopbg>
+                <bc-page-navbar :title="'房间管理'"></bc-page-navbar>
                 <!-- <input type="text" placeholder="请输入pad登录码" v-model="loginCode" /> -->
             </template>
             <view class="roombox page-public-bg">
@@ -16,11 +17,11 @@
                         </view>
                         <view class="roomli row i-center j-between" @click="linkDeviceManag(item)">
                             <view class="row i-center">
-                                <TnAvatar :url="getAssetsUrl('/device/home/zuHome.svg')" size="80"></TnAvatar>
+                                <TnAvatar :url="getAssetsUrl('/default/smart-room.png')" size="80"></TnAvatar>
                                 <view class="roomnime">{{ item.name }}</view>
                             </view>
                             <view>
-                                <TnIcon name="arrow-right" size="15" color="#BEBEBE"></TnIcon>
+                                <TnIcon name="right" size="36" color="#BEBEBE"></TnIcon>
                             </view>
                         </view>
                     </view>
@@ -30,13 +31,13 @@
                 <view class="romnagtom">
                     <view class="romnagbox row i-center j-between" v-if="!delShow">
                         <view class="romnagbtn btn">
-                            <TnButton border-color="#E3E3E3" plain text-color="#535353"
-                                font-size="32rpx" width="100%" height="90" bg-color="#fff" @click="delShow = true">管理
+                            <TnButton border-color="#E3E3E3" plain text-color="#535353" font-size="32rpx" width="100%"
+                                height="90" bg-color="#fff" @click="delShow = true">管理
                             </TnButton>
                         </view>
                         <view class="romnagbtn btn">
-                            <TnButton width="100%" height="90" text-color="#fff" font-size="32rpx"
-                                bg-color="#111214" border-color="#E3E3E3">扫码登录</TnButton>
+                            <TnButton width="100%" height="90" text-color="#fff" font-size="32rpx" bg-color="#29C86F"
+                                border-color="#E3E3E3">扫码登录</TnButton>
                         </view>
                     </view>
                     <view class="romnagboxs row i-center j-between" v-if="delShow">
@@ -45,13 +46,13 @@
                             <TnCheckbox size="lg" label="全选" checked-shape="circle">全选</TnCheckbox>
                         </TnCheckboxGroup>
                         <view class="roomeWid">
-                            <TnButton border-color="#E3E3E3" plain text-color="#535353"
-                                font-size="32rpx" width="100%" height="90" bg-color="#fff" @click="abolish">取消
+                            <TnButton border-color="#E3E3E3" plain text-color="#535353" font-size="32rpx" width="100%"
+                                height="90" bg-color="#fff" @click="abolish">取消
                             </TnButton>
                         </view>
                         <view class="roomeWid">
-                            <TnButton border-color="#E3E3E3" text-color="#fff" font-size="32rpx"
-                                width="100%" height="90" bg-color="#111214" @click="openRemove">删除
+                            <TnButton border-color="#E3E3E3" text-color="#fff" font-size="32rpx" width="100%" height="90"
+                                bg-color="#29C86F" @click="openRemove">删除
                             </TnButton>
                         </view>
                     </view>
@@ -59,7 +60,7 @@
             </template>
         </z-paging>
         <view class="deviceadd column i-center j-center" @click="data.createShow = true" v-if="!delShow">
-            <TnIcon name="add" size="50" bold="true" color="#111214"></TnIcon>
+            <TnIcon name="add" size="38" bold="true" color="#fff"></TnIcon>
             <view class="devicetxt">添加</view>
         </view>
         <TnPopup v-model="data.createShow" @close="data.createShow = false" mode="center" round="20"
@@ -73,8 +74,8 @@
                     <input v-model="newRoomName" class="inptxt" type="text" maxlength="7" placeholder="请输入房间名称">
                 </view>
                 <view class="catebtn">
-                    <TnButton border-color="#E3E3E3" text-color="#fff" font-size="32rpx"
-                        width="100%" height="90" bg-color="#111214" @click="addRoom">确定
+                    <TnButton border-color="#E3E3E3" text-color="#fff" font-size="32rpx" width="100%" height="90"
+                        bg-color="#29C86F" @click="addRoom">确定
                     </TnButton>
                     <BCNotify ref="bcNotify"></BCNotify>
                     <!-- <u-button @click="createRoom" :disabled="!newRoomName" color="#29C86F" shape="circle" text="确定"
@@ -86,6 +87,7 @@
     </view>
 </template>
 <script setup lang="ts">
+import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import BCNotify from '@/components/notify/index.vue'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -94,6 +96,7 @@ import TnCheckbox from '@tuniao/tnui-vue3-uniapp/components/checkbox/src/checkbo
 import TnCheckboxGroup from '@tuniao/tnui-vue3-uniapp/components/checkbox/src/checkbox-group.vue'
 import { ref, reactive, computed, onMounted } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
+import { gotoRoomDetail, gotoTuYa } from "@/routes/wisdom-routes"
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import { creatRoom, allRoomList, patientDelete } from "@/api/room-api"
 interface Data {
@@ -110,6 +113,7 @@ const paging = ref()
 const newRoomName = ref('')
 const allList: any = ref([])
 const delShow = ref(false)
+const loginCode = ref('')  //'00:02:00:00:00:00:00:00:00:00:00:02' // 登录码
 const delRimId: any = ref([])
 const abolish = () => {
     delShow.value = false
@@ -135,7 +139,26 @@ const checkboxChange = (e) => {
     }
 }
 const linkDeviceManag = (item: any) => {
-
+    if (delShow.value) { return }
+    // 有登录码 进行登录pad操作
+    if (loginCode.value) {
+        auditLoginCode({
+            loginCode: loginCode.value,
+            patientId: item.id
+        }).then(() => {
+            // uni.$u.toast('登录成功，请前往pad端查看')
+            loginCode.value = ''
+        }).catch((err:any) => {
+           console.log(err.message)
+        })
+        return
+    }
+    uni.setStorageSync('roomId', item.id)
+    gotoRoomDetail(item.id, item.name)
+    /* gotoDeviceManag({
+        roomId: item.id,
+        roomName: item.name
+    }) */
 }
 const queryList = (pageNumber, pageSize) => {
     allRoomList({
@@ -219,8 +242,8 @@ const openRemove = () => {
 }
 
 .deviceadd {
-    box-shadow: 0rpx 0rpx 16rpx 2rpx rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+    box-shadow: #29C86F;
+    background-color: #29C86F;
     width: 108rpx;
     height: 108rpx;
     border-radius: 50%;
@@ -232,7 +255,7 @@ const openRemove = () => {
     .devicetxt {
         font-size: 24rpx;
         margin-top: 4rpx;
-        color: #111214;
+        color: #fff;
     }
 }
 
