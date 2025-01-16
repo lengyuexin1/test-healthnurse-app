@@ -5,7 +5,7 @@
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { onLoad, onReady } from '@dcloudio/uni-app'
@@ -20,7 +20,7 @@ interface Data {
     uniqueId:any,
     handle:number
     userId: string|null
-    
+
 }
 const data = reactive<Data>({
     uniqueId:'',
@@ -67,8 +67,7 @@ onReady(()=>{
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 
 </style>
-  

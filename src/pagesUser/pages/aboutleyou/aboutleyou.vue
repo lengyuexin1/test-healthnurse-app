@@ -18,7 +18,7 @@
                             :src="getAssetsUrl('/leyou/logo/leyou_logo.png')"
                             mode="scaleToFill"
                         />
-                        <view class="leyou_name">保椿生活</view>
+                        <view class="leyou_name">保椿照护</view>
                         <view class="leyou_version">{{ data.appVersion.appVersion }}</view>
                     </view>
 

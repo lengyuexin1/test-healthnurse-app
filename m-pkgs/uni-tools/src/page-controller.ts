@@ -2,7 +2,7 @@ import { UrlTools } from "@bc/base"
 
 /** 初始化 */
 const debug = true
-import authGuard from '@/sys/auth-guard'
+// import authGuard from '@/sys/auth-guard'
 
 import createCollectAndReport from "@/utils/collection"
 import { Debounce } from '@/libs/antivibthrot'

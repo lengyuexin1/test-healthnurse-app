@@ -1,31 +1,37 @@
 <template>
     <z-paging
-        ref="paging"
-        v-model="data.collectLists"
-        :auto="true"
-        :fixed="true"
-        @query="queryList"
-        :defaultPageSize="10"
-        :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
-        empty-view-text="还没有数据哦~"
-        :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
+          ref="paging"
+          v-model="data.collectLists"
+          :auto="true"
+          :fixed="true"
+          @query="queryList"
+          :defaultPageSize="10"
+          :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
+          empty-view-text="还没有数据哦~"
+          :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
     >
         <template #top>
-            <TnTabs v-model="data.currentTabIndex" :scroll="true" :bottom-shadow="false" font-size="30rpx" active-font-size="32rpx" color="#666666" bar-color="#EA3E1A" active-color="#EA3E1A" @change="tabsChange">
-                <TnTabsItem v-for="(item, index) in data.tabsData" :key="index" :title="item.text" />
+            <TnTabs v-model="data.currentTabIndex" :scroll="true" :bottom-shadow="false" font-size="30rpx"
+                    active-font-size="32rpx" color="#666666" bar-color="#EA3E1A" active-color="#EA3E1A"
+                    @change="tabsChange">
+                <TnTabsItem v-for="(item, index) in data.tabsData" :key="index" :title="item.text"/>
             </TnTabs>
-            <view class="nav_mangage tn-flex-row">
-                <view class="section">
-                    <view :class="['item', data.sectionActive == index ? 'active' : '']" v-for="(item, index) in data.sectionList" :key="index" @tap="clickSection(index)">{{ item }}</view>
-                </view>
-                <view :class="['edit tn-flex-center-end', data.isEdit ? 'navRed' : '']" @tap="clickManage" v-if="data.collectLists.length">
-                    {{ data.subTitle }}
-                </view>
-            </view>
+            <!--            <view class="nav_mangage tn-flex-row">-->
+            <!--                <view class="section">-->
+            <!--                    <view :class="['item', data.sectionActive == index ? 'active' : '']"-->
+            <!--                          v-for="(item, index) in data.sectionList" :key="index" @tap="clickSection(index)">{{ item }}-->
+            <!--                    </view>-->
+            <!--                </view>-->
+            <!--                <view :class="['edit tn-flex-center-end', data.isEdit ? 'navRed' : '']" @tap="clickManage"-->
+            <!--                      v-if="data.collectLists.length">-->
+            <!--                    {{ data.subTitle }}-->
+            <!--                </view>-->
+            <!--            </view>-->
         </template>
-        
+
         <view class="container" :class="[data.isEdit ? 'pb90' : '']">
-            <SelectAllCancel btnName="取消收藏" :type="data.type" :listType="data.listType" :list="data.collectLists" :isEdit="data.isEdit" @clickItem="clickItem" @clickBtn="cancelCollect"></SelectAllCancel>
+            <SelectAllCancel btnName="取消收藏" :type="data.type" :listType="data.listType" :list="data.collectLists"
+                             :isEdit="data.isEdit" @clickItem="clickItem" @clickBtn="cancelCollect"></SelectAllCancel>
         </view>
     </z-paging>
     <BCNotify ref="bcNotify"></BCNotify>
@@ -40,7 +46,14 @@ import TnTabsItem from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.v
 import SelectAllCancel from '@/pagesUser/components/selectAllCancel/index.vue'
 
 import BCNotify from '@/components/notify/index.vue'
-import { favoriteList, unFavorite, healthFavoriteList, unHealthFavorite, healthShopList, unHealthShop } from '@/api/user-api'
+import {
+    favoriteList,
+    unFavorite,
+    healthFavoriteList,
+    unHealthFavorite,
+    healthShopList,
+    unHealthShop
+} from '@/api/user-api'
 import { chatfavoriteList } from '@/api/create-api'
 import { gotocourseVideo, gotosalonPostsDetailPage, gotovideoPreview, gotoarticledetails } from "@/routes/create-routes"
 import { gotoShopDetail, gotoServiceStore } from "@/routes/service-routes"
@@ -56,7 +69,7 @@ interface Data {
     subTitle: string
     isEdit: boolean
     key: string
-    currentTabIndex : number
+    currentTabIndex: number
     tabsData: any
     happyType: number
     sectionActive: number
@@ -75,10 +88,28 @@ const data = reactive<Data>({
     key: '',
     currentTabIndex: 0,
     tabsData: [
-        { text: '云课堂' },
-        { text: '沙龙' },
-        { text: '康养囤' },
-        { text: '作品' },
+        // { text: '云课堂' },
+        // { text: '沙龙' },
+        // { text: '康养囤' },
+        // { text: '作品' },
+        {
+            id: '11',
+            applyId: 2,
+            text: '服务'
+        },
+        {
+            id: '12',
+            applyId: 3,
+            text: '商品'
+        },
+        {
+            id: '13',
+            text: '店铺/机构'
+        },
+        {
+            id: '14',
+            text: '内容'
+        }
     ],
     happyType: 2,
     sectionActive: 0,
@@ -90,7 +121,7 @@ const bcNotify = ref()
 
 const paging = ref() as any
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 
@@ -115,7 +146,7 @@ const queryList = (pageNumber: number, pageSize: number) => {
                 }
             })
             data.type = 'normal'
-            paging.value.complete(pack)  
+            paging.value.complete(pack)
         }).catch((err: any) => {
             bcNotify.value.error(err.message)
         })
@@ -128,7 +159,7 @@ const queryList = (pageNumber: number, pageSize: number) => {
             healthFavoriteList({
                 pageSize: pageSize,
                 pageNumber: pageNumber,
-                query: { applyId },
+                query: { applyId }
             }).then((res) => {
                 // 给每个对象添加checked属性
                 const pack = res.data.map((item: any) => {
@@ -138,7 +169,7 @@ const queryList = (pageNumber: number, pageSize: number) => {
                     }
                 })
                 data.type = 'healthList'
-                paging.value.complete(pack)   
+                paging.value.complete(pack)
             }).catch((err: any) => {
                 bcNotify.value.error(err.message)
             })
@@ -148,7 +179,7 @@ const queryList = (pageNumber: number, pageSize: number) => {
             healthShopList({
                 pageSize: pageSize,
                 pageNumber: pageNumber,
-                query: {},
+                query: {}
             }).then((res) => {
                 // 给每个对象添加checked属性
                 const pack = res.data.map((item: any) => {
@@ -158,7 +189,7 @@ const queryList = (pageNumber: number, pageSize: number) => {
                     }
                 })
                 data.type = 'shopList'
-                paging.value.complete(pack)  
+                paging.value.complete(pack)
             }).catch((err: any) => {
                 bcNotify.value.error(err.message)
             })
@@ -168,8 +199,8 @@ const queryList = (pageNumber: number, pageSize: number) => {
 
 const tabsChange = (val: any) => {
 
-    console.log('val',val);
-    
+    console.log('val', val)
+
 
     val == 0 && (data.happyType = 2)
     val == 1 && (data.happyType = 3)
@@ -212,19 +243,20 @@ const clickSection = (index: number) => {
 
 const clickItem = (item: any) => {
 
-    console.log('item',item);
-    console.log('data.type',data.type);
+    console.log('item', item)
+    console.log('data.type', data.type)
 
     if (item.happyType == 98) {
         if (item.videoUrl) {
-            gotovideoPreview({videoId:item.id,videoPagetype:0});
-        }else {
+            gotovideoPreview({ videoId: item.id, videoPagetype: 0 })
+        }
+        else {
             gotoarticledetails({ id: item.id })
         }
     }
     else if (item.happyType == 2) {
         const listId = TempStorage.savewx({
-            videoIdlist:[item.id],
+            videoIdlist: [item.id]
         })
         gotocourseVideo(listId)
     }

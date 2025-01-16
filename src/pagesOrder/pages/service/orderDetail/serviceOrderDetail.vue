@@ -12,7 +12,7 @@ import { onLoad, onShow, onReady } from '@dcloudio/uni-app'
 
 import verifyAccount from '@/pagesOrder/components/verifyAccount.vue'
 
-import orderPageDetail from './components/orderPageDetail.vue'
+import orderPageDetail from '../components/orderPageDetail.vue'
 
 interface Data {
     orderId:string
@@ -38,11 +38,11 @@ onLoad((option:any)=>{
         data.orderId = payJSON.itemId
         data.isAppOpen = payJSON.isAppOpen
 
-        
+
 
         console.log('payJSON',payJSON);
         console.log('data.isAppOpen',data.isAppOpen);
-        
+
 
     }
 })
@@ -59,7 +59,7 @@ onReady(()=>{
         nextTick(()=>{
             // (accountUserRef.value as any).checkUser(data.userId)
             (accountUserRef.value as any).checkUser(data.userId)
-            
+
         })
     }
 })
@@ -70,7 +70,7 @@ onReady(()=>{
 .bottom_btn{
     background: #fff;
     height: 120rpx;
-    
+
 }
 </style>
 

@@ -1,7 +1,7 @@
 <template>
     <view class="container" v-if="data.osObj.id">
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
@@ -32,7 +32,7 @@
                         />
                         <view class="card_right">
                             <view class="card_title">{{ data.cardObj.coursetitle }}</view>
-                            
+
                             <view class="card_price_box">
                                 <view class="card_price">
                                     ￥{{ data.cardObj.price / 100 }}
@@ -97,7 +97,7 @@
         </z-paging>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
@@ -210,8 +210,8 @@ const uppay = () => {
     })
     const openid = uni.getStorageSync('openid')
     // #ifdef MP-WEIXIN
-    houseOrderPay({ 
-        orderId : props.orderId, 
+    houseOrderPay({
+        orderId : props.orderId,
         openid: openid != '' ? openid : undefined,
         payId: data.serviceInfo.payId,
         subAppId: 'wxba2158972baec41b',
@@ -244,7 +244,7 @@ const uppay = () => {
     const shareType = import.meta.env.VITE_WEIXIN_OPEN
 
     console.log('payJSON',payJSON);
-    
+
     plus.share.getServices((res: any) => {
         let sweixin = null as any
         for (const i in res) {
@@ -255,14 +255,14 @@ const uppay = () => {
         // 唤醒微信小程序
         if (sweixin) {
             uni.hideLoading()
-            
+
             PlatformManage.getToken().then((res:any)=>{
                 console.log('获取userinfo',res);
 
                 sweixin.launchMiniProgram({
                     id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
-                    path: `/Order/pages/courseOrderDetail/courseOrderDetail?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
+                    path: `/pagesOrder/pages/courseOrderDetail/courseOrderDetail?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
                         'payJSON': payJSON,
                     }
@@ -289,7 +289,7 @@ defineExpose({
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .content{
     padding: 20rpx;
@@ -374,7 +374,7 @@ defineExpose({
                         color: #999999;
                     }
                 }
-                
+
 
             }
         }
@@ -418,7 +418,7 @@ defineExpose({
                 display: flex;
                 align-items: center;
             }
-            
+
             .item_title{
                 font-size: 30rpx;
                 color: #333333;
@@ -458,4 +458,3 @@ defineExpose({
     }
 }
 </style>
-  

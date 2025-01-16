@@ -1,7 +1,7 @@
 <template>
     <view class="contraner">
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
@@ -263,7 +263,7 @@
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, getCurrentInstance } from 'vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
@@ -340,7 +340,7 @@ const notright = computed(()=>(list:any, index:number)=>{
     else {
         return false
     }
-}) 
+})
 
 const emit = defineEmits(["saveShareObj"])
 
@@ -428,14 +428,14 @@ const tobay = () => {
         // 唤醒微信小程序
         if (sweixin) {
             uni.hideLoading()
-            
+
             PlatformManage.getToken().then((res:any)=>{
                 console.log('获取userinfo',res);
 
                 sweixin.launchMiniProgram({
                     id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
-                    path: `/Order/pages/balanceOrder/balanceOrder?payJSON=${payJSON}&userId=${res.id}&handle=2`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
+                    path: `/pagesOrder/pages/balanceOrder/balanceOrder?payJSON=${payJSON}&userId=${res.id}&handle=2`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
                         'payJSON': payJSON,
                     }
@@ -515,7 +515,7 @@ const sharePoster = async () => {
     if (accountName.length > 8) {
         accountName = accountName.slice(0,8) + "..."
     }
-            
+
     const context = uni.createCanvasContext('mycanvas',instance)
 
 
@@ -523,7 +523,7 @@ const sharePoster = async () => {
     // 背景白块
     context.setFillStyle('#ffffff')
     context.fillRect(0, 0, 254, 344)
-            
+
     // 底部白块
     context.setFillStyle('#ffffff')
     context.fillRect(0, 258, 258, 94)
@@ -542,7 +542,7 @@ const sharePoster = async () => {
     context.fillText(accountName, 40, 324)
     context.setFillStyle('#999999')
     context.setFontSize(12)
-            
+
     // 背景图片
     context.drawImage(coverUrl, 0, 0, 275, 255)
 
@@ -597,7 +597,7 @@ defineExpose({
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .contraner {
     .details_box {
@@ -1030,4 +1030,4 @@ defineExpose({
     left: -750px;
 }
 </style>
- 
+

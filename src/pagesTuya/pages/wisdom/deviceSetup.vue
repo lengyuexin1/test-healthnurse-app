@@ -1,6 +1,6 @@
 <template>
     <view class="container">
-        <bc-page-navbar :title="'通知设置'"></bc-page-navbar>
+        <bc-page-navbar :title="'消息设置'"></bc-page-navbar>
         <view class="tainerbox page-public-bg">
             <view class="consumebox">
                 <view class="consumetop row i-center j-between">
@@ -12,12 +12,15 @@
                 </view>
                 <view class="cons-info row i-center j-between">
                     <view class="cons-amount">
-                        <view class="cons-num">{{ data.accountInfo.notifyNum || '--' }} <text>次</text></view>
+                        <view class="cons-num">{{ data.accountInfo.notifyNum || '--' }}
+                            <text>次</text>
+                        </view>
                         <view class="cons-balan">通知次数余额</view>
                     </view>
                     <view class="cons-btn">
-                        <TnButton width="90%" @click="gotopay" height="70" text-color="#fff" font-size="32rpx"
-                            bg-color="#111214" border-color="#E3E3E3">去充值</TnButton>
+                        <TnButton width="90%" @click="gotopay" height="70" text-color="#d1a257" font-size="32rpx"
+                                  bg-color="#FFEEDD" border-color="#D1A257" :plain="true">去充值
+                        </TnButton>
                     </view>
                 </view>
                 <view class="cons-tips row i-center j-between">
@@ -34,7 +37,7 @@
                         <view class="deviname">{{ ele.typeName }}</view>
                         <view>
                             <TnSwitch size="20" inactiveColor="#DBDBDB" activeColor="#29C86F" v-model="ele.active"
-                                @change="change(ele)"></TnSwitch>
+                                      @change="change(ele)"></TnSwitch>
                         </view>
                     </view>
                 </view>
@@ -43,8 +46,9 @@
         <view class="tainerfot">
             <view class="fotbox">
                 <view class="fotbtn">
-                    <TnButton width="90%" @click="linkNoticeStaff" height="90" text-color="#fff" font-size="32rpx"
-                        bg-color="#111214" border-color="#E3E3E3">通知人员设置</TnButton>
+                    <TnButton width="100%" @click="linkNoticeStaff" height="90" text-color="#fff" font-size="32rpx"
+                              bg-color="#29c86f" border-color="#29c86f">通知人员设置
+                    </TnButton>
                 </view>
                 <u-safe-bottom></u-safe-bottom>
             </view>
@@ -63,7 +67,7 @@
                     <view class="godsku">
                         <block v-for="(item, index) in data.goodsInfo.options" :key="index">
                             <view class="godkuli column i-center j-center" @click="data.current = index"
-                                :class="{ activ: index === data.current }">
+                                  :class="{ activ: index === data.current }">
                                 <view class="godnum">{{ item.name }}</view>
                                 <view class="godmon">￥{{ moneyFilter(item.price) }}</view>
                             </view>
@@ -77,7 +81,8 @@
                 </view>
                 <view class="godbtn">
                     <TnButton width="100%" height="90" text-color="#fff" font-size="32rpx" bg-color="#29c86f"
-                        border-color="#E3E3E3" @click="gotoBalance">确认充值</TnButton>
+                              border-color="#E3E3E3" @click="gotoBalance">确认充值
+                    </TnButton>
                 </view>
             </view>
         </TnPopup>
@@ -98,17 +103,19 @@ import { getAccountInfo, getConfig, setConfig, smartNotifyPackage, smartOrderCre
 import { onLoad, onShow } from "@dcloudio/uni-app"
 // import { TempStorage } from '@/libs/temp-storage'
 import { ref, reactive } from "vue"
+
 interface Data {
     accountInfo: any,
     goodsShow: boolean,
     current: number,
     goodsInfo: any
 }
+
 const data = reactive<Data>({
     accountInfo: {},
     goodsShow: false,
     current: 0,
-    goodsInfo: {},
+    goodsInfo: {}
 })
 
 const deviceList = ref([])
@@ -122,27 +129,27 @@ onShow(() => {
 // 跳转下单结算页面
 const gotoBalance = () => {
     smartOrderCreate(data.goodsInfo.options[data.current].id)
-        .then((res: any) => {
-            console.log("创建订单成功")
-            return smartPlatformPay({
-                orderId: res,
-                // #ifdef MP-WEIXIN
-                openid: uni.getStorageSync('openid')
-                // #endif
-            })
-        }).then((pay: any) => {
-            console.log("支付成功", JSON.stringify(pay))
-            data.goodsShow = false
-            return packPayment(pay.payParams, true)
-        }).then(() => {
-            uni.$u.toast("支付成功，请前往消费记录查看")
-            getAccountInfo()
-        }).catch((err: any) => {
+          .then((res: any) => {
+              console.log("创建订单成功")
+              return smartPlatformPay({
+                  orderId: res,
+                  // #ifdef MP-WEIXIN
+                  openid: uni.getStorageSync('openid')
+                  // #endif
+              })
+          }).then((pay: any) => {
+        console.log("支付成功", JSON.stringify(pay))
+        data.goodsShow = false
+        return packPayment(pay.payParams, true)
+    }).then(() => {
+        uni.$u.toast("支付成功，请前往消费记录查看")
+        getAccountInfo()
+    }).catch((err: any) => {
 
-            data.goodsShow = false
-            console.log(err)
-            uni.$u.toast("支付失败")
-        })
+        data.goodsShow = false
+        console.log(err)
+        uni.$u.toast("支付失败")
+    })
 }
 // 获取充值数据
 const getGoodsInfo = () => {
@@ -219,9 +226,9 @@ const getAccount = () => {
         console.log(res)
     })
 }
-    // computed: {
-    //     ...mapState("about", ["pubMesage", "userinfo"])
-    // },
+// computed: {
+//     ...mapState("about", ["pubMesage", "userinfo"])
+// },
 
 </script>
 
@@ -288,6 +295,10 @@ const getAccount = () => {
                 width: 164rpx;
                 display: flex;
                 justify-content: flex-end;
+
+                :deep(.tn-button--plain) {
+                    border-radius: 100rpx !important;
+                }
             }
         }
 
@@ -343,8 +354,9 @@ const getAccount = () => {
 }
 
 .tainerfot {
-
     .fotbox {
+        padding-bottom: constant(safe-area-inset-bottom);
+        padding-bottom: env(safe-area-inset-bottom);
         background-color: #FFFFFF;
         position: fixed;
         left: 0;
@@ -358,6 +370,10 @@ const getAccount = () => {
             padding: 20rpx 30rpx;
             display: flex;
             justify-content: center;
+
+            :deep(.tn-button) {
+                border-radius: 100rpx;
+            }
         }
     }
 

@@ -254,7 +254,7 @@ const changeGroup = (e: any, index: number) => {
 
 // 单个选择
 const changeSingle = (e: any, index: number) => {
-    console.log('单选', index)
+    console.log('单选',index);
 
     // 判断店铺下的商品是否已全部选择
     const shopAllChecked = data.dataList[index].productList.every((obj: any) => {
@@ -339,7 +339,7 @@ const clickBtn = () => {
         bcNotify.value.show('您还没选择商品哦')
         return
     }
-    const listData : any = []
+    let listData : any = []
 
     for (const i in data.dataList) {
         const dataItem = data.dataList[i]

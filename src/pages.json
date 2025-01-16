@@ -1543,7 +1543,7 @@
 			}
 		},
 		{
-			"root": "Mall",
+			"root": "pagesMall",
 			"pages": [
 				{
                     "path": "pages/shop/shopDetail",

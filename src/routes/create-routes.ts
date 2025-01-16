@@ -3,8 +3,8 @@ import { pageController } from '@bc/uni-tools'
 
 /**
  * 内容相关路由
- * 
- * 
+ *
+ *
  */
 
 // 频道列表页
@@ -141,13 +141,13 @@ export const gotoInviteFriends = (query: any) => {
     return pageController.push(route)
 }
 
-/** 创建沙龙 
- * 
+/** 创建沙龙
+ *
  * query:{
  *  ischange:1,   0正常发布 1修改
  *  id:''   修改时必传表示修改的沙龙id
  * }
- * 
+ *
 */
 
 export const gotoUpsalonPostsPage = (query:any) => {
@@ -160,13 +160,13 @@ export const gotoUpsalonPostsPage = (query:any) => {
 
 
 /** 创建沙龙帖子
- * 
+ *
  * query:{
  *  ischange:1,   0正常发布 1修改
  *  salonId:''   沙龙id
  *  id: '' 修改的沙龙帖子id
  * }
- * 
+ *
 */
 export const gotoUpPosts = (query:any) => {
     const route = {
@@ -249,8 +249,8 @@ export const gotoCreateSchool = () => {
 
 /**
  * 数据助手
- * query => 接收作品id以及作品类型 
- * 
+ * query => 接收作品id以及作品类型
+ *
  * articleId => 表示作品id
  * articleType => 表示作品类型 (1表示文章类型，2表示视频类型)
  */
@@ -305,7 +305,7 @@ export const gotochatDetail = (query:any) => {
  * 1 => 聊天
  * 2 => 发现
  * 3 => 创作短片
- * 
+ *
  */
 export const gotovideoPreview = (query:any) => {
     const route = {
@@ -338,7 +338,7 @@ export const gotoenjoyRecord = ( isdel:number = 0) => {
  * auditId 传ischange时必传 表示内容审核id
  * type 传ischange时必传 表示内容类型
  * isEvent 默认不传 1表示发布内容默认标记为大事记
- * 
+ *
  */
 export const gotoUpenjoyRecord = (query:any) => {
     const route = {
@@ -351,7 +351,7 @@ export const gotoUpenjoyRecord = (query:any) => {
 }
 
 /** 创建圈子 / 修改我的信息
- * ischange ==> 默认创建，1表示修改 
+ * ischange ==> 默认创建，1表示修改
  */
 export const gotocreateEnjoy = (query : any) => {
     const route = {
@@ -400,9 +400,9 @@ export const gotoLiveShow = (query: any, ispush: number = 1) => {
         query,
     } as any
     if (ispush == 1) {
-        return pageController.replace(route)        
+        return pageController.replace(route)
     }else{
-        return pageController.push(route)        
+        return pageController.push(route)
     }
 }
 
@@ -413,9 +413,9 @@ export const gotowxLive = (query:any, ispush: number = 1) => {
         query,
     } as any
     if (ispush == 1) {
-        return pageController.replace(route)        
+        return pageController.replace(route)
     }else{
-        return pageController.push(route)        
+        return pageController.push(route)
     }
 }
 
@@ -475,11 +475,11 @@ export const gotoenjoySecurity = () => {
 
 /** 权限管理 */
 /**
- * type 管理类型 
- *  1表示记录权限 
+ * type 管理类型
+ *  1表示记录权限
  *  2表示分享下载权限
  *  3表示邀请权限
- * 
+ *
  */
 export const gotoenjoyJurisdiction = (query:any) => {
     const route = {
@@ -492,7 +492,7 @@ export const gotoenjoyJurisdiction = (query:any) => {
 /** 商户提现(收益提现) */
 export const gotowithdrawalIncome = () => {
     const route = {
-        path: "/pagesCnt/pages/redEnvelope/withdrawalIncome",
+        path: "/pagesUser/pages/redEnvelope/withdrawalIncome",
         query: {}
     } as any
     return pageController.push(route)
@@ -523,7 +523,7 @@ export const Upcontent = (query:QueryParams) => {
 }
 
 /** 新版发布
- * 
+ *
  * query参数包含:
  *  是否为编辑 ischange 默认不传为0表示发布
  *  发布时必须接收一个临时对象，UpurlList

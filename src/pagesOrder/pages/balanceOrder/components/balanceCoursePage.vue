@@ -1,7 +1,7 @@
 <template>
     <view class="container">
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
@@ -64,7 +64,7 @@
         </z-paging>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
 
@@ -115,7 +115,7 @@ onMounted(() => {
         coursetitle: props.coursetitle,
     }
     console.log('data.cardObj',data.cardObj);
-    
+
     data.itemId = props.itemId
 })
 
@@ -141,8 +141,8 @@ const uppay = (orderId:string) => {
     })
     const openid = uni.getStorageSync('openid')
     /* 获取支付参数 */
-    houseOrderPay({ 
-        orderId, 
+    houseOrderPay({
+        orderId,
         openid: openid != '' ? openid : undefined,
         subAppId: 'wxba2158972baec41b',
         subopenId: openid,
@@ -173,7 +173,7 @@ const tocourseOrderDetail = (orderId:any) => {
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .content{
     padding: 20rpx;
@@ -319,4 +319,3 @@ const tocourseOrderDetail = (orderId:any) => {
     }
 }
 </style>
-  

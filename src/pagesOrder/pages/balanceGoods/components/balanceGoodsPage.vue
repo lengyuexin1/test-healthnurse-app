@@ -1,7 +1,7 @@
 <template>
     <view class="container" >
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
@@ -96,7 +96,7 @@
                 </block>
 
                 <view class="bala-money" >
-                    
+
                     <view class="bala-mon-li row i-center j-between">
                         <view class="row i-center">
                             <view class="bala-mon-name">通用优惠券</view>
@@ -139,7 +139,7 @@
                         </view>
                     </view>
                 </view>
-                
+
             </template>
             <BCNotify ref="bcNotify"></BCNotify>
 
@@ -150,7 +150,7 @@
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive, toRef, computed, onMounted, nextTick,  } from 'vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
@@ -238,7 +238,7 @@ const delcomma = computed(()=>(img:string)=>{
     else {
         return ''
     }
-}) 
+})
 
 
 // 是否是折扣券
@@ -304,13 +304,13 @@ const placeOrder = () => {
     }
 
     console.log('buyData',buyData);
-    
+
     /* 生成订单 */
     submitOrder(buyData).then((res:any)=>{
         uppay(res)
     }).catch((err:any)=>{
         console.log('err1',err);
-        
+
         bcNotify.value.error(err.message)
     })
 
@@ -323,8 +323,8 @@ const editNumber = (value: number) => {
     }
     initChoice();
     calculationPrice();
-    
-    
+
+
 
 }
 
@@ -372,7 +372,7 @@ const getShopCouponList = (item:any, index:number, isInit: boolean = false) => {
             })
             return
         }
-        
+
         nextTick(()=>{
             isInit ? initgetCoupon(index) : getCoupon(index)
         })
@@ -382,7 +382,7 @@ const getShopCouponList = (item:any, index:number, isInit: boolean = false) => {
 
 // 通用优惠券
 const getPingCouponList = (isInit: boolean = false) => {
-    
+
     // 使用店铺优惠券前价格
     let money = 0
     const itemIds = [] as any
@@ -405,7 +405,7 @@ const getPingCouponList = (isInit: boolean = false) => {
         itemId: itemIds
     }).then((res:any)=>{
         data.platCoupsList = res
-        
+
         if (!res.length) {
             nextTick(()=>{
                 isInit ? initgetcurrencyCoupon() : getcurrencyCoupon(0)
@@ -464,7 +464,7 @@ const calculationPrice = (isInitCoupon:boolean = false) => {
         })
         .catch((err) => {
             console.log('err2',err);
-            
+
             nextTick(()=>{
                 bcNotify.value.error(err.message);
                 refCoup.value.closeCpup();
@@ -492,17 +492,17 @@ const uppay = (orderId:string) => {
     const openid = uni.getStorageSync('openid')
 
     console.log('openid', openid);
-    
+
 
     /* 获取支付参数 */
-    houseOrderPay({ 
-        orderId, 
+    houseOrderPay({
+        orderId,
         openid: openid != '' ? openid : undefined,
         subAppId: 'wxba2158972baec41b',
         subopenId: openid,
     }).then(async (res:any) => {
         console.log('支付参数res',res);
-        
+
         /* 调起支付 */
         // #ifdef MP-WEIXIN || APP-PLUS
         packPayment(res.payParams).then((ret:any) => {
@@ -528,7 +528,7 @@ const uppay = (orderId:string) => {
         // #endif
     }).catch((err) => {
         console.log('err3',err);
-        
+
         bcNotify.value.error(err.message);
     }).finally(() => {
         uni.hideLoading()
@@ -583,9 +583,9 @@ const getCarPurchase = (list:any) => {
 
         initChoice();
         calculationPrice();
-        
+
     })
-    
+
 }
 
 // 商品直接结算
@@ -623,7 +623,7 @@ const getGodsPurchase = ({optionDetailId, shopName, quantity, shopIcon, type}) =
 
     }).catch((err:any) => {
         console.log('err4',err);
-        
+
         nextTick(()=>{
             bcNotify.value.error(err.message);
             setTimeout(() => {
@@ -632,14 +632,14 @@ const getGodsPurchase = ({optionDetailId, shopName, quantity, shopIcon, type}) =
         })
     })
 
-} 
+}
 
 // 初始化获取优惠券
 const initChoice = () => {
     merchandise.value.forEach((item:any,index:number) => {
         getShopCouponList(item,index,true)
     })
-    
+
 
 }
 
@@ -687,10 +687,10 @@ const selectCoup = (index:number,item:any, isInitCoupon: boolean = false) => {
             ...item
         }
     })
-    
+
     merchandise.value = [...newArr]
 
-    updateKey.value += 1 
+    updateKey.value += 1
 
     // 处理默认选中的优惠券
     if (item) {
@@ -698,7 +698,7 @@ const selectCoup = (index:number,item:any, isInitCoupon: boolean = false) => {
     }else{
         data.grantCoupsList = []
     }
-    
+
     calculationPrice(isInitCoupon)
 
 }
@@ -706,7 +706,7 @@ const selectCoup = (index:number,item:any, isInitCoupon: boolean = false) => {
 const setcurrencyCoupon = (index:number,item:any) => {
     // 处理默认选中的通用优惠券
     if (item) {
-        data.platCoups = item  
+        data.platCoups = item
         data.platCoupsCheckList.splice(0,1,item.grantedId)
 
     }else{
@@ -719,7 +719,7 @@ const setcurrencyCoupon = (index:number,item:any) => {
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .conbox{
     padding: 20rpx;
@@ -878,7 +878,7 @@ const setcurrencyCoupon = (index:number,item:any) => {
         }
     }
 
-    
+
 
     .bala-handle-tarea{
         flex: 1;
@@ -1067,4 +1067,3 @@ const setcurrencyCoupon = (index:number,item:any) => {
     height: 300rpx;
 }
 </style>
-  

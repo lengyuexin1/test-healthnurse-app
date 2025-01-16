@@ -1,9 +1,9 @@
 import { pageController } from '@bc/uni-tools'
 
 /**
- * 
+ *
  * 适品相关路由
- * 
+ *
  */
 
  export const gotogoodsDetail = (itemId:string, livePlayId?: string) => {
@@ -33,7 +33,7 @@ export const gotoRegister = (query? : any) => {
 // 跳转到 分类
 export const gotoGoodsSort = () => {
     const route = {
-        path: '/Mall/pages/sort/sort',
+        path: '/pagesMall/pages/sort/sort',
         query: {}
     } as any
     return pageController.push(route)
@@ -42,7 +42,7 @@ export const gotoGoodsSort = () => {
 // 跳转到 优选店铺
 export const gotoGoodsPerferShop = () => {
     const route = {
-        path: '/Mall/pages/perferShop/perferShop',
+        path: '/pagesMall/pages/perferShop/perferShop',
         query: {}
     } as any
     return pageController.push(route)

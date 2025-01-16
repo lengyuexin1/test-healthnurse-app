@@ -30,10 +30,10 @@
                     <image v-else class="imgBox" :src="getAssetsUrl('/device/home/ligthed.svg')" alt="" />
                 </view>
             </view>
-        </view>
+        </view> -->
     </z-paging>
 </template>
-   
+
 <script setup lang="ts">
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -79,7 +79,7 @@ const trunOp = (item: any, index: number) => {
 }
 
 </script>
-   
+
 <style scoped lang="scss">
 page {
     background: #F8F9F9;
@@ -158,4 +158,3 @@ page {
     }
 }
 </style>
-  

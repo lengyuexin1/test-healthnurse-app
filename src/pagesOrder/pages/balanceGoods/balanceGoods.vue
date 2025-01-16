@@ -4,7 +4,7 @@
         <verifyAccount ref="accountUserRef" ></verifyAccount>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app'
@@ -34,7 +34,7 @@ onLoad((option:any) => {
     console.log('确认订单option',option);
     console.log('确认订单option.uniqueId',option.uniqueId);
     console.log('确认订单option.payJSON',option.payJSON);
-    
+
     if (option.uniqueId) {
         console.log('小程序正常结算');
         data.uniqueId = option.uniqueId
@@ -58,7 +58,7 @@ onLoad((option:any) => {
 
 onShow((option:any) => {
     console.log('支付页面onshow。option',option);
-    
+
 })
 
 onReady(()=>{
@@ -72,7 +72,6 @@ onReady(()=>{
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 </style>
-  
