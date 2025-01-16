@@ -1,22 +1,90 @@
 <template>
     <pageContainer :loading="data.pageLoading">
     <view class="contraner">
-        <!-- <z-paging ref="paging" v-model="data.dataList" @query="queryList" :defaultPageSize="10" :refresher-enabled="false" :hide-empty-view="true"> -->
-            <view class="head">
-                    <view class="tabox row j-center">
-                        <view
-                            class="tabli"
-                            :class="{ set: data.current == index }"
-                            v-for="(item,index) in navList"
-                            :key="index"
-                            @click="tabsChange(index)"
-                        >{{item.name}}</view>
+        <z-paging ref="paging" v-model="data.dataList" @query="queryList" :defaultPageSize="10" :refresher-enabled="false" :hide-empty-view="true">
+        <template v-if="data.dataList.length">
+            <view class="cart-wrap" v-for="(item, index) in data.dataList" :key="index">
+                <view class="list">
+                    <view class="shopInfo tn-flex-row">
+                        <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="item.checkedGroup" @change="changeGroup($event, index)"></TnCheckbox>
+                        <view class="info tn-flex-row" @tap="clickShop(item.shopId)">
+                            <image class="thumb" :src="item.shopIcon" mode="scaleToFill" />
+                            {{ item.shopName }}<TnIcon name="right" color="#8D8D8D" />
+                        </view>
                     </view>
+                    <TnSwipeAction @select="delGoods($event, item, index)">
+                        <TnSwipeActionItem v-for="(ele, idx) in item.productList" :key="idx" :options="options" :auto-close="false">
+                            <view class="goodsList tn-flex-center-center" @tap="clickGoods(ele)">
+                                <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="ele.checked" @change="changeSingle($event, index)"></TnCheckbox>
+                                <view class="goodsInfo tn-flex-row">
+                                    <view class="left tn-flex-row">
+                                        <image class="left_img" :src="ele.image" mode="scaleToFill" />
+                                        <view class="ItemDeleted" v-if="ele.isItemDeleted == 1">已下架</view>
+                                    </view>
+                                    <view class="right tn-flex-column">
+                                        <view class="title tn-text-ellipsis-2">{{ ele.title }}</view>
+                                        <view class="subtitle tn-text-ellipsis-1">{{ ele.subtitle }}</view>
+                                        <view class="price-wrap tn-flex-center-between" @tap.stop>
+                                            <view class="price">{{ priceFormat(ele.price) }}</view>
+                                            <TnNumberBox v-model="ele.quantity" font-size="24rpx" size="sm" :min="1" :input-disabled="false" @change="quantityChange($event, ele.id)" />
+                                        </view>
+                                        <!-- <view class="tips" v-if="ele.preferentialPrice">优惠价￥{{ ele.preferentialPrice / 100 }}</view> -->
+                                    </view>
+                                </view>
+                            </view>
+                        </TnSwipeActionItem>
+                    </TnSwipeAction>
+                </view>
             </view>
-            <view class="swiper">
-                <!-- <carServe :adresMation="defAddrs" v-if="data.current === 0"></carServe>
-                <car-goods :adresMation="defAddrs" v-else ref="godcart"></car-goods> -->
+        </template>
+        <template v-else>
+            <view class="not_data_box">
+                <image
+                    class="not_data_img"
+                    :src="getAssetsUrl('/empty/empty_icon_data.png')"
+                    mode="scaleToFill"
+                />
+                <view class="not_data_text">购物车暂无内容~</view>
             </view>
+        </template>
+
+
+        <view class="more_list_box">
+            <view class="more_title">
+                猜你喜欢
+            </view>
+            <view class="more_list">
+                <WaterfallsFlow :wfList="data.moreGoodList" @waterItem="clickwaterItem"></WaterfallsFlow>
+            </view>
+        </view>
+
+        <template #bottom>
+            <view class="btn tn-flex-center-between animate__animated animate__faster animate__slideInUp" v-if="data.dataList.length">
+                <view class="tn-flex-row" style="align-items: center;">
+                    <TnCheckbox custom-class="allCheckbox" size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="data.allChecked" @change="allChange">全选</TnCheckbox>
+                    <view class="total tn-flex-column">
+                        <view>合计：<text class="price">{{ priceFormat(data.submitPrice) }}</text></view>
+                        <view class="tips">共{{ data.submitTotal }}件</view>
+                    </view>
+                </view>
+                <view :class="[data.submitTotal > 0 ? '' : 'btn-disabled']">
+                    <TnButton shape="round" width="220rpx" height="76rpx" font-size="30rpx" bg-color="#EA3E1A" text-color="#FFFFFF" :debounce="true" @tap="clickBtn">
+                        去结算
+                    </TnButton>
+                </view>
+            </view>
+        </template>
+        </z-paging>
+        <BCPopup
+            ref="bcPopup"
+            title="提示"
+            content="是否确认删除该商品？"
+            subBtn="确认"
+            cancelBtn="取消"
+            subBtnColor="#EA3E1A"
+            @clickLeftBtn="confirmDel"
+            @clickRightBtn="cancel">
+        </BCPopup>
         <BCNotify ref="bcNotify"></BCNotify>
     </view>
     </pageContainer>

@@ -25,7 +25,7 @@
          </view>
 	</view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, watch, nextTick, getCurrentInstance } from 'vue'
 import waterfallItem from '../waterfallItem/waterfallItem.vue'
@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<{
     wfList:any
 }>(), {
     is_statistics: false,
-    wfList:[]
+    wfList: []
 })
 
 
@@ -62,13 +62,13 @@ interface Events {
 const emit = defineEmits<Events>()
 
 watch(() => props.wfList, (newVal, oldVal) => {
-    data.allList = data.handleRecovery ? 
-    newVal.filter((n:any) =>  {
-        return n.templateCode != 65798
-    }) : newVal;
+    data.allList = data.handleRecovery ?
+        newVal.filter((n:any) =>  {
+            return n.templateCode != 65798
+        }) : newVal
 
-    nextTick(()=>{
-        waterFall();
+    nextTick(() => {
+        waterFall()
     })
 
 
@@ -78,8 +78,8 @@ onMounted(() => {
 })
 
 // #ifdef APP-PLUS
-const systemInfo = uni.getSystemInfoSync();
-data.handleRecovery = systemInfo.deviceBrand === "xiaomi";
+const systemInfo = uni.getSystemInfoSync()
+data.handleRecovery = systemInfo.deviceBrand === "xiaomi"
 // #endif
 
 
@@ -97,12 +97,12 @@ const waterFall = () => {
     }
 }
 
-const clickwaterItem = (item:any) =>{
-    emit('waterItem',item)
+const clickwaterItem = (item:any) => {
+    emit('waterItem', item)
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .wf-page {
     /* #ifndef APP-NVUE */
@@ -118,4 +118,4 @@ const clickwaterItem = (item:any) =>{
 	width: 360rpx;
 }
 </style>
- 
+
