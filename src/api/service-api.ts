@@ -1,38 +1,47 @@
 import { openHttp, http } from "@bc/api"
 import type { _v1_bc_admin_article_contentList_post_req } from "@bc/api/types/content/api-types"
-import type { _v1_bc_app_activity_list_get_req, _v1_bc_app_coupon_for_item_get_req, _v1_bc_app_health_detail_get_req, _v1_bc_app_health_list_post_req, _v1_bc_app_item_all_post_req, _v1_bc_app_item_detail_get_req } from "@bc/api/types/order/api-types"
+import type { _v1_bc_app_activity_list_get_req, _v1_bc_app_coupon_for_item_get_req, _v1_bc_app_health_detail_get_req, _v1_bc_app_health_list_post_req, _v1_bc_app_item_all_post_req, _v1_bc_app_item_detail_get_req, _v1_bc_public_app_item_detail_get_req } from "@bc/api/types/order/api-types"
 import type { _v1_bc_api_comment_commodity_list_post_req, _v1_bc_api_comment_score_get_req, _v1_bc_app_favorite_itemAdd_post_req, _v1_bc_app_favorite_itemCancel_post_req, _v1_bc_app_shop_getBaseInfo_get_req, _v1_bc_app_shop_organizationDetail_get_req } from "@bc/api/types/user/api-types"
 
 /**
  * 康养类型api
- * 
+ *
  */
 
 
 /** 乐悠康养类目 */
-export const getcategoryList = (req:any)=>{
-    return openHttp.order.get('/v1/bc/app/category_show/list',req)
+export const getcategoryList = (req:any) => {
+    return openHttp.order.get('/v1/bc/app/category_show/list', req)
 }
 
+/* 服务加入购物车 */
+export const addServeCart = async (params: { optionId: string, hospitalId?: string }) => {
+    return http.order.post('/v1/bc/app/cart/create', params)
+}
+
+/** 获取服务详情/服务规格列表 */
+export const getServeDetail = async (req:any) => {
+    return http.order.get('/v1/bc/public/app/item/detail', req)
+}
 // changev2
 export const categoryShow = (req:any) => {
     // 云课堂
-    return openHttp.content.get('/v1/bc/public/app/article/categoryShow/list',req)
+    return openHttp.content.get('/v1/bc/public/app/article/categoryShow/list', req)
 }
 
 /** 乐悠康养类目列表 */
 export const getserviveList = (req:any) => {
-    return http.order.post('/v1/bc/app/category_show/item/list',req)
+    return http.order.post('/v1/bc/app/category_show/item/list', req)
 }
 
 /** 获取活动轮播 */
-export const getactivitySwiper = (req:any) =>{
-    return http.order.get('/v1/bc/public/app/activity/list',req)
+export const getactivitySwiper = (req:any) => {
+    return http.order.get('/v1/bc/public/app/activity/list', req)
 }
 
 // 内容中心活动列表
 export const activityList = (req: any) => {
-    // 
+    //
     return http.content.post('/v1/bc/app/activity/list/new', req)
 }
 
@@ -127,28 +136,28 @@ export const delPatient = (req: _v1_bc_app_patient_del_post_req) => {
 /** 机构详情 */
 // changev2
 export const organizationDetail = (req:_v1_bc_app_shop_organizationDetail_get_req) => {
-    return openHttp.user.get('/v1/bc/public/app/shop/organizationDetail',req)
+    return openHttp.user.get('/v1/bc/public/app/shop/organizationDetail', req)
 }
 
 /** 机构产品列表 */
 export const healthlist = (req:_v1_bc_app_health_list_post_req) => {
-    return openHttp.order.post('/v1/bc/public/app/health/list',req)
+    return openHttp.order.post('/v1/bc/public/app/health/list', req)
 }
 
 /** 机构产品详情 */
 export const healthdetail = (req:_v1_bc_app_health_detail_get_req) => {
-    return http.order.get('/v1/bc/app/health/detail',req)
+    return http.order.get('/v1/bc/app/health/detail', req)
 }
 
 /** 机构代金券详情 */
 export const voucherdetail = (req:any) => {
-    return http.order.get('/v1/bc/admin/health/voucher/detail',req)
+    return http.order.get('/v1/bc/admin/health/voucher/detail', req)
 }
 
 /** 机构列表 */
 // changev2
 export const shoplist = (req:any) => {
-    return openHttp.post('api/search/v1/bc/public/es/shop/list',req)
+    return openHttp.post('api/search/v1/bc/public/es/shop/list', req)
 }
 
 /** 机构推荐列表 */
@@ -159,10 +168,10 @@ export const organizationList = (req: _v1_bc_app_shop_organizationList_post_req)
 /** 轮播搜索词 */
 // changev2
 export const featured = (req:any) => {
-    return http.post('api/search/v1/bc/public/es/featured',req)
+    return http.post('api/search/v1/bc/public/es/featured', req)
 }
 
 // 康养屯主页类目
 export const servicePageChannel = (req:any) => {
-    return openHttp.content.get('/v1/bc/public/page/channel',req)
+    return openHttp.content.get('/v1/bc/public/page/channel', req)
 }

@@ -1,11 +1,10 @@
-<template>
+<template> 
     <view class="wf-page">
         <!--    left    -->
          <view>
              <view id="left" v-if="data.leftList.length">
-                <template v-for="(item,index) in data.leftList" :key="item.id">
+                <template v-for="(item,index) in data.leftList" :key="index">
                     <view  class="wf-item">
-                        <!-- :is_statistics="is_statistics"  -->
                         <waterfallItem :isSmall="false" :direction="1" :item="item" @clickwaterItem="clickwaterItem"/>
                     </view>
                 </template>
@@ -15,9 +14,8 @@
          <!--    right    -->
          <view>
              <view id="right" v-if="data.rightList.length">
-                <template v-for="(item,index) in data.rightList" :key="item.id">
+                <template v-for="(item,index) in data.rightList" :key="index">
                     <view   class="wf-item">
-                        <!-- :is_statistics="is_statistics" -->
                         <waterfallItem :isSmall="index == 0" :direction="2" :item="item" @clickwaterItem="clickwaterItem"/>
                     </view>
                 </template>
@@ -25,17 +23,17 @@
          </view>
 	</view>
 </template>
-
+    
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, watch, nextTick, getCurrentInstance } from 'vue'
-import waterfallItem from '../waterfallItem/waterfallItem.vue'
+import waterfallItem from './waterfall-item.vue'
 
 const props = withDefaults(defineProps<{
     is_statistics?: boolean,
-    wfList:any
+    wfList:any,
 }>(), {
     is_statistics: false,
-    wfList: []
+    wfList:[],
 })
 
 
@@ -62,24 +60,27 @@ interface Events {
 const emit = defineEmits<Events>()
 
 watch(() => props.wfList, (newVal, oldVal) => {
-    data.allList = data.handleRecovery ?
-        newVal.filter((n:any) =>  {
-            return n.templateCode != 65798
-        }) : newVal
+    data.allList = data.handleRecovery ? 
+    newVal.filter((n:any) =>  {
+        return n.templateCode != 65798
+    }) : newVal;
 
-    nextTick(() => {
-        waterFall()
+    nextTick(()=>{
+        waterFall();
     })
 
 
 }, { immediate: true, deep: true })
 
+
 onMounted(() => {
+    console.log('props.wfList',props.wfList);
+    
 })
 
 // #ifdef APP-PLUS
-const systemInfo = uni.getSystemInfoSync()
-data.handleRecovery = systemInfo.deviceBrand === "xiaomi"
+const systemInfo = uni.getSystemInfoSync();
+data.handleRecovery = systemInfo.deviceBrand === "xiaomi";
 // #endif
 
 
@@ -97,12 +98,12 @@ const waterFall = () => {
     }
 }
 
-const clickwaterItem = (item:any) => {
-    emit('waterItem', item)
+const clickwaterItem = (item:any) =>{
+    emit('waterItem',item)
 }
 
 </script>
-
+  
 <style lang="scss" scoped>
 .wf-page {
     /* #ifndef APP-NVUE */
@@ -115,7 +116,7 @@ const clickwaterItem = (item:any) => {
 }
 
 .wf-item {
-	width: 360rpx;
+	width: 350rpx;
 }
 </style>
-
+ 

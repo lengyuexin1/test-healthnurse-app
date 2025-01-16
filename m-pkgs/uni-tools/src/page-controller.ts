@@ -2,7 +2,7 @@ import { UrlTools } from "@bc/base"
 
 /** 初始化 */
 const debug = true
-
+import authGuard from '@/sys/auth-guard'
 
 import createCollectAndReport from "@/utils/collection"
 import { Debounce } from '@/libs/antivibthrot'
@@ -15,6 +15,9 @@ import { Debounce } from '@/libs/antivibthrot'
  * 页面控制器
  * TODO 后续增加各种路由模式
  */
+
+
+
 class PageController {
     // outId: null | number
 
@@ -40,8 +43,8 @@ class PageController {
             uni.navigateTo({
                 url,
                 success: () => {
-                    console.log('pushpushpush');
-                    
+                    console.log('pushpushpush')
+
                     reslove()
                     this.onGlance()
 
@@ -55,14 +58,48 @@ class PageController {
             })
         })
     }
+    isTokenPush(route: IRoute) {
+        const url = UrlTools.buildUrlByParams(route.path, route.query)
+        if (!uni.getStorageSync('MINI_USER@app_token')) {
+            uni.showModal({
+                content: '登录已失效, 请重新登陆',
+                success: function(res) {
+                    if (res.confirm) {
 
+                        authGuard.gotoLogin({ page: 1 })
+                    }
+                    else if (res.cancel) {
+                        return
+                    }
+                }
+            })
+            return
+        }
+
+        return new Promise<void>((reslove, reject) => {
+
+            uni.navigateTo({
+                url,
+                success: () => {
+                    reslove()
+                    this.onGlance()
+                },
+                fail: (result) => {
+                    console.error('push fail: ', result)
+                    const err = new Error('跳转失败..')
+                    err.cause = result
+                    reject(err)
+                }
+            })
+        })
+    }
     replace(route: IRoute) {
         const url = UrlTools.buildUrlByParams(route.path, route.query)
         return new Promise<void>((reslove, reject) => {
             uni.redirectTo({
                 url,
                 success: () => {
-                    console.log('replacereplacereplace');
+                    console.log('replacereplacereplace')
 
                     reslove()
                     this.onGlance()
@@ -83,7 +120,7 @@ class PageController {
             uni.reLaunch({
                 url,
                 success: () => {
-                    console.log('reLaunchreLaunchreLaunch');
+                    console.log('reLaunchreLaunchreLaunch')
 
                     reslove()
                     this.onGlance()
@@ -140,9 +177,9 @@ class PageController {
         // this.outId && clearTimeout(this.outId)
         // this.outId = setTimeout(() => {
         // }, 1000)
-        Debounce(()=>{
+        Debounce(() => {
             createCollectAndReport().surfReport()
-        },1000)
+        }, 1000)
 
     }
 

@@ -1,7 +1,7 @@
 <template>
     <view class="contraner">
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
@@ -13,7 +13,7 @@
                             <TnIcon name="left" color="#333333" size="38" :bold="true"/>
                         </view>
                     </template>
-                    
+
                 </bc-page-navbar>
             </template>
             <view class="details_box" v-if="data.detailObj.id">
@@ -190,7 +190,7 @@
                         <view class="more_coupon_left">
                             <view class="more_coupon_left_title">{{ item.name }}</view>
                             <view class="more_coupon_left_desc">
-                                {{item.isRestrictTime==0?'全部时间可用': item.restrictTimeDesc }} | {{`${item.isAccrual==0?'不可累加':`单次可用${item.cntAccrual||0}张`}`}}
+                                {{item.isRestrictTime == 0 ? '全部时间可用' : item.restrictTimeDesc }} | {{`${item.isAccrual == 0 ? '不可累加' : `单次可用${item.cntAccrual || 0}张`}`}}
                             </view>
                             <div class="more_coupon_left_price">￥{{ item.price / 100 }}</div>
 
@@ -330,7 +330,7 @@
                 <image class="shop-service" :src="getAssetsUrl('/leyou/icon/customer_service.png')" mode="scaleToFill" @tap="clickCustomerService" />
 
 
-            </view>            
+            </view>
 
             <BCNotify ref="bcNotify"></BCNotify>
 
@@ -341,7 +341,7 @@
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, getCurrentInstance } from 'vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
@@ -397,22 +397,22 @@ interface Data {
     userId: string,
 }
 const data = reactive<Data>({
-    detailObj:{},
-    swiperIndex:1,
-    rateValue:5,
+    detailObj: {},
+    swiperIndex: 1,
+    rateValue: 5,
     isColl: false,
-    positioning:false,
-    latitude:0,
-    longitude:0,
+    positioning: false,
+    latitude: 0,
+    longitude: 0,
     showmoreroom: false,
-    productList:[],
+    productList: [],
     commentList: [],
-    total:0,
-    needlogin:false,
-    vouchersList:[],
+    total: 0,
+    needlogin: false,
+    vouchersList: [],
 
-    status:1,
-    shareimgUrl:'',
+    status: 1,
+    shareimgUrl: '',
     userId: ''
 
 
@@ -421,11 +421,11 @@ const data = reactive<Data>({
 const emit = defineEmits(["saveShareObj"])
 
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
-const showswiper = computed(()=>(list:any)=>{
+const showswiper = computed(() => (list:any) => {
     if (!list.length) {
         return
     }
@@ -437,7 +437,7 @@ const showswiper = computed(()=>(list:any)=>{
     }
 })
 
-const notright = computed(()=>(list:any, index:number)=>{
+const notright = computed(() => (list:any, index:number) => {
     if (list.length == 1) {
         return true
     }
@@ -449,7 +449,7 @@ const notright = computed(()=>(list:any, index:number)=>{
     }
 })
 
-const showDays = computed(()=>(dayList:any)=>{
+const showDays = computed(() => (dayList:any) => {
     const days = new Date().getDay()
     const findDay = dayList.find((timeItem:any) => {
         return timeItem == days
@@ -465,7 +465,7 @@ const showDays = computed(()=>(dayList:any)=>{
     }
 })
 
-const formatTimeString = computed(()=>(days:any)=>{
+const formatTimeString = computed(() => (days:any) => {
     let timeStr = ""
     days.forEach((daysItem:any) => {
         switch (Number(daysItem)) {
@@ -497,22 +497,22 @@ const formatTimeString = computed(()=>(days:any)=>{
     return timeStr
 })
 
-const getbusinessTime = computed(()=>(timeObj:any)=>{
+const getbusinessTime = computed(() => (timeObj:any) => {
     return businessTime(timeObj)
 })
 
-const getdistance = computed (()=>(lat:number, lng:number)=>{
+const getdistance = computed(() => (lat:number, lng:number) => {
     // 计算距离 传入目标经纬度
     const distance = getDistances(
-            data.latitude,
-            data.longitude,
-            lat,
-            lng
-        )
-        return distance
+        data.latitude,
+        data.longitude,
+        lat,
+        lng
+    )
+    return distance
 })
 
-const getdrivingtime = computed (()=> (lat:number, lng:number)=>{
+const getdrivingtime = computed(() => (lat:number, lng:number) => {
     const distance = getDistances(
         data.latitude,
         data.longitude,
@@ -532,18 +532,18 @@ const getdrivingtime = computed (()=> (lat:number, lng:number)=>{
 })
 
 
-const showRoom = computed(()=>(list:any)=>{
+const showRoom = computed(() => (list:any) => {
     if (!data.showmoreroom) {
-            return list.slice(0, 2)
-        }
-        else {
-            return list
-        }
+        return list.slice(0, 2)
+    }
+    else {
+        return list
+    }
 })
 
 
-const timeformat = computed(()=>(time:number)=>{
-    return formattime(time ,'YYYY-MM-DD')
+const timeformat = computed(() => (time:number) => {
+    return formattime(time, 'YYYY-MM-DD')
 })
 
 
@@ -554,7 +554,7 @@ onMounted(() => {
             getorganizationDetail(props.shopId)
             return
         }
-        PlatformManage.getToken().then((res:any)=>{
+        PlatformManage.getToken().then((res:any) => {
             data.userId = res.id ? res.id : ''
             getorganizationDetail(props.shopId, data.userId)
         })
@@ -564,13 +564,13 @@ onMounted(() => {
     getgodsCommList(props.shopId)
 })
 
-const getorganizationDetail = (shopId:string , userId:string = '') =>{
+const getorganizationDetail = (shopId:string, userId:string = '') => {
 
     organizationDetail({
         shopId,
         userId,
-        isAd:props.isAd
-    }).then((res:any)=>{
+        isAd: props.isAd
+    }).then((res:any) => {
         data.detailObj = res || {}
         data.isColl = res.isFavorite == 1
 
@@ -578,9 +578,9 @@ const getorganizationDetail = (shopId:string , userId:string = '') =>{
             title: res.shopName,
             imageUrl: res.thumb,
             id: res.shopId,
-            desc: '',
+            desc: ''
         }
-        emit('saveShareObj',shareObj)
+        emit('saveShareObj', shareObj)
 
         addShopBrowerHistory({ shopId: data.detailObj.shopId, applyId: data.detailObj.applyId }).then((res) => {})
     })
@@ -593,12 +593,12 @@ const gethealthlist = (shopId:string) => {
         query: {
             shopId
         }
-    }).then((res:any)=>{
+    }).then((res:any) => {
         data.productList = res.data.filter((item:any) => item.typeId == 1)
         data.vouchersList = res.data.filter((item:any) => item.typeId == 2)
-        console.log('data.productList',data.productList);
-        console.log('data.vouchersList',data.vouchersList);
-        
+        console.log('data.productList', data.productList)
+        console.log('data.vouchersList', data.vouchersList)
+
     })
 }
 
@@ -610,7 +610,7 @@ const getgodsCommList = (shopId:string) => {
             itemId: null,
             shopId
         }
-    }).then((res:any)=>{
+    }).then((res:any) => {
         data.commentList = res.data
         data.total = res.total
     })
@@ -639,7 +639,7 @@ const setColl = () => {
             data.isColl = false
             bcNotify.value.show('取消收藏')
         }) : addHealthShop({
-            shopId:data.detailObj.shopId
+            shopId: data.detailObj.shopId
         }).then(() => {
             data.isColl = true
             bcNotify.value.show('收藏成功')
@@ -655,13 +655,13 @@ const address = () => {
         longitude: data.detailObj.lng, //经度
         name: data.detailObj.area,
         address: data.detailObj.address,
-        success: function () {
+        success: function() {
             console.log("success")
         }
     })
 }
 
-const openAuth = () =>{
+const openAuth = () => {
     uni.makePhoneCall({
         phoneNumber: data.detailObj.telephones
     })
@@ -670,7 +670,7 @@ const openAuth = () =>{
 
 const clickVoucherDetails = (id:string) => {
     // 超值券详情
-    voucherDetails({id})
+    voucherDetails({ id })
 }
 
 const tuproduct = (itemId:string) => {
@@ -679,9 +679,10 @@ const tuproduct = (itemId:string) => {
             bcNotify.value.show('请先登录')
             setTimeout(() => {
                 gotoLogin({})
-            }, 2000);
-        }else{
-            gotohealthproductDetails({itemId})
+            }, 2000)
+        }
+        else {
+            gotohealthproductDetails({ itemId })
         }
     })
     // 产品详情
@@ -701,9 +702,9 @@ const tochoiceDetails = (itemId:string, isAd:number, tologin:boolean = false) =>
     // 登录后查询详情
 }
 
-const toimgdetails = (itemId:string) =>{
+const toimgdetails = (itemId:string) => {
     // 机构图集详情
-    toimgInstitution({itemId})
+    toimgInstitution({ itemId })
 }
 
 const clickCustomerService = () => {
@@ -727,7 +728,7 @@ const clickCustomerService = () => {
     })
 }
 
-const instance = getCurrentInstance(); // 获取组件实例
+const instance = getCurrentInstance() // 获取组件实例
 
 // app分享参数
 // #ifndef MP-WEIXIN
@@ -755,11 +756,11 @@ const sharePage = () => {
 }
 // #endif
 
-const shareBox = ref();
+const shareBox = ref()
 // 分享
 const share = () => {
     data.status = 1;
-    (shareBox.value as any).open();
+    (shareBox.value as any).open()
 }
 const closeShare = () => {
     (shareBox.value as any).close()
@@ -769,7 +770,7 @@ const sharePoster = async () => {
 
     const coverUrl = await drawBGIMG(data.detailObj.thumb)
     // 二维码链接图片
-    let qrimg =  await getQrcode(`/pagesService/pages/Servicestore/ServicestoreDetail?shopId=${data.detailObj.shopId}`).then((img:any)=>{
+    const qrimg =  await getQrcode(`/pagesService/pages/Servicestore/ServicestoreDetail?shopId=${data.detailObj.shopId}`).then((img:any) => {
         return img
     })
     const qrimgUrl = await drawBGIMG(qrimg)
@@ -788,20 +789,20 @@ const sharePoster = async () => {
     let accountName = data.detailObj.shopName//作者，店铺名
 
     if (title.length > 8) {
-        title = title.slice(0,8) + "..."
+        title = title.slice(0, 8) + "..."
     }
     if (accountName.length > 8) {
-        accountName = accountName.slice(0,8) + "..."
+        accountName = accountName.slice(0, 8) + "..."
     }
-            
-    const context = uni.createCanvasContext('mycanvas',instance)
+
+    const context = uni.createCanvasContext('mycanvas', instance)
 
 
-    context.clearRect(0, 0, 254, 344);
+    context.clearRect(0, 0, 254, 344)
     // 背景白块
     context.setFillStyle('#ffffff')
     context.fillRect(0, 0, 254, 344)
-            
+
     // 底部白块
     context.setFillStyle('#ffffff')
     context.fillRect(0, 258, 258, 94)
@@ -820,24 +821,24 @@ const sharePoster = async () => {
     context.fillText(accountName, 40, 324)
     context.setFillStyle('#999999')
     context.setFontSize(12)
-            
+
     // 背景图片
     context.drawImage(coverUrl, 0, 0, 275, 255)
 
 
     context.save()
-    context.arc(24, 320, 10, 0, Math.PI * 2);
+    context.arc(24, 320, 10, 0, Math.PI * 2)
     context.fill()//保证图片无bug填充
-    context.clip();//画了圆 再剪切 原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内
+    context.clip()//画了圆 再剪切 原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内
 
     context.drawImage(accountThumb, 14, 310, 20, 20)
     context.restore()
 
     context.draw(
         false,
-        setTimeout( async () => {
+        setTimeout(async () => {
             uni.canvasToTempFilePath({
-                canvasId:'mycanvas',
+                canvasId: 'mycanvas',
                 success: (res:any) => {
                     data.shareimgUrl = res.tempFilePath
                     data.status = 2
@@ -851,10 +852,10 @@ const sharePoster = async () => {
                     })
                 },
                 complete: (ret) => {
-                    console.log('生成中....');
+                    console.log('生成中....')
                     uni.hideLoading()
                 }
-            },instance)
+            }, instance)
         }, 3000)
     )
 
@@ -863,7 +864,7 @@ const sharePoster = async () => {
 
 
 defineExpose({
-    closeShare,
+    closeShare
 })
 
 
@@ -879,7 +880,7 @@ const goback = () => {
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .nav_back {
     line-height: 34px;
@@ -1531,4 +1532,4 @@ const goback = () => {
     z-index: 1000;
 }
 </style>
- 
+

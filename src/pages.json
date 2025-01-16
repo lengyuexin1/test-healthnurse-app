@@ -112,6 +112,14 @@
             "root": "pagesService",
             "pages": [
 				{
+					"path": "pages/serviceDetail/serviceDetail",
+					"style": {
+						"navigationBarTitleText": "搜索",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
 					"path": "pages/search/search",
 					"style": {
 						"navigationBarTitleText": "搜索",
@@ -938,7 +946,7 @@
 					}
 				},
 				{
-					"path": "pages/serviceOrderDetail/serviceOrderDetail",
+					"path": "pages/service/orderDetail/serviceOrderDetail",
 					"style": {
 						"navigationBarTitleText": "服务订单详情",
 						"navigationStyle": "custom",
@@ -992,7 +1000,6 @@
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false
 					}
-
 				},
 				{
 					"path": "pages/refundOrder/refundGoodsOrder",
@@ -1002,8 +1009,6 @@
 						"enablePullDownRefresh": false
 					}
 				},
-		
-			
 				{
 					"path": "pages/refundDetail/refundDetail",
 					"style": {

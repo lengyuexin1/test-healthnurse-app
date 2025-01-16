@@ -44,7 +44,7 @@
                     </view>
                 </view>
                 <view class="sMenu_list_box">
-                    <view class="sMenu_list" :class="{ 'not_bottom' : index == 1 }" v-for="(item,index) in data.sMenuList" :key="index">
+                    <view class="sMenu_list" :class="{ 'not_bottom': index == 1 }" v-for="(item,index) in data.sMenuList" :key="index">
                         <view class="sMenu_item" @click="sMenuItemFun(sMenuItem)" v-for="sMenuItem in item" :key="sMenuItem.id">
                             <image
                                 class="sMenu_img"
@@ -54,7 +54,7 @@
                             <view class="sMenu_text">{{ sMenuItem.name }}</view>
                         </view>
                     </view>
-                    
+
                 </view>
             </view>
 
@@ -85,11 +85,12 @@ import { PlatformManage } from "@bc/sys"
 import { TempStorage } from "@bc/base"
 import BCNotify from '@/components/notify/index.vue'
 import { gotoLogin } from "@/routes/public-routes"
-import { gotouparticle,
+import {
+    gotouparticle,
     gotoUpsalonPostsPage,
     upChatPage,
-    gotoCreateLive, 
-    gotoNewUpcontentPage, 
+    gotoCreateLive,
+    gotoNewUpcontentPage,
     Upcontent } from '@/routes/create-routes'
 import { getQRPage } from '@/api/open-api'
 import { gotoGoodsPerferShop } from '@/routes/goods-routes'
@@ -147,14 +148,14 @@ const data = reactive<Data>({
             { id: 2, icon: '/leyou/goods/sMenu_brand.svg', name: '优选品牌' },
             { id: 3, icon: '/leyou/goods/sMenu_red.svg', name: '卡券/红包' },
             { id: 4, icon: '/leyou/goods/sMenu_news.svg', name: '客服消息' },
-            { id: 5, icon: '/leyou/goods/sMenu_order.svg', name: '我的订单' },
+            { id: 5, icon: '/leyou/goods/sMenu_order.svg', name: '我的订单' }
         ],
         [
             { id: 6, icon: '/leyou/goods/sMenu_car.svg', name: '购物车' },
             { id: 7, icon: '/leyou/goods/sMenu_footprint.svg', name: '浏览记录' },
             { id: 8, icon: '/leyou/goods/sMenu_collection.svg', name: '收藏店铺' },
             { id: 9, icon: '/leyou/goods/sMenu_address.svg', name: '地址管理' },
-            { id: 10, icon: '/leyou/goods/sMenu_help.svg', name: '帮助与客服' },
+            { id: 10, icon: '/leyou/goods/sMenu_help.svg', name: '帮助与客服' }
         ]
     ]
 })
@@ -251,17 +252,17 @@ onReady(() => {
 
 const changeTabbar = (id:number, showrecommend:boolean) => {
     console.log('id', id)
-    console.log('首页初始化11');
+    console.log('首页初始化11')
 
     if (id == 1) {
-        setTimeout(()=>{
+        setTimeout(() => {
             if (platformRef.value) {
                 console.log('首页初始化22');
                 (platformRef.value as any).imgInitIndex()
             }
         }, 600)
-        
-        
+
+
     }
     if (id == 3) {
         // 底部创作入口
@@ -358,29 +359,29 @@ const gotoUpcontent = () => {
         }
 
         denounceCheck().then((res:any) => {
-            console.log('res',res);
-            
+            console.log('res', res)
+
             // if (!res) {
             //     bcNotify.value.show('你暂时没有操作权限')
             //     return
             // }
-            
+
             // #ifdef MP-WEIXIN
             data.showUpMenu = true
             // #endif
 
             // #ifdef APP-PLUS || H5
-            Upcontent({isBackIndex: 1})
+            Upcontent({ isBackIndex: 1 })
             // #endif
         }).catch((err:any) => {
-            console.log('err',err.message);
+            console.log('err', err.message)
             bcNotify.value.error(err.message)
-            
+
         })
 
-        
 
-        
+
+
     })
 
 }
@@ -390,9 +391,9 @@ const fromAlbumImg = () => {
     uni.chooseImage({
         count: 9,
         sourceType: ['album'],
-        success: function (res) {
-            console.log('res.tempFilePath1',res.tempFilePaths);
-            nextUp(res.tempFilePaths,1)
+        success: function(res) {
+            console.log('res.tempFilePath1', res.tempFilePaths)
+            nextUp(res.tempFilePaths, 1)
         }
     })
 }
@@ -402,21 +403,21 @@ const fromCameraImg = () => {
     uni.chooseImage({
         sourceType: ['camera'],
         count: 1,
-        success: function (res) {
-            console.log('res.tempFilePath2',res.tempFilePaths);
-            nextUp(res.tempFilePaths,1)
+        success: function(res) {
+            console.log('res.tempFilePath2', res.tempFilePaths)
+            nextUp(res.tempFilePaths, 1)
         }
     })
-} 
+}
 
 // 相册获取视频
 const fromAlbumVideo = () => {
     uni.chooseVideo({
         count: 1,
         sourceType: ['album'],
-        success: function (res) {
-            console.log('res.tempFilePath3',res.tempFilePath);
-            nextUp([res.tempFilePath],2)
+        success: function(res) {
+            console.log('res.tempFilePath3', res.tempFilePath)
+            nextUp([res.tempFilePath], 2)
 
         }
     })
@@ -427,9 +428,9 @@ const fromCameraVideo = () => {
     uni.chooseVideo({
         count: 1,
         sourceType: ['camera'],
-        success: function (res) {
-            console.log('res.tempFilePath4',res.tempFilePath);
-            nextUp([res.tempFilePath],2)
+        success: function(res) {
+            console.log('res.tempFilePath4', res.tempFilePath)
+            nextUp([res.tempFilePath], 2)
         }
     })
 }
@@ -438,54 +439,54 @@ const nextUp = (selectList:any, fileType:number) => {
 
     uni.showLoading({
         title: '上传中...'
-    });
+    })
 
-    console.log('data.selectList',selectList);
+    console.log('data.selectList', selectList)
     const urlList = [] as any
 
     const promises = selectList.map((item:any) => {
         const url = item
         const name = dayjs().valueOf() + ''
-        console.log('item',item);
-        
+        console.log('item', item)
+
         if (fileType == 2) {
-            console.log('上传视频');
+            console.log('上传视频')
             return new Promise((resolve, reject) => {
                 uploadVideo(url).then((res:any) => {
                     urlList.push({
                         url: res.url,
                         isImg: false,
-                        isVideo: true,
+                        isVideo: true
                     })
                     resolve(true)
                 }).catch((err:any) => {
-                    console.log('上传err',err);
+                    console.log('上传err', err)
                     reject(false)
                 })
             })
         }
-        
-        console.log('上传相片');
+
+        console.log('上传相片')
         return new Promise((resolve, reject) => {
-            uploadFileApi(url,name,'merchant/license').then((res:any) => {
+            uploadFileApi(url, name, 'merchant/license').then((res:any) => {
                 urlList.push({
                     url: res.url,
                     isImg: true,
-                    isVideo: false,
+                    isVideo: false
                 })
                 resolve(true)
             }).catch((err:any) => {
-                console.log('上传err',err);
+                console.log('上传err', err)
                 reject(false)
             })
         })
-    });
+    })
 
     // 上传完成
     Promise.all(promises).then(() => {
-        uni.hideLoading();
+        uni.hideLoading()
 
-        console.log('urlList.urlList',urlList);
+        console.log('urlList.urlList', urlList)
 
         const UpurlList = TempStorage.savewx({
             urlList
@@ -493,15 +494,15 @@ const nextUp = (selectList:any, fileType:number) => {
 
         gotoNewUpcontentPage({
             UpurlList,
-            isBackIndex: 1,
+            isBackIndex: 1
 
         })
 
     }).catch((error) => {
-        uni.hideLoading();
+        uni.hideLoading()
 
-        console.error('上传Error:', error);
-    });
+        console.error('上传Error:', error)
+    })
 }
 
 const sMenuItemFun = (item:any) => {
@@ -544,9 +545,9 @@ const sMenuItemFun = (item:any) => {
 
 // 添加康养屯上报
 const typePreviewReport = (type: string) => {
-    Debounce(()=>{
+    Debounce(() => {
         createCollectAndReport().previewReport(type)
-    },300)
+    }, 300)
 }
 
 </script>
@@ -701,7 +702,7 @@ const typePreviewReport = (type: string) => {
             align-items: center;
             justify-content: space-between;
             margin-bottom: 60rpx;
-            
+
             .sMenu_item{
                 display: flex;
                 align-items: center;
