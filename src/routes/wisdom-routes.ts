@@ -81,7 +81,7 @@ export const gotoSmartDetail = (id: number) => {
 /** 跳转到 房间管理 */
 export const gotoRoomManag = () => {
     const route = {
-        path: '/pagesMall/pages/wisdom/roomManag',
+        path: '/pagesTuya/pages/wisdom/roomManage',
         query: {  }
     } as any
     return pageController.push(route)
