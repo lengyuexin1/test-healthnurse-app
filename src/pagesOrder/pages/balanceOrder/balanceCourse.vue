@@ -18,7 +18,7 @@ import { onLoad, onReady } from '@dcloudio/uni-app'
 
 import balanceCoursePage from './components/balanceCoursePage.vue'
 import { TempStorage } from "@bc/base"
-import verifyAccount from '@/Order/components/verifyAccount.vue'
+import verifyAccount from '@/pagesOrder/components/verifyAccount.vue'
 
 
 interface Props {

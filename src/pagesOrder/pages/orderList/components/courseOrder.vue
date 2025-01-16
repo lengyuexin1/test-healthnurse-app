@@ -70,7 +70,7 @@ import { ref, reactive, computed } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { getserviceOrderList } from '@/api/order-api'
 import { courseOrderDetail } from '@/routes/order-routes'
-import courseCard from '@/Order/components/courseCard.vue'
+import courseCard from '@/pagesOrder/components/courseCard.vue'
 import { formattime } from '@/common/formatTime'
 
 import { gotocourseVideo } from '@/routes/create-routes'

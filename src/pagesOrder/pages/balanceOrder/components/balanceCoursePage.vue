@@ -70,7 +70,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 
 import { TempStorage } from "@bc/base"
 import PageTopbg from "@/components/page-topbg/page-topbg.vue"
-import courseCard from '@/Order/components/courseCard.vue'
+import courseCard from '@/pagesOrder/components/courseCard.vue'
 import BCNotify from '@/components/notify/index.vue'
 import { courseCreate, houseOrderPay } from '@/api/order-api'
 import { packPayment } from '@/libs/pay/pay-tools'

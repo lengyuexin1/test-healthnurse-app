@@ -11,7 +11,7 @@ import { ref, reactive, nextTick } from 'vue'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app'
 
 import goodsOrderDetailPage from './components/goodsOrderDetailPage'
-import verifyAccount from '@/Order/components/verifyAccount.vue'
+import verifyAccount from '@/pagesOrder/components/verifyAccount.vue'
 
 
 interface Data {

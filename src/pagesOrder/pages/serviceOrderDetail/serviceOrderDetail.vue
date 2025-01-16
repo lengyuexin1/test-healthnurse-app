@@ -10,7 +10,7 @@
 import { ref, reactive, nextTick } from 'vue'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app'
 
-import verifyAccount from '@/Order/components/verifyAccount.vue'
+import verifyAccount from '@/pagesOrder/components/verifyAccount.vue'
 
 import orderPageDetail from './components/orderPageDetail.vue'
 

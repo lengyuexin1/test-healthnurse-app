@@ -10,7 +10,7 @@ import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app'
 import balanceGoodsPage from './components/balanceGoodsPage.vue'
 import { TempStorage } from "@bc/base"
-import verifyAccount from '@/Order/components/verifyAccount.vue'
+import verifyAccount from '@/pagesOrder/components/verifyAccount.vue'
 
 
 

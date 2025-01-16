@@ -159,8 +159,8 @@ import TnNumberBox from '@tuniao/tnui-vue3-uniapp/components/number-box/src/numb
 import { TempStorage } from "@bc/base"
 import PageTopbg from "@/components/page-topbg/page-topbg.vue"
 
-import choiceCoupon from '@/Order/components/choiceCoupon/choiceCoupon.vue'
-import currencyCoupon from '@/Order/components/choiceCoupon/currencyCoupon.vue'
+import choiceCoupon from '@/pagesOrder/components/choiceCoupon/choiceCoupon.vue'
+import currencyCoupon from '@/pagesOrder/components/choiceCoupon/currencyCoupon.vue'
 
 import { getCouponGranted, houseOrderPay, goodsCalculation, getPlatCoupon, submitOrder } from "@/api/order-api"
 import BCNotify from '@/components/notify/index.vue'

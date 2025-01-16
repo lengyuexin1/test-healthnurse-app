@@ -106,7 +106,7 @@ import PageTopbg from "@/components/page-topbg/page-topbg.vue"
 import BCNotify from '@/components/notify/index.vue'
 
 import { getAssetsPic } from '@/common/setPicture'
-import courseCard from '@/Order/components/courseCard.vue'
+import courseCard from '@/pagesOrder/components/courseCard.vue'
 import { getserviceOrderDetail, houseOrderPay } from '@/api/order-api'
 import { formattime } from '@/common/formatTime'
 
