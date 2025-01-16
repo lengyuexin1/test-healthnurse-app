@@ -18,7 +18,10 @@ export const getcategoryList = (req:any) => {
 export const addServeCart = async (params: { optionId: string, hospitalId?: string }) => {
     return http.order.post('/v1/bc/app/cart/create', params)
 }
-
+/* 服务购物车列表 */
+export const getCartServiceList = () => {
+    return http.order.post('/v1/bc/app/cart/service/list')
+}
 /** 获取服务详情/服务规格列表 */
 export const getServeDetail = async (req:any) => {
     return http.order.get('/v1/bc/public/app/item/detail', req)

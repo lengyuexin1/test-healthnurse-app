@@ -30,7 +30,6 @@ import type {
 export const getsalonCategoryList = (req: any) => {
     return http.content.post('/v1/bc/public/article/category/getAll', req)
 }
-
 // 沙龙
 // changev2
 export const getcategoryShow = (req: any) => {

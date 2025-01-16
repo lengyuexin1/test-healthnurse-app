@@ -1,8 +1,8 @@
 <template>
     <pageContainer :loading="data.pageLoading">
     <view class="contraner">
-        <z-paging ref="paging" v-model="data.dataList" @query="queryList" :defaultPageSize="10" :refresher-enabled="false" :hide-empty-view="true">
-        <template v-if="data.dataList.length">
+        <!-- <z-paging ref="paging" v-model="data.dataList" @query="queryList" :defaultPageSize="10" :refresher-enabled="false" :hide-empty-view="true">
+        <template v-if="data.dataList.length"> -->
             <view class="cart-wrap" v-for="(item, index) in data.dataList" :key="index">
                 <view class="list">
                     <view class="shopInfo tn-flex-row">
@@ -36,7 +36,7 @@
                     </TnSwipeAction>
                 </view>
             </view>
-        </template>
+        <!-- </template>
         <template v-else>
             <view class="not_data_box">
                 <image
@@ -46,7 +46,7 @@
                 />
                 <view class="not_data_text">购物车暂无内容~</view>
             </view>
-        </template>
+        </template> -->
 
 
         <view class="more_list_box">
@@ -74,7 +74,7 @@
                 </view>
             </view>
         </template>
-        </z-paging>
+        <!-- </z-paging> -->
         <BCPopup
             ref="bcPopup"
             title="提示"
@@ -95,11 +95,10 @@ import { ref, reactive, computed, onMounted } from "vue"
 import { onLoad, onShow } from "@dcloudio/uni-app"
 import { getAssetsPic } from '@/common/setPicture'
 import pageContainer from "@/components/container/page-container.vue"
-import { getGoodsCartList, updateCartQuantity, delCartGoods, createOrder, recommendList } from "@/api/goods-api"
+import { updateCartQuantity, delCartGoods, createOrder, recommendList } from "@/api/goods-api"
 import BCNotify from '@/components/notify/index.vue'
 import BCPopup from '@/components/popup/index.vue'
-import WaterfallsFlow from '@/Goods/components/WaterfallsFlow/WaterfallsFlow.vue'
-
+import WaterfallsFlow from '@/pagesGoods/components/WaterfallsFlow/WaterfallsFlow.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import TnNumberBox from '@tuniao/tnui-vue3-uniapp/components/number-box/src/number-box.vue'
@@ -129,11 +128,15 @@ interface Data {
     moreGoodList: any,
     current:number
 }
-
+const props = withDefaults(defineProps<{
+    dataList?: any
+}>(), {
+    dataList: []
+})
 const data = reactive<Data>({
     firstLoading: 0,
-    pageLoading: true,
-    dataList: [],
+    pageLoading: false,
+    dataList: props.dataList,
     current: 0,
     totalProductLength: 0,
     allChecked: false,
@@ -196,35 +199,6 @@ onShow(() => {
 const tabsChange = (e:any) => {
     data.current = e
     // current = e
-}
-const queryList = (pageNumber: number, pageSize: number) => {
-    getGoodsCartList().then((res: any) => {
-        res.forEach((item: any) => {
-            item.checkedGroup = false
-
-            item.productList.forEach((element: any) => {
-                element.checked = false
-            })
-        })
-
-        data.totalProductLength = res.reduce((accumulator: number, currentValue: any) => {
-            return accumulator + currentValue?.productList.length
-        }, 0) // 0 是初始值，表示累加器开始时的值
-        uni.setNavigationBarTitle({ title: `购物车(${data.totalProductLength})` })
-
-        paging.value.complete(res)
-
-        // 优化购物车初始化出现红条
-        if (data.firstLoading == 0) {
-            data.firstLoading = 1
-            setTimeout(() => {
-                data.pageLoading = false
-            }, 1000)
-        }
-
-    }).catch((err: any) => {
-        bcNotify.value.error(err.message)
-    })
 }
 
 // 修改商品数量

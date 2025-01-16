@@ -368,6 +368,7 @@ const data = reactive<Data>({
         {
             name: "cart",
             title: "购物车",
+            url: gotoShoppingCart,
             img: getAssetsPic("/mine/v1/my_list_gwc.png"),
             affair_id: 0
         },
@@ -553,7 +554,7 @@ const listClick = (item) => {
                 break
             case 'shoucang':
                 gotoCollectLists()
-                break;
+                break
             default:
                 item.url()
         }
