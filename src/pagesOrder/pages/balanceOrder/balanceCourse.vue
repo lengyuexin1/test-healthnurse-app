@@ -1,9 +1,9 @@
 <template>
     <view class="container">
-        <balanceCoursePage 
-        v-if="data.flag" 
-        :price="data.price" 
-        :cover="data.cover" 
+        <balanceCoursePage
+        v-if="data.flag"
+        :price="data.price"
+        :cover="data.cover"
         :coursetitle="data.coursetitle"
         :itemId="data.itemId"
         > </balanceCoursePage>
@@ -11,14 +11,14 @@
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import { onLoad, onReady } from '@dcloudio/uni-app'
 
 import balanceCoursePage from './components/balanceCoursePage.vue'
 import { TempStorage } from "@bc/base"
-import verifyAccount from '@/Order/components/verifyAccount.vue'
+import verifyAccount from '@/pagesOrder/components/verifyAccount.vue'
 
 
 interface Props {
@@ -94,8 +94,7 @@ onReady(()=>{
 })
 
 </script>
-  
+
 <style lang="scss" scoped>
 
 </style>
-  

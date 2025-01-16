@@ -1,12 +1,12 @@
 <template>
     <view class="container">
         <z-paging ref="paging" :auto="false" v-model="dataList" @query="queryList" :defaultPageSize="10"
-            :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="暂无数据~"
-            :loading-more-enabled="false" :empty-view-img-style="{ width: '320rpx', height: '320rpx' }">
-            <view slot="top">
+                  :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="暂无数据~"
+                  :loading-more-enabled="false" :empty-view-img-style="{ width: '320rpx', height: '320rpx' }">
+            <template #top>
                 <bc-page-navbar :title="'通知人员设置'"></bc-page-navbar>
-            </view>
-            <view slot="bottom" style="background-color: #FFFFFF;">
+            </template>
+            <template #bottom style="background-color: #FFFFFF;">
                 <!-- <view class="peoptips">
                     <view class="tipicon">
                         <u-image :src="getAssetsUrl('/zhihu/caller-tips.svg')" width="36rpx" height="36rpx"></u-image>
@@ -15,16 +15,18 @@
                 </view> -->
                 <view class="peopfot row i-center j-between">
                     <view class="peopback">
-                        <u-button @click="goback" text="返回" color="#E3E3E3" plain shape="circle"
-                            :customStyle="{ color: '#535353', height: '92rpx' }"></u-button>
+                        <TnButton @click="goback" :plain="true"
+                                  :customStyle="{ color: '#535353', height: '92rpx' }">返回
+                        </TnButton>
                     </view>
                     <view class="peopbtn">
-                        <u-button @click="linkCaller()" text="添加" color="#29C86F" shape="circle"
-                            :customStyle="{ height: '92rpx' }"></u-button>
+                        <TnButton @click="linkCaller" bg-color="#29c86f"
+                                  :customStyle="{ height: '92rpx' }">添加
+                        </TnButton>
                     </view>
                 </view>
                 <u-safe-bottom></u-safe-bottom>
-            </view>
+            </template>
             <view class="noticbox">
                 <view class="peoption" v-for="(item, index) in dataList" :key="index">
                     <view class="row j-between">
@@ -38,14 +40,14 @@
                             <view class="peopmat">绑定时间：{{ item.utcCreated || '--' }}</view>
                         </view>
                         <view class="peoprig">
-                            <u-avatar :src="getAssetsUrl('/default/smart-caller.png')" size="116rpx"></u-avatar>
+                            <TnAvatar :url="getAssetsUrl('/default/smart-caller.png')" size="116rpx"></TnAvatar>
                         </view>
                     </view>
                     <view class="propfot row i-center j-between">
                         <view class="popfotlet row i-center j-between">更新时间：{{ item.utcModified || '--' }}</view>
                         <view class="popfotrig row i-center j-center" @click="linkCaller(item.id)">
                             <text>点击编辑</text>
-                            <u-icon name="arrow-right-double" color="#ffffff" size="18"></u-icon>
+                            <TnIcon name="right-double" color="#ffffff" size="18"></TnIcon>
                         </view>
                     </view>
                 </view>
@@ -61,6 +63,10 @@ import { getCallerList } from "@/api/room-api"
 import dayjs from "dayjs"
 import { onShow } from "@dcloudio/uni-app"
 import { ref, computed } from "vue"
+import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
+import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
+import TnAvatar from '@tuniao/tnui-vue3-uniapp/components/avatar/src/avatar.vue'
+
 const dataList: any = ref([])
 
 const getAssetsUrl = computed(() => {
@@ -70,11 +76,11 @@ const getAssetsUrl = computed(() => {
 })
 const paging = ref()
 onShow(() => {
-    paging.value.reload()
+    paging.value && (paging.value as any).reload()
     queryList()
 })
 const queryList = () => {
-    getCallerList().then((res:any) => {
+    getCallerList().then((res: any) => {
         paging.value.complete(res.map(x => ({
             ...x,
             utcCreated: dayjs(x.utcCreated * 1000).format("YYYY-MM-DD HH:mm:ss"),
@@ -198,13 +204,36 @@ const linkCaller = (id = '') => {
 
 .peopfot {
     padding: 20rpx 30rpx;
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
 
     .peopback {
         width: 250rpx;
+
+        :deep(.tn-button) {
+            color: #535353;
+            border-color: #E3E3E3;
+            border-width: 1px;
+            border-style: solid;
+            height: 47px;
+            width: 100%;
+            border-radius: 100rpx;
+        }
     }
 
     .peopbtn {
         width: 420rpx;
+
+        :deep(.tn-button) {
+            color: #ffffff;
+            border-color: #29c86f;
+            background-color: #29c86f;
+            border-width: 1px;
+            border-style: solid;
+            height: 47px;
+            width: 100%;
+            border-radius: 100rpx;
+        }
     }
 }
 </style>

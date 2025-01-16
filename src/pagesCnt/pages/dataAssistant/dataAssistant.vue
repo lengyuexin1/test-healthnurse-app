@@ -6,14 +6,14 @@
                 <bc-page-navbar :title="'数据助手'" ></bc-page-navbar>
                 <view class="top_box" v-if="!data.articleId">
                     <view class="top_swiper">
-                        <TnTabs 
-                        v-model="data.currentTabIndex" 
-                        :scroll="false" 
+                        <TnTabs
+                        v-model="data.currentTabIndex"
+                        :scroll="false"
                         :bottom-shadow="false"
                         font-size="30"
                         active-font-size="36"
-                        bar-color="#EA3E1A"
-                        active-color="#333333">
+                        bar-color="#29c86f"
+                        active-color="#29c86f">
                             <TnTabsItem
                             v-for="(item, index) in data.tabsData"
                             :key="index"
@@ -27,7 +27,7 @@
                 </view>
             </template>
 
-            <swiper class="swiper_page" :current="data.currentTabIndex" 
+            <swiper class="swiper_page" :current="data.currentTabIndex"
 				@change="onswiperchange">
                 <swiper-item>
 					<worksList :articleType="data.articleType" :articleId="data.articleId"></worksList>
@@ -39,7 +39,7 @@
         </z-paging-swiper>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
@@ -100,4 +100,3 @@ page{
     height: 100%;
 }
 </style>
-  

@@ -1,16 +1,16 @@
 <template>
     <view class="container">
-        <z-paging 
-		ref="paging" 
+        <z-paging
+		ref="paging"
 		:auto="false"
 		:refresher-enabled="false"
         :use-page-scroll="true"
 		>
             <view class="article_page">
                 <view class="inp_box">
-                    <TnInput 
-                    placeholder="请输入标题(2~30个字)" 
-                    :underline="true" 
+                    <TnInput
+                    placeholder="请输入标题(2~30个字)"
+                    :underline="true"
                     :maxlength="30"
                     border-color="#F2F2F2"
                     clearable
@@ -19,14 +19,14 @@
                     ></TnInput>
                 </view>
                 <view class="textarea_box">
-                    <TnInput 
-                    type="textarea" 
-                    height="280rpx" 
-                    placeholder="请输入正文" 
-                    :maxlength="500" 
-                    :underline="true" 
-                    :show-word-limit="true" 
-                    border-color="#F2F2F2" 
+                    <TnInput
+                    type="textarea"
+                    height="280rpx"
+                    placeholder="请输入正文"
+                    :maxlength="500"
+                    :underline="true"
+                    :show-word-limit="true"
+                    border-color="#F2F2F2"
                     v-model="data.textvalue"
                     @change="inpChange"></TnInput>
                 </view>
@@ -36,7 +36,7 @@
                     <view class="title">
                         <TnIcon name="share" color="#333333" size="32rpx" />选择发布渠道(必选)
                     </view>
-                    
+
                     <view class="tag_list_box">
                         <view class="tag_item" :class="{ 'is_active' : data.channelId == item.id }" @click="changeTag(item,index)" v-for="(item, index) in data.categoryList" :key="item.id">
                             {{ item.name }}
@@ -60,7 +60,7 @@
                         </template>
                     </imgUpload>
                 </view>
-                
+
                 <!-- v-if="data.keywordItem" -->
                 <view class="topicText" v-if="false">
                     {{ data.keywordItem }}
@@ -80,7 +80,7 @@
         <BCNotify ref="bcNotify"></BCNotify>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive, onMounted, nextTick } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
@@ -207,13 +207,13 @@ onMounted(() => {
 
         data.showFileBox = true
     }
-    
-    // #ifdef MP-WEIXIN 
+
+    // #ifdef MP-WEIXIN
 
     // #endif
 })
 onLoad(()=> {
-    // #ifdef MP-WEIXIN 
+    // #ifdef MP-WEIXIN
     uni.getPrivacySetting({
         success: (res:any) => {
             console.log(res) // 返回结果为: res = { needAuthorization: true/false, privacyContractName: '《xxx隐私保护指引》' }
@@ -234,7 +234,7 @@ onLoad(()=> {
 const imgUploadref = ref()
 const openUp = () => {
     nextTick(()=>{
-        console.log('手动调用',imgUploadref ,imgUploadref.value); 
+        console.log('手动调用',imgUploadref ,imgUploadref.value);
         imgUploadref.value.chooseFileFun()
     })
 }
@@ -363,7 +363,7 @@ const inpChange = (value:string) => {
 
     if (matches! >= 2) {
         console.log('话题存在');
-        
+
     }else{
         console.log('话题不存在');
         let newStr = value.slice(data.keywordNumber + 1)
@@ -376,10 +376,10 @@ const inpChange = (value:string) => {
 
 const changeTag = (item:any, index:number) => {
     console.log('index',index);
-    
+
     if (data.channelId == item.id) {
         console.log('清除');
-        
+
         data.channelId = ''
         data.channelName = ''
 
@@ -387,7 +387,7 @@ const changeTag = (item:any, index:number) => {
     data.channelId = item.id
     data.channelName = item.name
     console.log('item',item);
-    
+
 }
 
 </script>
@@ -479,6 +479,8 @@ const changeTag = (item:any, index:number) => {
         .tag_list_box{
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10rpx;
             .tag_item{
                 padding: 12rpx 24rpx;
                 box-sizing: border-box;
@@ -548,4 +550,3 @@ const changeTag = (item:any, index:number) => {
     background-color: #F8F9F9;
 }
 </style>
-  

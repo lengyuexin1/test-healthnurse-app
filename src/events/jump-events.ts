@@ -454,10 +454,10 @@ enum MarkLinkEvents {
     order_detail = '/pagesCnt/pages/course/course',
 
     /** 商品订单详情 */
-    goods_order_detail = '/Order/pages/goodsOrderDetail/goodsOrderDetail',
+    goods_order_detail = '/pagesOrder/pages/goodsOrderDetail/goodsOrderDetail',
 
     /** 服务订单详情 */
-    service_order_detail = '/Order/pages/service/orderDetail/serviceOrderDetail',
+    service_order_detail = '/Order/pages/serviceOrderDetail/serviceOrderDetail',
 
     /** 发布消息-文章 */
     publish_list_article = '/pagesCnt/pages/course/course',
@@ -517,6 +517,6 @@ enum MarkLinkEvents {
     activity_detail_user = '/pagesUser/pages/invitation/invitation',
 
     /** 活动-优选店铺 */
-    activity_detail_shop = '/Mall/pages/perferShop/perferShop',
+    activity_detail_shop = '/pagesMall/pages/perferShop/perferShop',
 
 }

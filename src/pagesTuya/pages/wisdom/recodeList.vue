@@ -14,12 +14,12 @@
                 <view class="timeLi">
                     <view class="timeLab">状态</view>
                     <view class="timeNum laststu"
-                        :class="{ ins0: Number(item.data) * 100 < 3600, 
+                        :class="{ ins0: Number(item.data) * 100 < 3600,
                             ins5: Number(item.data) * 100 > 4100,
                             ins4: Number(item.data) * 100 > 3900,
                             ins3: Number(item.data) * 100 > 3800,
                             ins2: Number(item.data) * 100 > 3720,
-                            ins1:Number(item.data) * 100 > 3600,
+                            ins1: Number(item.data) * 100 > 3600
                             }">
                         {{ isNomr(item.data) }}</view>
                 </view>
@@ -52,21 +52,26 @@ export default {
     },
     methods: {
         getTime(time) {
-            return dayjs(Number(time)).format('YYYY-MM-DD HH:mm:ss');
+            return dayjs(Number(time)).format('YYYY-MM-DD HH:mm:ss')
         },
         isNomr(time) {
             const flagTem = Number(time) * 100
             if (flagTem < 3600) {
                 return '低温'
-            } else if (flagTem > 4100) {
+            }
+            else if (flagTem > 4100) {
                 return '超高热'
-            } else if (flagTem > 3900) {
+            }
+            else if (flagTem > 3900) {
                 return '高热'
-            } else if (flagTem > 3800) {
+            }
+            else if (flagTem > 3800) {
                 return '中等热'
-            } else if (flagTem > 3720) {
+            }
+            else if (flagTem > 3720) {
                 return '低热'
-            } else if (flagTem > 3600) {
+            }
+            else if (flagTem > 3600) {
                 return '正常'
             }
         },
@@ -92,7 +97,7 @@ export default {
             }
         },
         gotoDetail(item) {
-            console.log(item);
+            console.log(item)
             const sdaMac = JSON.stringify(this.sendData.query.mac)
             gotoRecodEcart(item.data, item.utcLog, sdaMac)
         },
@@ -106,7 +111,7 @@ export default {
     onLoad(option) {
         this.sendData.query.mac = JSON.parse(decodeURIComponent(option.data))
         this.getRecList()
-    },
+    }
 }
 
 </script>

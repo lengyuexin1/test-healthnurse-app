@@ -21,7 +21,7 @@ const modal = uni.requireNativePlugin('modal');
 import { sendTyUid } from "@/api/room-api"
 import { gotoAppTy } from "@/routes/active-routes"
 // #ifdef MP-WEIXIN
-import { request, fetch, getDeviceInfo, queryDps, publishDps, initRequest, loginByWx, getUserInfo, isLogin, getFamilies, getDeviceList, addFamily, addRoom, getRoomList, loginByTicket } from '@ray-js/wechat'
+// import { request, fetch, getDeviceInfo, queryDps, publishDps, initRequest, loginByWx, getUserInfo, isLogin, getFamilies, getDeviceList, addFamily, addRoom, getRoomList, loginByTicket } from '@ray-js/wechat'
 // #endif
 import { gotoDeviceCreate, gotoTuYaNet, gotoTyLy  } from '@/routes/active-routes'
 import { deviceTypeList } from "@/api/room-api"
@@ -110,7 +110,7 @@ const linkDeviceCreate = (type: any) => {
         getTi()
         setTimeout(() => {
             console.log(clientId.value, ticket.value, homeId.value)
-            
+
             wx.navigateTo({
                 url: `plugin://tuya-ap-plugin/auto?clientId=${clientId.value}&ticket=${ticket.value}&gid=${homeId.value}&self_env=inner`,
             })

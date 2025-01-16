@@ -1,16 +1,16 @@
 import { pageController } from '@bc/uni-tools'
 
 /**
- * 
+ *
  * 订单相关路由
  * 组件内跳转
- * 
+ *
  */
 
 
  export const gotoOrderDetail = (itemId:string) =>{
     const route = {
-        path: '/Order/pages/serviceOrderDetail/serviceOrderDetail',
+        path: '/pagesOrder/pages/serviceOrderDetail/serviceOrderDetail',
         query: {itemId}
     }as any
     return pageController.push(route)
