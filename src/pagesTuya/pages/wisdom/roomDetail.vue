@@ -8,7 +8,7 @@
             <view class="rom-box page-public-bg">
                 <view class="rom-mation row i-center j-between">
                     <view class="rom-mat-lef">
-                        <view class="rom-mat-name">{{ data.roomName || '--' }}的房间</view>
+                        <view class="rom-mat-name" @click="gotoTY">{{ data.roomName || '--' }}的房间</view>
                         <view class="rom-mat-more row i-center">
                             <div class="rom-mat-line row i-center">室内</div>
                             <div class="rom-mat-line row i-center">PM2.5</div>
@@ -87,9 +87,8 @@ import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { getAssetsPic } from "@/common/setPicture"
 import { onLoad, onShow, onHide, onUnload } from '@dcloudio/uni-app'
 import { computed, reactive } from 'vue'
-import { gotoDeviceDetail, gotoDeviceChoice, gotoBodyTem, gotoBooldYa } from "@/routes/wisdom-routes"
+import { gotoDeviceDetail, gotoDeviceChoice, gotoBodyTem, gotoBooldYa, gotoTuYa } from "@/routes/wisdom-routes"
 import { deviceList, patientDetail, patientLastData } from "@/api/smart-api"
-
 
 interface Data {
     roomId: string
@@ -163,6 +162,10 @@ onUnload(() => {
 const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
+
+const gotoTY = () => {
+    gotoTuYa()
+}
 
 // 获取设备列表
 const getDeviceList = () => {

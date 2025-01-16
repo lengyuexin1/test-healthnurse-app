@@ -333,7 +333,7 @@ export const gotoDeviceNet = (blueName: string) => {
 /** 跳转到 场景服务 */
 export const gotoScenServer = (type: 1 | 2) => {
     const route = {
-        path: '/pagesMall/pages/wisdom/scenServer',
+        path: '/pagesTuya/pages/wisdom/scenServer',
         query: { type }
     } as any
     return pageController.push(route)
