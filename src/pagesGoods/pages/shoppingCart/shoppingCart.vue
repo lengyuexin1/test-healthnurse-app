@@ -1,91 +1,24 @@
 <template>
     <pageContainer :loading="data.pageLoading">
     <view class="contraner">
-        <z-paging ref="paging" v-model="data.dataList" @query="queryList" :defaultPageSize="10" :refresher-enabled="false" :hide-empty-view="true">
-        <template v-if="data.dataList.length">
-            <view class="cart-wrap" v-for="(item, index) in data.dataList" :key="index">
-                <view class="list">
-                    <view class="shopInfo tn-flex-row">
-                        <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="item.checkedGroup" @change="changeGroup($event, index)"></TnCheckbox>
-                        <view class="info tn-flex-row" @tap="clickShop(item.shopId)">
-                            <image class="thumb" :src="item.shopIcon" mode="scaleToFill" />
-                            {{ item.shopName }}<TnIcon name="right" color="#8D8D8D" />
-                        </view>
+        <z-paging ref="paging" v-model="data.dataList":defaultPageSize="10" :refresher-enabled="false" :hide-empty-view="true">
+            <view class="head">
+                    <view class="tabox row j-center">
+                        <view
+                            class="tabli"
+                            :class="{ set: data.current == index }"
+                            v-for="(item,index) in navList"
+                            :key="index"
+                            @click="tabsChange(index)"
+                        >{{item.name}}</view>
                     </view>
-                    <TnSwipeAction @select="delGoods($event, item, index)">
-                        <TnSwipeActionItem v-for="(ele, idx) in item.productList" :key="idx" :options="options" :auto-close="false">
-                            <view class="goodsList tn-flex-center-center" @tap="clickGoods(ele)">
-                                <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="ele.checked" @change="changeSingle($event, index)"></TnCheckbox>
-                                <view class="goodsInfo tn-flex-row">
-                                    <view class="left tn-flex-row">
-                                        <image class="left_img" :src="ele.image" mode="scaleToFill" />
-                                        <view class="ItemDeleted" v-if="ele.isItemDeleted == 1">已下架</view>
-                                    </view>
-                                    <view class="right tn-flex-column">
-                                        <view class="title tn-text-ellipsis-2">{{ ele.title }}</view>
-                                        <view class="subtitle tn-text-ellipsis-1">{{ ele.subtitle }}</view>
-                                        <view class="price-wrap tn-flex-center-between" @tap.stop>
-                                            <view class="price">{{ priceFormat(ele.price) }}</view>
-                                            <TnNumberBox v-model="ele.quantity" font-size="24rpx" size="sm" :min="1" :input-disabled="false" @change="quantityChange($event, ele.id)" />
-                                        </view>
-                                        <!-- <view class="tips" v-if="ele.preferentialPrice">优惠价￥{{ ele.preferentialPrice / 100 }}</view> -->
-                                    </view>
-                                </view>
-                            </view>
-                        </TnSwipeActionItem>
-                    </TnSwipeAction>
-                </view>
             </view>
-        </template>
-        <template v-else>
-            <view class="not_data_box">
-                <image
-                    class="not_data_img"
-                    :src="getAssetsUrl('/empty/empty_icon_data.png')"
-                    mode="scaleToFill"
-                />
-                <view class="not_data_text">购物车暂无内容~</view>
+            <view class="swiper">
+                <carServe v-if="data.current === 0"></carServe>
+                <car-goods  v-else ref="godcart"></car-goods>
             </view>
-        </template>
-
-
-        <view class="more_list_box">
-            <view class="more_title">
-                猜你喜欢
-            </view>
-            <view class="more_list">
-                <WaterfallsFlow :wfList="data.moreGoodList" @waterItem="clickwaterItem"></WaterfallsFlow>
-            </view>
-        </view>
-
-        <template #bottom>
-            <view class="btn tn-flex-center-between animate__animated animate__faster animate__slideInUp" v-if="data.dataList.length">
-                <view class="tn-flex-row" style="align-items: center;">
-                    <TnCheckbox custom-class="allCheckbox" size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="data.allChecked" @change="allChange">全选</TnCheckbox>
-                    <view class="total tn-flex-column">
-                        <view>合计：<text class="price">{{ priceFormat(data.submitPrice) }}</text></view>
-                        <view class="tips">共{{ data.submitTotal }}件</view>
-                    </view>
-                </view>
-                <view :class="[data.submitTotal > 0 ? '' : 'btn-disabled']">
-                    <TnButton shape="round" width="220rpx" height="76rpx" font-size="30rpx" bg-color="#EA3E1A" text-color="#FFFFFF" :debounce="true" @tap="clickBtn">
-                        去结算
-                    </TnButton>
-                </view>
-            </view>
-        </template>
-        </z-paging>
-        <BCPopup
-            ref="bcPopup"
-            title="提示"
-            content="是否确认删除该商品？"
-            subBtn="确认"
-            cancelBtn="取消"
-            subBtnColor="#EA3E1A"
-            @clickLeftBtn="confirmDel"
-            @clickRightBtn="cancel">
-        </BCPopup>
         <BCNotify ref="bcNotify"></BCNotify>
+        </z-paging>
     </view>
     </pageContainer>
 </template>
@@ -94,24 +27,12 @@
 import { ref, reactive, computed, onMounted } from "vue"
 import { onLoad, onShow } from "@dcloudio/uni-app"
 import { getAssetsPic } from '@/common/setPicture'
+import  carServe from './components/carServe.vue'
+import  carGoods from './components/carGoods.vue'
 import pageContainer from "@/components/container/page-container.vue"
 import { getGoodsCartList, updateCartQuantity, delCartGoods, createOrder, recommendList } from "@/api/goods-api"
 import BCNotify from '@/components/notify/index.vue'
-import BCPopup from '@/components/popup/index.vue'
-import WaterfallsFlow from '@/pagesGoods/components/WaterfallsFlow/WaterfallsFlow.vue'
-
-import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
-import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
-import TnNumberBox from '@tuniao/tnui-vue3-uniapp/components/number-box/src/number-box.vue'
-import TnSwipeAction from '@tuniao/tnui-vue3-uniapp/components/swipe-action/src/swipe-action.vue'
-import TnSwipeActionItem from '@tuniao/tnui-vue3-uniapp/components/swipe-action/src/swipe-action-item.vue'
-import type { SwipeActionItemOption } from '@tuniao/tnui-vue3-uniapp'
-import TnCheckbox from '@tuniao/tnui-vue3-uniapp/components/checkbox/src/checkbox.vue'
 import { gotoShopDetail, gotoserviceDetail } from "@/routes/service-routes"
-import { GlobalEvents, dispatchWEvent } from "@/events/event-registry"
-import { TempStorage } from "@bc/base"
-import { gotoBalanceGood } from '@/routes/order-routes'
-import { priceFormat } from '@/common/price-format'
 import { gotogoodsDetail } from "@/routes/goods-routes"
 import { PlatformManage } from "@bc/sys"
 
@@ -121,9 +42,6 @@ interface Data {
     dataList: any
     totalProductLength: number
     allChecked: boolean
-    delGoodsId: string
-    delGoodsItemIndex: number
-    delGoodsItemProductIndex: number
     submitTotal: number
     submitPrice: number
     moreGoodList: any,
@@ -132,26 +50,16 @@ interface Data {
 
 const data = reactive<Data>({
     firstLoading: 0,
-    pageLoading: true,
+    pageLoading: false,
     dataList: [],
     current: 0,
     totalProductLength: 0,
     allChecked: false,
-    delGoodsId: '',
-    delGoodsItemIndex: 0,
-    delGoodsItemProductIndex: 0,
     submitTotal: 0,
     submitPrice: 0,
     moreGoodList: []
 })
 
-const options: SwipeActionItemOption = [
-    {
-        text: '删除',
-        icon: 'delete',
-        bgColor: 'tn-red'
-    }
-]
 const  navList = [
     {
         id: '1',
@@ -190,7 +98,7 @@ onMounted(() => {
 })
 
 onShow(() => {
-    paging.value?.reload()
+    // paging.value?.reload()
 })
 // tabs通知swiper切换
 const tabsChange = (e:any) => {
@@ -334,128 +242,6 @@ const clickGoods = (item: any) => {
     gotogoodsDetail(item.itemId)
 }
 
-const clickBtn = () => {
-    if (data.submitTotal == 0) {
-        bcNotify.value.show('您还没选择商品哦')
-        return
-    }
-    const listData : any = []
-
-    for (const i in data.dataList) {
-        const dataItem = data.dataList[i]
-        dataItem.checkedGroup = false
-        for (const j in dataItem.productList) {
-            const productItem = dataItem.productList[j]
-            if (productItem.checked) {
-                listData.push(productItem.id)
-                productItem.checked = false
-            }
-        }
-    }
-    data.allChecked = false
-    calulateTotalPrice()
-
-    const uniqueId = TempStorage.savewx({
-        listData,
-        isCart: 1
-    })
-
-    // #ifdef MP-WEIXIN
-    gotoBalanceGood(uniqueId)
-    // #endif
-
-
-    // #ifdef APP-PLUS
-    const payJSON = JSON.stringify({
-        listData,
-        isCart: 1
-    })
-
-    const shareType = import.meta.env.VITE_WEIXIN_OPEN
-
-    // APP跳转小程序进行支付
-    plus.share.getServices((res: any) => {
-        let sweixin = null as any
-        for (const i in res) {
-            if (res[i].id == 'weixin') {
-                sweixin = res[i]
-            }
-        }
-        // 唤醒微信小程序
-        if (sweixin) {
-            uni.hideLoading()
-
-            PlatformManage.getToken().then((res:any) => {
-                console.log('获取userinfo', res)
-
-                sweixin.launchMiniProgram({
-                    id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
-                    type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
-                    path: `/Order/pages/balanceGoods/balanceGoods?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
-                    extraData: {
-                        'payJSON': payJSON
-                    }
-                })
-            })
-
-
-        }
-    })
-    // #endif
-
-
-}
-
-const delGoods = (e: number, item: any, index: number) => {
-    data.delGoodsItemIndex = index
-    data.delGoodsItemProductIndex = e
-    data.delGoodsId = item.productList[e].id
-    bcPopup.value.open()
-}
-
-// 确认删除
-const confirmDel = () => {
-    delCartGoods({
-        id: data.delGoodsId
-    }).then(() => {
-        bcPopup.value.close()
-        bcNotify.value.show('删除成功')
-        dispatchWEvent(GlobalEvents.Refresh_ShoppingCart_Badge)
-
-        // 接口请求成功后，使用本地删除，防止清除用户全选或者选择的操作
-        data.dataList[data.delGoodsItemIndex].productList.splice(data.delGoodsItemProductIndex, 1)
-
-        // 如果该店铺下只有一个商品，删除商品后，删除该店铺
-        if (data.dataList[data.delGoodsItemIndex].productList.length == 0) {
-            data.dataList.splice(data.delGoodsItemIndex, 1)
-        }
-
-        // 修改标题的商品总数
-        uni.setNavigationBarTitle({ title: `购物车(${data.totalProductLength - 1})` })
-
-
-        setTimeout(() => {
-            // 重新算合计的总额
-            calulateTotalPrice()
-        }, 0)
-        // paging.value.reload()
-    }).catch((err: any) => {
-        bcNotify.value.error(err.message)
-    })
-}
-
-const cancel = () => {
-    bcPopup.value.close()
-    // 恢复默认值
-    data.delGoodsId = ''
-    data.delGoodsItemIndex = 0
-    data.delGoodsItemProductIndex = 0
-}
-
-const clickwaterItem = (item:any) => {
-    console.log('item', item)
-    gotogoodsDetail(item.id)
-}
 
 </script>
 

@@ -98,8 +98,7 @@ import pageContainer from "@/components/container/page-container.vue"
 import { getGoodsCartList, updateCartQuantity, delCartGoods, createOrder, recommendList } from "@/api/goods-api"
 import BCNotify from '@/components/notify/index.vue'
 import BCPopup from '@/components/popup/index.vue'
-import WaterfallsFlow from '@/Goods/components/WaterfallsFlow/WaterfallsFlow.vue'
-
+import WaterfallsFlow from '@/pagesGoods/components/WaterfallsFlow/WaterfallsFlow.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import TnNumberBox from '@tuniao/tnui-vue3-uniapp/components/number-box/src/number-box.vue'
