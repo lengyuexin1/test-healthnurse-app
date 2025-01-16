@@ -214,8 +214,8 @@
 // import couponGet from "@/components/receiveCoupon/couponGet.vue"
 // import receiveCoupon from "@/components/receiveCoupon/receiveCoupon.vue"
 
-import couponGet from "@/Goods/components/receiveCoupon/couponGet.vue"
-import receiveCoupon from "@/Goods/components/receiveCoupon/receiveCoupon.vue"
+import couponGet from "@/pagesGoods/components/receiveCoupon/couponGet.vue"
+import receiveCoupon from "@/pagesGoods/components/receiveCoupon/receiveCoupon.vue"
 import { onLoad, onReady, onShareAppMessage } from '@dcloudio/uni-app'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnSwiper from '@tuniao/tnui-vue3-uniapp/components/swiper/src/swiper.vue'
@@ -242,7 +242,7 @@ import { pageController } from '@bc/uni-tools'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import tabbar from "./components/detailTabbar/detailTabbar.vue"
 
-import shareView from '@/Goods/components/shareView/shareView.vue'
+import shareView from '@/pagesGoods/components/shareView/shareView.vue'
 
 import optionSelect from './components/optionSelect/optionSelect.vue'
 import commentView from "./components/discuss-view/commentView.vue"
