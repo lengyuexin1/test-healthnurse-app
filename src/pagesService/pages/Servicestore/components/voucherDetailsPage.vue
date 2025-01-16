@@ -1,7 +1,7 @@
 <template>
     <div class="contraner" v-if="data.voucherObj.id">
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
@@ -80,11 +80,11 @@
                     </div>
                 </view>
             </template>
-            
+
         </z-paging>
     </div>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 import { formattime } from '@/common/formatTime'
@@ -162,14 +162,14 @@ const tobay = () => {
         // 唤醒微信小程序
         if (sweixin) {
             uni.hideLoading()
-            
+
             PlatformManage.getToken().then((res:any)=>{
                 console.log('获取userinfo',res);
 
                 sweixin.launchMiniProgram({
                     id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
-                    path: `/Order/pages/balanceOrder/balanceOrder?payJSON=${payJSON}&userId=${res.id}&handle=2`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
+                    path: `/pagesOrder/pages/balanceOrder/balanceOrder?payJSON=${payJSON}&userId=${res.id}&handle=2`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
                         'payJSON': payJSON,
                     }
@@ -182,7 +182,7 @@ const tobay = () => {
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .introduce_icon {
     width: 140rpx;
@@ -526,4 +526,4 @@ const tobay = () => {
     }
 }
 </style>
- 
+

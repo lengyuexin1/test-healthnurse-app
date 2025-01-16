@@ -142,7 +142,7 @@ export const gotoSleepReport = (deviceId:string, time:any) => {
 /** 跳转到 睡眠检测设置 */
 export const gotoSleepSetup = (query: {deviceId:string, devName: string}) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/sleepSetup',
+        path: '/Mall/pages/wisdom/sleepSetup',
         query: query
     } as any
     return pageController.push(route)
@@ -151,7 +151,7 @@ export const gotoSleepSetup = (query: {deviceId:string, devName: string}) => {
 /** 跳转到 设备联网 */
 export const gotoDeviceNet = (blueName: string) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/deviceNet',
+        path: '/Mall/pages/wisdom/deviceNet',
         query: { blueName }
     } as any
     return pageController.push(route)
@@ -160,7 +160,7 @@ export const gotoDeviceNet = (blueName: string) => {
 /** 跳转到 体温枪配置成功 */
 export const gotoSuccedLaya = (deviceId: string) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/addLayaDev',
+        path: '/Mall/pages/wisdom/addLayaDev',
         query: {  }
     } as any
     return pageController.replace(route)
@@ -169,7 +169,7 @@ export const gotoSuccedLaya = (deviceId: string) => {
 /** 跳转到 开始测试体温 */
 export const gotoStartTepTow = (deviceId: string) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/startLiang',
+        path: '/Mall/pages/wisdom/startLiang',
         query: {  }
     } as any
     return pageController.replace(route)
@@ -178,7 +178,7 @@ export const gotoStartTepTow = (deviceId: string) => {
 /** 跳转到 体温结果 */
 export const gotoResult = (tem: any) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/tempResult',
+        path: '/Mall/pages/wisdom/tempResult',
         query: { tem }
     } as any
     return pageController.replace(route)
@@ -188,7 +188,7 @@ export const gotoResult = (tem: any) => {
 export const gotoBodyTem = (deviceId: string) => {
     const data =  encodeURIComponent(JSON.stringify(deviceId))
     const route = {
-        path: '/pagesTuya/pages/wisdom/bodyTem',
+        path: '/Mall/pages/wisdom/bodyTem',
         query: { data }
     } as any
     return pageController.push(route)
@@ -198,7 +198,7 @@ export const gotoBodyTem = (deviceId: string) => {
 export const gotorecListTem = (mac: string) => {
     const data =  encodeURIComponent(JSON.stringify(mac))
     const route = {
-        path: '/pagesTuya/pages/wisdom/recodeList',
+        path: '/Mall/pages/wisdom/recodeList',
         query: { data }
     } as any
     return pageController.push(route)
@@ -216,7 +216,7 @@ export const gotoRecodEcart = (tep: string, time: string, sdaMac: string) => {
 /** 跳转到 开始测试体温 */
 export const gotoStartTep = (deviceId: string) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/startLiang',
+        path: '/Mall/pages/wisdom/startLiang',
         query: {  }
     } as any
     return pageController.push(route)
@@ -225,7 +225,7 @@ export const gotoStartTep = (deviceId: string) => {
 /** 跳转到 设备联网 */
 export const gotoEzVideo = (deviceSerial: string, verifyCode:string) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/ezviz_video',
+        path: '/Mall/pages/wisdom/ezviz_video',
         query: { deviceSerial,verifyCode  }
     } as any
     return pageController.push(route)
@@ -234,7 +234,7 @@ export const gotoEzVideo = (deviceSerial: string, verifyCode:string) => {
 /** 跳转到 播放摄像 */
 export const gotoPlayVideo= (deviceSerial: string,verifyCode:string ) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/ezviz_video_player',
+        path: '/Mall/pages/wisdom/ezviz_video_player',
         query: { deviceSerial, verifyCode }
     } as any
     return pageController.push(route)
@@ -243,7 +243,7 @@ export const gotoPlayVideo= (deviceSerial: string,verifyCode:string ) => {
 /** 跳转到 设备管理 */
 export const gotoDeviceManag = (roomId?: string, roomName?: string) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/deviceManag',
+        path: '/Mall/pages/wisdom/deviceManag',
         query: { roomId, roomName }
     } as any
     return pageController.push(route)
@@ -252,7 +252,7 @@ export const gotoDeviceManag = (roomId?: string, roomName?: string) => {
 /** 涂鸦设备 */
 export const gotoTuYa = () => {
     const route = {
-        path: '/Tuya/pages/wisdom/tuyaList',
+        path: '/pagesTuya/pages/wisdom/tuyaList',
         query: {}
     } as any
     return pageController.push(route)
@@ -260,7 +260,7 @@ export const gotoTuYa = () => {
 
 export const gotoAppTy = () => {
     const route = {
-        path: '/Tuya/pages/wisdom/index',
+        path: '/pagesTuya/pages/wisdom/index',
         query: {}
     } as any
     return pageController.push(route)
@@ -298,7 +298,7 @@ export const gotoCameraNet = (deviceSerial: string) => {
 // 涂鸦设备配置网络
 export const gotoTuYaNet = (roomId: any, type: string) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/tuyaGetnet',
+        path: '/pagesMall/pages/wisdom/tuyaGetnet',
         query: { type, roomId }
     } as any
     return pageController.replace(route)
@@ -316,7 +316,7 @@ export const gotoTyLy = (id: any, type: string, roomId: any) => {
 // 照明详情
 export const lightDetail = (type: string, id: any) => {
     const route = {
-        path: '/Tuya/pages/wisdom/light',
+        path: '/pagesTuya/pages/wisdom/light',
         query: { type, id }
     } as any
     return pageController.push(route)
@@ -325,7 +325,7 @@ export const lightDetail = (type: string, id: any) => {
 // 窗帘详情
 export const clDetail = (type: string, id: any) => {
     const route = {
-        path: '/Tuya/pages/wisdom/curtain',
+        path: '/pagesTuya/pages/wisdom/curtain',
         query: { type, id }
     } as any
     return pageController.push(route)
@@ -334,7 +334,7 @@ export const clDetail = (type: string, id: any) => {
 // 空调伴侣
 export const gotoAirCond = (type: string, id: any) => {
     const route = {
-        path: '/Tuya/pages/wisdom/airCond',
+        path: '/pagesTuya/pages/wisdom/airCond',
         query: { type, id }
     } as any
     return pageController.push(route)
@@ -343,7 +343,7 @@ export const gotoAirCond = (type: string, id: any) => {
 // 选择空调品牌
 export const gotoAirList = (id: any) => {
     const route = {
-        path: '/Tuya/pages/wisdom/airList',
+        path: '/pagesTuya/pages/wisdom/airList',
         query: { id }
     } as any
     return pageController.push(route)
@@ -352,7 +352,7 @@ export const gotoAirList = (id: any) => {
 // 跳转空调遥控器
 export const gotoAirIndex = (devId: any, ktId:any) => {
     const route = {
-        path: '/Tuya/pages/wisdom/airSelect',
+        path: '/pagesTuya/pages/wisdom/airSelect',
         query: { devId, ktId }
     } as any
     return pageController.push(route)
@@ -361,7 +361,7 @@ export const gotoAirIndex = (devId: any, ktId:any) => {
 // 跳转空调遥控器
 export const gotoAirLook = (devId: any, hotId:any, ktId:any) => {
     const route = {
-        path: '/Tuya/pages/wisdom/airLook',
+        path: '/pagesTuya/pages/wisdom/airLook',
         query: { devId, hotId, ktId }
     } as any
     return pageController.push(route)
@@ -370,7 +370,7 @@ export const gotoAirLook = (devId: any, hotId:any, ktId:any) => {
 // 温湿度计
 export const gotoTemWater = (type: string, id: any) => {
     const route = {
-        path: '/Tuya/pages/wisdom/temAndWater',
+        path: '/pagesTuya/pages/wisdom/temAndWater',
         query: { type, id }
     } as any
     return pageController.push(route)
@@ -388,7 +388,7 @@ export const gotoNoticeRecord = (query: any) => {
 /** 设备通知详情 */
 export const gotoNoticeDetail = (query: any) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/noticeDetail',
+        path: '/pagesMall/pages/wisdom/noticeDetail',
         query
     } as any
     return pageController.push(route)
@@ -415,7 +415,7 @@ export const gotoExpendList = () => {
 /** 跳转到 血压记录 */
 export const gotobooldLuc = (tep:any) => {
     const route = {
-        path: '/Create/pages/wisdom/bloodResult',
+        path: '/pagesCreate/pages/wisdom/bloodResult',
         query: { tep }
     } as any
     return pageController.push(route)
@@ -459,7 +459,7 @@ export const gotoCateArrList = (query:any) => {
 
 export const gotoEditName = ( id:any ) => {
     const route = {
-        path: '/Tuya/pages/wisdom/editLightName',
+        path: '/pagesTuya/pages/wisdom/editLightName',
         query: { id }
     } as any
     return pageController.push(route)

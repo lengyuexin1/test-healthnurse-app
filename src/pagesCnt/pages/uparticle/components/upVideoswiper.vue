@@ -1,30 +1,30 @@
 <template>
     <view class="container">
-        <z-paging 
-		ref="paging" 
-		:auto="false"
-		:refresher-enabled="false"
-        :use-page-scroll="true"
-		>
+        <z-paging
+              ref="paging"
+              :auto="false"
+              :refresher-enabled="false"
+              :use-page-scroll="true"
+        >
             <view class="video_padding_box">
                 <view class="upVideo_box">
                     <ClUpload
-                        ref="upload"
-                        v-model="data.list"
-                        fileType="video"
-                        :listStyle="data.uploadStyle"
-                        :max="1"
-                        useBeforeDelete 
-                        useBeforeUpload
-                        @onError="uploadError"
-                        @onVideo="onVideo"
-                        @closePreviewVideo="closePreviewVideo"
-                        @beforeDelete="beforeDelete"
-                        @beforeUpload="beforeUpload">
+                          ref="upload"
+                          v-model="data.list"
+                          fileType="video"
+                          :listStyle="data.uploadStyle"
+                          :max="1"
+                          useBeforeDelete
+                          useBeforeUpload
+                          @onError="uploadError"
+                          @onVideo="onVideo"
+                          @closePreviewVideo="closePreviewVideo"
+                          @beforeDelete="beforeDelete"
+                          @beforeUpload="beforeUpload">
 
                         <template v-slot:addImg>
                             <view class="addVideo tn-flex-column">
-                                <TnIcon name="camera" size="120rpx" />
+                                <TnIcon name="camera" size="120rpx"/>
                                 <text class="txt">选择视频</text>
                             </view>
                         </template>
@@ -33,23 +33,30 @@
             </view>
 
             <view class="input">
-                <TnInput height="100rpx" placeholder="输入标题(2~30个字)" :custom-style="{ fontSize: '36rpx' }" :maxlength="30" :underline="true" clearable border-color="#F2F2F2" v-model="data.title"></TnInput>
-                <TnInput height="100rpx" placeholder="添加描述（选填）" :maxlength="100" :underline="true" clearable border-color="#F2F2F2" v-model="data.describe" @change="inpChange"></TnInput>
+                <TnInput height="100rpx" placeholder="输入标题(2~30个字)" :custom-style="{ fontSize: '36rpx' }"
+                         :maxlength="30" :underline="true" clearable border-color="#F2F2F2"
+                         v-model="data.title"></TnInput>
+                <TnInput height="100rpx" placeholder="添加描述（选填）" :maxlength="100" :underline="true" clearable
+                         border-color="#F2F2F2" v-model="data.describe" @change="inpChange"></TnInput>
 
                 <view class="channel ">
                     <view class="title">
-                        <TnIcon name="share" color="#333333" size="32rpx" />选择发布渠道(必选)
+                        <TnIcon name="share" color="#333333" size="32rpx"/>
+                        选择发布渠道(必选)
                     </view>
-                    
+
                     <view class="tag_list_box">
-                        <view class="tag_item" :class="{ 'is_active' : data.channelId == item.id }" @click="changeTag(item,index)" v-for="(item, index) in data.categoryList" :key="item.id">
+                        <view class="tag_item" :class="{ 'is_active' : data.channelId == item.id }"
+                              @click="changeTag(item,index)" v-for="(item, index) in data.categoryList" :key="item.id">
                             {{ item.name }}
                         </view>
                     </view>
                 </view>
 
                 <view class="cover" v-if="data.showFileBox">
-                    <view class="title">上传封面图<text>每张图片大小不能超过3M</text></view>
+                    <view class="title">上传封面图
+                        <text>每张图片大小不能超过3M</text>
+                    </view>
                     <imgUpload v-model:imageArr="data.fileList" :limit="1" ref="imgUploadref" @upchange="changeisNext">
                         <template #uploadBtn>
                             <view @click="openUp" class="up_box">
@@ -62,11 +69,11 @@
                     </imgUpload>
                 </view>
             </view>
-            
+
             <!-- v-if="data.keywordItem" -->
             <view class="topicText" v-if="false">
-                    {{ data.keywordItem }}
-                </view>
+                {{ data.keywordItem }}
+            </view>
 
 
             <view class="bottom_box">
@@ -83,7 +90,8 @@
                     <view class="bottom_box_btn" @tap="clickBtn(2)">发布视频</view>
                 </view>
             </view>
-            <TnPicker v-model="data.channelName" v-model:open="data.openPicker" :data="data.pickerData" @confirm="pickerConfirm" />
+            <TnPicker v-model="data.channelName" v-model:open="data.openPicker" :data="data.pickerData"
+                      @confirm="pickerConfirm"/>
             <BCNotify ref="bcNotify"></BCNotify>
         </z-paging>
         <TnPopup v-model="data.showDelPopup" :overlay-closeable="false">
@@ -97,7 +105,7 @@
         </TnPopup>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive, onMounted, nextTick } from 'vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -115,18 +123,18 @@ const props = withDefaults(defineProps<{
     ischange: number
     articleId: any
     type: number
-    taskId:string
-    activityId:string|null,//活动id
-    topic:string,
-    categoryId:string
+    taskId: string
+    activityId: string | null,//活动id
+    topic: string,
+    categoryId: string
 
 }>(), {
     ischange: 0,
     articleId: '',
-    taskId:'',
+    taskId: '',
     type: 0,  //3:图文 2：视频
-    activityId:null,
-    topic:'',
+    activityId: null,
+    topic: '',
     categoryId: ''
 
 })
@@ -145,7 +153,7 @@ interface Data {
     categoryList: any
     isPreviewVideo: boolean
     showFileBox: boolean
-    keywordItem:string|null,
+    keywordItem: string | null,
     keywordNumber: number,
     addactivityId: string | null,
     showDelPopup: boolean
@@ -158,10 +166,10 @@ const data = reactive<Data>({
     uploadStyle: {
         columns: 1,
         columnGap: '20rpx',
-        rowGap:'20rpx',
-        padding:'30rpx 50rpx',
-        height:'200rpx',
-        radius:'20rpx'
+        rowGap: '20rpx',
+        padding: '30rpx 50rpx',
+        height: '200rpx',
+        radius: '20rpx'
     },
     title: '',
     describe: '',
@@ -174,10 +182,10 @@ const data = reactive<Data>({
     categoryList: [],
     isPreviewVideo: false,
     showFileBox: false,
-    keywordItem:null,
+    keywordItem: null,
     keywordNumber: 0,
     addactivityId: null,
-    showDelPopup: false,
+    showDelPopup: false
 })
 
 const bcNotify = ref()
@@ -186,7 +194,7 @@ const imgUploadref = ref()
 
 const openUp = () => {
     nextTick(() => {
-        console.log('手动调用',imgUploadref ,imgUploadref.value)
+        console.log('手动调用', imgUploadref, imgUploadref.value)
         imgUploadref.value.chooseFileFun()
     })
 }
@@ -210,7 +218,7 @@ const pickerConfirm = (value: any) => {
  * @param {Object} item 当前删除的图片或者视频信息
  * @param {Number} index 当前删除的图片或视频索引
  * @param {Function} next 调用此函数继续执行组件删除逻辑
- * */ 
+ * */
 const beforeDelete = (item: any, index: number, next: any) => {
     uni.showModal({
         title: '提示信息',
@@ -231,8 +239,8 @@ const beforeDelete = (item: any, index: number, next: any) => {
  * */
 const beforeUpload = (tempFile: any, next: any) => {
 
-    console.log('tempFile',tempFile);
-    
+    console.log('tempFile', tempFile)
+
 
     data.disabled = true
     uni.showLoading({
@@ -288,14 +296,14 @@ const clickBtn = (status: number) => {
         bcNotify.value.show('请选择发布渠道')
         return
     }
-    
+
     if (props.articleId !== '' && props.type == 2 && status == 1) {
         editContent({
             articleId: props.articleId,
             title: data.title,
             desc: data.describe,
             type: 2,
-            taskId:props.taskId,
+            taskId: props.taskId,
             status: status,
             cover: data.fileList[0],
             categoryId: data.channelId,
@@ -303,7 +311,7 @@ const clickBtn = (status: number) => {
             videoUrl: data.list[0],
             keyword: [data.keywordItem],
             activityId: data.addactivityId ? data.addactivityId : null,
-            isAddActivity: data.addactivityId ? 1 : 0,
+            isAddActivity: data.addactivityId ? 1 : 0
 
         }).then((res) => {
             bcNotify.value.show('保存成功')
@@ -319,7 +327,7 @@ const clickBtn = (status: number) => {
             articleId: props.articleId,
             title: data.title,
             desc: data.describe,
-            taskId:props.taskId,
+            taskId: props.taskId,
             type: 2,
             status: status,
             cover: data.fileList[0],
@@ -328,7 +336,7 @@ const clickBtn = (status: number) => {
             videoUrl: data.list[0],
             keyword: [data.keywordItem],
             activityId: data.addactivityId ? data.addactivityId : null,
-            isAddActivity: data.addactivityId ? 1 : 0,
+            isAddActivity: data.addactivityId ? 1 : 0
 
         }).then((res) => {
             bcNotify.value.show('发布成功,请等待平台审核!')
@@ -341,7 +349,7 @@ const clickBtn = (status: number) => {
             title: data.title,
             type: 2,
             status: status,
-            taskId:props.taskId,
+            taskId: props.taskId,
             desc: data.describe,
             cover: data.fileList[0],
             videoUrl: data.list[0],
@@ -349,7 +357,7 @@ const clickBtn = (status: number) => {
             categoryName: data.channelName,
             keyword: [data.keywordItem],
             activityId: data.addactivityId ? data.addactivityId : null,
-            isAddActivity: data.addactivityId ? 1 : 0,
+            isAddActivity: data.addactivityId ? 1 : 0
 
         }).then((res) => {
             const str = status == 1 ? '保存成功' : '发布成功,请等待平台审核!'
@@ -375,7 +383,7 @@ onMounted(() => {
             }
 
             if (props.categoryId) {
-                newArr = newArr.filter((item:any) => {
+                newArr = newArr.filter((item: any) => {
                     return item.id == props.categoryId
                 })
             }
@@ -415,9 +423,9 @@ onMounted(() => {
         })
     }
     else {
-        
-        data.keywordItem = props.topic;
-        
+
+        data.keywordItem = props.topic
+
         let newStr = data.keywordItem != '' ? '#' + data.keywordItem + '#' : ''
         data.describe = newStr
 
@@ -425,37 +433,38 @@ onMounted(() => {
 
         data.showFileBox = true
     }
-    
+
 })
 
-const changeTag = (item:any, index:number) => {
-    console.log('index',index);
-    
+const changeTag = (item: any, index: number) => {
+    console.log('index', index)
+
     if (data.channelId == item.id) {
-        console.log('清除');
-        
+        console.log('清除')
+
         data.channelId = ''
         data.channelName = ''
 
     }
     data.channelId = item.id
     data.channelName = item.name
-    console.log('item',item);
-    
+    console.log('item', item)
+
 }
 
-const inpChange = (value:string) => {
-    let matches = value.match(/#/g)?.length;
+const inpChange = (value: string) => {
+    let matches = value.match(/#/g)?.length
 
     if (!data.keywordItem) {
         return
     }
 
     if (matches! >= 2) {
-        console.log('话题存在');
-        
-    }else{
-        console.log('话题不存在');
+        console.log('话题存在')
+
+    }
+    else {
+        console.log('话题不存在')
         let newStr = value.slice(data.keywordNumber + 1)
         data.describe = newStr
 
@@ -469,28 +478,28 @@ const inpChange = (value:string) => {
 const openMarket = () => {
     // com.lemon.lv
     // com.taobao.taobao
-    console.log('app跳转');
-    var appurl;  
-    if (plus.os.name=="Android") {  
-        appurl = "Android"; 
+    console.log('app跳转')
+    var appurl
+    if (plus.os.name == "Android") {
+        appurl = "Android"
         plus.runtime.launchApplication(
-            {  
-                pname: 'com.lemon.lv'  
-            },  
-            function(e) {  
-                console.log('本机没有安装剪映' + e);  
-                data.showDelPopup = true
-            }  
-        );
+              {
+                  pname: 'com.lemon.lv'
+              },
+              function(e) {
+                  console.log('本机没有安装剪映' + e)
+                  data.showDelPopup = true
+              }
+        )
     }
-    else{  
-        appurl = "Ios";  
-        plus.runtime.launchApplication({ action: 'taobao://' }, function(e) {  
-            console.log('Open system default browser failed: ' + e.message);  
-        });
-    } 
-    console.log('appurl',appurl);
-    
+    else {
+        appurl = "Ios"
+        plus.runtime.launchApplication({ action: 'taobao://' }, function(e) {
+            console.log('Open system default browser failed: ' + e.message)
+        })
+    }
+    console.log('appurl', appurl)
+
 }
 // #endif
 
@@ -500,18 +509,20 @@ const determineDel = () => {
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
-.video_padding_box{
+.video_padding_box {
     padding: 30rpx;
     box-sizing: border-box;
     background: #fff;
-    .upVideo_box{
+
+    .upVideo_box {
         background: #F8F8F8;
         border-radius: 12rpx 12rpx 12rpx 12rpx;
         overflow: hidden;
     }
 }
+
 .addVideo {
     width: 100%;
     height: 200rpx;
@@ -526,7 +537,7 @@ const determineDel = () => {
     }
 }
 
-.topicText{
+.topicText {
     background: #FDEBE7;
     border-radius: 38rpx;
     padding: 8rpx 26rpx;
@@ -535,8 +546,9 @@ const determineDel = () => {
     font-size: 28rpx;
     color: #EA3E1A;
     text-align: center;
-    width:fit-content;
+    width: fit-content;
 }
+
 .input {
     padding: 0 30rpx 30rpx 30rpx;
 }
@@ -569,7 +581,7 @@ const determineDel = () => {
     justify-content: center;
     flex-direction: column;
 
-    .up_text{
+    .up_text {
         margin-top: 24rpx;
         font-size: 24rpx;
         color: #C9C9C9;
@@ -583,27 +595,34 @@ const determineDel = () => {
     font-size: 30rpx;
     color: #333333;
     border-bottom: 2rpx solid #F2F2F2;
+
     .title {
         flex: 1;
         margin-bottom: 32rpx;
     }
+
     .name {
         font-weight: 400;
         font-size: 28rpx;
         color: #999999;
     }
+
     .active {
         margin-right: 10rpx;
         padding: 6rpx 28rpx;
         background: #FDEBE7;
         border-radius: 38rpx;
         font-size: 28rpx;
-        color: #EA3E1A ;
+        color: #EA3E1A;
     }
-    .tag_list_box{
+
+    .tag_list_box {
         display: flex;
         align-items: center;
-        .tag_item{
+        flex-wrap: wrap;
+        gap: 10rpx;
+
+        .tag_item {
             padding: 12rpx 24rpx;
             box-sizing: border-box;
             font-weight: 400;
@@ -612,7 +631,8 @@ const determineDel = () => {
             background: #F3F3F3;
             border-radius: 28rpx;
             margin-right: 20rpx;
-            &.is_active{
+
+            &.is_active {
                 background: #EA3E1A;
                 color: #FFFFFF;
             }
@@ -620,15 +640,17 @@ const determineDel = () => {
     }
 }
 
-.bottom_box{
+.bottom_box {
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
-    .openMarket_bottom{
+
+    .openMarket_bottom {
         padding: 24rpx;
         box-sizing: border-box;
-        .openMarket_bottom_box{
+
+        .openMarket_bottom_box {
             width: 100%;
             padding: 20rpx 36rpx;
             box-sizing: border-box;
@@ -637,12 +659,14 @@ const determineDel = () => {
             justify-content: space-between;
             background: #FCF1F1;
             border-radius: 12rpx;
-            .openMarket_title{
+
+            .openMarket_title {
                 font-size: 30rpx;
                 color: #333333;
                 font-weight: 400;
             }
-            .openMarket_btn{
+
+            .openMarket_btn {
                 padding: 10rpx 32rpx;
                 box-sizing: border-box;
                 border-radius: 32rpx;
@@ -654,7 +678,8 @@ const determineDel = () => {
         }
 
     }
-    .bottom_flex_box{
+
+    .bottom_flex_box {
         display: flex;
         align-items: center;
         border-top: 2rpx solid #F2F2F2;
@@ -662,7 +687,8 @@ const determineDel = () => {
         padding-bottom: 70rpx;
         box-sizing: border-box;
     }
-    .bottom_box_draft{
+
+    .bottom_box_draft {
         width: 250rpx;
         height: 80rpx;
         text-align: center;
@@ -673,42 +699,49 @@ const determineDel = () => {
         font-size: 32rpx;
         color: #535353;
     }
-	.bottom_box_btn {
-		font-size: 32rpx;
-		height: 80rpx;
-		width: 420rpx;
-		text-align: center;
-		color: #FFFFFF;
+
+    .bottom_box_btn {
+        font-size: 32rpx;
+        height: 80rpx;
+        width: 420rpx;
+        text-align: center;
+        color: #FFFFFF;
         background: #EA3E1A;
         line-height: 80rpx;
-		border-radius: 46rpx;
-	}
+        border-radius: 46rpx;
+    }
 
 }
-.delPopup_box{
+
+.delPopup_box {
     width: 540rpx;
     background: #FFFFFF;
     border-radius: 24rpx;
-    .delPopup_title{
+
+    .delPopup_title {
         padding: 40rpx 60rpx;
         text-align: center;
         box-sizing: border-box;
     }
-    .delPopup_bottom_box{
+
+    .delPopup_bottom_box {
         width: 100%;
         display: flex;
         align-items: center;
         border-top: 2rpx solid #F0F0F0;
-        .delPopup_bottom_item{
+
+        .delPopup_bottom_item {
             width: 49%;
             padding: 22rpx 0rpx;
             font-size: 28rpx;
             text-align: center;
-            &.cancel{
+
+            &.cancel {
                 color: #666666;
                 border-right: 2rpx solid #F0F0F0;
             }
-            &.determine{
+
+            &.determine {
                 color: #399BFC;
             }
         }
@@ -717,4 +750,3 @@ const determineDel = () => {
 
 }
 </style>
-  

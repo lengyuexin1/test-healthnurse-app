@@ -8,7 +8,7 @@ import { pageController } from '@bc/uni-tools'
 /* 跳转到 场景管理 */
 export const gotoSceneManage = () => {
     const route = {
-        path: '/Mall/pages/scene/sceneManage',
+        path: '/pagesMall/pages/scene/sceneManage',
         query: {  }
     } as any
     return pageController.push(route)
@@ -17,7 +17,7 @@ export const gotoSceneManage = () => {
 /* 跳转到 场景服务 */
 export const gotoSceneServer = (patientId:string, name: string) => {
     const route = {
-        path: '/Mall/pages/scene/sceneServer',
+        path: '/pagesMall/pages/scene/sceneServer',
         query: { patientId, name }
     } as any
     return pageController.push(route)
@@ -26,7 +26,7 @@ export const gotoSceneServer = (patientId:string, name: string) => {
 /* 跳转到 添加场景服务 */
 export const gotoSceneIncrease = () => {
     const route = {
-        path: '/Mall/pages/scene/sceneIncrease',
+        path: '/pagesMall/pages/scene/sceneIncrease',
         query: {  }
     } as any
     return pageController.push(route)
@@ -35,7 +35,7 @@ export const gotoSceneIncrease = () => {
 /* 跳转到 场景条件 */
 export const gotoSceneFactor = () => {
     const route = {
-        path: '/Mall/pages/scene/sceneFactor',
+        path: '/pagesMall/pages/scene/sceneFactor',
         query: {  }
     } as any
     return pageController.push(route)
@@ -44,7 +44,7 @@ export const gotoSceneFactor = () => {
 /* 跳转到 我的智护帮 */
 export const gotoPersonnel = (inds: number) => {
     const route = {
-        path: '/Mall/pages/wisdom/personnel',
+        path: '/pagesMall/pages/wisdom/personnel',
         query: { inds }
     } as any
     return pageController.push(route)
@@ -53,7 +53,7 @@ export const gotoPersonnel = (inds: number) => {
 /** 跳转到 使用者管理 */
 export const gotoUtilise = (status = 0 as number, lcode?: string) => {
     const route = {
-        path: '/Mall/pages/wisdom/utilise',
+        path: '/pagesMall/pages/wisdom/utilise',
         query: { status, lcode }
     } as any
     return pageController.push(route)
@@ -62,7 +62,7 @@ export const gotoUtilise = (status = 0 as number, lcode?: string) => {
 /** 跳转到 智慧场景 */
 export const gotoSceneSmart = () => {
     const route = {
-        path: '/Mall/pages/scene/sceneSmart',
+        path: '/pagesMall/pages/scene/sceneSmart',
         query: {  }
     } as any
     return pageController.push(route)
@@ -71,7 +71,7 @@ export const gotoSceneSmart = () => {
 /**  旧版 跳转到 智慧场景详情 */
 export const gotoSmartDetail = (id: number) => {
     const route = {
-        path: '/Mall/pages/scene/smartDetail',
+        path: '/pagesMall/pages/scene/smartDetail',
         query: { id }
     } as any
     return pageController.push(route)
@@ -81,7 +81,7 @@ export const gotoSmartDetail = (id: number) => {
 /** 跳转到 房间管理 */
 export const gotoRoomManag = () => {
     const route = {
-        path: '/Mall/pages/wisdom/roomManag',
+        path: '/pagesMall/pages/wisdom/roomManag',
         query: {  }
     } as any
     return pageController.push(route)
@@ -99,7 +99,7 @@ export const gotoRoomDetail = (roomId: string, roomName: string) => {
 /** 跳转到 设备管理 */
 export const gotoDeviceManag = (query:{roomId?: string, roomName?: string}) => {
     const route = {
-        path: '/Mall/pages/wisdom/deviceManag',
+        path: '/pagesMall/pages/wisdom/deviceManag',
         query
     } as any
     return pageController.push(route)
@@ -127,7 +127,7 @@ const deviceDetailRoute = {} as Record<IModel, IRouteFun>
 /** 跳转到 睡眠检测详情 统一调用设备详情 gotoDeviceDetail */
 export const gotoSleepDetail = (query:IDeviceLinkQuery) => {
     const route = {
-        path: '/Mall/pages/wisdom/sleepDetail',
+        path: '/pagesMall/pages/wisdom/sleepDetail',
         query
     } as any
     return pageController.push(route)
@@ -147,7 +147,7 @@ export const gotoDeviceDetail = (query:IDeviceLinkQuery, model: IModel) => {
 /** 跳转到 SOS报警器/跌倒报警器 统一调用设备详情 gotoDeviceDetail */
 export const gotoAlarmDetail = (query:IDeviceLinkQuery) => {
     const route = {
-        path: '/Mall/pages/wisdom/alarmDetail',
+        path: '/pagesMall/pages/wisdom/alarmDetail',
         // path: '/Mall/pages/wisdom/deviceDetail',
         query
     } as any
@@ -157,7 +157,7 @@ export const gotoAlarmDetail = (query:IDeviceLinkQuery) => {
 /** 跳转到 血压 */
 export const gotoBooldYa = (query:IDeviceLinkQuery) => {
     const route = {
-        path: '/Mall/pages/wisdom/bloodDev',
+        path: '/pagesMall/pages/wisdom/bloodDev',
         query
     } as any
     return pageController.push(route)
@@ -172,7 +172,7 @@ deviceDetailRoute.BLOOD_PRESSURE = gotoBooldYa
 /** 跳转到 接警人 */
 export const gotoCaller = (id?:string) => {
     const route = {
-        path: '/Mall/pages/wisdom/caller',
+        path: '/pagesMall/pages/wisdom/caller',
         query: { id }
     } as any
     return pageController.push(route)
@@ -182,7 +182,7 @@ export const gotoCaller = (id?:string) => {
 /** 跳转到 睡眠检测报告 */
 export const gotoSleepReport = (deviceId:string) => {
     const route = {
-        path: '/Create/pages/wisdom/sleepReport',
+        path: '/pagesCreate/pages/wisdom/sleepReport',
         query: { deviceId }
     } as any
     return pageController.push(route)
@@ -192,7 +192,7 @@ export const gotoSleepReport = (deviceId:string) => {
 /** 跳转到 睡眠检测设置 */
 export const gotoSleepSetup = (query: {deviceId:string, devName: string}) => {
     const route = {
-        path: '/Mall/pages/wisdom/sleepSetup',
+        path: '/pagesMall/pages/wisdom/sleepSetup',
         query: query
     } as any
     return pageController.push(route)
@@ -202,7 +202,7 @@ export const gotoSleepSetup = (query: {deviceId:string, devName: string}) => {
 /** 跳转到 睡眠检测信息 */
 export const gotoSleepMation = (deviceId:string, type: 0 | 1) => {
     const route = {
-        path: '/Mall/pages/wisdom/sleepMation',
+        path: '/pagesMall/pages/wisdom/sleepMation',
         query: { deviceId, type }
     } as any
     return pageController.push(route)
@@ -211,7 +211,7 @@ export const gotoSleepMation = (deviceId:string, type: 0 | 1) => {
 /** 跳转到 添加设备 */
 export const gotoDeviceCreate = (roomId: string, type: string) => {
     const route = {
-        path: '/Mall/pages/wisdom/deviceCreate',
+        path: '/pagesMall/pages/wisdom/deviceCreate',
         query: { roomId, type }
     } as any
     return pageController.push(route)
@@ -220,7 +220,7 @@ export const gotoDeviceCreate = (roomId: string, type: string) => {
 /** 跳转到 体温枪配置蓝牙 */
 export const gotoTemLaya = (roomId: string, type: string) => {
     const route = {
-        path: '/Mall/pages/wisdom/setTemLaya',
+        path: '/pagesMall/pages/wisdom/setTemLaya',
         query: { roomId, type }
     } as any
     return pageController.replace(route)
@@ -229,7 +229,7 @@ export const gotoTemLaya = (roomId: string, type: string) => {
 /** 跳转到 血压结果 */
 export const gotoBooldResult = (data:any) => {
     const route = {
-        path: '/Mall/pages/wisdom/bloodResult',
+        path: '/pagesMall/pages/wisdom/bloodResult',
         query: data
     } as any
     return pageController.push(route)
@@ -239,7 +239,7 @@ export const gotoBooldResult = (data:any) => {
 /** 跳转到 体温枪配置成功 */
 export const gotoSuccedLaya = (deviceId: string) => {
     const route = {
-        path: '/Mall/pages/wisdom/addLayaDev',
+        path: '/pagesMall/pages/wisdom/addLayaDev',
         query: {  }
     } as any
     return pageController.replace(route)
@@ -249,7 +249,7 @@ export const gotoSuccedLaya = (deviceId: string) => {
 export const gotoBodyTem = (deviceId: string) => {
     const data =  encodeURIComponent(JSON.stringify(deviceId))
     const route = {
-        path: '/Mall/pages/wisdom/bodyTem',
+        path: '/pagesMall/pages/wisdom/bodyTem',
         query: { data }
     } as any
     return pageController.push(route)
@@ -258,7 +258,7 @@ export const gotoBodyTem = (deviceId: string) => {
 /** 跳转到 开始测试体温 */
 export const gotoStartTep = (deviceId: string) => {
     const route = {
-        path: '/Mall/pages/wisdom/startLiang',
+        path: '/pagesMall/pages/wisdom/startLiang',
         query: {  }
     } as any
     return pageController.push(route)
@@ -267,7 +267,7 @@ export const gotoStartTep = (deviceId: string) => {
 /** 跳转到 开始测试体温 */
 export const gotoStartTepTow = (deviceId: string) => {
     const route = {
-        path: '/Mall/pages/wisdom/startLiang',
+        path: '/pagesMall/pages/wisdom/startLiang',
         query: {  }
     } as any
     return pageController.replace(route)
@@ -277,7 +277,7 @@ export const gotoStartTepTow = (deviceId: string) => {
 export const gotorecListTem = (mac: string) => {
     const data =  encodeURIComponent(JSON.stringify(mac))
     const route = {
-        path: '/Mall/pages/wisdom/recodeList',
+        path: '/pagesMall/pages/wisdom/recodeList',
         query: { data }
     } as any
     return pageController.push(route)
@@ -286,7 +286,7 @@ export const gotorecListTem = (mac: string) => {
 /** 跳转到 体温记录 */
 export const gotoRecodEcart = (tep: string, time: string, sdaMac: string) => {
     const route = {
-        path: '/Create/pages/wisdom/recodEcart',
+        path: '/pagesCreate/pages/wisdom/recodEcart',
         query: { tep, time, sdaMac }
     } as any
     return pageController.push(route)
@@ -295,7 +295,7 @@ export const gotoRecodEcart = (tep: string, time: string, sdaMac: string) => {
 /** 跳转到 血压记录 */
 export const gotobooldLuc = (tep:any) => {
     const route = {
-        path: '/Create/pages/wisdom/bloodResult',
+        path: '/pagesCreate/pages/wisdom/bloodResult',
         query: { tep }
     } as any
     return pageController.push(route)
@@ -305,7 +305,7 @@ export const gotobooldLuc = (tep:any) => {
 /** 跳转到 体温结果 */
 export const gotoResult = (tem: any) => {
     const route = {
-        path: '/Mall/pages/wisdom/tempResult',
+        path: '/pagesMall/pages/wisdom/tempResult',
         query: { tem }
     } as any
     return pageController.replace(route)
@@ -324,7 +324,7 @@ export const gotoDeviceChoice = (roomId?: string) => {
 /** 跳转到 设备联网 */
 export const gotoDeviceNet = (blueName: string) => {
     const route = {
-        path: '/Mall/pages/wisdom/deviceNet',
+        path: '/pagesMall/pages/wisdom/deviceNet',
         query: { blueName }
     } as any
     return pageController.push(route)
@@ -333,7 +333,7 @@ export const gotoDeviceNet = (blueName: string) => {
 /** 跳转到 场景服务 */
 export const gotoScenServer = (type: 1 | 2) => {
     const route = {
-        path: '/Mall/pages/wisdom/scenServer',
+        path: '/pagesMall/pages/wisdom/scenServer',
         query: { type }
     } as any
     return pageController.push(route)
@@ -342,7 +342,7 @@ export const gotoScenServer = (type: 1 | 2) => {
 /** 跳转到 康护知识 */
 export const gotoKnowledge = () => {
     const route = {
-        path: '/Mall/pages/wisdom/knowledge',
+        path: '/pagesMall/pages/wisdom/knowledge',
         query: {  }
     } as any
     return pageController.push(route)
@@ -351,7 +351,7 @@ export const gotoKnowledge = () => {
 /** 跳转到 探护云记 */
 export const gotoCareAlbum = () => {
     const route = {
-        path: '/Mall/pages/wisdom/careAlbum',
+        path: '/pagesMall/pages/wisdom/careAlbum',
         query: {  }
     } as any
     return pageController.push(route)
@@ -360,7 +360,7 @@ export const gotoCareAlbum = () => {
 /** 跳转到 后装套餐 */
 export const gotoAfterwards = () => {
     const route = {
-        path: '/Mall/pages/wisdom/afterwards',
+        path: '/pagesMall/pages/wisdom/afterwards',
         query: {  }
     } as any
     return pageController.push(route)
@@ -369,7 +369,7 @@ export const gotoAfterwards = () => {
 /** 设备通知设置 */
 export const gotoDeviceSetup = (query: any) => {
     const route = {
-        path: '/Mall/pages/wisdom/deviceSetup',
+        path: '/pagesMall/pages/wisdom/deviceSetup',
         query
     } as any
     return pageController.push(route)
@@ -379,7 +379,7 @@ export const gotoDeviceSetup = (query: any) => {
 /** 设备通知记录 */
 export const gotoNoticeRecord = (query: any) => {
     const route = {
-        path: '/Mall/pages/wisdom/noticeRecord',
+        path: '/pagesMall/pages/wisdom/noticeRecord',
         query
     } as any
     return pageController.push(route)
@@ -388,7 +388,7 @@ export const gotoNoticeRecord = (query: any) => {
 /** 设备通知详情 */
 export const gotoNoticeDetail = (query: any) => {
     const route = {
-        path: '/Mall/pages/wisdom/noticeDetail',
+        path: '/pagesMall/pages/wisdom/noticeDetail',
         query
     } as any
     return pageController.push(route)
@@ -397,7 +397,7 @@ export const gotoNoticeDetail = (query: any) => {
 /** 设备通知人员设置 */
 export const gotoNoticeStaff = () => {
     const route = {
-        path: '/Mall/pages/wisdom/noticeStaff',
+        path: '/pagesMall/pages/wisdom/noticeStaff',
         query: {}
     } as any
     return pageController.push(route)
@@ -406,7 +406,7 @@ export const gotoNoticeStaff = () => {
 /** 消费明细 */
 export const gotoExpendList = () => {
     const route = {
-        path: '/Mall/pages/wisdom/expendList',
+        path: '/pagesMall/pages/wisdom/expendList',
         query: {}
     } as any
     return pageController.push(route)
@@ -415,7 +415,7 @@ export const gotoExpendList = () => {
 /** 涂鸦设备 */
 export const gotoTuYa = () => {
     const route = {
-        path: '/Tuya/pages/wisdom/tuyaList',
+        path: '/pagesTuya/pages/wisdom/tuyaList',
         query: {}
     } as any
     return pageController.push(route)

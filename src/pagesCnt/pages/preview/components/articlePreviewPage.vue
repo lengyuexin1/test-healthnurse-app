@@ -1,7 +1,7 @@
 <template>
     <view class="container">
-        <z-paging 
-		ref="paging" 
+        <z-paging
+		ref="paging"
 		:auto="false"
 		:refresher-enabled="false"
         @scroll="pagingScroll"
@@ -33,7 +33,7 @@
                         </view>
                         <view class="article_content">
                             <!-- <view v-html="data.articledetailsObj.detail"></view> -->
-                            <mpHtml 
+                            <mpHtml
                             :content="data.articledetailsObj.detail"
                             :tag-style="data.pStyle"
                             />
@@ -78,19 +78,19 @@
 
 
 		    <BCNotify ref="bcNotify"></BCNotify>
-            
+
         </z-paging>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, defineExpose, nextTick, getCurrentInstance } from 'vue'
 
 import pageTopbg from '@/components/page-topbg/page-topbg.vue'
 // import commentItem from './commentItem.vue'
 
-import { 
-    getarticlePreview, 
+import {
+    getarticlePreview,
     unfollow,
     follow
     } from '@/api/create-api'
@@ -184,19 +184,19 @@ onMounted(() => {
 
 const getDetails = (id:string) => {
     console.log('开始调用',id);
-    
+
     getarticlePreview({
         id
     }).then((res:any)=>{
-        
+
         data.articledetailsObj = res
-        
+
         console.log('data.articledetailsObj',data.articledetailsObj);
-        
+
 
     }).catch((err:any)=>{
         console.log('err',err);
-        
+
     })
 }
 
@@ -206,7 +206,7 @@ const instance = getCurrentInstance(); // 获取组件实例
 const query = uni.createSelectorQuery().in(instance);
 
 
-const getpageTop = () => {    
+const getpageTop = () => {
     setTimeout(()=>{
 
         query.select( '#pageTop' ).boundingClientRect((view:any) => { //目标位置的节点：类class或者id
@@ -243,8 +243,7 @@ const preImage = (current:number, urls:any) => {
 
 
 const tobloggerPage = () => {
-    // return
-    gotoauthor({
+    return gotoauthor({
         isuser:data.articledetailsObj.isUser,
         accountId:data.articledetailsObj.accountId,
         isFans:data.articledetailsObj.isFans
@@ -426,7 +425,7 @@ defineExpose({
                     color: #FFFFFF;
                 }
             }
-            
+
             .article_img_text{
                 padding: 0rpx 32rpx;
                 font-size: 30rpx;
@@ -876,7 +875,7 @@ defineExpose({
     }
 }
 </style>
-  
+
 <style>
     page {
         height: 100%;

@@ -18,7 +18,7 @@ export const gotoserviceDetail = (itemId: string) => {
 
 export const gotoShopDetail = (shopId: string) => {
     const route = {
-        path: '/Mall/pages/shop/shopDetail',
+        path: '/pagesMall/pages/shop/shopDetail',
         query: { shopId }
     } as any
     return pageController.push(route)
@@ -152,7 +152,7 @@ export const gotoScanCode = (path:any, query:any) => {
         query
     } as any
 
-    console.log('route', route)
+    console.log('route',route);
 
 
     return pageController.push(route)

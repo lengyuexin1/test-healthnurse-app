@@ -2,10 +2,18 @@
   "extends": "@vue/tsconfig/tsconfig.json",
   "compilerOptions": {
     "ignoreDeprecations": "5.0",
+    //    暂时忽略找不到的库
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [ "src/*" ],
-      "@bc/*": [ "m-pkgs/*" ],
+      "@/*": [
+        "src/*"
+      ],
+      "@bc/*": [
+        "m-pkgs/*"
+      ]
       // "NERtcUniappSDK-JS": [ "src/IndexPage/pages/chat/interest-chat/rtc/NERtcUniappSDK-JS" ]
     },
     "lib": [

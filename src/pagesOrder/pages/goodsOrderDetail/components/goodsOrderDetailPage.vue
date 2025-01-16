@@ -1,7 +1,7 @@
 <template>
     <view class="container">
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
@@ -74,7 +74,7 @@
         </TnPopup>
 
 
-        
+
     </view>
 </template>
 
@@ -91,7 +91,7 @@ import orderInfo from './order-info.vue'
 import orderDetail from './order-detail.vue'
 import orderFoot from './orderFoot.vue'
 
-import { 
+import {
     getserviceOrderDetail,
     getAftersaleReason,
     applyRefund,
@@ -153,15 +153,15 @@ const getAssetsUrl = computed(()=>(src:string)=> {
 })
 
 const showBottom = computed(()=>{
-    if (!data.osObj.actionableList) { 
+    if (!data.osObj.actionableList) {
         console.log(111);
-        
+
         return false
     }
     console.log(222);
 
     return true
-    
+
 })
 
 // 判断是否机构订单
@@ -225,7 +225,7 @@ const getDetail = (orderId:string) => {
             console.log('app跳转到小程序订单详情支付');
             // setTimeout(() => {
             //     console.log('自动调取');
-                
+
             //     uppay()
             // }, 1000)
         }
@@ -263,13 +263,13 @@ const clickdelreason = (id:string) => {
 // 提交取消订单
 const goRemove = () => {
     console.log('data.serviceInfo', data.serviceInfo);
-    
+
     setTimeout(()=>{
         if (data.reasonItemid == '') {
             delreasonNotify.value.error('请选择取消原因')
             return
         }
-        
+
         if (data.osObj.actionableList.includes('apply_refund')) {
 
             console.log('走售后');
@@ -290,7 +290,7 @@ const goRemove = () => {
             });
             return
         }
-        
+
         console.log('不走售后');
         houseOrderCancel({
             orderId: props.orderId,
@@ -311,9 +311,9 @@ const goRemove = () => {
 // 继续支付
 const uppay = async () => {
     console.log('开始支付');
-    
+
     const openid = uni.getStorageSync('openid')
-    const payData = { 
+    const payData = {
         orderId: props.orderId,
         openid,
         payId: data.serviceInfo.payId,
@@ -363,7 +363,7 @@ const uppay = async () => {
     const shareType = import.meta.env.VITE_WEIXIN_OPEN
 
     console.log('payJSON',payJSON);
-    
+
 
     plus.share.getServices((res: any) => {
         let sweixin = null as any
@@ -375,21 +375,21 @@ const uppay = async () => {
         // 唤醒微信小程序
         if (sweixin) {
             uni.hideLoading()
-            
+
             PlatformManage.getToken().then((res:any)=>{
                 console.log('获取userinfo',res);
 
                 sweixin.launchMiniProgram({
                     id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
-                    path: `/Order/pages/goodsOrderDetail/goodsOrderDetail?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
+                    path: `/pagesOrder/pages/goodsOrderDetail/goodsOrderDetail?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
                         'payJSON': payJSON,
                     }
                 })
 
-                console.log(`/Order/pages/goodsOrderDetail/goodsOrderDetail?payJSON=${payJSON}&userId=${res.id}`);
-                
+                console.log(`/pagesOrder/pages/goodsOrderDetail/goodsOrderDetail?payJSON=${payJSON}&userId=${res.id}`);
+
             })
         }
     })
@@ -448,9 +448,9 @@ const operate = (type:string) => {
         console.log('取消订单');
         getdelreason()
     }
-    
-    
-    
+
+
+
 }
 
 const gotoIMSessionChat = (type:number) => {
@@ -515,7 +515,7 @@ const clickComment = () => {
 // 设置地址 / 修改订单
 const setSitelAdres = (data:any) => {
     console.log('456879',data);
-    
+
     const shopList = data.serviceInfo.shopList.map((x:any) => {
         return {
             id: x.shopId,
@@ -785,7 +785,7 @@ defineExpose({
 .bottom_btn{
     background: #fff;
     height: 120rpx;
-    
+
 }
 </style>
 

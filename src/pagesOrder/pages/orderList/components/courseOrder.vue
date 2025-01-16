@@ -12,7 +12,7 @@
             :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
         >
             <template #top>
-                
+
             </template>
             <view class="content">
                 <view class="course_item" v-for="item in data.dataList" :key="item.id" @click="tocourseOrderDetail(item)">
@@ -23,12 +23,12 @@
                         <view class="order_type isdel" v-if="item.status == 262146">已取消</view>
                     </view>
                     <view class="item_card">
-                        <courseCard 
+                        <courseCard
                         :cardObj="handleObj(item)"
                         ></courseCard>
                     </view>
                     <view class="item_bottom">
-                        
+
                         <!-- <view class="state_text" v-if="item.actionableList.includes('pay')">
                             <text class="typetex" v-if="item.statusDetailIntro <= 0">{{ isNaN(item.statusDetailIntro) ? item.statusDetailIntro : '请支付' }}</text>
                             <template v-else>
@@ -70,7 +70,7 @@ import { ref, reactive, computed } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { getserviceOrderList } from '@/api/order-api'
 import { courseOrderDetail } from '@/routes/order-routes'
-import courseCard from '@/Order/components/courseCard.vue'
+import courseCard from '@/pagesOrder/components/courseCard.vue'
 import { formattime } from '@/common/formatTime'
 
 import { gotocourseVideo } from '@/routes/create-routes'
@@ -134,7 +134,7 @@ const getOrderList = (pageNumber:number, pageSize:number) => {
         data.cursor = res.nextCursor!
     })
 
-    
+
 }
 
 const tocourseOrderDetail = (item:any) => {
@@ -250,7 +250,7 @@ defineExpose({
                     border-radius: 38rpx;
                     color: #FFFFFF;
                     height: 54rpx;
-                    
+
                     .btn_item_text{
                         font-size: 24rpx;
                         color: #FFFFFF;

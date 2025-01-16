@@ -11,7 +11,7 @@ import { ref, reactive, nextTick } from 'vue'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app'
 
 import goodsOrderDetailPage from './components/goodsOrderDetailPage'
-import verifyAccount from '@/Order/components/verifyAccount.vue'
+import verifyAccount from '@/pagesOrder/components/verifyAccount.vue'
 
 
 interface Data {
@@ -38,11 +38,11 @@ onLoad((option:any)=>{
         data.orderId = payJSON.itemId
         data.isAppOpen = payJSON.isAppOpen
 
-        
+
 
         console.log('payJSON',payJSON);
         console.log('data.isAppOpen',data.isAppOpen);
-        
+
 
     }
 
@@ -61,7 +61,7 @@ onReady(()=>{
         nextTick(()=>{
             // (accountUserRef.value as any).checkUser(data.userId)
             (accountUserRef.value as any).checkUser(data.userId)
-            
+
         })
     }
 })
@@ -73,7 +73,7 @@ onReady(()=>{
 .bottom_btn{
     background: #fff;
     height: 120rpx;
-    
+
 }
 </style>
 <style>

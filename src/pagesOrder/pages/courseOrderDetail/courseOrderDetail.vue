@@ -6,11 +6,11 @@
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, nextTick } from 'vue'
 import courseOrderPage from './components/courseOrderPage.vue'
-import verifyAccount from '@/Order/components/verifyAccount.vue'
+import verifyAccount from '@/pagesOrder/components/verifyAccount.vue'
 
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app'
 
@@ -43,7 +43,7 @@ onLoad((option:any)=>{
 
         console.log('payJSON',payJSON);
         console.log('data.isAppOpen',data.isAppOpen);
-        
+
     }
 })
 
@@ -63,7 +63,7 @@ onReady(()=>{
         nextTick(()=>{
             // (accountUserRef.value as any).checkUser(data.userId)
             (accountUserRef.value as any).checkUser(data.userId)
-            
+
         })
     }
 })
@@ -71,8 +71,7 @@ onReady(()=>{
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 
 </style>
-  
