@@ -154,7 +154,7 @@ const linkDeviceManag = (item: any) => {
         return
     }
     uni.setStorageSync('roomId', item.id)
-    gotoRoomDetail(item.id, item.name)
+    gotoRoomDetail(item.id, item.name, item.tuyaHomeId)
     /* gotoDeviceManag({
         roomId: item.id,
         roomName: item.name
