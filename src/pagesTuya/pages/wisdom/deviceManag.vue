@@ -1,16 +1,15 @@
 <template>
     <view class="container">
-        <z-paging ref="paging" :auto="false" v-model="dataList" @query="queryList" :defaultPageSize="10"
+        <z-paging ref="paging" :auto="false" v-model="dataList" :defaultPageSize="10"
             :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="暂无数据~"
             :empty-view-img-style="{ width: '320rpx', height: '320rpx' }">
             <template #top>
                 <view style="background:linear-gradient(180deg, #DFF7EF 20%, #FFFFFF 100%);">
                     <customNavbar :pageTitle="'设备管理'"></customNavbar>
                     <view class="tabox" v-if="room.id === 0">
-                        <TnTabs v-model="current" @click="changeTab" lineColor="#29C86F" lineHeight="6rpx"
-                            :activeStyle="{ color: '#29C86F', fontSize: '32rpx', fontWeight: 'bold' }"
-                            :inactiveStyle="{ color: '#666666', fontSize: '32rpx' }">
-                            <TnTabsItem v-for="(item, index) in roomList" :key="index" :title="item.name" />
+                        <TnTabs v-model="current" @change="changeTab" active-color="rgb(41, 200, 111)" font-size="28rpx" 
+                        active-font-size="30rpx" bg-color="rgba(0,0,0, 0)" bar-color="rgb(41, 200, 111)" bottom-shadow="false">
+                            <TnTabsItem @click="changeTab" v-for="(item, index) in roomList" :key="index" :title="item.name" />
                         </TnTabs>
                     </view>
                 </view>
@@ -80,7 +79,7 @@ import { getAssetsPic } from "@/common/setPicture"
 import customNavbar from '@/components/custom-navbar/custom-navbar.vue'
 import { ref, computed } from "vue"
 import { onLoad, onShow } from "@dcloudio/uni-app"
-// import { gotoDeviceChoice, gotoDeviceDetail, gotoBodyTem } from "@/route/wisdom-routes"
+import { gotoDeviceDetail, gotoBodyTem } from "@/routes/wisdom-routes"
 import { allRoomList, roomDeviceList, deviceDelete } from "@/api/room-api"
 
 const modalRef = ref()
@@ -113,7 +112,7 @@ onLoad((option: any) => {
     }
 })
 onShow(() => {
-    queryList()
+    queryList(0)
 })
 
 // 删除设备
@@ -182,7 +181,7 @@ const getRoomList = () => {
         pageNumber: 1,
         query: {}
     }).then((res: any) => {
-        roomList.value = roomList.value.concat(res.map((x: any) => ({
+        roomList.value = roomList.value.concat(res.data.map((x: any) => ({
             ...x,
             name: x.name
         })))
@@ -190,9 +189,10 @@ const getRoomList = () => {
     })
 }
 // 设备列表
-const queryList = () => {
-    const roomId = room.value.id !== 0 ? room.value.id : roomList.value[current.value].id
+const queryList = (id:any) => {
+    const roomId = id + ''
     roomDeviceList(roomId).then((res: any) => {
+        console.log(res)
         const list = res.map((x: any) => {
             const roomss: any = room.value.id ? room.value : roomList.value.find(n => n.id === x.patientId)
             return ({
@@ -210,8 +210,11 @@ const queryList = () => {
 }
 // tab切换
 const changeTab = (e: any) => {
-    current.value = e.index
-    paging.value.reload()
+    current.value = e
+    if (roomList.value.length < 1) {
+        return
+    }
+    queryList(roomList.value[current.value].id)
 }
 // 设备详情
 const linkAlarmDetail = (item) => {
@@ -231,7 +234,7 @@ const linkAlarmDetail = (item) => {
 
 <style lang="scss" scoped>
 .tabox {
-    padding: 0 30rpx;
+    padding: 0 0rpx;
 }
 
 .devicebox {

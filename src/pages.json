@@ -1351,6 +1351,13 @@
 					}
                 }, 
 				{
+                    "path": "pages/wisdom/scenServer",
+                    "style": {
+						"navigationBarTitleText": "场景服务",
+						"navigationStyle": "custom"
+					}
+                },
+				{
 					"path": "pages/wisdom/deviceChoice",
 					"style": {
 						"navigationBarTitleText": "添加设备",

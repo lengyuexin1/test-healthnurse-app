@@ -770,3 +770,13 @@ export const gotoBusinessAuth = (isReplace?: boolean) => {
     } as any
     return isReplace ? pageController.replace(route) : pageController.push(route)
 }
+
+/* 找机构 */
+export const gotoAgency = (query: any) => {
+    const route = {
+        path: '/pages/agency/agency',
+        query
+    }
+    return pageController.push(route)
+
+}

@@ -8,7 +8,7 @@
             <view class="rom-box page-public-bg">
                 <view class="rom-mation row i-center j-between">
                     <view class="rom-mat-lef">
-                        <view class="rom-mat-name">{{ data.roomName || '--' }}的房间</view>
+                        <view class="rom-mat-name" @click="gotoTY">{{ data.roomName || '--' }}的房间</view>
                         <view class="rom-mat-more row i-center">
                             <div class="rom-mat-line row i-center">室内</div>
                             <div class="rom-mat-line row i-center">PM2.5</div>
@@ -16,8 +16,7 @@
                         </view>
                     </view>
                     <view class="rom-mat-rig">
-                        <TnIcon @click="linkDeviceCreate" name="add-fill" color="rgba(41, 200, 111, 1)"
-                            size="80"></TnIcon>
+                        <TnIcon @click="linkDeviceCreate" name="add-fill" color="rgba(41, 200, 111, 1)" size="80"></TnIcon>
                     </view>
                 </view>
                 <view class="rom-air row i-center j-between">
@@ -34,8 +33,7 @@
                         </view>
                     </view>
                     <view class="rom-air-rig">
-                        <u-image :src="getAssetsUrl('/zhihu/rompic.png')" width="440rpx" height="240rpx"
-                            mode="widthFix"></u-image>
+                        <image :src="getAssetsUrl('/zhihu/rompic.png')" class="bedl" mode="widthFix"></image>
                     </view>
                 </view>
                 <view class="rom-slep">
@@ -60,12 +58,14 @@
                 <view class="rom-dice">
                     <view class="rom-dic-tit">设备管理</view>
                     <view class="rom-dic-box">
-                        <view class="rom-dic-li" v-for="(item) in data.diceList" :key="item.id" @click="linkAlarmDetail(item)">
-                            <image :src="item.thumb" width="140rpx" height="140rpx" mode="aspectFit"></image>
+                        <view class="rom-dic-li" v-for="(item) in data.diceList" :key="item.id"
+                            @click="linkAlarmDetail(item)">
+                            <image :src="item.thumb" class="listImg" mode="aspectFit"></image>
                             <view class="rom-dic-name u-line-1">{{ item.name }}</view>
                             <view class="rom-dic-abt row i-center">
                                 <view class="rom-dic-peop">{{ item.roomName }}</view>
-                                <view class="rom-dic-stu" :class="{ abnormal: item.status !== 3 }">{{ data.statusTex[item.status]
+                                <view class="rom-dic-stu" :class="{ abnormal: item.status !== 3 }">{{
+                                    data.statusTex[item.status]
                                     || '未知故障' }}</view>
                             </view>
                         </view>
@@ -87,11 +87,15 @@ import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { getAssetsPic } from "@/common/setPicture"
 import { onLoad, onShow, onHide, onUnload } from '@dcloudio/uni-app'
 import { computed, reactive } from 'vue'
-import { gotoDeviceDetail, gotoDeviceChoice, gotoBodyTem, gotoBooldYa } from "@/routes/wisdom-routes"
+import { gotoDeviceDetail, gotoDeviceChoice, gotoBodyTem, gotoBooldYa, gotoTuYa } from "@/routes/wisdom-routes"
+import { gotoTemWater } from '@/routes/active-routes'
 import { deviceList, patientDetail, patientLastData } from "@/api/smart-api"
-
+// #ifdef MP-WEIXIN
+import { initRequest, loginByWx } from '@ray-js/wechat'
+// #endif
 
 interface Data {
+    tuyaHomeId: string
     roomId: string
     roomName: string
     roomList: any
@@ -104,6 +108,7 @@ interface Data {
     realInfo: any //实时数据
 }
 const data = reactive<Data>({
+    tuyaHomeId: '',
     roomId: "",
     roomName: "",
     roomList: [],
@@ -152,6 +157,16 @@ onShow(() => {
 })
 onLoad((option: any) => {
     data.roomId = option.roomId
+    data.tuyaHomeId = option.tuyaHomeId
+
+    // 涂鸦小程序
+    // #ifdef MP-WEIXIN
+    initRequest({ schema: '3af4cf4518c8cd47c4ff28fa98c0a85b' })
+    setTimeout(() => {
+        loginByWx()
+        console.log('登录成功')
+    }, 800)
+    // #endif
 })
 onHide(() => {
     endGetLast()
@@ -163,6 +178,10 @@ onUnload(() => {
 const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
+
+const gotoTY = () => {
+    gotoTuYa()
+}
 
 // 获取设备列表
 const getDeviceList = () => {
@@ -181,6 +200,10 @@ const getDeviceList = () => {
 
 // 设备详情
 const linkAlarmDetail = (item: any) => {
+    if (item.model == 'wsdcg') {
+        return gotoTemWater(item.model, item.id)
+    }
+
     if (item.model == 'TEMPERATURE') {
         return gotoBodyTem(item.mac)
     }
@@ -201,7 +224,7 @@ const getLastData = () => {
             throw new Error("数据错误")
         }
         // 0x03-在床 0x04-离床 0x05-打鼾 0x06-体动
-        const stus:any = { "03": "在床", "04": "离床", "05": "打鼾", "06": "体动" }
+        const stus: any = { "03": "在床", "04": "离床", "05": "打鼾", "06": "体动" }
         data.realInfo = {
             heartRate: parseInt(data[11], 16), //转成十进制
             breathing: parseInt(data[12], 16),
@@ -228,12 +251,12 @@ const getRoomInfo = () => {
         data.roomWeather = res.stateList
         data.roomName = res.name
     }).catch((err) => {
-       console.log(err.message)
+        console.log(err.message)
     })
 }
 // 添加设备
 const linkDeviceCreate = () => {
-    gotoDeviceChoice(data.roomId)
+    gotoDeviceChoice(data.roomId, data.tuyaHomeId)
 }
 </script>
 
@@ -353,6 +376,11 @@ page {
         padding-left: 16rpx;
     }
 
+    .listImg {
+        width: 140rpx;
+        height: 140rpx;
+    }
+
     .rom-dic-box {
         margin-top: 20rpx;
         display: grid;
@@ -399,5 +427,10 @@ page {
             }
         }
     }
+}
+
+.bedl {
+    width: 440rpx;
+    height: 240rpx;
 }
 </style>

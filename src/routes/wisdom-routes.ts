@@ -88,10 +88,10 @@ export const gotoRoomManag = () => {
 }
 
 /*  跳转到 房间详情 */
-export const gotoRoomDetail = (roomId: string, roomName: string) => {
+export const gotoRoomDetail = (roomId: string, roomName: string, tuyaHomeId:string) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/roomDetail',
-        query: { roomId, roomName }
+        query: { roomId, roomName, tuyaHomeId }
     } as any
     return pageController.push(route)
 }
@@ -312,10 +312,10 @@ export const gotoResult = (tem: any) => {
 }
 
 /** 跳转到 设备类型列表 */
-export const gotoDeviceChoice = (roomId?: string) => {
+export const gotoDeviceChoice = (roomId?: string, tuyaHomeId?:string) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/deviceChoice',
-        query: { roomId }
+        query: { roomId, tuyaHomeId }
     } as any
     return pageController.push(route)
 }
@@ -333,7 +333,7 @@ export const gotoDeviceNet = (blueName: string) => {
 /** 跳转到 场景服务 */
 export const gotoScenServer = (type: 1 | 2) => {
     const route = {
-        path: '/pagesMall/pages/wisdom/scenServer',
+        path: '/pagesTuya/pages/wisdom/scenServer',
         query: { type }
     } as any
     return pageController.push(route)

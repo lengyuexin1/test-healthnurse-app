@@ -18,7 +18,7 @@
 
 <script>
 import customNavbar from '@/components/custom-navbar/custom-navbar.vue'
-// import { request, fetch, initRequest, loginByWx, getUserInfo, isLogin, getFamilies, addFamily, addRoom, getRoomList, loginByTicket } from '@ray-js/wechat'
+import { request, fetch, initRequest, loginByWx, getUserInfo, isLogin, getFamilies, addFamily, addRoom, getRoomList, loginByTicket } from '@ray-js/wechat'
 
 export default {
     components: {
@@ -27,8 +27,8 @@ export default {
     data() {
         return {
             ticket: 'ST-cfbdbb047425ee5028dc5aff6901e133V6RYCvTji7AJLqUqjSDr',
-            homeId: '185838203',
-            clientId: 'rj3eak59uqvjmjwn8gd7',
+            homeId: '194850614',
+            clientId: 'gkcuv37g7t5skesxqx7v',
             homes: ''
 
         }
@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         initSdk() {
-            initRequest({ schema: '4f2354410a352622bdcb503bbdf126fd' });
+            initRequest({ schema: '3af4cf4518c8cd47c4ff28fa98c0a85b' });
         },
         getUseInfo() {
             const useInfo = getUserInfo()

@@ -244,7 +244,7 @@ import TnTabs from "@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue"
 import TnTabsItem from "@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue"
 import TnScrollList from '@tuniao/tnui-vue3-uniapp/components/scroll-list/src/scroll-list.vue'
 import { gotoDeviceManag, gotoDeviceSetup } from "@/routes/active-routes"
-import { gotoRoomManag } from "@/routes/wisdom-routes"
+import { gotoRoomManag, gotoScenServer } from "@/routes/wisdom-routes"
 
 interface tabulation {
     id: number,
@@ -705,9 +705,9 @@ const gotoPersonnel = (item, inds) => {
         }
         // 跳转
         item.wid === "5" && gotoRoomManag()
-        // item.wid === "6" && gotoDeviceManag()
-        // item.wid === "7" && gotoScenServer('1')
-        // item.wid === "8" && gotoScenServer('2')
+        item.wid === "6" && gotoDeviceManag()
+        item.wid === "7" && gotoScenServer('1')
+        item.wid === "8" && gotoScenServer('2')
         item.wid === "9" && gotoDeviceSetup()
     })
 }

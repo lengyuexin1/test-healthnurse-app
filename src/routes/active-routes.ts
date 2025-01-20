@@ -243,7 +243,7 @@ export const gotoPlayVideo= (deviceSerial: string,verifyCode:string ) => {
 /** 跳转到 设备管理 */
 export const gotoDeviceManag = (roomId?: string, roomName?: string) => {
     const route = {
-        path: '/Mall/pages/wisdom/deviceManag',
+        path: '/pagesTuya/pages/wisdom/deviceManag',
         query: { roomId, roomName }
     } as any
     return pageController.push(route)

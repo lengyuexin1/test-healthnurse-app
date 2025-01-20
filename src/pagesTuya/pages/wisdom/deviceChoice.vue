@@ -21,49 +21,67 @@ const modal = uni.requireNativePlugin('modal');
 import { sendTyUid } from "@/api/room-api"
 import { gotoAppTy } from "@/routes/active-routes"
 // #ifdef MP-WEIXIN
-// import { request, fetch, getDeviceInfo, queryDps, publishDps, initRequest, loginByWx, getUserInfo, isLogin, getFamilies, getDeviceList, addFamily, addRoom, getRoomList, loginByTicket } from '@ray-js/wechat'
+import { fetch, initRequest, loginByWx, getUserInfo, getFamilies } from '@ray-js/wechat'
 // #endif
-import { gotoDeviceCreate, gotoTuYaNet, gotoTyLy  } from '@/routes/active-routes'
+import { gotoDeviceCreate, gotoTuYaNet, gotoTyLy } from '@/routes/active-routes'
 import { deviceTypeList } from "@/api/room-api"
 import { ref, onMounted } from 'vue'
 import { onLoad, onShow, onUnload } from '@dcloudio/uni-app'
+import { createTuyaHome } from "@/api/room-api"
 
 const idFalgs = ref('')
 const roomId = ref(0)
 const diceTypeList: any = ref([])
-const clientId = ref('3ppkx9vuw7memrjgmp3g')
-const homeId = ref('190545987')
+const clientId = ref('gkcuv37g7t5skesxqx7v')
+const homeId = ref('194850614')
 const ticket = ref('st')
 onLoad((option: any) => {
     idFalgs.value = option.id
-    homeId.value = option.roomId
-    roomId.value = option.roomId
     getTypeList()
-})
-onShow(() => {})
+    roomId.value = option.roomId
 
-onMounted(() => {
     // #ifdef MP-WEIXIN
-    initSdk()
+    const useInfo: any = getUserInfo()
     setTimeout(() => {
-        loginByWx()
-    }, 300)
-    setTimeout(async() => {
-        const useInfo: any = getUserInfo()
+        console.log('涂鸦信息', getFamilies(), useInfo)
         const data = {
             uid: useInfo.uid
         }
-        const homes = await getFamilies()
         sendTyUid(data).then(res => {
-            console.log(useInfo,res,homes)
+            console.log(res)
         })
-    }, 500)
+        if (option.tuyaHomeId) {
+            homeId.value = option.tuyaHomeId
+        } else {
+            // 创建涂鸦房间
+            createRoomApi(option.roomId, useInfo.uid)
+        }
+    }, 500);
     // #endif
 
     // #ifdef APP-PLUS
     getUid()
     // #endif
+
+
 })
+onShow(() => { })
+
+// onMounted(() => {})
+
+const createRoomApi = (roomId: any, uid: any) => {
+    const datas = {
+        tuyaUid: uid,
+        patientId: roomId
+    }
+    console.log(datas)
+    createTuyaHome(datas).then(res => {
+        console.log(res)
+        homeId.value = res
+    }).catch(err => {
+        console.log(err)
+    })
+}
 
 const getUid = () => {
     const tyName = uni.getStorageSync('userList')[0].id
@@ -91,7 +109,7 @@ const gotoscrn = () => {
 }
 
 const initSdk = () => {
-    initRequest({ schema: 'bba46293e28943afc4fbecc58645e54f' });
+    initRequest({ schema: '3af4cf4518c8cd47c4ff28fa98c0a85b' });
 }
 const getTypeList = () => {
     deviceTypeList({
@@ -118,7 +136,7 @@ const linkDeviceCreate = (type: any) => {
         // #endif
 
         // #ifdef APP-PLUS || H5
-        if (type == 'kg' || type == 'cjkg' ) {
+        if (type == 'kg' || type == 'cjkg') {
             gotoDeviceCreate(idFalgs.value, type, roomId.value)
         }
         if (type == 'wsdcg' || type == 'wg2' || type == 'cl' || type == 'zigbeekt') {
@@ -135,6 +153,7 @@ const getTi = () => {
     fetch({
         action: 'system.userTicket',
     }).then((res: any) => {
+        console.log('临时票据', res.ticket);
         ticket.value = res.ticket
     })
 }
