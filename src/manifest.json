@@ -369,11 +369,7 @@
             "enable" : false
         }
     },
-    "uniStatistics" : {
-        "enable" : false,
-        "version" : "2"
-    },
-    "vueVersion" : "2",
+    "vueVersion" : "3",
     "h5" : {
         "title" : "保椿照护",
         "router" : {
