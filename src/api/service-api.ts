@@ -20,7 +20,7 @@ export const addServeCart = async (params: { optionId: string, hospitalId?: stri
 }
 /* 服务购物车列表 */
 export const getCartServiceList = () => {
-    return http.order.post('/v1/bc/app/cart/service/list')
+    return http.order.get('/v1/bc/app/cart/service/list')
 }
 /** 获取服务详情/服务规格列表 */
 export const getServeDetail = async (req:any) => {

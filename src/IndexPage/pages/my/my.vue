@@ -218,6 +218,7 @@ import { PlatformManage } from "@bc/sys"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import { gotoLogin, gotoSetting } from "@/routes/public-routes"
 import { gotoorderList } from "@/routes/order-routes"
+import { gotoelderlyFiles } from '@/routes/user-routes'
 import {
     gotodataManage,
     gotocourseList,
@@ -388,6 +389,7 @@ const data = reactive<Data>({
         {
             name: "dangan",
             title: "老人档案",
+            url: gotoelderlyFiles(),
             img: getAssetsPic("/mine/v1/my_list_da.png"),
             affair_id: 61
         },

@@ -1,9 +1,9 @@
 <template>
     <pageContainer :loading="data.pageLoading">
     <view class="contraner">
-        <!-- <z-paging ref="paging" v-model="data.dataList" @query="queryList" :defaultPageSize="10" :refresher-enabled="false" :hide-empty-view="true">
-        <template v-if="data.dataList.length"> -->
-            <view class="cart-wrap" v-for="(item, index) in data.dataList" :key="index">
+        <!-- <z-paging ref="paging" v-model="props.dataList" @query="queryList" :defaultPageSize="10" :refresher-enabled="false" :hide-empty-view="true">
+        <template v-if="props.dataList.length"> -->
+            <view class="cart-wrap" v-for="(item, index) in props.dataList" :key="index">
                 <view class="list">
                     <view class="shopInfo tn-flex-row">
                         <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="item.checkedGroup" @change="changeGroup($event, index)"></TnCheckbox>
@@ -59,7 +59,7 @@
         </view>
 
         <template #bottom>
-            <view class="btn tn-flex-center-between animate__animated animate__faster animate__slideInUp" v-if="data.dataList.length">
+            <view class="btn tn-flex-center-between animate__animated animate__faster animate__slideInUp" v-if="props.dataList.length">
                 <view class="tn-flex-row" style="align-items: center;">
                     <TnCheckbox custom-class="allCheckbox" size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="data.allChecked" @change="allChange">全选</TnCheckbox>
                     <view class="total tn-flex-column">
@@ -104,7 +104,6 @@ import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import TnNumberBox from '@tuniao/tnui-vue3-uniapp/components/number-box/src/number-box.vue'
 import TnSwipeAction from '@tuniao/tnui-vue3-uniapp/components/swipe-action/src/swipe-action.vue'
 import TnSwipeActionItem from '@tuniao/tnui-vue3-uniapp/components/swipe-action/src/swipe-action-item.vue'
-import type { SwipeActionItemOption } from '@tuniao/tnui-vue3-uniapp'
 import TnCheckbox from '@tuniao/tnui-vue3-uniapp/components/checkbox/src/checkbox.vue'
 import { gotoShopDetail, gotoserviceDetail } from "@/routes/service-routes"
 import { GlobalEvents, dispatchWEvent } from "@/events/event-registry"
@@ -136,7 +135,7 @@ const props = withDefaults(defineProps<{
 const data = reactive<Data>({
     firstLoading: 0,
     pageLoading: false,
-    dataList: props.dataList,
+    dataList: [],
     current: 0,
     totalProductLength: 0,
     allChecked: false,
@@ -148,7 +147,7 @@ const data = reactive<Data>({
     moreGoodList: []
 })
 
-const options: SwipeActionItemOption = [
+const options: any = [
     {
         text: '删除',
         icon: 'delete',
@@ -177,6 +176,7 @@ const getAssetsUrl = computed(() => (src:string) => {
 })
 
 onMounted(() => {
+
     recommendList({
         pageSize: 10,
         pageNumber: 1,
@@ -193,6 +193,7 @@ onMounted(() => {
 })
 
 onShow(() => {
+    props.dataList = props.dataList
     paging.value?.reload()
 })
 // tabs通知swiper切换
@@ -215,14 +216,14 @@ const quantityChange = (val: number, id: string) => {
 
 // 店铺全选
 const changeGroup = (e: any, index: number) => {
-    e && data.dataList[index].productList.map((item: any) => {
+    e && props.dataList[index].productList.map((item: any) => {
         item.checked = true
         if (item.isItemDeleted == 1) {
             item.checked = false
             return
         }
     })
-    !e && data.dataList[index].productList.map((item: any) => item.checked = false)
+    !e && props.dataList[index].productList.map((item: any) => item.checked = false)
     calulateTotalPrice()
 }
 
@@ -231,7 +232,7 @@ const changeSingle = (e: any, index: number) => {
     console.log('单选', index)
 
     // 判断店铺下的商品是否已全部选择
-    const shopAllChecked = data.dataList[index].productList.every((obj: any) => {
+    const shopAllChecked = props.dataList[index].productList.every((obj: any) => {
         obj.checked == true
         if (obj.isItemDeleted == 1) {
             obj.checked = false
@@ -241,10 +242,10 @@ const changeSingle = (e: any, index: number) => {
 
     // 如果该店铺的商品都已经选择，则店铺全选按钮设为true
     if (shopAllChecked) {
-        data.dataList[index].checkedGroup = true
+        props.dataList[index].checkedGroup = true
     }
     else {
-        data.dataList[index].checkedGroup = false
+        props.dataList[index].checkedGroup = false
     }
     // 重新计算金额
     calulateTotalPrice()
@@ -253,7 +254,7 @@ const changeSingle = (e: any, index: number) => {
 // 全部全选
 const allChange = (e: any) => {
     if (e) {
-        data.dataList.forEach((item: any) => {
+        props.dataList.forEach((item: any) => {
             item.checkedGroup = true
 
             item.productList.forEach((element: any) => {
@@ -266,7 +267,7 @@ const allChange = (e: any) => {
         })
     }
     else {
-        data.dataList.forEach((item: any) => {
+        props.dataList.forEach((item: any) => {
             item.checkedGroup = false
 
             item.productList.forEach((element: any) => {
@@ -279,13 +280,13 @@ const allChange = (e: any) => {
 
 // 计算总数
 const calulateTotalPrice = () => {
-    const totalLength = data.dataList.reduce((total: number, item: any) => {
+    const totalLength = props.dataList.reduce((total: number, item: any) => {
         return total + item.productList.filter((product: any) => product.checked).length
     }, 0)
 
     data.submitTotal = totalLength
 
-    const totalPrice = data.dataList.reduce((total: number, item: any) => {
+    const totalPrice = props.dataList.reduce((total: number, item: any) => {
         return total + item.productList.reduce((subTotal: number, product: any) => {
             if (product.checked) {
                 return subTotal + (product.price * product.quantity)
@@ -315,8 +316,8 @@ const clickBtn = () => {
     }
     const listData : any = []
 
-    for (const i in data.dataList) {
-        const dataItem = data.dataList[i]
+    for (const i in props.dataList) {
+        const dataItem = props.dataList[i]
         dataItem.checkedGroup = false
         for (const j in dataItem.productList) {
             const productItem = dataItem.productList[j]
@@ -397,11 +398,11 @@ const confirmDel = () => {
         dispatchWEvent(GlobalEvents.Refresh_ShoppingCart_Badge)
 
         // 接口请求成功后，使用本地删除，防止清除用户全选或者选择的操作
-        data.dataList[data.delGoodsItemIndex].productList.splice(data.delGoodsItemProductIndex, 1)
+        props.dataList[data.delGoodsItemIndex].productList.splice(data.delGoodsItemProductIndex, 1)
 
         // 如果该店铺下只有一个商品，删除商品后，删除该店铺
-        if (data.dataList[data.delGoodsItemIndex].productList.length == 0) {
-            data.dataList.splice(data.delGoodsItemIndex, 1)
+        if (props.dataList[data.delGoodsItemIndex].productList.length == 0) {
+            props.dataList.splice(data.delGoodsItemIndex, 1)
         }
 
         // 修改标题的商品总数

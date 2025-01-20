@@ -1,19 +1,24 @@
 <template>
     <pageContainer :loading="data.pageLoading">
     <view class="contraner">
-        <!-- <z-paging ref="paging" v-model="data.dataList" @query="queryList" :defaultPageSize="10" :refresher-enabled="false" :hide-empty-view="true">
-        <template v-if="data.dataList.length"> -->
-            <view class="cart-wrap" v-for="(item, index) in data.dataList" :key="index">
+        <!-- <z-paging ref="paging" v-model="props.dataList" @query="queryList" :defaultPageSize="10" :refresher-enabled="false" :hide-empty-view="true">
+        <template v-if="props.dataList.length"> -->
+            <!-- v-for="(item, index) in props.dataList" :key="index" -->
+            <view class="cart-wrap" v-for="(ele, idx) in props.dataList" :key="idx">
                 <view class="list">
-                    <view class="shopInfo tn-flex-row">
-                        <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="item.checkedGroup" @change="changeGroup($event, index)"></TnCheckbox>
+                    <!-- <view class="shopInfo tn-flex-row">
+
                         <view class="info tn-flex-row" @tap="clickShop(item.shopId)">
                             <image class="thumb" :src="item.shopIcon" mode="scaleToFill" />
                             {{ item.shopName }}<TnIcon name="right" color="#8D8D8D" />
                         </view>
+                    </view> -->
+                    <view class="info tn-flex-row" @tap="clickShop(item.shopId)">
+                            <image class="thumb" :src="ele.shopIcon" mode="scaleToFill" />
+                            {{ ele.shopName }}<TnIcon name="right" color="#8D8D8D" />
                     </view>
                     <TnSwipeAction @select="delGoods($event, item, index)">
-                        <TnSwipeActionItem v-for="(ele, idx) in item.productList" :key="idx" :options="options" :auto-close="false">
+                        <TnSwipeActionItem :options="options" :auto-close="false">
                             <view class="goodsList tn-flex-center-center" @tap="clickGoods(ele)">
                                 <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="ele.checked" @change="changeSingle($event, index)"></TnCheckbox>
                                 <view class="goodsInfo tn-flex-row">
@@ -48,7 +53,6 @@
             </view>
         </template> -->
 
-
         <view class="more_list_box">
             <view class="more_title">
                 猜你喜欢
@@ -59,7 +63,7 @@
         </view>
 
         <template #bottom>
-            <view class="btn tn-flex-center-between animate__animated animate__faster animate__slideInUp" v-if="data.dataList.length">
+            <view class="btn tn-flex-center-between animate__animated animate__faster animate__slideInUp" v-if="props.dataList.length">
                 <view class="tn-flex-row" style="align-items: center;">
                     <TnCheckbox custom-class="allCheckbox" size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="data.allChecked" @change="allChange">全选</TnCheckbox>
                     <view class="total tn-flex-column">
@@ -105,11 +109,11 @@ import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import TnNumberBox from '@tuniao/tnui-vue3-uniapp/components/number-box/src/number-box.vue'
 import TnSwipeAction from '@tuniao/tnui-vue3-uniapp/components/swipe-action/src/swipe-action.vue'
 import TnSwipeActionItem from '@tuniao/tnui-vue3-uniapp/components/swipe-action/src/swipe-action-item.vue'
-import type { SwipeActionItemOption } from '@tuniao/tnui-vue3-uniapp'
 import TnCheckbox from '@tuniao/tnui-vue3-uniapp/components/checkbox/src/checkbox.vue'
 import { gotoShopDetail, gotoserviceDetail } from "@/routes/service-routes"
 import { GlobalEvents, dispatchWEvent } from "@/events/event-registry"
 import { TempStorage } from "@bc/base"
+
 import { gotoBalanceGood } from '@/routes/order-routes'
 import { priceFormat } from '@/common/price-format'
 import { gotogoodsDetail } from "@/routes/goods-routes"
@@ -137,7 +141,7 @@ const props = withDefaults(defineProps<{
 const data = reactive<Data>({
     firstLoading: 0,
     pageLoading: false,
-    dataList: props.dataList,
+    dataList: [],
     current: 0,
     totalProductLength: 0,
     allChecked: false,
@@ -149,7 +153,7 @@ const data = reactive<Data>({
     moreGoodList: []
 })
 
-const options: SwipeActionItemOption = [
+const options: any = [
     {
         text: '删除',
         icon: 'delete',
@@ -195,14 +199,14 @@ const quantityChange = (val: number, id: string) => {
 
 // 店铺全选
 const changeGroup = (e: any, index: number) => {
-    e && data.dataList[index].productList.map((item: any) => {
+    e && props.dataList[index].productList.map((item: any) => {
         item.checked = true
         if (item.isItemDeleted == 1) {
             item.checked = false
             return
         }
     })
-    !e && data.dataList[index].productList.map((item: any) => item.checked = false)
+    !e && props.dataList[index].productList.map((item: any) => item.checked = false)
     calulateTotalPrice()
 }
 
@@ -211,7 +215,7 @@ const changeSingle = (e: any, index: number) => {
     console.log('单选', index)
 
     // 判断店铺下的商品是否已全部选择
-    const shopAllChecked = data.dataList[index].productList.every((obj: any) => {
+    const shopAllChecked = props.dataList[index].productList.every((obj: any) => {
         obj.checked == true
         if (obj.isItemDeleted == 1) {
             obj.checked = false
@@ -221,10 +225,10 @@ const changeSingle = (e: any, index: number) => {
 
     // 如果该店铺的商品都已经选择，则店铺全选按钮设为true
     if (shopAllChecked) {
-        data.dataList[index].checkedGroup = true
+        props.dataList[index].checkedGroup = true
     }
     else {
-        data.dataList[index].checkedGroup = false
+        props.dataList[index].checkedGroup = false
     }
     // 重新计算金额
     calulateTotalPrice()
@@ -233,7 +237,7 @@ const changeSingle = (e: any, index: number) => {
 // 全部全选
 const allChange = (e: any) => {
     if (e) {
-        data.dataList.forEach((item: any) => {
+        props.dataList.forEach((item: any) => {
             item.checkedGroup = true
 
             item.productList.forEach((element: any) => {
@@ -246,7 +250,7 @@ const allChange = (e: any) => {
         })
     }
     else {
-        data.dataList.forEach((item: any) => {
+        props.dataList.forEach((item: any) => {
             item.checkedGroup = false
 
             item.productList.forEach((element: any) => {
@@ -259,13 +263,13 @@ const allChange = (e: any) => {
 
 // 计算总数
 const calulateTotalPrice = () => {
-    const totalLength = data.dataList.reduce((total: number, item: any) => {
+    const totalLength = props.dataList.reduce((total: number, item: any) => {
         return total + item.productList.filter((product: any) => product.checked).length
     }, 0)
 
     data.submitTotal = totalLength
 
-    const totalPrice = data.dataList.reduce((total: number, item: any) => {
+    const totalPrice = props.dataList.reduce((total: number, item: any) => {
         return total + item.productList.reduce((subTotal: number, product: any) => {
             if (product.checked) {
                 return subTotal + (product.price * product.quantity)
@@ -285,7 +289,7 @@ const clickGoods = (item: any) => {
     if (item.isItemDeleted == 1) {
         return
     }
-    gotogoodsDetail(item.itemId)
+    gotoserviceDetail(item.itemId)
 }
 
 const clickBtn = () => {
@@ -295,8 +299,8 @@ const clickBtn = () => {
     }
     const listData : any = []
 
-    for (const i in data.dataList) {
-        const dataItem = data.dataList[i]
+    for (const i in props.dataList) {
+        const dataItem = props.dataList[i]
         dataItem.checkedGroup = false
         for (const j in dataItem.productList) {
             const productItem = dataItem.productList[j]
@@ -377,11 +381,11 @@ const confirmDel = () => {
         dispatchWEvent(GlobalEvents.Refresh_ShoppingCart_Badge)
 
         // 接口请求成功后，使用本地删除，防止清除用户全选或者选择的操作
-        data.dataList[data.delGoodsItemIndex].productList.splice(data.delGoodsItemProductIndex, 1)
+        props.dataList[data.delGoodsItemIndex].productList.splice(data.delGoodsItemProductIndex, 1)
 
         // 如果该店铺下只有一个商品，删除商品后，删除该店铺
-        if (data.dataList[data.delGoodsItemIndex].productList.length == 0) {
-            data.dataList.splice(data.delGoodsItemIndex, 1)
+        if (props.dataList[data.delGoodsItemIndex].productList.length == 0) {
+            props.dataList.splice(data.delGoodsItemIndex, 1)
         }
 
         // 修改标题的商品总数
@@ -407,8 +411,8 @@ const cancel = () => {
 }
 
 const clickwaterItem = (item:any) => {
-    console.log('item', item)
-    gotogoodsDetail(item.id)
+
+    gotoserviceDetail(item.id)
 }
 
 </script>
@@ -417,7 +421,6 @@ const clickwaterItem = (item:any) => {
 :deep(.tn-gray-disabled_border) {
     border-color: #B3B3B3;
 }
-
 .set{
      width: 360rpx;
      height: 90rpx;
@@ -455,6 +458,19 @@ const clickwaterItem = (item:any) => {
     background-color: #FFFFFF;
     border-radius: 24rpx;
     box-shadow: 0 0 24rpx 2rpx rgba(0, 0, 0, .04);
+    .list{
+        .info {
+            align-items: center;
+            // margin-left: 30rpx;
+            .thumb {
+                width: 40rpx;
+                height: 40rpx;
+                border-radius: 50%;
+                margin-right: 14rpx;
+            }
+        }
+
+    }
 }
 .not_data_box{
     width: 100%;
@@ -488,25 +504,19 @@ const clickwaterItem = (item:any) => {
     }
 
 }
-.list {
-    .shopInfo {
-        font-weight: 500;
-        font-size: 28rpx;
-        color: #333333;
-
-        .info {
-            align-items: center;
-            margin-left: 30rpx;
-
-            .thumb {
-                width: 40rpx;
-                height: 40rpx;
-                border-radius: 50%;
-                margin-right: 14rpx;
+			.subshop{
+                margin-bottom: 32rpx;
+                .subshop_img{
+                    width: 36rpx;
+                    height: 36rpx;
+                }
             }
-        }
-    }
-
+			.subsptit{
+				font-size: 26rpx;
+				font-weight: 400;
+				color: #666666;
+				margin-left: 12rpx;
+			}
     .goodsList {
         margin-top: 28rpx;
 
@@ -578,7 +588,7 @@ const clickwaterItem = (item:any) => {
         }
 
     }
-}
+// }
 
 .btn {
     width: 100%;

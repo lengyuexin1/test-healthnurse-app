@@ -16,8 +16,8 @@
             </view>
             </template>
             <view class="swiper">
-                <carServe v-if="data.current === 0" :dataList="data.dataList"></carServe>
-                <car-goods v-else ref="godcart" :dataList="data.dataList"></car-goods>
+                <carServe v-if="data.serviceType === 0" :dataList="data.dataList"></carServe>
+                <carGoods v-else ref="godcart" :dataList="data.dataList"></carGoods>
             </view>
         <BCNotify ref="bcNotify"></BCNotify>
         </z-paging>
@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+
 import { ref, reactive, computed, onMounted } from "vue"
 import { onLoad, onShow } from "@dcloudio/uni-app"
 import { getGoodsCartList } from "@/api/goods-api"
@@ -36,17 +37,19 @@ import  carServe from './components/carServe.vue'
 import  carGoods from './components/carGoods.vue'
 import pageContainer from "@/components/container/page-container.vue"
 import BCNotify from '@/components/notify/index.vue'
-import { PlatformManage } from "@bc/sys"
 
 interface Data {
     firstLoading: number
     pageLoading: boolean
     dataList: any
+
+    serviceType:number,
     totalProductLength: number
     current:number
 }
 
 const data = reactive<Data>({
+    serviceType: 0,
     firstLoading: 0,
     pageLoading: false,
     dataList: [],
@@ -70,7 +73,9 @@ const bcNotify = ref()
 const queryList = (pageNumber: number, pageSize: number) => {
     if (data.current === 0) {
         getCartServiceList().then((res: any) => {
-            data.dataList = res
+            paging.value.complete(res)
+            data.serviceType = data.current
+
         }).catch((err: any) => {
             bcNotify.value.error(err.message)
         })
@@ -79,19 +84,17 @@ const queryList = (pageNumber: number, pageSize: number) => {
         getGoodsCartList().then((res: any) => {
             res.forEach((item: any) => {
                 item.checkedGroup = false
-
                 item.productList.forEach((element: any) => {
                     element.checked = false
                 })
             })
-
             data.totalProductLength = res.reduce((accumulator: number, currentValue: any) => {
                 return accumulator + currentValue?.productList.length
             }, 0) // 0 是初始值，表示累加器开始时的值
             uni.setNavigationBarTitle({ title: `购物车(${data.totalProductLength})` })
-
+            // paging.value.complete(res)
             paging.value.complete(res)
-
+            data.serviceType = data.current
             // 优化购物车初始化出现红条
             if (data.firstLoading == 0) {
                 data.firstLoading = 1
@@ -116,6 +119,7 @@ onShow(() => {
 const tabsChange = (e:any) => {
     data.current = e
     // current = e
+    paging.value?.reload()
 }
 
 
