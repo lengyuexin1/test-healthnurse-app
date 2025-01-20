@@ -24,8 +24,8 @@
 </template>
 
 <script lang="ts" setup>
-import expendRecharge from '../components/expendView/expendRecharge.vue'
-import expendUse from '../components/expendView/expendUse.vue'
+import expendRecharge from '@/pagesTuya/pages/components/expendView/expendRecharge.vue'
+import expendUse from '@/pagesTuya/pages/components/expendView/expendUse.vue'
 import TnTabs from "@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue"
 import TnTabsItem from "@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue"
 import { reactive } from 'vue'

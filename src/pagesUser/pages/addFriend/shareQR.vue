@@ -1,6 +1,6 @@
 <template>
     <z-paging
-        ref="paging" 
+        ref="paging"
 		:auto="false"
 		:refresher-enabled="false"
     >
@@ -40,7 +40,7 @@
 
         <BCNotify ref="bcNotify"></BCNotify>
         <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="345" height="410" style="width:345px; height:410px"></canvas>
-        
+
     </z-paging>
 </template>
 
@@ -112,7 +112,7 @@ const instance = getCurrentInstance(); // 获取组件实例
 //     qr.canvasContext = canvasContext;
 //     // 调用绘制方法将二维码图案绘制到canvas上
 //     qr.drawCanvas();
-// }) 
+// })
 
 const sharePoster = async () => {
 
@@ -162,12 +162,12 @@ const sharePoster = async () => {
     context.setFontSize(12)
     context.textAlign = 'center';
     context.fillText('保椿号：ABCDEF', (345 / 2), 120)
-    
+
     // 简介
-    context.setFillStyle('#A5A5A5')
-    context.setFontSize(12)
-    context.textAlign = 'center';
-    context.fillText(data.accountObj.accountDescription ? data.accountObj.accountDescription : '快写点什么，让我看看你的独一无二', (345 / 2), 144)
+    // context.setFillStyle('#A5A5A5')
+    // context.setFontSize(12)
+    // context.textAlign = 'center';
+    // context.fillText(data.accountObj.accountDescription ? data.accountObj.accountDescription : '快写点什么，让我看看你的独一无二', (345 / 2), 144)
 
 
     // 二维码
@@ -268,7 +268,7 @@ const save = () => {
             }
         }
     }
-    
+
 }
 .bilvas{
     border-radius: 20rpx;

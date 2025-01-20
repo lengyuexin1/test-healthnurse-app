@@ -134,3 +134,31 @@ export const gotorefundDetail = (query:any) => {
     }as any
     return pageController.push(route)
 }
+
+
+/* 跳转到 开具发票 */
+export const gotoInvoice = (query: any) => {
+    const rotue = {
+        path: "/pagesOrder/pages/invoice/invoice",
+        query
+    } as any
+    return pageController.push(rotue)
+}
+
+/* 跳转到 发票详情 */
+export const gotoInvoiceDetails = (query: { id: number }) => {
+    const rotue = {
+        path: "/pagesOrder/pages/invoice/invoiceDetails",
+        query
+    } as any
+    return pageController.push(rotue)
+}
+
+/** 跳转到 开票记录 */
+export const gotoInvoiceHistory: any = () => {
+    const route = {
+        path: '/pagesOrder/pages/invoice/invoiceHistory',
+        query: {}
+    }
+    return pageController.push(route)
+}

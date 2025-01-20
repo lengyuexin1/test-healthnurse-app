@@ -1,35 +1,40 @@
 <template>
     <z-paging
-        ref="paging"
-        v-model="data.browerHistoryLists"
-        :auto="true"
-        :fixed="true"
-        @query="queryList"
-        :defaultPageSize="10"
-        :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
-        empty-view-text="还没有数据哦~"
-        :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
+          ref="paging"
+          v-model="data.browerHistoryLists"
+          :auto="true"
+          :fixed="true"
+          @query="queryList"
+          :defaultPageSize="10"
+          :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
+          empty-view-text="还没有数据哦~"
+          :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
     >
         <template #top>
-            <view class="nav_mangage" :class="[data.isEdit ? 'navRed' : '']" @tap="clickManage" v-if="data.browerHistoryLists.length">{{ data.subTitle }}</view>
+            <view class="nav_mangage" :class="[data.isEdit ? 'navRed' : '']" @tap="clickManage"
+                  v-if="data.browerHistoryLists.length">
+                <view style="color:#666666;">足迹列表</view>
+                <view style="color:#29C86F;">{{ data.subTitle }}</view>
+            </view>
         </template>
-        
+
         <view class="container" :class="[data.isEdit ? 'pb90' : '']">
-            <SelectAllCancel type="browerHistory" btnName="删除" :list="data.browerHistoryLists" :isEdit="data.isEdit" @clickItem="clickItem" @clickBtn="clickDelBrowerHistory"></SelectAllCancel>
+            <SelectAllCancel type="browerHistory" btnName="删除" :list="data.browerHistoryLists" :isEdit="data.isEdit"
+                             @clickItem="clickItem" @clickBtn="clickDelBrowerHistory"></SelectAllCancel>
         </view>
     </z-paging>
     <BCNotify ref="bcNotify"></BCNotify>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import SelectAllCancel from '@/pagesUser/components/selectAllCancel/index.vue'
 
 import BCNotify from '@/components/notify/index.vue'
 import { pageController } from '@bc/uni-tools'
 import { browerHistoryList, delBrowerHistory } from '@/api/user-api'
-import { gotoserviceDetail, gotoServiceStore } from "@/routes/service-routes"
+import { gotoServiceStore } from "@/routes/service-routes"
 import { gotogoodsDetail } from '@/routes/goods-routes'
 
 interface Data {
@@ -40,7 +45,7 @@ interface Data {
 
 const data = reactive<Data>({
     browerHistoryLists: [],
-    subTitle: '管理',
+    subTitle: '批量删除',
     isEdit: false
 })
 
@@ -48,7 +53,7 @@ const bcNotify = ref()
 
 const paging = ref() as any
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 
@@ -66,19 +71,19 @@ const queryList = (pageNumber: number, pageSize: number) => {
             }
         })
 
-        let newArr = data.filter((item:any) => {
+        let newArr = data.filter((item: any) => {
             return item.item
         })
 
 
-        paging.value.complete(newArr)  
+        paging.value.complete(newArr)
     }).catch((err: any) => {
         bcNotify.value.error(err.message)
     })
 }
 
 const clickItem = (item: any) => {
-    
+
     item.applyId == 18 && gotogoodsDetail(item.itemId)
     item.applyId == 19 && gotoServiceStore({ shopId: item.shopId })
 }
@@ -100,7 +105,7 @@ const clickBack = () => {
 
 const clickManage = () => {
     data.isEdit = !data.isEdit
-    data.subTitle = data.isEdit ? '取消管理' : '管理'
+    data.subTitle = data.isEdit ? '完成' : '批量删除'
 }
 
 </script>
@@ -113,9 +118,14 @@ const clickManage = () => {
 .nav_mangage {
     color: #333333;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     padding: 20rpx 30rpx;
+    margin: 15rpx;
     box-sizing: border-box;
+    background-color: #FFFFFF;
+    border-radius: 9rpx;
+    font-size: 30rpx;
 }
 
 .pb90 {

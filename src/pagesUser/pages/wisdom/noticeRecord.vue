@@ -6,7 +6,7 @@
             <template #top>
                 <bc-page-navbar :title="'通知记录'"></bc-page-navbar>
             </template>
-            <u-safe-bottom slot="bottom"></u-safe-bottom>
+<!--            <u-safe-bottom slot="bottom"></u-safe-bottom>-->
             <view class="noticbox page-public-bg">
                 <noticeView :dataList="dataList"/>
             </view>
@@ -16,10 +16,10 @@
 
 <script setup lang="ts">
 import { getAssetsPic } from "@/common/setPicture"
-import noticeView from "../components/noticeView/noticeView.vue"
+import noticeView from "@/pagesTuya/pages/components/noticeView/noticeView.vue"
 import { getLogList } from "@/api/room-api"
 import dayjs from 'dayjs'
-import { ref, computed } from "vue"
+import { computed, ref } from "vue"
 
 const dataList: any = ref([])
 const getAssetsUrl = computed(() => {

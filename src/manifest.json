@@ -1,9 +1,9 @@
 {
-    "name" : "保椿照护",
-    "appid" : "__UNI__533F2F1",
-    "description" : "保椿照护",
-    "versionName" : "1.2.31",
-    "versionCode" : 1231,
+    "name" : "保椿生活",
+    "appid" : "__UNI__DD0D89D",
+    "description" : "保椿生活APP",
+    "versionName" : "1.0.0",
+    "versionCode" : 100,
     "transformPx" : false,
     "channel_list" : [
         {
@@ -16,16 +16,20 @@
         "privacy" : {
             "prompt" : "template",
             "template" : {
-                "title" : "温馨提示",
-                "message" : "　　欢迎使用App，在你使用时，需要连接数据网络或者WIFI，产生的流量请咨询当地运营商。非常重视你的隐私保护和个人信息保护。在使用App服务前，请认真阅读<a  href='https://res.baochuncare.com/web/protocol/user_agreement_xc_app.html'>《用户服务协议》</a>及<a href='https://res.baochuncare.com/web/protocol/privacy_policy_xc_app.html'>《隐私政策》</a>，全部条款。你同意并接受全部条款后开始使用我们的服务<br/>",
-                "buttonAccept" : "同意并继续", //继续下一步，进入首页
-                "buttonRefuse" : "不同意" //退出下载
-            }
-        },
-        // 适配iPhone底部安全区
-        "safearea" : {
-            "bottom" : {
-                "offset" : "auto"
+                "title" : "服务协议和隐私政策",
+                "message" : "欢迎使用保椿生活APP, 在你使用时, 需要连接数据网络或者WIFI, 产生的流量请咨询当地运营商。非常重视你的隐私保护和个人信息保护。在使用App服务前, 请认真阅读<a href='https://res.baochuncare.com/web/protocol/user_agreement_ly_app.html'>《用户协议》</a>及<a href='https://res.baochuncare.com/web/protocol/user_privacy_agreement_ly_app.html'>《隐私政策》</a>, 全部条款。你同意并接受全部条款后开始使用我们的服务<br/>",
+                "buttonAccept" : "同意并继续",
+                "buttonRefuse" : "不同意",
+                "styles" : {
+                    "backgroundColor" : "#FFFFFF",
+                    "borderRadius" : "12px",
+                    "buttonAccept" : {
+                        "color" : "#41A0FE"
+                    },
+                    "buttonRefuse" : {
+                        "color" : "#666666"
+                    }
+                }
             }
         },
         "usingComponents" : true,
@@ -91,10 +95,8 @@
                 "schemes" : "ydchunhome,xizoibq7s",
                 "minSdkVersion" : 29,
                 "targetSdkVersion" : 30,
-                "permissionExternalStorage" : {
-                    "request" : "none",
-                    "prompt" : "应用保存运行状态等信息，需要获取读写手机存储（系统提示为访问设备上的照片、媒体内容和文件）权限，请允许。"
-                }
+                "minSdkVersion" : 28,
+                "schemes" : "bclifehome,xizoibq7s"
             },
             /* ios打包配置 */
             "ios" : {
@@ -373,6 +375,7 @@
     },
     "vueVersion" : "2",
     "h5" : {
+        "title" : "保椿照护",
         "router" : {
             "mode" : "history"
         },

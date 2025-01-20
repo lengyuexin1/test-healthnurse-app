@@ -14,7 +14,7 @@ export const gotoelderlyFiles = () => {
     return pageController.push(route)
 }
 //任务记录
-export const gotoTaskRecord = (query:any) => {
+export const gotoTaskRecord = (query: any) => {
     const route = {
         path: '/pagesUser/pages/redEnvelope/taskRecord',
         query
@@ -22,7 +22,7 @@ export const gotoTaskRecord = (query:any) => {
     return pageController.push(route)
 }
 //规则
-export const gotoctivityRules = (query?:any) => {
+export const gotoctivityRules = (query?: any) => {
     const route = {
         path: '/pagesUser/pages/redEnvelope/activityRules',
         query
@@ -30,7 +30,7 @@ export const gotoctivityRules = (query?:any) => {
     return pageController.push(route)
 }
 //提现(红包提现)
-export const gotoWithdrawall = (query?:any) => {
+export const gotoWithdrawall = (query?: any) => {
     const route = {
         path: '/pagesUser/pages/redEnvelope/withdrawal',
         query
@@ -38,13 +38,14 @@ export const gotoWithdrawall = (query?:any) => {
     return pageController.push(route)
 }
 //分销提现
-export const gotoWithdWallet = (query?:any) => {
+export const gotoWithdWallet = (query?: any) => {
     const route = {
         path: '/pagesUser/pages/redEnvelope/withdrawalWallet',
         query
     } as any
     return pageController.push(route)
 }
+
 interface IPatientEditQuery {
     /* 档案id */
     id?: number | string
@@ -151,13 +152,13 @@ export const gotoEstimate = (info?: string) => {
 export const gotoEditProfile = () => {
     const route = {
         path: '/pagesUser/pages/EditProfile/EditProfile',
-        query: {  }
+        query: {}
     } as any
     return pageController.push(route)
 }
 
 /* 沙龙我创建的 */
-export const gotosalonManage = (query:any, type:number = 1) => {
+export const gotosalonManage = (query: any, type: number = 1) => {
     const route = {
         path: '/pagesUser/pages/salonManage/salonManage',
         query
@@ -171,7 +172,7 @@ export const gotosalonManage = (query:any, type:number = 1) => {
 }
 
 /* 沙龙我的帖子 */
-export const gotoMysalonPosts = (query:any) => {
+export const gotoMysalonPosts = (query: any) => {
     const route = {
         path: '/pagesUser/pages/salonManage/salonPosts',
         query
@@ -180,7 +181,7 @@ export const gotoMysalonPosts = (query:any) => {
 }
 
 /* 沙龙我的加入的 */
-export const gotoMysalonJoin = (query:any) => {
+export const gotoMysalonJoin = (query: any) => {
     const route = {
         path: '/pagesUser/pages/salonManage/salonMyjoin',
         query
@@ -189,7 +190,7 @@ export const gotoMysalonJoin = (query:any) => {
 }
 
 /* 我的关注 */
-export const gotoMyFollowList = (query:any) => {
+export const gotoMyFollowList = (query: any) => {
     const route = {
         path: '/pagesUser/pages/myFollowList/myFollowList',
         query
@@ -261,7 +262,7 @@ export const gotoCommentGoods = (query: any) => {
 }
 
 /** 跳转到 我的评价 */
-export const gotoCommentList = (currentTabIndex: number, taskId?:string) => {
+export const gotoCommentList = (currentTabIndex: number, taskId?: string) => {
     const route = {
         path: "/pagesUser/pages/comment/commentList",
         query: { currentTabIndex, taskId }
@@ -297,7 +298,7 @@ export const gotoAftersalesList = () => {
 }
 
 /** 收货填写物流信息 */
-export const gotoExpressageAdd = (query:any) => {
+export const gotoExpressageAdd = (query: any) => {
     const route = {
         path: "/pagesUser/pages/expressageAdd/expressageAdd",
         query
@@ -311,7 +312,7 @@ export const gotoExpressageAdd = (query:any) => {
  * isdel ==> 表示页面定向模式
  *
  */
-export const gotosalesDetail = (query:any, isdel:boolean = false) => {
+export const gotosalesDetail = (query: any, isdel: boolean = false) => {
     const route = {
         path: "/pagesUser/pages/sales/salesDetail",
         query
@@ -320,7 +321,7 @@ export const gotosalesDetail = (query:any, isdel:boolean = false) => {
 }
 
 /** 售后记录 */
-export const minutesDetail = (query:any) => {
+export const minutesDetail = (query: any) => {
     const route = {
         path: "/pagesUser/pages/sales/minutesDetail",
         query
@@ -337,14 +338,13 @@ export const minutesDetail = (query:any) => {
  * align ==> 表示操作类型 0表示再次售后/申请售后  1表示修改售后
  *
  */
-export const upSales = (query:any) => {
+export const upSales = (query: any) => {
     const route = {
         path: "/pagesUser/pages/sales/upSales",
         query
     } as any
     return pageController.push(route)
 }
-
 
 
 /** 申请售后/修改售后/再次售后(商品)
@@ -355,7 +355,7 @@ export const upSales = (query:any) => {
  * align ==> 表示操作类型 0表示再次售后/申请售后  1表示修改售后
  *
  */
-export const upServiceSales = (query:any) => {
+export const upServiceSales = (query: any) => {
     const route = {
         path: "/pagesUser/pages/sales/upServiceSales",
         query
@@ -370,7 +370,7 @@ export const upServiceSales = (query:any) => {
  * id ==> 表示售后id
  *
  */
-export const gotoAfterArbitrate = (query:any) => {
+export const gotoAfterArbitrate = (query: any) => {
     const route = {
         path: "/pagesUser/pages/sales/arbitrate",
         query
@@ -379,7 +379,7 @@ export const gotoAfterArbitrate = (query:any) => {
 }
 
 // 售后处理中转
-export const gotowaitingSales = (query:any) => {
+export const gotowaitingSales = (query: any) => {
     const route = {
         path: "/pagesUser/pages/sales/waitingSales",
         query
@@ -388,7 +388,7 @@ export const gotowaitingSales = (query:any) => {
 }
 
 /* 聊天号我的发布 */
-export const gotochatManage = (query:any, type:number = 1) => {
+export const gotochatManage = (query: any, type: number = 1) => {
     const route = {
         path: '/pagesUser/pages/chatManage/chatManage',
         query
@@ -483,7 +483,7 @@ export const gotoHasChat = () => {
 }
 
 /* 直播列表 */
-export const gotoLiveList = (query:any) => {
+export const gotoLiveList = (query: any) => {
     const route = {
         path: '/pagesUser/pages/liveList/liveList',
         query
@@ -565,7 +565,7 @@ export const gotoruleList = () => {
 }
 
 /** 规则百科详情 */
-export const gotoruleDetail = (query:any) => {
+export const gotoruleDetail = (query: any) => {
     const route = {
         path: "/pagesUser/pages/communityRule/ruleDetail",
         query
@@ -583,7 +583,7 @@ export const gotoNoticeList = () => {
 }
 
 /** 规则百科详情 */
-export const gotoNoticeDetail = (query:any) => {
+export const gotoNoticeDetail = (query: any) => {
     const route = {
         path: "/pagesUser/pages/communityRule/noticeDetail",
         query
@@ -778,5 +778,4 @@ export const gotoAgency = (query: any) => {
         query
     }
     return pageController.push(route)
-
 }

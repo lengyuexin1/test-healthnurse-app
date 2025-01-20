@@ -9,7 +9,7 @@ export const apiPrefix = {
     /* 个人中心 */
     user: `/api/user${apiVersion}/bc`,
     /* 结算中心 */
-    settlement: `/api/settlement${apiVersion}/bc`,
+    settlement: `${apiVersion}/bc`,
     /* 搜索 */
     search: `/api/search${apiVersion}/bc`,
     /* 消息 */

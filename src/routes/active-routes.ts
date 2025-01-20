@@ -106,7 +106,7 @@ deviceDetailRoute.BLOOD_PRESSURE = gotoBooldYa
 /** 跳转到 设备协议 */
 export const gotoDeviceTreaty = () => {
     const route = {
-        path: '/User/pages/useragreement/richText',
+        path: '/pagesUser/pages/useragreement/richText',
         query: { type: 'deviceTreaty' }
     }
     return pageController.push(route)
@@ -115,7 +115,7 @@ export const gotoDeviceTreaty = () => {
 /** 设备通知设置 */
 export const gotoDeviceSetup = (query: any) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/deviceSetup',
+        path: '/pagesUser/pages/wisdom/deviceSetup',
         query
     } as any
     return pageController.push(route)
@@ -379,7 +379,7 @@ export const gotoTemWater = (type: string, id: any) => {
 /** 设备通知记录 */
 export const gotoNoticeRecord = (query: any) => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/noticeRecord',
+        path: '/pagesUser/pages/wisdom/noticeRecord',
         query
     } as any
     return pageController.push(route)
@@ -397,7 +397,7 @@ export const gotoNoticeDetail = (query: any) => {
 /** 设备通知人员设置 */
 export const gotoNoticeStaff = () => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/noticeStaff',
+        path: '/pagesUser/pages/wisdom/noticeStaff',
         query: {}
     } as any
     return pageController.push(route)
@@ -406,7 +406,7 @@ export const gotoNoticeStaff = () => {
 /** 消费明细 */
 export const gotoExpendList = () => {
     const route = {
-        path: '/pagesTuya/pages/wisdom/expendList',
+        path: '/pagesUser/pages/wisdom/expendList',
         query: {}
     } as any
     return pageController.push(route)
