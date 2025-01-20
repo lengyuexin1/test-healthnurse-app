@@ -1,0 +1,6 @@
+framework module xm_tuyamodule {
+  umbrella header "xm-tuyamodule-umbrella.h"
+
+  export *
+  module * { export * }
+}

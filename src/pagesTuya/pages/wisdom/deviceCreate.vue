@@ -63,7 +63,7 @@ import { ref, reactive, computed } from "vue"
 import { onLoad, onReady } from '@dcloudio/uni-app'
 import TnLoading from '@tuniao/tnui-vue3-uniapp/components/loading/src/loading.vue'
 // #ifdef APP-PLUS
-// import { getHomeDetail } from '@/utils/tuyaApi'
+import { getHomeDetail } from '@/utils/tuyaApi'
 const configModule = uni.requireNativePlugin("XM-TuyaConfigModule")
 // #endif
 
