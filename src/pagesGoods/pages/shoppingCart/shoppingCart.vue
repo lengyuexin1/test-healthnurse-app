@@ -16,8 +16,8 @@
             </view>
             </template>
             <view class="swiper">
-                <carServe v-if="data.serviceType === 0" :dataList="data.dataList"></carServe>
-                <carGoods v-else ref="godcart" :dataList="data.dataList"></carGoods>
+                <!-- <carServe v-if="data.serviceType === 0" :dataList="data.dataList"></carServe> -->
+                <!-- <carGoods v-else ref="godcart" :dataList="data.dataList"></carGoods> -->
             </view>
         <BCNotify ref="bcNotify"></BCNotify>
         </z-paging>
@@ -33,8 +33,8 @@ import { onLoad, onShow } from "@dcloudio/uni-app"
 import { getGoodsCartList } from "@/api/goods-api"
 import { getCartServiceList } from "@/api/service-api"
 import { getAssetsPic } from '@/common/setPicture'
-import  carServe from './components/carServe.vue'
-import  carGoods from './components/carGoods.vue'
+// import carServe from './components/carServe.vue'
+// import carGoods from './components/carGoods.vue'
 import pageContainer from "@/components/container/page-container.vue"
 import BCNotify from '@/components/notify/index.vue'
 

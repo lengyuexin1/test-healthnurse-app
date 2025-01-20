@@ -1,7 +1,7 @@
 <template>
     <view class="container">
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
@@ -17,14 +17,12 @@
                 <view class="order_info">
                     <orderInfo :serviceInfo="data.serviceInfo" :showInfo="data.showInfo" ></orderInfo>
                 </view>
-                
+
                 <view class="workerInfo" v-if="![65537,262146].includes(data.osObj.status) && !isinstitution">
                     <workerInfo :serviceInfo="data.serviceInfo" :showInfo="data.showInfo"></workerInfo>
                 </view>
 
-
-                
-                <view v-if="isinstitution && data.serviceInfo.info.cardExtend.typeId==1">
+                <view v-if="isinstitution && data.serviceInfo.info.cardExtend.typeId == 1">
                     <!-- 机构详情 -->
                     <div class="institution_box" v-if="isinstitution">
                         <!-- detailObj -->
@@ -75,30 +73,30 @@
                             <text class="prompt_text" v-if="data.serviceInfo.info.cardExtend && data.serviceInfo.info.cardExtend.useDeadline">{{vldTime(data.serviceInfo.info.cardExtend.useDeadline)}}</text>
                             <text class="prompt_text" v-if="data.serviceInfo.info.cardExtend && data.serviceInfo.info.cardExtend.useEffectiveDays">购买后{{ data.serviceInfo.info.cardExtend.useEffectiveDays }}内使用</text>
                         </div>
-                        <div class="prompt_item" v-if="data.serviceInfo.info.cardExtend.typeId==2">
+                        <div class="prompt_item" v-if="data.serviceInfo.info.cardExtend.typeId == 2">
                             <text class="prompt_title">使用时间:</text>
-                            <text class="prompt_text">{{data.serviceInfo.info.cardExtend.isRestrictTime==0?'全部时间可用': data.serviceInfo.info.cardExtend.restrictTimeDesc||'--' }}</text>
+                            <text class="prompt_text">{{data.serviceInfo.info.cardExtend.isRestrictTime == 0 ? '全部时间可用' : data.serviceInfo.info.cardExtend.restrictTimeDesc || '--' }}</text>
                         </div>
-                        <div class="prompt_item" v-if="data.serviceInfo.info.cardExtend.typeId==2">
+                        <div class="prompt_item" v-if="data.serviceInfo.info.cardExtend.typeId == 2">
                             <text class="prompt_title">使用范围:</text>
                             <text
                                 class="prompt_text"
-                            >{{ data.serviceInfo.info.cardExtend.range == 0 ? '通用' : 
-                            data.serviceInfo.info.cardExtend.range==1?`适用${data.serviceInfo.info.cardExtend.rangeData}` : 
-                            data.serviceInfo.info.cardExtend.range==2?`不适用${data.serviceInfo.info.cardExtend.rangeData}`:'--' 
+                            >{{ data.serviceInfo.info.cardExtend.range == 0 ? '通用' :
+                            data.serviceInfo.info.cardExtend.range == 1 ? `适用${data.serviceInfo.info.cardExtend.rangeData}` :
+                            data.serviceInfo.info.cardExtend.range == 2 ? `不适用${data.serviceInfo.info.cardExtend.rangeData}` : '--'
                             }}</text>
                         </div>
                         <div class="prompt_item flex_box">
                             <text class="prompt_title">使用规则:</text>
-                            <text class="prompt_text" v-if="data.serviceInfo.info.cardExtend.typeId==1">{{'本单发票由商家提供，详细请咨询商家'}}</text>
-                            <view class="prompt_text column_box" v-if="data.serviceInfo.info.cardExtend.typeId==2">
+                            <text class="prompt_text" v-if="data.serviceInfo.info.cardExtend.typeId == 1">{{'本单发票由商家提供，详细请咨询商家'}}</text>
+                            <view class="prompt_text column_box" v-if="data.serviceInfo.info.cardExtend.typeId == 2">
                                 <view>·本单发票由商家提供，详情请咨询商家</view>
                                 <view>·每次仅限使用一张</view>
                                 <view v-if="data.serviceInfo.info.cardExtend.isExclusive == 1">·不可同时享受商家其他优惠</view>
                                 <view v-if="data.serviceInfo.info.cardExtend.isExclusive == 2">·可同时享受商家其他优惠</view>
                                 <view v-if="data.serviceInfo.info.cardExtend.isExclusive == 3">·可同时享受商家{{ data.serviceInfo.info.cardExtend.exclusiveData }}优惠</view>
                                 <view>·有效期以具体时间为准</view>
-                                <view>·每人最多购买{{`${data.serviceInfo.info.cardExtend.isRestrictBuyQuantity==0?'不限制数量':`${data.serviceInfo.info.cardExtend.restrictBuyQuantity}`}`}}张</view>
+                                <view>·每人最多购买{{`${data.serviceInfo.info.cardExtend.isRestrictBuyQuantity == 0 ? '不限制数量' : `${data.serviceInfo.info.cardExtend.restrictBuyQuantity}`}`}}张</view>
                             </view>
                         </div>
                         <div class="prompt_item">
@@ -107,8 +105,6 @@
                         </div>
                     </div>
                 </div>
-
-
 
                 <view class="price_info">
                     <priceInfo :serviceInfo="data.serviceInfo" :showInfo="data.showInfo" :isinstitution="isinstitution"></priceInfo>
@@ -126,7 +122,6 @@
         </z-paging>
 
 		<BCNotify ref="bcNotify"></BCNotify>
-
 
         <TnPopup v-model="data.showreason" :close-btn="true" @close="data.showreason = false" open-direction="bottom" round="32rpx">
             <view class="delreason_box">
@@ -149,7 +144,6 @@
         </TnPopup>
 
 
-        
     </view>
 </template>
 
@@ -168,14 +162,14 @@ import priceInfo from './price-info.vue'
 import orderDetail from './order-detail.vue'
 import orderFoot from './orderFoot.vue'
 
-import { 
+import {
     getserviceOrderDetail,
     getAftersaleReason,
     applyRefund,
     houseOrderCancel,
     houseOrderPay,
-    housePayResult,
- } from '@/api/order-api'
+    housePayResult
+} from '@/api/order-api'
 import { organizationDetail } from '@/api/service-api'
 import { formattime } from '@/common/formatTime'
 import { packPayment } from '@/libs/pay/pay-tools'
@@ -204,22 +198,22 @@ interface Data {
 
 }
 const data = reactive<Data>({
-    osObj:{},
-    showInfo:false,
-    serviceInfo:{},
-    detailObj:{},
-    showreason:false,
-    reasonList:[],
-    reasonItemid:'',
-    payId:'',
+    osObj: {},
+    showInfo: false,
+    serviceInfo: {},
+    detailObj: {},
+    showreason: false,
+    reasonList: [],
+    reasonItemid: '',
+    payId: ''
 
 
 })
 
-const showBottom = computed(()=>{
-    if (!data.osObj.actionableList) { 
-        console.log(1);
-        
+const showBottom = computed(() => {
+    if (!data.osObj.actionableList) {
+        console.log(1)
+
         return false
     }
 
@@ -229,34 +223,35 @@ const showBottom = computed(()=>{
     }
 
     if (arr.length > 0) {
-    	if(arr.length == 1 && arr[0] == 'show_card'){
-            console.log(2);
+    	if (arr.length == 1 && arr[0] == 'show_card') {
+            console.log(2)
 
     		return false
     	}
-        console.log(3);
+        console.log(3)
     	return true
-    }else{
+    }
+    else {
     	if (data.osObj.status == 196611) {
-            console.log(4);
+            console.log(4)
     		return true
     	}
-        console.log(5);
+        console.log(5)
     	return false
     }
 })
 
 // 判断是否机构订单
-const isinstitution = computed(()=>{
+const isinstitution = computed(() => {
     return data.osObj.kind === 3
 })
 
 
-const timeformat = computed(()=>(time:number)=>{
-    return formattime(time,'YYYY-MM-DD HH:mm')
+const timeformat = computed(() => (time:number) => {
+    return formattime(time, 'YYYY-MM-DD HH:mm')
 })
 
-const vldTime = computed(()=>(time:number)=>{
+const vldTime = computed(() => (time:number) => {
     const now = (Date.now() / 1000)
     const days = Math.trunc((time - now) / (60 * 60 * 24))
     console.log('now,time', now, time, Date.now(time))
@@ -273,7 +268,7 @@ const vldTime = computed(()=>(time:number)=>{
 })
 
 
-onMounted(()=>{
+onMounted(() => {
     getDetail(props.orderId)
 })
 // watch(()=> props.orderId,(newvalue,oldvalue)=>{
@@ -283,14 +278,14 @@ onMounted(()=>{
 const getDetail = (orderId:string) => {
     getserviceOrderDetail({
         orderId
-    }).then((res:any)=>{
+    }).then((res:any) => {
         data.osObj = res
 
         data.showInfo = true
 
         data.serviceInfo = {
-            info : res?.shopList[0]?.entityList[0],
-            shopinfo : res?.shopList[0],
+            info: res?.shopList[0]?.entityList[0],
+            shopinfo: res?.shopList[0],
             addressInfo: res?.addressInfo,
             ...res
         }
@@ -300,18 +295,18 @@ const getDetail = (orderId:string) => {
         }
 
         if (props.isAppOpen) {
-            console.log('app跳转到小程序订单详情支付');
+            console.log('app跳转到小程序订单详情支付')
             // setTimeout(() => {
             //     uppay()
             // }, 1000)
         }
     })
 }
-const getorganizationDetail = (shopId:string) =>{
+const getorganizationDetail = (shopId:string) => {
     organizationDetail({
         shopId,
-        isAd:0
-    }).then((res:any)=>{
+        isAd: 0
+    }).then((res:any) => {
         data.detailObj = res || {}
     })
 }
@@ -337,12 +332,12 @@ const clickdelreason = (id:string) => {
 
 // 提交取消订单
 const goRemove = () => {
-    setTimeout(()=>{
+    setTimeout(() => {
         if (data.reasonItemid == '') {
             delreasonNotify.value.error('请选择取消原因')
             return
         }
-        console.log('data.reasonItemid',data.reasonItemid);
+        console.log('data.reasonItemid', data.reasonItemid)
         if (data.osObj.actionableList.includes('apply_refund')) {
             applyRefund({
                 orderEntityId: data.serviceInfo.info.entityId,
@@ -373,18 +368,18 @@ const goRemove = () => {
         }).catch((err:any) => {
             delreasonNotify.value.error(err.message)
         })
-    },300)
+    }, 300)
 }
 
 // 继续支付
 const uppay = async () => {
     const openid = uni.getStorageSync('openid')
-    const payData = { 
+    const payData = {
         orderId: props.orderId,
         openid,
         payId: data.serviceInfo.payId,
         subAppId: 'wxba2158972baec41b',
-        subopenId: openid,
+        subopenId: openid
     }
 
     if (data.serviceInfo.payId) { data.payId = data.serviceInfo.payId }
@@ -423,14 +418,14 @@ const uppay = async () => {
 
 
     // #ifdef APP-PLUS
-    let payJSON = JSON.stringify({
+    const payJSON = JSON.stringify({
         itemId: props.orderId,
         isAppOpen: true
     })
     const shareType = import.meta.env.VITE_WEIXIN_OPEN
 
-    console.log('payJSON',payJSON);
-    
+    console.log('payJSON', payJSON)
+
     plus.share.getServices((res: any) => {
         let sweixin = null as any
         for (const i in res) {
@@ -441,16 +436,16 @@ const uppay = async () => {
         // 唤醒微信小程序
         if (sweixin) {
             uni.hideLoading()
-            
-            PlatformManage.getToken().then((res:any)=>{
-                console.log('获取userinfo',res);
+
+            PlatformManage.getToken().then((res:any) => {
+                console.log('获取userinfo', res)
 
                 sweixin.launchMiniProgram({
                     id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
                     path: `/Order/pages/serviceOrderDetail/serviceOrderDetail?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
-                        'payJSON': payJSON,
+                        'payJSON': payJSON
                     }
                 })
             })
@@ -485,13 +480,13 @@ const againBay = () => {
     const uniqueId = TempStorage.savewx({
         itemId: data.serviceInfo.info.cardExtend.id
     })
-	// #ifdef MP-WEIXIN
+    // #ifdef MP-WEIXIN
     gotoBalanceOrder(uniqueId, 2)
     // #endif
 
 
     // #ifdef APP-PLUS
-    let payJSON = JSON.stringify({
+    const payJSON = JSON.stringify({
         itemId: data.serviceInfo.info.cardExtend.id
     })
     const shareType = import.meta.env.VITE_WEIXIN_OPEN
@@ -507,16 +502,16 @@ const againBay = () => {
         // 唤醒微信小程序
         if (sweixin) {
             uni.hideLoading()
-            
-            PlatformManage.getToken().then((res:any)=>{
-                console.log('获取userinfo',res);
+
+            PlatformManage.getToken().then((res:any) => {
+                console.log('获取userinfo', res)
 
                 sweixin.launchMiniProgram({
                     id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
                     path: `/Order/pages/balanceOrder/balanceOrder?payJSON=${payJSON}&userId=${res.id}&handle=2`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
-                        'payJSON': payJSON,
+                        'payJSON': payJSON
                     }
                 })
             })
@@ -532,27 +527,27 @@ const againBay = () => {
 const operate = (type:string) => {
     // this[type]()
     if (type == 'showClear') {
-        console.log('取消订单');
+        console.log('取消订单')
         getdelreason()
     }
     if (type == 'showEdit') {
-        console.log('修改订单');
+        console.log('修改订单')
     }
     if (type == 'goComment') {
-        console.log('去评价');
-        gotoComment({id:props.orderId})
+        console.log('去评价')
+        gotoComment({ id: props.orderId })
     }
     if (type == 'againBay') {
-        console.log('再来一单');
+        console.log('再来一单')
         againBay()
     }
     if (type == 'uppay') {
-        console.log('立即支付');
+        console.log('立即支付')
         uppay()
     }
     if (type == 'goUse') {
         // 服务多次服务
-        console.log('立即使用');
+        console.log('立即使用')
     }
 
 }
@@ -750,7 +745,7 @@ const operate = (type:string) => {
 .bottom_btn{
     background: #fff;
     height: 120rpx;
-    
+
 }
 </style>
 

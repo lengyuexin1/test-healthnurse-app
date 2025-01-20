@@ -63,8 +63,8 @@ import { ref, reactive, computed } from "vue"
 import { onLoad, onReady } from '@dcloudio/uni-app'
 import TnLoading from '@tuniao/tnui-vue3-uniapp/components/loading/src/loading.vue'
 // #ifdef APP-PLUS
-import { getHomeDetail } from '@/utils/tuyaApi'
-var configModule = uni.requireNativePlugin("XM-TuyaConfigModule");
+// import { getHomeDetail } from '@/utils/tuyaApi'
+const configModule = uni.requireNativePlugin("XM-TuyaConfigModule")
 // #endif
 
 const laodVal = ref(false)
@@ -123,7 +123,7 @@ const getTypeList = (diceType: any) => {
         pageNumber: 1,
         query: {}
     }).then(res => {
-        console.log(res);
+        console.log(res)
         data.diceMation = res.data.find(x => x.id === diceType)
         data.formDate.name = data.diceMation?.name || ''
     })
@@ -167,7 +167,7 @@ const repotYsnet = () => {
         },
         data: postData,
         success: (res) => {
-            console.log(res);
+            console.log(res)
         }
     })
 }
@@ -220,7 +220,7 @@ const submit = () => {
 
             // #ifdef MP-WEIXIN
             gotoCameraNet(deviceSerial.value)
-            // #endif  
+            // #endif
             return
         }
 
@@ -253,7 +253,8 @@ const scanCode = () => {
                 data.formDate.code = result[2]
             }
         })
-    } else {
+    }
+    else {
         uni.scanCode({
             onlyFromCamera: true,
             success: (res) => {
@@ -292,7 +293,7 @@ const newGwSubDevActivator = () => {
         devId: "6c47e3f232d38df179n9qc",
         timeout: 100
     }, (resp: any) => {
-        console.log(resp);
+        console.log(resp)
         laodVal.value = false
         uni.showToast({
             title: '绑定成功',
@@ -302,7 +303,7 @@ const newGwSubDevActivator = () => {
             uni.navigateBack({
                 delta: 1
             })
-        }, 1000);
+        }, 1000)
     })
 }
 </script>
