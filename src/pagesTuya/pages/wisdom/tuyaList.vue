@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         initSdk() {
-            initRequest({ schema: '3af4cf4518c8cd47c4ff28fa98c0a85b' });
+            initRequest({ schema: '3af4cf4518c8cd47c4ff28fa98c0a85b' })
         },
         getUseInfo() {
             const useInfo = getUserInfo()
@@ -48,13 +48,14 @@ export default {
             loginByWx()
         },
         async isLogin() {
-            const hasLogin = await isLogin();
+            const hasLogin = await isLogin()
             if (hasLogin) {
                 uni.showToast({
                     icon: 'none',
                     title: '已登录'
                 })
-            } else {
+            }
+            else {
                 uni.showToast({
                     icon: 'none',
                     title: '未登录'
@@ -63,7 +64,7 @@ export default {
         },
         getTik() {
             fetch({
-                action: 'system.userTicket',
+                action: 'system.userTicket'
             }).then(res => {
                 uni.showToast({
                     icon: 'none',
@@ -75,7 +76,7 @@ export default {
             })
         },
         async getHomeList() {
-            this.homes = await getFamilies();
+            this.homes = await getFamilies()
             console.log('家庭列表', this.homes)
         },
         gotoNet() {
@@ -85,35 +86,35 @@ export default {
             })
             setTimeout(() => {
                 wx.navigateTo({
-                    url: `plugin://tuya-ap-plugin/step1?clientId=${this.clientId}&gid=${this.homeId}&ticket=${this.ticket}&self_env=inner`,
+                    url: `plugin://tuya-ap-plugin/step1?clientId=${this.clientId}&gid=${this.homeId}&ticket=${this.ticket}&self_env=inner`
                 })
             }, 3000)
         },
         ermNet() {
             wx.navigateTo({
-                url: `plugin://tuya-ap-plugin/virtual?clientId=${this.clientId}&ticket=${this.ticket}&gid=${this.homeId}&self_env=inner`,
-            });
+                url: `plugin://tuya-ap-plugin/virtual?clientId=${this.clientId}&ticket=${this.ticket}&gid=${this.homeId}&self_env=inner`
+            })
         },
         layaNet() {
             wx.navigateTo({
-                url: `plugin://tuya-ap-plugin/auto?clientId=${this.clientId}&ticket=${this.ticket}&gid=${this.homeId}&self_env=inner`,
-            });
+                url: `plugin://tuya-ap-plugin/auto?clientId=${this.clientId}&ticket=${this.ticket}&gid=${this.homeId}&self_env=inner`
+            })
         },
         messageCenter() {
             wx.navigateTo({
-                url: `plugin://tuya-message-center/index?ticket=${this.ticket}&clientId=${this.clientId}`,
-            });
+                url: `plugin://tuya-message-center/index?ticket=${this.ticket}&clientId=${this.clientId}`
+            })
         },
         cjjs() {
             wx.navigateTo({
-                url: `plugin://tuya-auto-plugin/autoHome?ticket=${this.ticket}&client_id=${this.client_id}`,
-            });
+                url: `plugin://tuya-auto-plugin/autoHome?ticket=${this.ticket}&client_id=${this.client_id}`
+            })
         },
         commomDe() {
             const device_id = '123456'
             wx.navigateTo({
-                url: `plugin://tuya-panel-plugin/panel?ticket=${this.ticket}&clientId=${this.clientId}&device_id=${device_id}&schema='4f2354410a352622bdcb503bbdf126fd'`,
-            });
+                url: `plugin://tuya-panel-plugin/panel?ticket=${this.ticket}&clientId=${this.clientId}&device_id=${device_id}&schema='4f2354410a352622bdcb503bbdf126fd'`
+            })
         }
     }
 }

@@ -1,37 +1,34 @@
 {
-    "name" : "保椿生活",
-    "appid" : "__UNI__DD0D89D",
-    "description" : "保椿生活APP",
-    "versionName" : "1.0.0",
-    "versionCode" : 100,
+    "name" : "保椿照护",
+    "appid" : "__UNI__533F2F1",
+    "description" : "保椿照护",
+    "versionName" : "1.2.31",
+    "versionCode" : 1231,
     "transformPx" : false,
+    "channel_list" : [
+        {
+            "id" : "juliang",
+            "name" : "巨量渠道"
+        }
+    ],
     /* 5+App特有相关 */
     "app-plus" : {
-        "usingComponents" : true,
-        "compatible" : {
-            "ignoreVersion" : true,
-            "runtimeVersion" : "3.8.12",
-            "compilerVersion" : "3.8.12"
-        },
         "privacy" : {
             "prompt" : "template",
             "template" : {
-                "title" : "服务协议和隐私政策",
-                "message" : "欢迎使用保椿生活APP, 在你使用时, 需要连接数据网络或者WIFI, 产生的流量请咨询当地运营商。非常重视你的隐私保护和个人信息保护。在使用App服务前, 请认真阅读<a href='https://res.baochuncare.com/web/protocol/user_agreement_ly_app.html'>《用户协议》</a>及<a href='https://res.baochuncare.com/web/protocol/user_privacy_agreement_ly_app.html'>《隐私政策》</a>, 全部条款。你同意并接受全部条款后开始使用我们的服务<br/>",
-                "buttonAccept" : "同意并继续",
-                "buttonRefuse" : "不同意",
-                "styles" : {
-                    "backgroundColor" : "#FFFFFF",
-                    "borderRadius" : "12px",
-                    "buttonAccept" : {
-                        "color" : "#41A0FE"
-                    },
-                    "buttonRefuse" : {
-                        "color" : "#666666"
-                    }
-                }
+                "title" : "温馨提示",
+                "message" : "　　欢迎使用App，在你使用时，需要连接数据网络或者WIFI，产生的流量请咨询当地运营商。非常重视你的隐私保护和个人信息保护。在使用App服务前，请认真阅读<a  href='https://res.baochuncare.com/web/protocol/user_agreement_xc_app.html'>《用户服务协议》</a>及<a href='https://res.baochuncare.com/web/protocol/privacy_policy_xc_app.html'>《隐私政策》</a>，全部条款。你同意并接受全部条款后开始使用我们的服务<br/>",
+                "buttonAccept" : "同意并继续", //继续下一步，进入首页
+                "buttonRefuse" : "不同意" //退出下载
             }
         },
+        // 适配iPhone底部安全区
+        "safearea" : {
+            "bottom" : {
+                "offset" : "auto"
+            }
+        },
+        "usingComponents" : true,
         "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
         "splashscreen" : {
@@ -40,99 +37,129 @@
             "autoclose" : false,
             "delay" : 0
         },
+        "compatible" : {
+            "ignoreVersion" : true //忽略版本检查图示框
+        },
         /* 模块配置 */
         "modules" : {
-            "Camera" : {},
-            "Record" : {},
-            "Push" : {},
-            "Payment" : {},
             "VideoPlayer" : {},
-            "Contacts" : {},
-            "Share" : {},
-            "OAuth" : {},
-            "Geolocation" : {},
             "Maps" : {},
-            "Barcode" : {}
+            "Record" : {},
+            "Geolocation" : {},
+            "Push" : {},
+            "Camera" : {},
+            "OAuth" : {},
+            "Share" : {},
+            "Payment" : {},
+            "Barcode" : {},
+            "Bluetooth" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
             /* android打包配置 */
             "android" : {
                 "permissions" : [
-                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
-                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
-                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
-                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
-                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
-                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
-                    "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
-                    "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_MOCK_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+                    "<uses-permission android:name=\"android.permission.CALL_PRIVILEGED\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.FORCE_BACK\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.INTERNAL_SYSTEM_WINDOW\"/>",
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.MODIFY_AUDIO_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>"
+                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
+                    "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ],
                 "abiFilters" : [ "armeabi-v7a", "arm64-v8a" ],
+                "schemes" : "ydchunhome,xizoibq7s",
+                "minSdkVersion" : 29,
                 "targetSdkVersion" : 30,
-                "minSdkVersion" : 28,
-                "schemes" : "bclifehome,xizoibq7s"
+                "permissionExternalStorage" : {
+                    "request" : "none",
+                    "prompt" : "应用保存运行状态等信息，需要获取读写手机存储（系统提示为访问设备上的照片、媒体内容和文件）权限，请允许。"
+                }
             },
             /* ios打包配置 */
             "ios" : {
+                "capabilities" : {
+                    "entitlements" : {
+                        "com.apple.developer.associated-domains" : [
+                            "applinks:static-0dffda2b-7a25-4657-8f0c-03aac99faa89.bspapp.com",
+                            "applinks:zoibq7s.xinstall.top",
+                            "applinks:zoibq7s.xinstall.net"
+                        ]
+                    }
+                },
+                "urltypes" : "ydchunhome,xizoibq7s",
+                "frameworks" : [ "AdSupport.framework" ],
+                "idfa" : true,
+                "deploymentTarget" : "11.0",
                 "privacyDescription" : {
-                    "NSPhotoLibraryUsageDescription" : "”保椿生活”需要使用您的相册，以便上传头像和动态，是否允许？",
-                    "NSPhotoLibraryAddUsageDescription" : "”保椿生活”需要使用您的相册，以便保存图片，是否允许？",
-                    "NSCameraUsageDescription" : "”保椿生活”需要使用您的相机，以便拍照上传头像和动态，是否允许？",
-                    "NSMicrophoneUsageDescription" : "”保椿生活”需要使用您的麦克风，以便用于语音通话，是否允许？",
-                    "NSLocationWhenInUseUsageDescription" : "”保椿生活”访问位置信息，以便发送定位和显示当前位置，是否允许？"
+                    "NSCameraUsageDescription" : "”保椿照护”需要使用您的相机，以便拍照上传头像和动态，是否允许？",
+                    "NSPhotoLibraryAddUsageDescription" : "”保椿照护”需要使用您的相册，以便用于保存分享专属海报，是否允许？",
+                    "NSPhotoLibraryUsageDescription" : "”保椿照护”需要使用您的相册，以便上传头像和动态，是否允许？",
+                    "NSLocationWhenInUseUsageDescription" : "”保椿照护”访问位置信息，以便用于定位获取所在城市，并根据当前城市获取服务，是否允许？",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "”保椿照护”访问位置信息，以便用于定位获取所在城市，并根据当前城市获取服务，是否允许？",
+                    "NSMotionUsageDescription" : "”保椿照护”访问运动与健身信息，以便用于用于步数兑换积分，是否允许？",
+                    "NSMicrophoneUsageDescription" : "”保椿照护”需要使用您的麦克风，以便用于语音通话和录音，是否允许？",
+                    "NSUserTrackingUsageDescription" : "请放心，开启权限不会获取您在其他站点的隐私信息，该权限仅用于标识设备并保障服务安全与提示浏览体验"
                 },
                 "dSYMs" : false
             },
             /* SDK配置 */
             "sdkConfigs" : {
-                "push" : {},
                 "ad" : {},
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "wx7e6b83276a7bcd68",
+                        "UniversalLinks" : "https://res.baochuncare.com/apple-app-site-association"
+                    }
+                },
                 "payment" : {
                     "weixin" : {
                         "__platform__" : [ "ios", "android" ],
-                        "appid" : "wx503d0b79e2a259fd",
+                        "appid" : "wx7e6b83276a7bcd68",
                         "UniversalLinks" : "https://res.baochuncare.com/apple-app-site-association"
+                    }
+                },
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "200102566e79f638c66f8b0fb02c163d",
+                        "appkey_android" : "dbfb04a85e7c26e52eaebf77b172a964"
                     }
                 },
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx503d0b79e2a259fd",
-                        "UniversalLinks" : "https://res.baochuncare.com/apple-app-site-association"
-                    }
-                },
-                "speech" : {},
-                "oauth" : {
-                    "weixin" : {
-                        "appid" : "wx503d0b79e2a259fd",
+                        "appid" : "wx7e6b83276a7bcd68",
                         "UniversalLinks" : "https://res.baochuncare.com/apple-app-site-association"
                     }
                 },
                 "geolocation" : {
                     "amap" : {
-                        "name" : "amap_18924119651A434XcwXr",
                         "__platform__" : [ "ios", "android" ],
-                        "appkey_ios" : "aabc789a7e7579faff284d7e55bb7780",
-                        "appkey_android" : "79dcc87eb3b7430bff52c084319f52e8"
+                        "appkey_ios" : "200102566e79f638c66f8b0fb02c163d",
+                        "appkey_android" : "dbfb04a85e7c26e52eaebf77b172a964",
+                        "name" : "amap_18924119651A434XcwXr"
                     }
                 },
-                "maps" : {
-                    "amap" : {
-                        "name" : "amap_18924119651A434XcwXr",
-                        "appkey_ios" : "aabc789a7e7579faff284d7e55bb7780",
-                        "appkey_android" : "79dcc87eb3b7430bff52c084319f52e8"
-                    }
-                }
+                "push" : {}
             },
             "icons" : {
                 "android" : {
@@ -167,15 +194,37 @@
                 }
             },
             "splashscreen" : {
-                "useOriginalMsgbox" : true,
                 "androidStyle" : "common",
-                "iosStyle" : "common"
+                "android" : {
+                    "hdpi" : "",
+                    "xhdpi" : "",
+                    "xxhdpi" : ""
+                },
+                "useOriginalMsgbox" : true,
+                "iosStyle" : "common",
+                "ios" : {
+                    "storyboard" : ""
+                }
             }
         },
         "nativePlugins" : {
+            "AliCloud-NirvanaPns" : {
+                "__plugin_info__" : {
+                    "name" : "阿里云号码认证SDK",
+                    "description" : "阿里云号码认证SDK，包含一键登录和本机号码校验两个功能。",
+                    "platforms" : "Android,iOS",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=4297",
+                    "android_package_name" : "com.baochun.user",
+                    "ios_bundle_id" : "com.baochun.user",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "4297",
+                    "parameters" : {}
+                }
+            },
             "NIMUniPlugin" : {
-                "PUSH_VIVO_APPID" : "",
-                "PUSH_VIVO_APPKEY" : "",
+                "PUSH_VIVO_APPID" : "105676715",
+                "PUSH_VIVO_APPKEY" : "311fcf2ed628ad6c2a687f7c5a610ed8",
                 "__plugin_info__" : {
                     "name" : "NIMUniPlugin",
                     "description" : "uni消息推送插件",
@@ -214,52 +263,12 @@
                     "parameters" : {}
                 }
             },
-            "AliCloud-NirvanaPns" : {
+            "cpcn-cpcnpay" : {
+                "wxAppID" : "",
+                "wxUniversalLink" : "",
                 "__plugin_info__" : {
-                    "name" : "阿里云号码认证SDK",
-                    "description" : "阿里云号码认证SDK，包含一键登录和本机号码校验两个功能。",
-                    "platforms" : "Android,iOS",
-                    "url" : "https://ext.dcloud.net.cn/plugin?id=4297",
-                    "android_package_name" : "com.baochun.ly.user",
-                    "ios_bundle_id" : "com.baochun.ly.user",
-                    "isCloud" : true,
-                    "bought" : 1,
-                    "pid" : "4297",
-                    "parameters" : {}
-                }
-            },
-            "KJ-VideoThumbnail" : {
-                "__plugin_info__" : {
-                    "name" : "获取本地和网络视频缩略图、封面、第几帧图片(ios 、andorid)",
-                    "description" : "KJ-VideoThumbnail获取本地和网络视频缩略图、封面、第几帧图片、支持andorid10+、请试用合适再购买、请试用合适再购买、请试用合适再购买",
-                    "platforms" : "Android,iOS",
-                    "url" : "https://ext.dcloud.net.cn/plugin?id=1577",
-                    "android_package_name" : "com.baochun.ly.user",
-                    "ios_bundle_id" : "com.baochun.ly.user",
-                    "isCloud" : true,
-                    "bought" : 1,
-                    "pid" : "1577",
-                    "parameters" : {}
-                }
-            },
-            "TX-TRTCCloud" : {
-                "__plugin_info__" : {
-                    "name" : "腾讯实时音视频插件 qq群： 791338999",
-                    "description" : "腾讯ios,android原生sdk，插件永久维护，欢迎提需求",
-                    "platforms" : "Android,iOS",
-                    "url" : "https://ext.dcloud.net.cn/plugin?id=824",
-                    "android_package_name" : "com.baochun.ly.user",
-                    "ios_bundle_id" : "com.baochun.ly.user",
-                    "isCloud" : true,
-                    "bought" : 1,
-                    "pid" : "824",
-                    "parameters" : {}
-                }
-            },
-            "NERTCUniPluginSDK" : {
-                "__plugin_info__" : {
-                    "name" : "NERTC音视频SDK",
-                    "description" : "uniapp网易云信NERTC音视频原生插件",
+                    "name" : "中金支付-微信支付和支付宝支付",
+                    "description" : "原生SDK实现的微信和支付宝支付,后台须通过中金支付的跳转支付下单",
                     "platforms" : "Android,iOS",
                     "url" : "",
                     "android_package_name" : "",
@@ -267,9 +276,44 @@
                     "isCloud" : false,
                     "bought" : -1,
                     "pid" : "",
-                    "parameters" : {}
+                    "parameters" : {
+                        "wxAppID" : {
+                            "des" : "微信的AppID",
+                            "key" : "wxAppID",
+                            "value" : ""
+                        },
+                        "wxUniversalLink" : {
+                            "des" : "微信的universalLink",
+                            "key" : "wxUniversalLink",
+                            "value" : ""
+                        }
+                    }
+                }
+            },
+            "xinstall-plugin" : {
+                "APP_KEY" : "zoibq7s",
+                "__plugin_info__" : {
+                    "name" : "Xinstall-推广赋能专家",
+                    "description" : "免填写邀请码渠道统计，用户来源追溯，一键拉起/闪装，携带参数安装，增加客户转化，清楚投放效果",
+                    "platforms" : "Android,iOS",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=3701",
+                    "android_package_name" : "com.baochun.user",
+                    "ios_bundle_id" : "com.baochun.user",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "3701",
+                    "parameters" : {
+                        "APP_KEY" : {
+                            "des" : "Xinstall管理后台分配的appkey",
+                            "key" : "com.xinstall.APP_KEY",
+                            "value" : ""
+                        }
+                    }
                 }
             }
+        },
+        "uniStatistics" : {
+            "enable" : false
         }
     },
     /* 快应用特有相关 */
@@ -279,45 +323,93 @@
         "appid" : "wxba2158972baec41b",
         "lazyCodeLoading" : "requiredComponents",
         "setting" : {
-            "urlCheck" : false,
+            "urlCheck" : true,
+            "es6" : true,
+            "postcss" : true,
             "minified" : true
         },
         "usingComponents" : true,
         "permission" : {
             "scope.userLocation" : {
-                "desc" : "你的位置信息将用于小程序位置接口的效果展示"
+                "desc" : "获取用户地理位置信息"
             }
         },
         "requiredPrivateInfos" : [ "chooseLocation", "getLocation" ],
         "optimization" : {
             "subPackages" : true
         },
-        "runmode" : "liberate",
         "uniStatistics" : {
             "enable" : false,
             "debug" : true
         }
     },
     "mp-alipay" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : false
+        }
     },
     "mp-baidu" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "uniStatistics" : {
+            "enable" : false
+        }
     },
     "mp-toutiao" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "appid" : "tt2f5459e9b06cfd0701",
+        "setting" : {
+            "minified" : true,
+            "postcss" : true,
+            "urlCheck" : false
+        },
+        "uniStatistics" : {
+            "enable" : false
+        }
     },
     "uniStatistics" : {
-        "enable" : false
+        "enable" : false,
+        "version" : "2"
     },
-    "vueVersion" : "3",
+    "vueVersion" : "2",
     "h5" : {
-        "title" : "保椿生活",
         "router" : {
-            "base" : "./"
+            "mode" : "history"
         },
-        "sdkConfigs" : {
-            "maps" : {}
+        "devServer" : {},
+        "uniStatistics" : {
+            "enable" : false
         }
-    }
+    },
+    "mp-jd" : {
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "mp-kuaishou" : {
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "mp-lark" : {
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "mp-qq" : {
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "quickapp-webview-huawei" : {
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "quickapp-webview-union" : {
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "fallbackLocale" : "zh-Hans"
 }

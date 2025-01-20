@@ -114,7 +114,7 @@
 				{
 					"path": "pages/serviceDetail/serviceDetail",
 					"style": {
-						"navigationBarTitleText": "搜索",
+						"navigationBarTitleText": "服务详情",
 						"navigationStyle": "custom",
 						"enablePullDownRefresh": false
 					}
