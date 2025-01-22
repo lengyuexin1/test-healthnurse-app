@@ -301,24 +301,24 @@ interface Data {
 }
 
 const data = reactive<Data>({
-    swiperIndex:0,
-    agencyObj:{},
-    commentList:[],
-    total:0,
-    needlogin:false,
+    swiperIndex: 0,
+    agencyObj: {},
+    commentList: [],
+    total: 0,
+    needlogin: false,
     status: 0,
-    shareimgUrl: '',
+    shareimgUrl: ''
 })
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
-const timeformat = computed(()=>(time:number)=>{
-    return formattime(time ,'YYYY-MM-DD')
+const timeformat = computed(() => (time:number) => {
+    return formattime(time, 'YYYY-MM-DD')
 })
 
-const showswiper = computed(()=>(list:any)=>{
+const showswiper = computed(() => (list:any) => {
     if (!list?.length) {
         return
     }
@@ -330,7 +330,7 @@ const showswiper = computed(()=>(list:any)=>{
     }
 })
 
-const notright = computed(()=>(list:any, index:number)=>{
+const notright = computed(() => (list:any, index:number) => {
     if (list.length == 1) {
         return true
     }
@@ -353,15 +353,15 @@ onMounted(() => {
 const gethealthdetail = (id:string) => {
     healthdetail({
         id
-    }).then((res:any)=>{
-        data.agencyObj = res;
+    }).then((res:any) => {
+        data.agencyObj = res
         const shareObj = {
             title: res.name,
             imageUrl: res.mainPics[0],
             id: res.id,
-            desc: '',
+            desc: ''
         }
-        emit('saveShareObj',shareObj)
+        emit('saveShareObj', shareObj)
 
         // data.priceItem = res.itemList[0]
     })
@@ -374,7 +374,7 @@ const getgodsCommList = (itemId:string) => {
             itemId,
             shopId: null
         }
-    }).then((res:any)=>{
+    }).then((res:any) => {
         data.commentList = res.data
         data.total = res.total
     })
@@ -394,7 +394,7 @@ const preImage = (current:number, urls:any) => {
 
 const tohealthComment = () => {
     // 评论列表详情
-    serviceComment(props.itemId,2)
+    serviceComment(props.itemId, 2)
 }
 
 const tochoiceDetails = (itemId:string, tologin:boolean = false) => {
@@ -412,7 +412,7 @@ const tobay = () => {
 
 
     // #ifdef APP-PLUS
-    let payJSON = JSON.stringify({
+    const payJSON = JSON.stringify({
         itemId: data.agencyObj.id
     })
     const shareType = import.meta.env.VITE_WEIXIN_OPEN
@@ -429,15 +429,14 @@ const tobay = () => {
         if (sweixin) {
             uni.hideLoading()
 
-            PlatformManage.getToken().then((res:any)=>{
-                console.log('获取userinfo',res);
-
+            PlatformManage.getToken().then((res:any) => {
+                console.log('获取userinfo', res)
                 sweixin.launchMiniProgram({
-                    id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
+                    id: 'gh_c2469c570746',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
                     path: `/pagesOrder/pages/balanceOrder/balanceOrder?payJSON=${payJSON}&userId=${res.id}&handle=2`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
-                        'payJSON': payJSON,
+                        'payJSON': payJSON
                     }
                 })
             })
@@ -449,7 +448,7 @@ const tobay = () => {
 
 
 
-const instance = getCurrentInstance(); // 获取组件实例
+const instance = getCurrentInstance() // 获取组件实例
 
 // app分享参数
 // #ifndef MP-WEIXIN
@@ -463,7 +462,7 @@ const sharePage = () => {
         imageUrl: data.agencyObj.mainPics[0],
         title: data.agencyObj.name,
         miniProgram: {
-            id: 'gh_fd20b530cb94', //微信小程序原始id
+            id: 'gh_c2469c570746', //微信小程序原始id
             path: `/pagesService/pages/Servicestore/healthproductDetails?itemId=${data.agencyObj.id}`, //点击链接进入的页面
             type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
             webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接
@@ -477,11 +476,11 @@ const sharePage = () => {
 }
 // #endif
 
-const shareBox = ref();
+const shareBox = ref()
 // 分享
 const share = () => {
     data.status = 1;
-    (shareBox.value as any).open();
+    (shareBox.value as any).open()
 }
 const closeShare = () => {
     (shareBox.value as any).close()
@@ -491,7 +490,7 @@ const sharePoster = async () => {
 
     const coverUrl = await drawBGIMG(data.agencyObj.mainPics[0])
     // 二维码链接图片
-    let qrimg =  await getQrcode(`/pagesService/pages/Servicestore/healthproductDetails?itemId=${data.agencyObj.id}`).then((img:any)=>{
+    const qrimg =  await getQrcode(`/pagesService/pages/Servicestore/healthproductDetails?itemId=${data.agencyObj.id}`).then((img:any) => {
         return img
     })
     const qrimgUrl = await drawBGIMG(qrimg)
@@ -510,16 +509,16 @@ const sharePoster = async () => {
     let accountName = data.agencyObj.name//作者，店铺名
 
     if (title.length > 8) {
-        title = title.slice(0,8) + "..."
+        title = title.slice(0, 8) + "..."
     }
     if (accountName.length > 8) {
-        accountName = accountName.slice(0,8) + "..."
+        accountName = accountName.slice(0, 8) + "..."
     }
 
-    const context = uni.createCanvasContext('mycanvas',instance)
+    const context = uni.createCanvasContext('mycanvas', instance)
 
 
-    context.clearRect(0, 0, 254, 344);
+    context.clearRect(0, 0, 254, 344)
     // 背景白块
     context.setFillStyle('#ffffff')
     context.fillRect(0, 0, 254, 344)
@@ -548,18 +547,18 @@ const sharePoster = async () => {
 
 
     context.save()
-    context.arc(24, 320, 10, 0, Math.PI * 2);
+    context.arc(24, 320, 10, 0, Math.PI * 2)
     context.fill()//保证图片无bug填充
-    context.clip();//画了圆 再剪切 原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内
+    context.clip()//画了圆 再剪切 原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内
 
     context.drawImage(accountThumb, 14, 310, 20, 20)
     context.restore()
 
     context.draw(
         false,
-        setTimeout( async () => {
+        setTimeout(async () => {
             uni.canvasToTempFilePath({
-                canvasId:'mycanvas',
+                canvasId: 'mycanvas',
                 success: (res:any) => {
                     data.shareimgUrl = res.tempFilePath
                     data.status = 2
@@ -573,10 +572,10 @@ const sharePoster = async () => {
                     })
                 },
                 complete: (ret) => {
-                    console.log('生成中....');
+                    console.log('生成中....')
                     uni.hideLoading()
                 }
-            },instance)
+            }, instance)
         }, 3000)
     )
 }
@@ -592,7 +591,7 @@ const goback = () => {
 }
 
 defineExpose({
-    closeShare,
+    closeShare
 })
 
 

@@ -61,7 +61,7 @@ import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import { ref, reactive, computed, onMounted, nextTick } from "vue"
 import { TempStorage } from "@bc/base"
 import { moneyFilter } from '@/common/filters'
-import { gotoBalanceGood } from '@/routes/order-routes'
+import { gotoBalanceOrder } from '@/routes/order-routes'
 import BCNotify from '@/components/notify/index.vue'
 import { addServeCart } from '@/api/service-api'
 
@@ -92,7 +92,7 @@ const btnStyle = ref({
     height: '90rpx',
     fontSize: '30rpx'
 })
-const optionIds:unknown = ref(0)
+const optionIds = ref<number>(0)
 const adresMation = ref({})
 const isCar = ref(false) // Whether it's the shopping cart
 const vModelValue = ref(1)
@@ -128,13 +128,14 @@ const submit = () => {
 }
 
 const balance = () => {
-    const uniqueId = TempStorage.save({
+    const uniqueId = TempStorage.savewx({
         optionId: props.list[optionIds.value].id,
         adresMation: adresMation.value,
         hospital: props.hospital,
         quantity: vModelValue.value
     })
-    //   gotoBalanceOrder(uniqueId)
+
+    gotoBalanceOrder(uniqueId)
     close()
 }
 

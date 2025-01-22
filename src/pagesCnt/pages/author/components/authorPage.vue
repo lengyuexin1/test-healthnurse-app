@@ -505,7 +505,7 @@ const sharePage = () => {
         imageUrl: data.homeObj.avatar,
         title: "邀请你添加好友",
         miniProgram: {
-            id: 'gh_fd20b530cb94', //微信小程序原始id
+            id: 'gh_c2469c570746', //微信小程序原始id
             path: `/pagesCnt/pages/author/author?accountId=${props.accountId}`, //点击链接进入的页面
             type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
             webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接

@@ -92,10 +92,10 @@ const props = withDefaults(defineProps<{
     info:any,
     btnTxt:string
 }>(), {
-	livePlayId: '',
-    type:1,
-    info:true,
-    btnTxt:'立即下单'
+    livePlayId: '',
+    type: 1,
+    info: true,
+    btnTxt: '立即下单'
 })
 
 interface Data{
@@ -103,8 +103,8 @@ interface Data{
 	idsarr:any,
 }
 const data = reactive<Data>({
-	comInfo:{},
-	idsarr:[]
+    comInfo: {},
+    idsarr: []
 })
 
 
@@ -114,7 +114,7 @@ const emit = defineEmits(["setOption"])
 
 const show = ref(false)
 const isDisabled = ref(false)
-const optionIds= ref(0)
+const optionIds = ref(0)
 const adresMation = ref({})
 const isCar = ref(false)
 const vModelValue = ref(1)
@@ -138,15 +138,15 @@ const moneyPic = computed(() => {
     }
 })
 
-const infoUrl = computed(()=>{
+const infoUrl = computed(() => {
     return props.info.thumb
 })
 
 //规格列表
-const optionList = computed(()=>{
-	if (!props.info.optionList) { return [] }
+const optionList = computed(() => {
+    if (!props.info.optionList) { return [] }
 
-	let allList = props.info.optionList.map((x:any) => {
+    const allList = props.info.optionList.map((x:any) => {
         return {
             ...x,
             valueList: x.valueList.map((n:any) => {
@@ -158,39 +158,39 @@ const optionList = computed(()=>{
         }
     })
 
-	
 
-	
+
+
 
     return allList
-}) 
+})
 
-onMounted(()=>{
-	
+onMounted(() => {
+
 
 })
 
 const open = () => {
-	
-	data.comInfo = props.info
 
-	props.info.optionList.forEach((item:any,index:number) => {
-		data.idsarr.splice(index,1,item.valueList[0].id)
-		console.log('data.idsarr',data.idsarr);
-	})
-	getGoodsSpecifications()
+    data.comInfo = props.info
+
+    props.info.optionList.forEach((item:any, index:number) => {
+        data.idsarr.splice(index, 1, item.valueList[0].id)
+        console.log('data.idsarr', data.idsarr)
+    })
+    getGoodsSpecifications()
 
 }
 
 const getGoodsSpecifications = () => {
-	goodsSpecifications({
+    goodsSpecifications({
         optionValueIds: data.idsarr.toString(',')
     }).then((res:any) => {
         data.comInfo = {
             ...data.comInfo,
             ...res
         }
-		// 获取最大库存
+        // 获取最大库存
         getStock()
         emit('setOption', res.optionValueNames)
     })
@@ -198,11 +198,11 @@ const getGoodsSpecifications = () => {
 
 
 const getNorm = (item:any, index:number, elids:number = 1, ele:any = {}) => {
-            
+
     // this.idsarr.length = this.optionList.length
 
-	console.log('ele',ele,index);
-	
+    console.log('ele', ele, index)
+
 
     if (props.type == 1) {
         data.idsarr.splice(index, 1, ele.id)
@@ -242,8 +242,8 @@ const close = () => {
 }
 // 打开弹窗
 const godOpen = (type: boolean) => {
-	console.log('open');
-	
+    console.log('open')
+
     isCar.value = type
     show.value = true
 }
@@ -256,11 +256,11 @@ const opennotifyRef = () => {
 // 创建订单
 const balance = () => {
     const goods = data.comInfo
-	console.log('goods',goods);
-	
+    console.log('goods', goods)
+
     if (!data.comInfo.optionValueNames) {
-		console.log('文字');
-		
+        console.log('文字')
+
         uni.showToast({
             title: '请选择规格',
             icon: 'none'
@@ -268,7 +268,7 @@ const balance = () => {
         return false
     }
     if (data.idsarr.length != optionList.value.length) {
-		console.log('数组');
+        console.log('数组')
 
         uni.showToast({
             title: '请选择规格',
@@ -284,29 +284,29 @@ const balance = () => {
         shopName: goods.shopName || '',
         quantity: vModelValue.value,
         shopIcon: goods.shopThumb,
-        type: props.type,//1单品 2组合
-		livePlayId: props.livePlayId
+        type: props.type, //1单品 2组合
+        livePlayId: props.livePlayId
     })
 
 
-	// #ifdef MP-WEIXIN
+    // #ifdef MP-WEIXIN
     gotoBalanceGood(uniqueId)
     // #endif
 
 
 
-	// #ifdef APP-PLUS
+    // #ifdef APP-PLUS
 
-	let payJSON = JSON.stringify({
+    const payJSON = JSON.stringify({
         optionDetailId: props.type == 1 ? goods.id : optionListid.value,
         shopName: goods.shopName || '',
         quantity: vModelValue.value,
         shopIcon: goods.shopThumb,
-        type: props.type,//1单品 2组合
-		livePlayId: props.livePlayId
+        type: props.type, //1单品 2组合
+        livePlayId: props.livePlayId
     })
 
-    console.log('app跳转小程序调用半屏支付', payJSON);
+    console.log('app跳转小程序调用半屏支付', payJSON)
 
     const shareType = import.meta.env.VITE_WEIXIN_OPEN
 
@@ -321,16 +321,16 @@ const balance = () => {
         // 唤醒微信小程序
         if (sweixin) {
             uni.hideLoading()
-            
-            PlatformManage.getToken().then((res:any)=>{
-                console.log('获取userinfo',res);
+
+            PlatformManage.getToken().then((res:any) => {
+                console.log('获取userinfo', res)
 
                 sweixin.launchMiniProgram({
-                    id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
+                    id: 'gh_c2469c570746',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
                     path: `/pagesOrder/pages/balanceGoods/balanceGoods?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
-                        'payJSON': payJSON,
+                        'payJSON': payJSON
                     }
                 })
             })
@@ -342,36 +342,36 @@ const balance = () => {
 
 // 加入购物车
 const putCar = () => {
-	console.log('添加到购物车');
+    console.log('添加到购物车')
 
-	if (props.type == 1 && !data.comInfo.id) {
-		bcNotify.value.error('请选择商品规格')
-		return
-	}
-	if (props.type == 2 && !optionListid.value) {
-		bcNotify.value.error('请选择商品规格')
-		return
-	}
+    if (props.type == 1 && !data.comInfo.id) {
+        bcNotify.value.error('请选择商品规格')
+        return
+    }
+    if (props.type == 2 && !optionListid.value) {
+        bcNotify.value.error('请选择商品规格')
+        return
+    }
 
-	createGoodcart({
+    createGoodcart({
         optionDetailId: props.type == 1 ? data.comInfo.id : optionListid.value,
-        productType: props.type,//1单品 2组合
-        quantity: vModelValue.value,
-	}).then(()=>{
-		uni.showToast({
+        productType: props.type, //1单品 2组合
+        quantity: vModelValue.value
+    }).then(() => {
+        uni.showToast({
             title: '添加成功',
             icon: 'none'
         })
-		setTimeout(()=>{
-			close()
-		},800)
-	}).catch((err:any)=>{
-		bcNotify.value.error(err.message)
-	})
-   
+        setTimeout(() => {
+            close()
+        }, 800)
+    }).catch((err:any) => {
+        bcNotify.value.error(err.message)
+    })
+
 }
 
-defineExpose({ godOpen,opennotifyRef })
+defineExpose({ godOpen, opennotifyRef })
 </script>
 
 <style scoped>
@@ -538,7 +538,7 @@ defineExpose({ godOpen,opennotifyRef })
 			margin-top: 40rpx;
 		}
         .godsImg {
-            width: 180rpx; 
+            width: 180rpx;
             height: 180rpx;
         }
 	}

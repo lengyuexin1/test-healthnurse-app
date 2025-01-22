@@ -1,12 +1,12 @@
 <template>
     <view class="wrap" style="height: 100vh" v-if="showPage">
-        <z-paging 
-            ref="paging" 
-            v-model="dataList" 
-            @query="queryList" 
-            :defaultPageSize="10" 
+        <z-paging
+            ref="paging"
+            v-model="dataList"
+            @query="queryList"
+            :defaultPageSize="10"
             empty-view-text="还没有数据哦~"
-            :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" 
+            :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
             @scroll="pagingScroll"
         >
             <template #top>
@@ -31,9 +31,9 @@
                         <TnTabs
                             v-model="tabCurrent"
                             color="#fff"
-                            :scroll="false" 
-                            bg-color="#fff" 
-                            bar-color="#29C86F" 
+                            :scroll="false"
+                            bg-color="#fff"
+                            bar-color="#29C86F"
                             :bottom-shadow="false"
                         >
                             <TnTabsItem
@@ -47,7 +47,7 @@
                             />
                         </TnTabs>
                     </div>
-                    
+
                 </view>
             </template>
 
@@ -64,16 +64,16 @@
                     @change="changeSwiper"
                 >
                     <swiper-item class="swiper_item" v-for="(item,index) in orderObj.productExt.topImage" :key="index">
-                        <image 
-                            class="image" 
-                            :src="item" 
+                        <image
+                            class="image"
+                            :src="item"
                             mode="aspectFill"
-                            @click="preImage(currentSwiperIndex,orderObj.productExt.topImage)" 
+                            @click="preImage(currentSwiperIndex,orderObj.productExt.topImage)"
                         />
                     </swiper-item>
                 </swiper>
                 <view class="indicator_box">
-                    <view class="indicator_item" :class="{ 'is_Selected' : index == currentSwiperIndex }" v-for="(item,index) in orderObj.productExt.topImage" :key="index"></view>
+                    <view class="indicator_item" :class="{ 'is_Selected': index == currentSwiperIndex }" v-for="(item,index) in orderObj.productExt.topImage" :key="index"></view>
                 </view>
             </div>
             <couponGet v-if="couparr.length" @getCoupon="getCoupon" />
@@ -172,11 +172,11 @@
             <!-- 长图片详情 -->
             <view id="toView3">
                 <block v-for="(item,index) in orderObj.productExt.detailImage" :key="index">
-                    <image 
-                    @click="preImage(index,orderObj.productExt.detailImage)" 
-                    :src="item" 
-                    width="750rpx" 
-                    height="auto" 
+                    <image
+                    @click="preImage(index,orderObj.productExt.detailImage)"
+                    :src="item"
+                    width="750rpx"
+                    height="auto"
                     mode="widthFix"></image>
                 </block>
             </view>
@@ -197,17 +197,17 @@
                 <tabbar @clickTab="clickTab" :btnTxt="couparr.length && couparr[0].length ? '领券购买' : '立即下单'"></tabbar>
             </template>
         </z-paging>
-        
+
         <BCNotify ref="bcNotify"></BCNotify>
     </view>
 
     <!-- 选择规格 -->
-    <optionSelect 
-        ref="optSel" 
+    <optionSelect
+        ref="optSel"
         @setOption="setOption"
         :livePlayId="livePlayId"
-        :type="1" 
-        :info="orderObj" 
+        :type="1"
+        :info="orderObj"
         :btnTxt="couparr.length && couparr[0].length ? '领券购买' : '立即下单'"
     />
 
@@ -295,7 +295,7 @@ const shareInfo = reactive({
         name: '',
         shopavatar: ''
     },
-    couparr: [] as any, //优惠券列表
+    couparr: [] as any //优惠券列表
 })
 const shareData = reactive<any>({
     qrimg: '',
@@ -308,7 +308,7 @@ const orderObj = ref()
 
 const titleTop = ref(0)
 const titleRight = ref(0)
-const sBarHeight= ref(0)
+const sBarHeight = ref(0)
 
 onLoad((options: any) => {
     itemId.value = options.itemId
@@ -316,17 +316,17 @@ onLoad((options: any) => {
     getDetail(itemId.value)
     getCoupList()
     isFavoriteItem({
-        itemId:itemId.value
-    }).then((res)=>{
+        itemId: itemId.value
+    }).then((res) => {
         isFavorite.value = !!res
     })
 })
 
-const instance = getCurrentInstance(); // 获取组件实例
-const query = uni.createSelectorQuery().in(instance);
+const instance = getCurrentInstance() // 获取组件实例
+const query = uni.createSelectorQuery().in(instance)
 
-onReady(()=>{
-    query.select('#wrap').boundingClientRect((wrap:any) => { 
+onReady(() => {
+    query.select('#wrap').boundingClientRect((wrap:any) => {
         wrapheight.value = wrap?.height
     }).exec()
 })
@@ -369,7 +369,7 @@ onMounted(async () => {
     titleRight.value = 8
     // #endif
 
-    console.log(',data.titleRight',titleRight.value)
+    console.log(',data.titleRight', titleRight.value)
 })
 
 const getDetail = (id: any) => {
@@ -395,26 +395,27 @@ const hospital: any = ref({})
 const optionList: any = ref([])
 
 
-const clickTab = (type:string) =>{
-    console.log('tyep',type);
+const clickTab = (type:string) => {
+    console.log('tyep', type)
     // 检查登录状态
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
             bcNotify.value.show('登录失效,请重新登录')
-            setTimeout(()=>{
+            setTimeout(() => {
                 gotoLogin({})
-            },1000)
-        }else{
-            type == 'linkAttendShop' && linkAttendShop();
-            type == 'getCoupon' && getCoupon();
-            type == 'linkCart' && linkCart();
-            type == 'addCart' && openSelect(true);
-            type == 'balanceOrder' && openSelect(false);
+            }, 1000)
+        }
+        else {
+            type == 'linkAttendShop' && linkAttendShop()
+            type == 'getCoupon' && getCoupon()
+            type == 'linkCart' && linkCart()
+            type == 'addCart' && openSelect(true)
+            type == 'balanceOrder' && openSelect(false)
         }
     })
 }
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
@@ -439,10 +440,11 @@ const getCoupon = () => {
 
 const setcollect = () => {
     PlatformManage.isRequireLogin().then(res => {
-        console.log(res);
+        console.log(res)
         if (res) {
             // return gotoLogin({}) 去登录
-        } else {
+        }
+        else {
             isFavorite.value ? celcoll() : setcoll()
         }
     })
@@ -454,19 +456,19 @@ const getCoupList = () => {
         itemId: itemId.value
     }
     itemCouponList(data).then((res) => {
-            if (res.length <= 0) { return }
-            const arr1: any = []
-            const arr2: any = []
-            res.map((x: any) => {
-                if (x.status == 0) {
-                    arr2.push(x)
-                }
-                else {
-                    arr1.push(x)
-                }
-            })
-            shareInfo.couparr = [arr1, arr2]
+        if (res.length <= 0) { return }
+        const arr1: any = []
+        const arr2: any = []
+        res.map((x: any) => {
+            if (x.status == 0) {
+                arr2.push(x)
+            }
+            else {
+                arr1.push(x)
+            }
         })
+        shareInfo.couparr = [arr1, arr2]
+    })
         .catch((err) => {
             bcNotify.value.error(err.message)
         })
@@ -530,24 +532,24 @@ const queryList = (pageNumber = 1, pageSize = 10) => {
     recommendList({
         pageSize,
         pageNumber,
-        query:{
+        query: {
             categoryIds: [],
-            lat:null,
-            lng:null,
-            sortType:7,
-            businessTypeIds:[2],
-            businessType: null,
+            lat: null,
+            lng: null,
+            sortType: 7,
+            businessTypeIds: [2],
+            businessType: null
         }
     }).then((res) => {
-        console.log('res',res);
-        
+        console.log('res', res)
+
         paging.value.complete(res.data)
     })
 }
 
 // 打开sku面板
 const openSelect = (type:boolean | number) => {
-    optSel.value.godOpen(type);
+    optSel.value.godOpen(type)
 }
 // 打开面板确认下单后的自动领取优惠卷
 const opengetAllCoupon = () => {
@@ -565,25 +567,26 @@ const { couparr } = toRefs(shareInfo)
 // 滚动计算透明导航栏
 const pagingScroll = (e:any) => {
     tabList.value.forEach((item, index) => {
-        query.select( '#'+ item.jumpId ).boundingClientRect((rect:any) => { 
+        query.select('#' + item.jumpId).boundingClientRect((rect:any) => {
             if (rect.top <= 150 && rect.top >= 50) {
                 tabCurrent.value = index
             }
         }).exec()
     })
-    console.log('e',e);
-    
-    opacityNumber.value = Math.abs( ((e.detail.scrollTop - 40 ) * 0.01 ) )
+    console.log('e', e)
+
+    opacityNumber.value = Math.abs(((e.detail.scrollTop - 40) * 0.01))
 
     if (e.detail.scrollTop >= 50) {
         showtab.value = true
-    }else {
+    }
+    else {
         showtab.value = false
     }
 }
 
 // 导航栏跳转定位
-const changeTab = (item:any,index:number) => {
+const changeTab = (item:any, index:number) => {
     tabCurrent.value = index
     paging.value.scrollIntoViewById(item.jumpId, 150)
 }
@@ -630,7 +633,7 @@ const linkCart = () => {
     gotoShoppingCart()
 }
 
-const clickwaterItem = (item:any) =>{
+const clickwaterItem = (item:any) => {
     gotogoodsDetail(item.id)
 }
 
@@ -648,12 +651,12 @@ const goback = () => {
 
 // 微信小程序分享
 //#ifdef MP-WEIXIN
-onShareAppMessage((res:any)=>{
+onShareAppMessage((res:any) => {
     return {
         title: orderObj.value.name,
-        imageUrl : orderObj.value.thumb,
-        desc : orderObj.value.desc,
-        path: `/pagesGoods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`,
+        imageUrl: orderObj.value.thumb,
+        desc: orderObj.value.desc,
+        path: `/pagesGoods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`
     }
 })
 //#endif
@@ -663,7 +666,7 @@ const sharePoster = async () => {
 
     const coverUrl = await drawBGIMG(orderObj.value.thumb)
     // 二维码链接图片
-    let qrimg =  await getQrcode(`/pagesGoods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`).then((img:any)=>{
+    const qrimg =  await getQrcode(`/pagesGoods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`).then((img:any) => {
         return img
     })
     const qrimgUrl = await drawBGIMG(qrimg)
@@ -682,20 +685,20 @@ const sharePoster = async () => {
     let accountName = orderObj.value.shopName//作者，店铺名
 
     if (title.length > 8) {
-        title = title.slice(0,8) + "..."
+        title = title.slice(0, 8) + "..."
     }
     if (accountName.length > 8) {
-        accountName = accountName.slice(0,8) + "..."
+        accountName = accountName.slice(0, 8) + "..."
     }
-            
-    const context = uni.createCanvasContext('mycanvas',instance)
+
+    const context = uni.createCanvasContext('mycanvas', instance)
 
 
-    context.clearRect(0, 0, 254, 344);
+    context.clearRect(0, 0, 254, 344)
     // 背景白块
     context.setFillStyle('#ffffff')
     context.fillRect(0, 0, 254, 344)
-            
+
     // 底部白块
     context.setFillStyle('#ffffff')
     context.fillRect(0, 258, 258, 94)
@@ -714,24 +717,24 @@ const sharePoster = async () => {
     context.fillText(accountName, 40, 324)
     context.setFillStyle('#999999')
     context.setFontSize(12)
-            
+
     // 背景图片
     context.drawImage(coverUrl, 0, 0, 275, 255)
 
 
     context.save()
-    context.arc(24, 320, 10, 0, Math.PI * 2);
+    context.arc(24, 320, 10, 0, Math.PI * 2)
     context.fill()//保证图片无bug填充
-    context.clip();//画了圆 再剪切 原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内
+    context.clip()//画了圆 再剪切 原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内
 
     context.drawImage(accountThumb, 14, 310, 20, 20)
     context.restore()
 
     context.draw(
         false,
-        setTimeout( async () => {
+        setTimeout(async () => {
             uni.canvasToTempFilePath({
-                canvasId:'mycanvas',
+                canvasId: 'mycanvas',
                 success: (res:any) => {
                     shareimgUrl.value = res.tempFilePath
                     status.value = 2
@@ -745,10 +748,10 @@ const sharePoster = async () => {
                     })
                 },
                 complete: (ret) => {
-                    console.log('生成中....');
+                    console.log('生成中....')
                     uni.hideLoading()
                 }
-            },instance)
+            }, instance)
         }, 3000)
     )
 
@@ -767,7 +770,7 @@ const sharePage = () => {
         imageUrl: orderObj.value.thumb,
         title: orderObj.value.name,
         miniProgram: {
-            id: 'gh_fd20b530cb94', //微信小程序原始id
+            id: 'gh_c2469c570746', //微信小程序原始id
             path: `/pagesGoods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`, //点击链接进入的页面
             type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
             webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接
@@ -781,7 +784,7 @@ const sharePage = () => {
 }
 // #endif
 
-const shareBox = ref();
+const shareBox = ref()
 // 分享
 const share = () => {
     status.value = 1;
@@ -796,7 +799,7 @@ const changeSwiper = (e:any) => {
 }
 
 defineExpose({
-    closeShare,
+    closeShare
 })
 
 
@@ -1006,7 +1009,7 @@ defineExpose({
 }
 .head_box{
     position: relative;
-    
+
     .swiper_box{
         width: 750rpx;
         height: 750rpx;
@@ -1020,7 +1023,7 @@ defineExpose({
             }
 
         }
-            
+
     }
     .indicator_box{
         position: absolute;
@@ -1044,7 +1047,7 @@ defineExpose({
 
         }
     }
-    
+
 }
 .swiper-data {
     width: 100%;

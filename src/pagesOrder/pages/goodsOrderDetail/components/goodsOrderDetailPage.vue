@@ -100,8 +100,8 @@ import {
     housePayResult,
     delayReceive,
     confirmReceipt,
-    editGodsOrder,
- } from '@/api/order-api'
+    editGodsOrder
+} from '@/api/order-api'
 import { organizationDetail } from '@/api/service-api'
 import { formattime } from '@/common/formatTime'
 import { packPayment } from '@/libs/pay/pay-tools'
@@ -136,45 +136,45 @@ interface Data {
 
 }
 const data = reactive<Data>({
-    osObj:{},
-    showInfo:false,
-    serviceInfo:{},
-    detailObj:{},
-    showreason:false,
-    reasonList:[],
-    reasonItemid:'',
-    payId: '',
+    osObj: {},
+    showInfo: false,
+    serviceInfo: {},
+    detailObj: {},
+    showreason: false,
+    reasonList: [],
+    reasonItemid: '',
+    payId: ''
 
 
 })
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
-const showBottom = computed(()=>{
+const showBottom = computed(() => {
     if (!data.osObj.actionableList) {
-        console.log(111);
+        console.log(111)
 
         return false
     }
-    console.log(222);
+    console.log(222)
 
     return true
 
 })
 
 // 判断是否机构订单
-const isinstitution = computed(()=>{
+const isinstitution = computed(() => {
     return data.osObj.kind === 3
 })
 
 
-const timeformat = computed(()=>(time:number)=>{
-    return formattime(time,'YYYY-MM-DD HH:mm')
+const timeformat = computed(() => (time:number) => {
+    return formattime(time, 'YYYY-MM-DD HH:mm')
 })
 
-const vldTime = computed(()=>(time:number)=>{
+const vldTime = computed(() => (time:number) => {
     const now = (Date.now() / 1000)
     const days = Math.trunc((time - now) / (60 * 60 * 24))
     if (now < time) {
@@ -191,7 +191,7 @@ const vldTime = computed(()=>(time:number)=>{
 
 
 
-onMounted(()=>{
+onMounted(() => {
     getDetail(props.orderId)
     // addWEventsListener(CareEvents.Get__Address, (res) => {
     //     setSitelAdres(res)
@@ -205,14 +205,14 @@ onMounted(()=>{
 const getDetail = (orderId:string) => {
     getserviceOrderDetail({
         orderId
-    }).then((res:any)=>{
+    }).then((res:any) => {
         data.osObj = res
 
         data.showInfo = true
 
         data.serviceInfo = {
-            info : res?.shopList[0]?.entityList,
-            shopinfo : res?.shopList[0],
+            info: res?.shopList[0]?.entityList,
+            shopinfo: res?.shopList[0],
             addressInfo: res?.addressInfo,
             ...res
         }
@@ -222,7 +222,7 @@ const getDetail = (orderId:string) => {
         }
 
         if (props.isAppOpen) {
-            console.log('app跳转到小程序订单详情支付');
+            console.log('app跳转到小程序订单详情支付')
             // setTimeout(() => {
             //     console.log('自动调取');
 
@@ -232,11 +232,11 @@ const getDetail = (orderId:string) => {
 
     })
 }
-const getorganizationDetail = (shopId:string) =>{
+const getorganizationDetail = (shopId:string) => {
     organizationDetail({
         shopId,
-        isAd:0
-    }).then((res:any)=>{
+        isAd: 0
+    }).then((res:any) => {
         data.detailObj = res || {}
     })
 }
@@ -262,9 +262,9 @@ const clickdelreason = (id:string) => {
 
 // 提交取消订单
 const goRemove = () => {
-    console.log('data.serviceInfo', data.serviceInfo);
+    console.log('data.serviceInfo', data.serviceInfo)
 
-    setTimeout(()=>{
+    setTimeout(() => {
         if (data.reasonItemid == '') {
             delreasonNotify.value.error('请选择取消原因')
             return
@@ -272,7 +272,7 @@ const goRemove = () => {
 
         if (data.osObj.actionableList.includes('apply_refund')) {
 
-            console.log('走售后');
+            console.log('走售后')
             data.serviceInfo.info.forEach((item:any) => {
                 applyRefund({
                     orderEntityId: item.entityId,
@@ -287,11 +287,11 @@ const goRemove = () => {
                 }).catch((err:any) => {
                     delreasonNotify.value.error(err.message)
                 })
-            });
+            })
             return
         }
 
-        console.log('不走售后');
+        console.log('不走售后')
         houseOrderCancel({
             orderId: props.orderId,
             reasonId: data.reasonItemid
@@ -305,12 +305,12 @@ const goRemove = () => {
         }).catch((err:any) => {
             delreasonNotify.value.error(err.message)
         })
-    },300)
+    }, 300)
 }
 
 // 继续支付
 const uppay = async () => {
-    console.log('开始支付');
+    console.log('开始支付')
 
     const openid = uni.getStorageSync('openid')
     const payData = {
@@ -318,7 +318,7 @@ const uppay = async () => {
         openid,
         payId: data.serviceInfo.payId,
         subAppId: 'wxba2158972baec41b',
-        subopenId: openid,
+        subopenId: openid
     }
 
     if (data.serviceInfo.payId) { data.payId = data.serviceInfo.payId }
@@ -356,13 +356,13 @@ const uppay = async () => {
     // #endif
 
     // #ifdef APP-PLUS
-    let payJSON = JSON.stringify({
+    const payJSON = JSON.stringify({
         itemId: props.orderId,
         isAppOpen: true
     })
     const shareType = import.meta.env.VITE_WEIXIN_OPEN
 
-    console.log('payJSON',payJSON);
+    console.log('payJSON', payJSON)
 
 
     plus.share.getServices((res: any) => {
@@ -376,19 +376,19 @@ const uppay = async () => {
         if (sweixin) {
             uni.hideLoading()
 
-            PlatformManage.getToken().then((res:any)=>{
-                console.log('获取userinfo',res);
+            PlatformManage.getToken().then((res:any) => {
+                console.log('获取userinfo', res)
 
                 sweixin.launchMiniProgram({
-                    id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
+                    id: 'gh_c2469c570746',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
                     path: `/pagesOrder/pages/goodsOrderDetail/goodsOrderDetail?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
-                        'payJSON': payJSON,
+                        'payJSON': payJSON
                     }
                 })
 
-                console.log(`/pagesOrder/pages/goodsOrderDetail/goodsOrderDetail?payJSON=${payJSON}&userId=${res.id}`);
+                console.log(`/pagesOrder/pages/goodsOrderDetail/goodsOrderDetail?payJSON=${payJSON}&userId=${res.id}`)
 
             })
         }
@@ -422,30 +422,30 @@ const linkHouseOrder = () => {
 // 底部按钮触发事件
 const operate = (type:string) => {
     if (type == 'delay_receive') {
-        console.log('延迟收货');
+        console.log('延迟收货')
         delay()
     }
     if (type == 'edit') {
-        console.log('修改地址');
+        console.log('修改地址')
     }
     if (type == 'view_express') {
-        console.log('查看物流');
+        console.log('查看物流')
         goIstics()
     }
     if (type == 'confirm_receive') {
-        console.log('确认收货');
+        console.log('确认收货')
         takeDelivery()
     }
     if (type == 'comment') {
-        console.log('去评价');
+        console.log('去评价')
         clickComment()
     }
     if (type == 'pay') {
-        console.log('立即支付');
+        console.log('立即支付')
         uppay()
     }
     if (type == 'showClear') {
-        console.log('取消订单');
+        console.log('取消订单')
         getdelreason()
     }
 
@@ -476,8 +476,8 @@ const gotoIMSessionChat = (type:number) => {
 // 延长收货
 const delay = () => {
     delayReceive({
-        orderId:data.serviceInfo.id
-    }).then(()=>{
+        orderId: data.serviceInfo.id
+    }).then(() => {
         bcNotify.value.show('延迟成功')
     })
 }
@@ -490,7 +490,7 @@ const takeDelivery = () => {
         success: res => {
             if (res.confirm) {
                 confirmReceipt({
-                    orderId:data.serviceInfo.id
+                    orderId: data.serviceInfo.id
                 }).then(() => {
                     bcNotify.value.show('收货成功')
                     setTimeout(() => {
@@ -514,7 +514,7 @@ const clickComment = () => {
 
 // 设置地址 / 修改订单
 const setSitelAdres = (data:any) => {
-    console.log('456879',data);
+    console.log('456879', data)
 
     const shopList = data.serviceInfo.shopList.map((x:any) => {
         return {

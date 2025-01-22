@@ -436,7 +436,7 @@ const gotake = (scene = 'WXSceneSession') => {
         imageUrl: getAssetsUrl.value('/share/register_share.png'),
         title: '签到抢红包',
         miniProgram: {
-            id: 'gh_fd20b530cb94', //微信小程序原始id
+            id: 'gh_c2469c570746', //微信小程序原始id
             path: `/pagesCnt/pages/redEnvelope/register?id=${rewardObj.advanceId}`,
             type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
             webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接

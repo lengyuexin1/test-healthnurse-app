@@ -742,7 +742,7 @@ const sharePage = () => {
         imageUrl: data.detailObj.thumb,
         title: data.detailObj.shopName,
         miniProgram: {
-            id: 'gh_fd20b530cb94', //微信小程序原始id
+            id: 'gh_c2469c570746', //微信小程序原始id
             path: `/pagesService/pages/Servicestore/ServicestoreDetail?shopId=${data.detailObj.shopId}`, //点击链接进入的页面
             type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
             webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接

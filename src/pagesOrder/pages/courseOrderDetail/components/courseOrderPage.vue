@@ -60,7 +60,7 @@
 
                         </view>
                     </view>
-                    <view class="information_item" :class="{ 'not_bottom' : data.osObj.status != 196612 }">
+                    <view class="information_item" :class="{ 'not_bottom': data.osObj.status != 196612 }">
                         <view class="information_item_box">
                             <view class="item_title">创建时间</view>
                             <view class="item_text">{{ timeformat(data.osObj.utcCreated) }}</view>
@@ -135,17 +135,17 @@ interface Data {
 }
 
 const data = reactive<Data>({
-    osObj:{},
-    serviceInfo:{},
-    cardObj:{},
+    osObj: {},
+    serviceInfo: {},
+    cardObj: {},
     showInfo: true
 })
 
 
-const timeformat = computed(()=>(time:number)=>{
-    return formattime(time,'YYYY-MM-DD HH:mm:ss')
+const timeformat = computed(() => (time:number) => {
+    return formattime(time, 'YYYY-MM-DD HH:mm:ss')
 })
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
@@ -160,37 +160,37 @@ onMounted(() => {
 const getDetail = (orderId:string) => {
     getserviceOrderDetail({
         orderId
-    }).then((res:any)=>{
+    }).then((res:any) => {
         data.osObj = res
 
         data.serviceInfo = {
-            info : res?.shopList[0]?.entityList[0],
-            shopinfo : res?.shopList[0],
+            info: res?.shopList[0]?.entityList[0],
+            shopinfo: res?.shopList[0],
             addressInfo: res?.addressInfo,
             ...res
         }
 
         data.cardObj = {
-            price:res.shopList[0].entityList[0].price,
-            cover:res.shopList[0].entityList[0].image,
-            coursetitle:res.shopList[0].entityList[0].title,
+            price: res.shopList[0].entityList[0].price,
+            cover: res.shopList[0].entityList[0].image,
+            coursetitle: res.shopList[0].entityList[0].title
         }
 
         if (props.isAppOpen) {
-            console.log('app跳转到小程序订单详情支付');
+            console.log('app跳转到小程序订单详情支付')
             // setTimeout(() => {
             //     uppay()
             // }, 1000)
         }
 
-        console.log(data.osObj.actionableList);
+        console.log(data.osObj.actionableList)
 
     })
 }
 
 const bcNotify = ref()
-const copy = (str:string)=> {
-    console.log('复制',str);
+const copy = (str:string) => {
+    console.log('复制', str)
     uni.setClipboardData({
         data: str,
         showToast: false,
@@ -198,7 +198,7 @@ const copy = (str:string)=> {
             // bcNotify.value.show('复制成功')
         },
         fail: (err:any) => {
-            bcNotify.value.show('复制失败',err)
+            bcNotify.value.show('复制失败', err)
         }
     })
 }
@@ -211,11 +211,11 @@ const uppay = () => {
     const openid = uni.getStorageSync('openid')
     // #ifdef MP-WEIXIN
     houseOrderPay({
-        orderId : props.orderId,
+        orderId: props.orderId,
         openid: openid != '' ? openid : undefined,
         payId: data.serviceInfo.payId,
         subAppId: 'wxba2158972baec41b',
-        subopenId: openid,
+        subopenId: openid
     }).then(async (res) => {
         /* 调起支付 */
         packPayment(res.payParams).then((ret:any) => {
@@ -237,13 +237,13 @@ const uppay = () => {
     // #endif
 
     // #ifdef APP-PLUS
-    let payJSON = JSON.stringify({
+    const payJSON = JSON.stringify({
         itemId: props.orderId,
         isAppOpen: true
     })
     const shareType = import.meta.env.VITE_WEIXIN_OPEN
 
-    console.log('payJSON',payJSON);
+    console.log('payJSON', payJSON)
 
     plus.share.getServices((res: any) => {
         let sweixin = null as any
@@ -256,15 +256,15 @@ const uppay = () => {
         if (sweixin) {
             uni.hideLoading()
 
-            PlatformManage.getToken().then((res:any)=>{
-                console.log('获取userinfo',res);
+            PlatformManage.getToken().then((res:any) => {
+                console.log('获取userinfo', res)
 
                 sweixin.launchMiniProgram({
-                    id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
+                    id: 'gh_c2469c570746',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
                     path: `/pagesOrder/pages/courseOrderDetail/courseOrderDetail?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
-                        'payJSON': payJSON,
+                        'payJSON': payJSON
                     }
                 })
             })
@@ -278,7 +278,7 @@ const uppay = () => {
 
 const tocourseVideo = () => {
     const listId = TempStorage.savewx({
-        videoIdlist:[data.osObj.shopList[0].entityList[0].itemId],
+        videoIdlist: [data.osObj.shopList[0].entityList[0].itemId]
     })
     gotocourseVideo(listId)
 }

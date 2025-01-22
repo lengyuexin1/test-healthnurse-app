@@ -58,7 +58,7 @@
             </view>
         </view>
 
-        <template #bottom>
+        <!-- <template #bottom> -->
             <view class="btn tn-flex-center-between animate__animated animate__faster animate__slideInUp" v-if="props.dataList.length">
                 <view class="tn-flex-row" style="align-items: center;">
                     <TnCheckbox custom-class="allCheckbox" size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="data.allChecked" @change="allChange">全选</TnCheckbox>
@@ -73,7 +73,7 @@
                     </TnButton>
                 </view>
             </view>
-        </template>
+        <!-- </template> -->
         <!-- </z-paging> -->
         <BCPopup
             ref="bcPopup"
@@ -362,11 +362,10 @@ const clickBtn = () => {
 
             PlatformManage.getToken().then((res:any) => {
                 console.log('获取userinfo', res)
-
                 sweixin.launchMiniProgram({
-                    id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
+                    id: 'gh_c2469c570746',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
-                    path: `/Order/pages/balanceGoods/balanceGoods?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
+                    path: `/pagesOrder/pages/balanceGoods/balanceGoods?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
                         'payJSON': payJSON
                     }
@@ -605,6 +604,8 @@ const clickwaterItem = (item:any) => {
     width: 100%;
     height: 146rpx;
     padding: 20rpx;
+    position: fixed;
+    bottom: 0;
     background-color: #FFFFFF;
     box-shadow: 0 -4rpx 12rpx 2rpx rgba(0, 0, 0, .06);
 

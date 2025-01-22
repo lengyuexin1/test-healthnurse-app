@@ -253,7 +253,7 @@ const clickWithd = () => {
 //             uni.hideLoading();
 //             // show.value = false;
 //             sweixin.launchMiniProgram({
-//                 id: 'gh_fd20b530cb94', // 小程序的原始ID
+//                 id: 'gh_c2469c570746', // 小程序的原始ID
 //                 type: 1, // 小程序版本
 //                 path: '/pagesCnt/pages/redEnvelope/withdrawal' // 小程序的页面路径
 //             });

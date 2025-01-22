@@ -1,6 +1,7 @@
 <template>
-    <pageContainer :loading="data.pageLoading">
+
     <view class="contraner">
+        <template v-if="props.dataList.length">
         <!-- <z-paging ref="paging" v-model="props.dataList" @query="queryList" :defaultPageSize="10" :refresher-enabled="false" :hide-empty-view="true">
         <template v-if="props.dataList.length"> -->
             <!-- v-for="(item, index) in props.dataList" :key="index" -->
@@ -41,7 +42,7 @@
                     </TnSwipeAction>
                 </view>
             </view>
-        <!-- </template>
+        </template>
         <template v-else>
             <view class="not_data_box">
                 <image
@@ -51,7 +52,7 @@
                 />
                 <view class="not_data_text">购物车暂无内容~</view>
             </view>
-        </template> -->
+        </template>
 
         <view class="more_list_box">
             <view class="more_title">
@@ -62,7 +63,7 @@
             </view>
         </view>
 
-        <template #bottom>
+        <!-- <template #bottom> -->
             <view class="btn tn-flex-center-between animate__animated animate__faster animate__slideInUp" v-if="props.dataList.length">
                 <view class="tn-flex-row" style="align-items: center;">
                     <TnCheckbox custom-class="allCheckbox" size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="data.allChecked" @change="allChange">全选</TnCheckbox>
@@ -77,7 +78,7 @@
                     </TnButton>
                 </view>
             </view>
-        </template>
+        <!-- </template> -->
         <!-- </z-paging> -->
         <BCPopup
             ref="bcPopup"
@@ -91,7 +92,7 @@
         </BCPopup>
         <BCNotify ref="bcNotify"></BCNotify>
     </view>
-    </pageContainer>
+
 </template>
 
 <script setup lang="ts">
@@ -99,7 +100,6 @@ import { recomLikeList } from "@/api/goods-api"
 import { ref, reactive, computed, onMounted } from "vue"
 import { onLoad, onShow } from "@dcloudio/uni-app"
 import { getAssetsPic } from '@/common/setPicture'
-import pageContainer from "@/components/container/page-container.vue"
 import { updateCartQuantity, delCartGoods, createOrder } from "@/api/goods-api"
 import BCNotify from '@/components/notify/index.vue'
 import BCPopup from '@/components/popup/index.vue'
@@ -113,8 +113,7 @@ import TnCheckbox from '@tuniao/tnui-vue3-uniapp/components/checkbox/src/checkbo
 import { gotoShopDetail, gotoserviceDetail } from "@/routes/service-routes"
 import { GlobalEvents, dispatchWEvent } from "@/events/event-registry"
 import { TempStorage } from "@bc/base"
-
-import { gotoBalanceGood } from '@/routes/order-routes'
+import { gotoBalanceOrder } from '@/routes/order-routes'
 import { priceFormat } from '@/common/price-format'
 import { gotogoodsDetail } from "@/routes/goods-routes"
 import { PlatformManage } from "@bc/sys"
@@ -184,7 +183,6 @@ onMounted(() => {
 onShow(() => {
 
 })
-
 // 修改商品数量
 const quantityChange = (val: number, id: string) => {
     updateCartQuantity({
@@ -195,19 +193,6 @@ const quantityChange = (val: number, id: string) => {
     }).catch((err: any) => {
         bcNotify.value.error(err.message)
     })
-}
-
-// 店铺全选
-const changeGroup = (e: any, index: number) => {
-    e && props.dataList[index].productList.map((item: any) => {
-        item.checked = true
-        if (item.isItemDeleted == 1) {
-            item.checked = false
-            return
-        }
-    })
-    !e && props.dataList[index].productList.map((item: any) => item.checked = false)
-    calulateTotalPrice()
 }
 
 // 单个选择
@@ -319,7 +304,7 @@ const clickBtn = () => {
     })
 
     // #ifdef MP-WEIXIN
-    gotoBalanceGood(uniqueId)
+    gotoBalanceOrder(uniqueId)
     // #endif
 
 
@@ -342,14 +327,12 @@ const clickBtn = () => {
         // 唤醒微信小程序
         if (sweixin) {
             uni.hideLoading()
-
             PlatformManage.getToken().then((res:any) => {
                 console.log('获取userinfo', res)
-
                 sweixin.launchMiniProgram({
-                    id: 'gh_fd20b530cb94',  // 小程序的原始ID，微信公众平台设置里有
+                    id: 'gh_c2469c570746',  // 小程序的原始ID，微信公众平台设置里有
                     type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
-                    path: `/Order/pages/balanceGoods/balanceGoods?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
+                    path: `/pagesOrder/pages/balanceOrder/balanceOrder?payJSON=${payJSON}&userId=${res.id}`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
                     extraData: {
                         'payJSON': payJSON
                     }
@@ -360,7 +343,6 @@ const clickBtn = () => {
         }
     })
     // #endif
-
 
 }
 
@@ -390,7 +372,6 @@ const confirmDel = () => {
 
         // 修改标题的商品总数
         uni.setNavigationBarTitle({ title: `购物车(${data.totalProductLength - 1})` })
-
 
         setTimeout(() => {
             // 重新算合计的总额
@@ -594,6 +575,8 @@ const clickwaterItem = (item:any) => {
     width: 100%;
     height: 146rpx;
     padding: 20rpx;
+    position: fixed;
+    bottom: 0;
     background-color: #FFFFFF;
     box-shadow: 0 -4rpx 12rpx 2rpx rgba(0, 0, 0, .06);
 

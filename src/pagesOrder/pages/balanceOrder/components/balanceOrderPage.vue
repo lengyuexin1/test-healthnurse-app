@@ -1,7 +1,7 @@
 <template>
     <view class="container" v-if="data.showPage">
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
@@ -10,7 +10,6 @@
                 <bc-page-navbar :title="'确认服务'"></bc-page-navbar>
             </template>
 
-            
             <!-- 正常服务订单确认服务 -->
             <template v-if="props.handle == 1">
                 <view class="content">
@@ -53,12 +52,12 @@
                         </view>
                     </view>
 
-                    <view class="bala_box" v-if="data.agencyObj.typeId==1">
+                    <view class="bala_box" v-if="data.agencyObj.typeId == 1">
                         <view class="play_notice">购买须知</view>
                         <view class="play_text">退款规则：随时退，过期退</view>
                     </view>
 
-                    <div class="voucher_Notice" v-if="data.agencyObj.typeId==2">
+                    <div class="voucher_Notice" v-if="data.agencyObj.typeId == 2">
                         <div class="voucher_Notice_title">购买须知</div>
                         <div class="voucher_Notice_row">
                             <div class="voucher_Notice_period">
@@ -72,7 +71,7 @@
                                 <image class="device_icon" :src="getAssetsUrl('/leyou/static/voucherTime.svg')" mode="scaleToFill" />
                                 <div>使用时间</div>
                             </div>
-                            <div class="voucher_Notice_days">{{data.agencyObj.isRestrictTime==0?'全部时间可用': data.agencyObj.restrictTimeDesc }}</div>
+                            <div class="voucher_Notice_days">{{data.agencyObj.isRestrictTime == 0 ? '全部时间可用' : data.agencyObj.restrictTimeDesc }}</div>
                         </div>
                         <div class="voucher_Notice_row">
                             <div class="voucher_Notice_period">
@@ -81,7 +80,7 @@
                             </div>
                             <div
                                 class="voucher_Notice_days"
-                            >{{ data.agencyObj.range==0?'通用':data.agencyObj.range==1?`适用${data.agencyObj.rangeData}`:data.agencyObj.range==2?`不适用${data.agencyObj.rangeData}`:'' }}</div>
+                            >{{ data.agencyObj.range == 0 ? '通用' : data.agencyObj.range == 1 ? `适用${data.agencyObj.rangeData}` : data.agencyObj.range == 2 ? `不适用${data.agencyObj.rangeData}` : '' }}</div>
                         </div>
                         <div class="voucher_Notice_row">
                             <div class="voucher_Notice_period">
@@ -95,7 +94,7 @@
                             <div class="voucher_Notice_days" v-if="data.agencyObj.isExclusive == 3">·可同时享受商家{{ data.agencyObj.exclusiveData }}优惠</div>
 
                             <div class="voucher_Notice_days">·有效期以具体时间为准</div>
-                            <div class="voucher_Notice_days">·每人最多购买{{`${data.agencyObj.isRestrictBuyQuantity==0?'不限制数量':`${data.agencyObj.restrictBuyQuantity}`}`}}张</div>
+                            <div class="voucher_Notice_days">·每人最多购买{{`${data.agencyObj.isRestrictBuyQuantity == 0 ? '不限制数量' : `${data.agencyObj.restrictBuyQuantity}`}`}}张</div>
                         </div>
                     </div>
 
@@ -148,7 +147,7 @@
         </z-paging>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
@@ -180,11 +179,11 @@ const props = defineProps<Props>()
 
 interface Data {
     showPage:boolean,
-    uniqueId:any,   
+    uniqueId:any,
     balanceInfoObj:any,
     consumerAttr:any,
-    archives:any,//照护人信息
-    location:any,//地址信息
+    archives:any, //照护人信息
+    location:any, //地址信息
     calculationInfo: any //支付信息
     carId: string
     optionMation: any, //照护服务信息
@@ -199,23 +198,23 @@ interface Data {
 
 }
 const data = reactive<Data>({
-    showPage:false,
-    uniqueId:'',
-    balanceInfoObj:{},
-    consumerAttr:[],
-    optionMation:{},
-    archives:{},
-    location:{},
+    showPage: false,
+    uniqueId: '',
+    balanceInfoObj: {},
+    consumerAttr: [],
+    optionMation: {},
+    archives: {},
+    location: {},
     calculationInfo: {},
     carId: '',
     serviceRules: {},
     optionUnit: 2, //下单时间单位
-    quantity:1,
-    remark:'',
-    ismany:false,
-    agencyObj:{},
-    preferential:0,
-    institutionitemId:'',
+    quantity: 1,
+    remark: '',
+    ismany: false,
+    agencyObj: {},
+    preferential: 0,
+    institutionitemId: ''
 })
 
 const bcNotify = ref()
@@ -225,65 +224,65 @@ const visitorRef = ref()
 
 const timeRef = ref()
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
 // 是否存在就诊人信息配置
-const showvisitor = computed(()=>{
+const showvisitor = computed(() => {
     return ![65795, 65796].includes(data.optionMation.templateCode) && exist("visitor_information")
 })
 // 是否存在服务地址
-const showaddress = computed(()=>{
+const showaddress = computed(() => {
     return exist("service_address")
 })
 // 是否存在服务时间
-const showtime = computed(()=>{
+const showtime = computed(() => {
     return exist("service_time")
 })
 /* 否需要提交/渲染 就诊人信息 !陪诊 */
-const consumerVisi = computed(()=>{
+const consumerVisi = computed(() => {
     return ![65795, 65796].includes(data.optionMation.templateCode) && exist('visitor_information')
 })
 /* 否需要提交/渲染 就诊人 陪诊 */
-const informationVisi = computed(()=>{
+const informationVisi = computed(() => {
     return [65795, 65796].includes(data.optionMation.templateCode) && exist('visitor_information')
 })
 
 /* 否需要提交/渲染 就诊人电话 陪诊 */
-const informationMobile = computed(()=> {
+const informationMobile = computed(() => {
     return [65795].includes(data.optionMation.templateCode)
 })
 /* 否需要提交/渲染 医院地址 */
-const hospitalVisi = (()=> {
+const hospitalVisi = (() => {
     return exist('hospital_address')
 })
 /* 否需要提交/渲染 寄送方式 */
-const methodVisi = (()=> {
+const methodVisi = (() => {
     return exist('delivery_method')
 })
 /* 否需要提交/渲染 配送地址 */
-const deliveryVisi = (()=> {
+const deliveryVisi = (() => {
     return exist('delivery_address')
 })
 /* 否需要提交/渲染 凭证 */
-const certificateVisi = (()=> {
+const certificateVisi = (() => {
     return exist('delivery_certificate')
 })
 /* 否需要提交/渲染 联系人 */
-const contactVisi = (()=> {
+const contactVisi = (() => {
     return exist('contact_info')
 })
 // 备注提示信息 住院照护/陪诊服务
-const promptText = (()=> {
+const promptText = (() => {
     return [65800, 65795].includes(data.optionMation.templateCode) ? '请填写患者相关病情' : '请填写注意事项'
 })
 // 照护人是否合适
-const isImproper = (()=> {
+const isImproper = (() => {
     return data.archives.estimateGradeCategoryIds && !data.archives.estimateGradeCategoryIds.includes(data.optionMation.categoryId)
 })
 // 照护人是否评估
-const isAssess = (()=> {
+const isAssess = (() => {
     return data.archives.id && !data.archives.estimateGradeCategoryIds
 })
 
@@ -339,7 +338,7 @@ const getEntityConfig = (optionId: any) => {
 const gethealthdetail = (id:string) => {
     healthdetail({
         id
-    }).then((res:any)=>{
+    }).then((res:any) => {
         data.agencyObj = res
 
         let sum = 0
@@ -358,7 +357,7 @@ const gethealthdetail = (id:string) => {
 const getvoucherdetail = (id:string) => {
     voucherdetail({
         id
-    }).then((res:any)=>{
+    }).then((res:any) => {
         data.agencyObj = res
 
         let sum = 0
@@ -374,7 +373,7 @@ const getvoucherdetail = (id:string) => {
 }
 
 const inpbur = (val:string) => {
-    console.log(val);
+    console.log(val)
 }
 
 
@@ -388,20 +387,20 @@ const placeOrder = () => {
         bcNotify.value.error('请选择上门时间')
         return
     }
-    if (showvisitor && !visitorRef.value?.data?.archives.id){
+    if (showvisitor.value && !visitorRef.value?.data?.archives.id) {
         bcNotify.value.error('请选择照护人')
         return
     }
 
-    
+
     const location = addressRef.value.data.location
     const datetime = new Date(timeRef.value.datetime).getTime()
-    const archives = visitorRef.value.data.archives
+    const archives = visitorRef.value?.data?.archives
 
     // console.log('location',location);
     // console.log('datetime',datetime);
     // console.log('archives',archives);
-    
+
 
     uni.showLoading({
         title: '正在下单',
@@ -410,8 +409,8 @@ const placeOrder = () => {
 
     const userRelCouponIds = [] as string[]
 
-    console.log('data.optionMation',data.optionMation);
-    
+    console.log('data.optionMation', data.optionMation)
+
 
     const reqData = {
         userRelCouponIds,
@@ -433,23 +432,23 @@ const placeOrder = () => {
         attr: {
             utcVisitStart: datetime / 1000, //上门时间/就诊时间
 
-            addressId: showaddress || deliveryVisi ? location.id : null, //地址id
-            patientId: showvisitor ? archives.id : 0, //老人档案ID，只有居家照护需要填写照护人
+            addressId: showaddress.value || deliveryVisi ? location.id : null, //地址id
+            patientId: showvisitor.value ? archives.id : 0, //老人档案ID，只有居家照护需要填写照护人
 
             /* todo */
             hospitalId: null, //医院id
 
             hospital: null,
 
-            patient: informationVisi ? archives.name : null, //就诊人名称
-            patientMobile: archives.mobile || null, //就诊人手机号
+            patient: informationVisi.value ? archives.name : null, //就诊人名称
+            patientMobile: archives?.mobile || null, //就诊人手机号
             deliveryMethod: null, //配送方式 id
             deliveryCertificate: null //代取凭证
 
         }
     }
 
-    console.log('reqData',reqData);
+    console.log('reqData', reqData)
 
     /* 生成订单 */
     createOrder(reqData).then((res:any) => {
@@ -486,31 +485,31 @@ const uppay = (orderId:string) => {
     })
     const openid = uni.getStorageSync('openid')
     /* 获取支付参数 */
-    houseOrderPay({ 
-        orderId, 
+    houseOrderPay({
+        orderId,
         openid: openid != '' ? openid : undefined,
         subAppId: 'wxba2158972baec41b',
-        subopenId: openid,
+        subopenId: openid
     }).then(async (res:any) => {
         /* 调起支付 */
         // #ifdef MP-WEIXIN || APP-PLUS
         packPayment(res.payParams).then((ret:any) => {
-            console.log("支付结果", ret)
-            if (ret.isSuccess && ret.status === 'CPCN') {
-                setTimeout(() => {
-                    toOrderDetail(res.orderId)
-                }, 800);
-                return false
-            }
+            console.log("支付结果2222", ret)
+            // if (ret.isSuccess && ret.status === 'CPCN') {
+            //     setTimeout(() => {
+            //         toOrderDetail(res.orderId)
+            //     }, 800)
+            //     return false
+            // }
             // bcNotify.value.success('支付成功');
             setTimeout(() => {
                 toOrderDetail(res.orderId)
-            }, 800);
+            }, 800)
         }).catch(() => {
             // bcNotify.value.error('支付失败');
             setTimeout(() => {
                 toOrderDetail(res.orderId)
-            }, 800);
+            }, 800)
         })
         // #endif
     }).catch((err) => {
@@ -522,20 +521,20 @@ const uppay = (orderId:string) => {
 
 // 跳转订单详情
 const toOrderDetail = (id:string) => {
-    gotoOrderDetail(id,true)
+    gotoOrderDetail(id, true)
 }
 
 
 // 获取订单详情
-const getorderEntity = (optionId:string)=>{
+const getorderEntity = (optionId:string) => {
     orderEntityConfig({
-        optionId,
-    }).then((res:any)=>{
+        optionId
+    }).then((res:any) => {
         data.balanceInfoObj = {
-            title : res.item.name,
-            optiontitle : res.option.name,
-            optionprice : res.option.price,
-            servicethumb : res.item.thumb,
+            title: res.item.name,
+            optiontitle: res.option.name,
+            optionprice: res.option.price,
+            servicethumb: res.item.thumb
         }
         data.optionMation = res.item
         data.consumerAttr = res.consumerAttr
@@ -547,13 +546,13 @@ const getorderEntity = (optionId:string)=>{
 const getShopDetail = (id:string) => {
     getBaseInfo({
         id
-    }).then((res:any)=>{
+    }).then((res:any) => {
         data.balanceInfoObj = {
             ...data.balanceInfoObj,
-            shopname:res.name
+            shopname: res.name
         }
-        console.log('data',data);
-        
+        console.log('data', data)
+
     })
 }
 
@@ -580,7 +579,8 @@ onMounted(() => {
         if (props.handle == 1) {
             getorderEntity(res.optionId)
             getEntityConfig(res.optionId)
-        }else{
+        }
+        else {
             res.voucherType == 1 ? getvoucherdetail(res.itemId) : gethealthdetail(res.itemId)
         }
     }).catch(() => {
@@ -594,7 +594,7 @@ onMounted(() => {
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .content{
     padding: 20rpx;
@@ -783,4 +783,3 @@ onMounted(() => {
 	}
 }
 </style>
-  

@@ -46,65 +46,65 @@ export const wxPay = (data: PaymentData) => {
     return new Promise((resolve, reject) => {
 
         // #ifdef MP-WEIXIN
-        
-        
 
 
-        if (WEB_ENV == 'test') {
-            // test使用直连微信支付
-            uni.requestPayment({
-                provider: "wxpay",
 
-                /* app微信支付参数 */
-                // #ifdef APP-PLUS
-                orderInfo: {
-                    appid: data.appid,
-                    noncestr: data.nonceStr,
-                    package: data.packageVal,
-                    partnerid: data.partnerId,
-                    prepayid: data.prepayId,
-                    timestamp: data.timestamp,
-                    sign: data.sign
-                },
-                // #endif
 
-                /* 微信小程序支付参数 */
-                // #ifdef MP-WEIXIN
-                timeStamp: data.timeStamp,
-                nonceStr: data.nonceStr,
+        // if (WEB_ENV == 'test') {
+        // test使用直连微信支付
+        uni.requestPayment({
+            provider: "wxpay",
+
+            /* app微信支付参数 */
+            // #ifdef APP-PLUS
+            orderInfo: {
+                appid: data.appid,
+                noncestr: data.nonceStr,
                 package: data.packageVal,
-                signType: data.signType,
-                paySign: data.paySign,
-                // #endif
+                partnerid: data.partnerId,
+                prepayid: data.prepayId,
+                timestamp: data.timestamp,
+                sign: data.sign
+            },
+            // #endif
 
-                success(res) {
-                    resolve(res)
-                },
-                fail(err) {
-                    reject(err)
-                }
-            })
-        }else{
-            // pre prod使用中金小程序半屏支付
-            let authCode = JSON.stringify(data);
+            /* 微信小程序支付参数 */
+            // #ifdef MP-WEIXIN
+            timeStamp: data.timeStamp,
+            nonceStr: data.nonceStr,
+            package: data.packageVal,
+            signType: data.signType,
+            paySign: data.paySign,
+            // #endif
 
-            wx.openEmbeddedMiniProgram({
-                appId: 'wxa82d22a4bc04cb2e',
-                path: 'pages/home/home?code=' + authCode, //请求后台获取到的authCode,json格式的字符串
-                success(res: any) {
-                  // 打开成功
-                  console.log('打开成功',res);
-                  resolve(res);
-    
-                },
-                fail: function (res: any) {
-                  // 打开失败
-                  console.log("打开失败",res);
-                  reject(res);
-    
-                },
-            })
-        }
+            success(res) {
+                resolve(res)
+            },
+            fail(err) {
+                reject(err)
+            }
+        })
+        // }else{
+        //     // pre prod使用中金小程序半屏支付
+        //     let authCode = JSON.stringify(data);
+
+        //     wx.openEmbeddedMiniProgram({
+        //         appId: 'wxa82d22a4bc04cb2e',
+        //         path: 'pages/home/home?code=' + authCode, //请求后台获取到的authCode,json格式的字符串
+        //         success(res: any) {
+        //           // 打开成功
+        //           console.log('打开成功',res);
+        //           resolve(res);
+
+        //         },
+        //         fail: function (res: any) {
+        //           // 打开失败
+        //           console.log("打开失败",res);
+        //           reject(res);
+
+        //         },
+        //     })
+        // }
 
 
         // #endif
