@@ -51,12 +51,11 @@ export const getStsToken = () => {
  * @returns
  */
 export const uploadFileApi = (file: string, fileName: string, uploadPath: string) => {
-    console.log('调用');
-    
+    console.log('调用')
     const uploadRequest = new FileRequest()
     const fileUrl = `${generalUploadPath(uploadPath)}/${fileName}`
     return uploadRequest.upload(fileUrl, file)
-    
+
 }
 
 /** 上传头像 */

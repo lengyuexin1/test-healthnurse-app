@@ -1,0 +1,111 @@
+{
+	"name": "小明tuya插件",
+	"id": "XM-Tuya",
+	"version": "v1.0.2022.08.13",
+	"description": "SDK地址：https://developer.tuya.com/cn/docs/app-development/preparation?id=Ka69nt983bhh5，联系QQ：1804945430",
+	"_dp_type": "nativeplugin",
+	"_dp_nativeplugin": {
+		"android": {
+			"hooksClass": "com.xiaoming.plugin.tuya.XmTuyaProxy",
+			"plugins": [{
+				"type": "module",
+				"name": "XM-TuyaConfigModule",
+				"class": "com.xiaoming.plugin.tuya.XmConfigModule"
+			}, {
+				"type": "module",
+				"name": "XM-TuyaHomeModule",
+				"class": "com.xiaoming.plugin.tuya.XmHomeModule"
+			}, {
+				"type": "module",
+				"name": "XM-TuyaModule",
+				"class": "com.xiaoming.plugin.tuya.XmTuyaModule"
+			}, {
+				"type": "module",
+				"name": "XM-TuyaUserModule",
+				"class": "com.xiaoming.plugin.tuya.XmUserModule"
+			}],
+			"parameters": {
+				"tuya_android_appKey": {
+					"des": "Android AppKey",
+					"key": "appKey"
+				},
+				"tuya_android_appSerect": {
+					"des": "Android AppSerect",
+					"key": "appSerect"
+				}
+			},
+			"dependencies": [
+				"com.squareup.okhttp3:okhttp-urlconnection:3.14.9",
+				"pub.devrel:easypermissions:2.0.1",
+				"androidx.lifecycle:lifecycle-common:2.1.0",
+				"org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10",
+				"org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4",
+				"androidx.annotation:annotation:1.2.0",
+				"androidx.localbroadcastmanager:localbroadcastmanager:1.0.0",
+				"com.google.android.gms:play-services-cronet:18.0.1",
+				"com.alibaba:fastjson:1.1.67.android"
+			],
+			"integrateType": "aar",
+			"minSdkVersion": "23"
+		},
+		"ios": {
+			"hooksClass": "BuglyProxy",
+			"plugins": [{
+				"type": "module",
+				"name": "XM-TuyaModule",
+				"class": "XmTuyaModule"
+			}, {
+				"type": "module",
+				"name": "XM-TuyaUserModule",
+				"class": "XmUserModule"
+			}, {
+				"type": "module",
+				"name": "XM-TuyaHomeModule",
+				"class": "XmHomeModule"
+			}, {
+				"type": "module",
+				"name": "XM-TuyaConfigModule",
+				"class": "XmConfigModule"
+			}],
+			"parameters": {
+				"tuya_ios_appKey": {
+					"des": "iOS AppKey",
+					"key": "appKey"
+				},
+				"tuya_ios_appSerect": {
+					"des": "iOS AppSerect",
+					"key": "appSerect"
+				}
+			},
+			"resources": [
+				"ThingOpenSSLSDK.framework/BoringSSL_privacy.bundle",
+				"ThingSmartCryption.framework/CustomResources/Bundles/ThingSmartCryption.bundle",
+				"ThingSmartCryption.framework/CustomResources/Assets/t_cdc.tcfg",
+				"ThingSmartNetworkKit.framework/CustomResources/Assets/cerficate_h2_local",
+				"ThingSmartNetworkKit.framework/CustomResources/Assets/cerficate_v2",
+				"ThingSmartNetworkKit.framework/CustomResources/Assets/cerficate_v3",
+				"ThingSmartNetworkKit.framework/CustomResources/Assets/h2.ca.der",
+				"ThingSmartNetworkKit.framework/CustomResources/Assets/thingdomain_v1.thingcfg",
+				"ThingSmartUtil.framework/CustomResources/Bundles/ThingSmartUtil.bundle"
+			],
+			"frameworks": [
+				"MJExtension.framework",
+				"ThingMbedtls.framework",
+				"ThingOpenSSLSDK.framework",
+				"YYModel.framework",
+				"SystemConfiguration.framework",
+				"Security.framework",
+				"libz.tbd",
+				"libc++.tbd"
+			],
+			"embedFrameworks": [
+				"MJExtension.framework",
+				"ThingMbedtls.framework",
+				"ThingOpenSSLSDK.framework",
+				"YYModel.framework"
+			],
+			"integrateType": "framework",
+			"deploymentTarget": "12.0"
+		}
+	}
+}

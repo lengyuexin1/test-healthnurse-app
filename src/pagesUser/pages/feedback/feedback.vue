@@ -11,22 +11,22 @@
         :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
     >
         <template #top>
-            <view class="type_list">
-                <TnTabs 
-                v-model="data.currentTabIndex" 
-                :scroll="false" 
-                :bottom-shadow="false" 
-                bar-color="#EA3E1A" 
-                active-color="#EA3E1A"
-                color="#666666">  
-                    <TnTabsItem 
-                    v-for="(item, index) in data.typeList"
-                    :key="index"
-                    :title="item.name"
-                    @click="changeTab(item)"
-                    />
-                </TnTabs>
-            </view>
+            <!--            <view class="type_list">-->
+            <!--                <TnTabs -->
+            <!--                v-model="data.currentTabIndex" -->
+            <!--                :scroll="false" -->
+            <!--                :bottom-shadow="false" -->
+            <!--                bar-color="#EA3E1A" -->
+            <!--                active-color="#EA3E1A"-->
+            <!--                color="#666666">  -->
+            <!--                    <TnTabsItem -->
+            <!--                    v-for="(item, index) in data.typeList"-->
+            <!--                    :key="index"-->
+            <!--                    :title="item.name"-->
+            <!--                    @click="changeTab(item)"-->
+            <!--                    />-->
+            <!--                </TnTabs>-->
+            <!--            </view>-->
         </template>
 
         <view class="card_list">
@@ -38,14 +38,12 @@
         </template>
     </z-paging>
 </template>
-    
+
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { onLoad, onShow } from "@dcloudio/uni-app"
 import { getAssetsPic } from '@/common/setPicture'
 import FeedbackItem from './components/feedback-item.vue'
-import TnTabs from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue'
-import TnTabsItem from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue'
 import { feedbackList } from '@/api/user-api'
 import BottomSingleBtn from '@/components/bottomSingleBtn/index.vue'
 import { gotoAddFeedback } from '@/routes/user-routes'
@@ -76,7 +74,7 @@ const getAssetsUrl = computed(()=>(src: string)=> {
 })
 
 onLoad((option) => {
-    
+
 })
 
 onShow(() => {
@@ -85,9 +83,7 @@ onShow(() => {
 
 const queryList = (pageNumber: number, pageSize: number) => {
     feedbackList({
-        query: {
-            audit: data.audit
-        },
+        query: {},
         pageNumber,
         pageSize
     }).then((res:any)=>{
@@ -105,11 +101,11 @@ const clickAdd = () => {
 }
 
 onMounted(() => {
-    
+
 })
 
 </script>
-  
+
 <style lang="scss" scoped>
 .type_list{
     width: 100%;
@@ -134,4 +130,4 @@ onMounted(() => {
     flex-wrap: wrap;
 }
 </style>
- 
+

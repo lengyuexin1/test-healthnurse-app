@@ -1,23 +1,24 @@
 <template>
     <view class="container">
-        <z-paging ref="paging" v-model="data.dataList" :auto="true" :fixed="true" @query="queryList"
-                  :defaultPageSize="10" :auto-show-system-loading="true" :auto-scroll-to-top-when-reload="false"
-                  :hide-empty-view="true">
+        <z-paging ref="paging" v-model="data.dataList" :auto="true" :auto-scroll-to-top-when-reload="false"
+                  :auto-show-system-loading="true"
+                  :defaultPageSize="10" :fixed="true" :hide-empty-view="true"
+                  @query="queryList">
             <template #top>
-                <bc-page-navbar :title="'我的'" :textColor="'#ffffff'" :bgColor="'#56CC7D'">
+                <bc-page-navbar :bgColor="'#56CC7D'" :textColor="'#ffffff'" :title="'我的'">
                     <template #back>
                         <view></view>
                     </template>
                 </bc-page-navbar>
             </template>
-            <view class="content_wrap" :style="{ paddingBottom: data.safeBotomHeight + 150 + 'rpx' }">
+            <view :style="{ paddingBottom: data.safeBotomHeight + 150 + 'rpx' }" class="content_wrap">
                 <view class="my-bg-top"></view>
                 <view class="avatar_box">
-                    <view class="is_login" @click="toEditProfile" v-if="!data.isRequireLogin">
+                    <view v-if="!data.isRequireLogin" class="is_login">
                         <view class="avatar_box_top">
-                            <view class="avatar_box_left">
+                            <view class="avatar_box_left" @click="toEditProfile">
                                 <view class="avatar_img_box">
-                                    <image class="avatar_img" :src="data.userinfo.avatar"
+                                    <image :src="data.userinfo.avatar" class="avatar_img"
                                            mode="aspectFill"/>
                                 </view>
                                 <view class="user_text_box">
@@ -33,22 +34,24 @@
                             </view>
                             <view class="row i-center j-center">
                                 <view class="set_li">
-                                    <image @click="toSetting" class="top_menu_right_icon share"
-                                           :src="getAssetsUrl('/mine/v1/my_set_xx.svg')"
-                                           mode="scaleToFill"/>
+                                    <image :src="getAssetsUrl('/mine/v1/my_set_xx.svg')"
+                                           class="top_menu_right_icon share"
+                                           mode="scaleToFill"
+                                           @click.stop="toSetting"/>
                                     <view class="txt">消息</view>
                                 </view>
                                 <view class="set_li">
-                                    <image @click="toSetting" class="top_menu_right_icon share"
-                                           :src="getAssetsUrl('/mine/v1/my_set_sz.svg')"
-                                           mode="scaleToFill"/>
+                                    <image :src="getAssetsUrl('/mine/v1/my_set_sz.svg')"
+                                           class="top_menu_right_icon share"
+                                           mode="scaleToFill"
+                                           @click.stop="toSetting"/>
                                     <view class="txt">设置</view>
                                 </view>
                             </view>
                         </view>
                     </view>
-                    <view class="tologin" v-else @click="toLogin">
-                        <image class="avatar_img" :src="getAssetsUrl('/leyou/static/default_avatar.png')"
+                    <view v-else class="tologin" @click="toLogin">
+                        <image :src="getAssetsUrl('/leyou/static/default_avatar.png')" class="avatar_img"
                                mode="aspectFill"/>
                         <view class="tologin_text">
                             点击头像登录
@@ -62,7 +65,7 @@
                                 {{ data.homeObj.cntFollow ? data.homeObj.cntFollow : '--' }}
                             </view>
                             <view class="data_text">我的关注
-                                <TnIcon name="right" color="#ffffff" size="28"/>
+                                <TnIcon color="#ffffff" name="right" size="28"/>
                             </view>
                         </view>
                         <view class="operate_data_item haveborder" @click="todataManage(2)">
@@ -70,7 +73,7 @@
                                 {{ data.homeObj.totalFans ? data.homeObj.totalFans : '--' }}
                             </view>
                             <view class="data_text">我的粉丝
-                                <TnIcon name="right" color="#ffffff" size="28"/>
+                                <TnIcon color="#ffffff" name="right" size="28"/>
                             </view>
                         </view>
                         <view class="operate_data_item">
@@ -85,28 +88,28 @@
                 </view>
 
                 <view class="my_functionMuen">
-                    <TnTabs class="my_functionTabs" v-model="data.currentTabIndex" bar-color="#56cc7d"
-                            :bottom-shadow="false" font-size="30rpx"
-                            active-font-size="32rpx">
-                        <TnTabsItem active-color="#000" color="#666666"
-                                    v-for="item  in data.tabsData"
-                                    :key="item.id"
+                    <TnTabs v-model="data.currentTabIndex" :bottom-shadow="false" active-font-size="32rpx"
+                            bar-color="#56cc7d" class="my_functionTabs"
+                            font-size="30rpx">
+                        <TnTabsItem v-for="item  in data.tabsData" :key="item.id"
                                     :title="item.name"
+                                    active-color="#000"
+                                    color="#666666"
                         />
                     </TnTabs>
                     <view class="top_left" @click="toFunctionPage">
                         <view>查看全部</view>
-                        <TnIcon name="right" color="#999999" size="28"/>
+                        <TnIcon color="#999999" name="right" size="28"/>
                     </view>
                     <view class="item" style="padding: 0 30rpx 30rpx 30rpx;">
                         <template v-if="data.currentTabIndex == 0">
                             <block v-for="(item,index) in data.serviceList" :key="index">
                                 <view class="flex" style="position: relative"
                                       @click="goOder(item.inds,item.taborIndex)">
-                                    <image class="item_img" :src="item.icon" mode="aspectFit"></image>
+                                    <image :src="item.icon" class="item_img" mode="aspectFit"></image>
                                     <text class="item_name">{{ item.name }}</text>
-                                    <u-badge bgColor="#FF2A2A" absolute type="error" max="99" :value="item.badge"
-                                             :offset="[-5,15]"></u-badge>
+                                    <u-badge :offset="[-5,15]" :value="item.badge" absolute bgColor="#FF2A2A" max="99"
+                                             type="error"></u-badge>
                                 </view>
                             </block>
                         </template>
@@ -114,10 +117,10 @@
                             <block v-for="(item,index) in data.productList" :key="index">
                                 <view class="flex" style="position: relative"
                                       @click="goOder(item.inds,item.taborIndex)">
-                                    <image class="item_img" :src="item.icon" mode="aspectFit"></image>
+                                    <image :src="item.icon" class="item_img" mode="aspectFit"></image>
                                     <text class="item_name">{{ item.name }}</text>
-                                    <u-badge bgColor="#FF2A2A" absolute type="error" max="99" :value="item.badge"
-                                             :offset="[-5,15]"></u-badge>
+                                    <u-badge :offset="[-5,15]" :value="item.badge" absolute bgColor="#FF2A2A" max="99"
+                                             type="error"></u-badge>
                                 </view>
                             </block>
                         </template>
@@ -146,17 +149,18 @@
                             我的服务
                         </view>
                     </view>
-                    <TnScrollList class="server_scroll" indicator-color="rgba(150, 243, 222,0.8)" :indicator-width="30"
-                                  :indicator-block-width="15"
-                                  :indicator-block-color="'rgba(0, 216, 134,1)'">
+                    <TnScrollList :indicator-block-color="'rgba(0, 216, 134,1)'" :indicator-block-width="15"
+                                  :indicator-width="30"
+                                  class="server_scroll"
+                                  indicator-color="rgba(150, 243, 222,0.8)">
                         <view class="scroll-list">
-                            <view class="scroll-list__line" v-for="(item, index) in newmenu" :key="index">
+                            <view v-for="(item, index) in newmenu" :key="index" class="scroll-list__line">
                                 <block v-for="(item1, index1) in item" :key="index1">
                                     <view @click="listClick(item1)">
-                                        <view class="scroll-list__line__item"
-                                              :class="[(index1 === item.length - 1) && 'scroll-list__line__item--no-margin-right']"
+                                        <view :class="[(index1 === item.length - 1) && 'scroll-list__line__item--no-margin-right']"
+                                              class="scroll-list__line__item"
                                         >
-                                            <image class="scroll-list__line__item__image" :src="item1.img"
+                                            <image :src="item1.img" class="scroll-list__line__item__image"
                                                    mode=""></image>
                                             <text class="scroll-list__line__item__text">{{ item1.title }}</text>
                                         </view>
@@ -188,7 +192,7 @@
                     <view class="orders_left">我的创作中心</view>
                     <view class="orders_right">
                         <text class="orders_text">立即进入</text>
-                        <TnIcon name="right" color="#D2D2D2" size="30rpx"></TnIcon>
+                        <TnIcon color="#D2D2D2" name="right" size="30rpx"></TnIcon>
                     </view>
                 </view>
                 <view class="orders">
@@ -196,7 +200,7 @@
                     <view class="item" style="padding: 0 30rpx 30rpx 30rpx;">
                         <block v-for="(item,index) in data.wallet" :key="index">
                             <view class="flex" style="position: relative" @click="listClick(item)">
-                                <image class="item_img" :src="item.icon" mode="aspectFit"></image>
+                                <image :src="item.icon" class="item_img" mode="aspectFit"></image>
                                 <text class="item_name">{{ item.title }}</text>
                             </view>
                         </block>
@@ -210,40 +214,49 @@
     </view>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue'
+<script lang="ts" setup>
+import { computed, onMounted, reactive, ref } from 'vue'
 import { Debounce } from '@/libs/antivibthrot'
 import BCNotify from '@/components/notify/index.vue'
 import { PlatformManage } from "@bc/sys"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import { gotoLogin, gotoSetting } from "@/routes/public-routes"
-import { gotoorderList } from "@/routes/order-routes"
-import { gotoelderlyFiles } from '@/routes/user-routes'
+import { gotoInvoiceHistory, gotoorderList } from "@/routes/order-routes"
 import {
-    gotodataManage,
+    gotoAftersalesList,
+    gotoAnchorCenter,
+    gotoAuth,
+    gotoCollectLists,
+    gotoCommentList,
+    gotoCouponHistory,
+    gotoEditProfile,
+    gotoelderlyFiles,
+    gotoFeedback,
+    gotoshareQR,
+    gotoTrackList,
+    gotoWallet,
+    gotoWatchHistory
+} from '@/routes/user-routes'
+import {
+    gotoarticledetails,
     gotocourseList,
     gotocreationPage,
-    gotoenjoyRecord, gotofilterPage,
-    gotoarticledetails, gotovideoPreview
+    gotodataManage,
+    gotoenjoyRecord,
+    gotofilterPage,
+    gotovideoPreview
 } from "@/routes/create-routes"
-import {
-    gotoWatchHistory,
-    gotoshareQR, gotoEditProfile,
-    gotoAnchorCenter, gotoWallet,
-    gotoAuth,
-    gotoCouponHistory, gotoCollectLists
-} from "@/routes/user-routes"
 import { getAssetsPic } from '@/common/setPicture'
-import { homePage, enjoydetail, getnewContentList } from '@/api/create-api'
-import { favoriteList, likeLists, authDetail } from '@/api/user-api'
-import { gotoShoppingCart, gotointegralMallGoods } from '@/routes/goods-routes'
-import indexWaterFall from '../platform/components/indexWaterFall.vue'
+import { enjoydetail, getnewContentList, homePage } from '@/api/create-api'
+import { authDetail, favoriteList, likeLists } from '@/api/user-api'
+import { gotointegralMallGoods, gotoShoppingCart } from '@/routes/goods-routes'
 import { gotosearch } from "@/routes/service-routes"
 import { getQRPage } from '@/api/open-api'
 import TnTabs from "@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue"
 import TnTabsItem from "@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue"
 import TnScrollList from '@tuniao/tnui-vue3-uniapp/components/scroll-list/src/scroll-list.vue'
 import { gotoDeviceManag, gotoDeviceSetup } from "@/routes/active-routes"
+import { gotoCoupon } from "@/routes/care-routes"
 import { gotoRoomManag, gotoScenServer } from "@/routes/wisdom-routes"
 
 interface tabulation {
@@ -369,7 +382,6 @@ const data = reactive<Data>({
         {
             name: "cart",
             title: "购物车",
-            url: gotoShoppingCart,
             img: getAssetsPic("/mine/v1/my_list_gwc.png"),
             affair_id: 0
         },
@@ -482,7 +494,12 @@ onMounted(() => {
 })
 
 const toCreation = () => {
-    gotocreationPage()
+    if (!data.isRequireLogin) {
+        gotocreationPage()
+    }
+    else {
+        bcNotify.value.show('登录后查看')
+    }
 }
 
 
@@ -556,6 +573,27 @@ const listClick = (item) => {
                 break
             case 'shoucang':
                 gotoCollectLists()
+                break
+            case 'shouhou':
+                gotoAftersalesList()
+                break
+            case 'pingjia':
+                gotoCommentList()
+                break
+            case 'zuji':
+                gotoTrackList()
+                break
+            case 'yaoqing':
+                toshareQR()
+                break
+            case 'kaipiao':
+                gotoInvoiceHistory()
+                break
+            case 'jiufen':
+                gotoFeedback()
+                break
+            case 'youhuiquan':
+                gotoCoupon()
                 break
             default:
                 item.url()
@@ -706,8 +744,8 @@ const gotoPersonnel = (item, inds) => {
         // 跳转
         item.wid === "5" && gotoRoomManag()
         item.wid === "6" && gotoDeviceManag()
-        item.wid === "7" && gotoScenServer('1')
-        item.wid === "8" && gotoScenServer('2')
+        item.wid === "7" && gotoScenServer(1)
+        item.wid === "8" && gotoScenServer(2)
         item.wid === "9" && gotoDeviceSetup()
     })
 }
@@ -937,7 +975,7 @@ defineExpose({
     .tologin_text {
         font-weight: 600;
         font-size: 38rpx;
-        color: #333333;
+        color: #ffffff;
         margin-bottom: 8rpx;
         z-index: 0;
     }
@@ -1136,8 +1174,6 @@ defineExpose({
 
 .server_scroll {
     padding: 0 30rpx 30rpx;
-    margin: 0 auto;
-    width: 640rpx;
 
     :deep(.tn-scroll-list__indicator-block) {
         background-color: rgba(0, 216, 134, 0.8) !important;

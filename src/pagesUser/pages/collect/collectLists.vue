@@ -11,11 +11,12 @@
           :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
     >
         <template #top>
-            <TnTabs v-model="data.currentTabIndex" :scroll="true" :bottom-shadow="false" font-size="30rpx"
-                    active-font-size="32rpx" color="#666666" bar-color="#EA3E1A" active-color="#EA3E1A"
-                    @change="tabsChange">
-                <TnTabsItem v-for="(item, index) in data.tabsData" :key="index" :title="item.text"/>
-            </TnTabs>
+            <!--            #ifdef-->
+            <!--            <view id="pageTop">-->
+            <!--                <pageTopbg :zIndex="-1"></pageTopbg>-->
+            <bc-page-navbar :bgColor="'#ffffff'" :textColor="'#000000'" :title="'我的收藏'"></bc-page-navbar>
+            <!--            </view>-->
+            <!--            #ifdef-->
             <!--            <view class="nav_mangage tn-flex-row">-->
             <!--                <view class="section">-->
             <!--                    <view :class="['item', data.sectionActive == index ? 'active' : '']"-->
@@ -28,7 +29,11 @@
             <!--                </view>-->
             <!--            </view>-->
         </template>
-
+        <TnTabs v-model="data.currentTabIndex" :scroll="true" :bottom-shadow="false" font-size="30rpx"
+                active-font-size="32rpx" color="#666666" bar-color="#56cc7d" active-color="#333333"
+                @change="tabsChange">
+            <TnTabsItem v-for="(item, index) in data.tabsData" :key="index" :title="item.text"/>
+        </TnTabs>
         <view class="container" :class="[data.isEdit ? 'pb90' : '']">
             <SelectAllCancel btnName="取消收藏" :type="data.type" :listType="data.listType" :list="data.collectLists"
                              :isEdit="data.isEdit" @clickItem="clickItem" @clickBtn="cancelCollect"></SelectAllCancel>
@@ -38,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { onLoad } from "@dcloudio/uni-app"
 import { getAssetsPic } from '@/common/setPicture'
 import TnTabs from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue'
@@ -48,15 +53,14 @@ import SelectAllCancel from '@/pagesUser/components/selectAllCancel/index.vue'
 import BCNotify from '@/components/notify/index.vue'
 import {
     favoriteList,
-    unFavorite,
     healthFavoriteList,
-    unHealthFavorite,
     healthShopList,
+    unFavorite,
+    unHealthFavorite,
     unHealthShop
 } from '@/api/user-api'
-import { chatfavoriteList } from '@/api/create-api'
-import { gotocourseVideo, gotosalonPostsDetailPage, gotovideoPreview, gotoarticledetails } from "@/routes/create-routes"
-import { gotoShopDetail, gotoServiceStore } from "@/routes/service-routes"
+import { gotoarticledetails, gotocourseVideo, gotosalonPostsDetailPage, gotovideoPreview } from "@/routes/create-routes"
+import { gotoServiceStore, gotoShopDetail } from "@/routes/service-routes"
 import { gotogoodsDetail } from "@/routes/goods-routes"
 import { TempStorage } from "@bc/base"
 
@@ -126,17 +130,13 @@ const getAssetsUrl = computed(() => (src: string) => {
 })
 
 const queryList = (pageNumber: number, pageSize: number) => {
-    if ([0, 1, 3].includes(data.currentTabIndex)) {
-        favoriteList({
-            pageSize: pageSize,
-            pageNumber: pageNumber,
+    if ([0, 1].includes(data.currentTabIndex)) {
+        healthFavoriteList({
+            pageNumber,
+            pageSize,
             query: {
-                happyType: data.happyType
-            },
-            sorts: [{
-                key: data.key,
-                isAsc: false
-            }]
+                applyId: data.tabsData[data.currentTabIndex].applyId
+            }
         }).then((res: any) => {
             // 给每个对象添加checked属性
             const pack = res.data.map((item: any) => {
@@ -152,55 +152,119 @@ const queryList = (pageNumber: number, pageSize: number) => {
         })
         return
     }
-    else {
-        // 康养囤接口
-        if (data.key == 'service' || data.key == 'product') {
-            const applyId = 3
-            healthFavoriteList({
-                pageSize: pageSize,
-                pageNumber: pageNumber,
-                query: { applyId }
-            }).then((res) => {
-                // 给每个对象添加checked属性
-                const pack = res.data.map((item: any) => {
-                    return {
-                        ...item,
-                        checked: false
-                    }
-                })
-                data.type = 'healthList'
-                paging.value.complete(pack)
-            }).catch((err: any) => {
-                bcNotify.value.error(err.message)
+    else if ([2].includes(data.currentTabIndex)) {
+        healthShopList({
+            pageNumber,
+            pageSize,
+            query: {}
+        }).then((res) => {
+            // 给每个对象添加checked属性
+            const pack = res.data.map((item: any) => {
+                return {
+                    ...item,
+                    checked: false
+                }
             })
-        }
-        else {
-            // 康养店铺
-            healthShopList({
-                pageSize: pageSize,
-                pageNumber: pageNumber,
-                query: {}
-            }).then((res) => {
-                // 给每个对象添加checked属性
-                const pack = res.data.map((item: any) => {
-                    return {
-                        ...item,
-                        checked: false
-                    }
-                })
-                data.type = 'shopList'
-                paging.value.complete(pack)
-            }).catch((err: any) => {
-                bcNotify.value.error(err.message)
-            })
-        }
+            data.type = 'shopList'
+            paging.value.complete(pack)
+        }).catch((err: any) => {
+            bcNotify.value.error(err.message)
+        })
     }
+    else if ([3].includes(data.currentTabIndex)) {
+        favoriteList({
+            pageSize: pageSize,
+            pageNumber: pageNumber,
+            query: {}
+        }).then((res: any) => {
+            // 给每个对象添加checked属性
+            const pack = res.data.map((item: any) => {
+                return {
+                    ...item,
+                    checked: false
+                }
+            })
+            data.type = 'normal'
+            paging.value.complete(pack)
+        }).catch((err: any) => {
+            bcNotify.value.error(err.message)
+        })
+    }
+    // if ([0, 1, 3].includes(data.currentTabIndex)) {
+    //     favoriteList({
+    //         pageSize: pageSize,
+    //         pageNumber: pageNumber,
+    //         query: {
+    //             happyType: data.happyType
+    //         },
+    //         sorts: [{
+    //             key: data.key,
+    //             isAsc: false
+    //         }]
+    //     }).then((res: any) => {
+    //         // 给每个对象添加checked属性
+    //         const pack = res.data.map((item: any) => {
+    //             return {
+    //                 ...item,
+    //                 checked: false
+    //             }
+    //         })
+    //         data.type = 'normal'
+    //         paging.value.complete(pack)
+    //     }).catch((err: any) => {
+    //         bcNotify.value.error(err.message)
+    //     })
+    //     return
+    // }
+    // else {
+    //     // 康养囤接口
+    //     console.log(data.key)
+    //     if (data.key == 'service' || data.key == 'product') {
+    //         const applyId = 3
+    //         healthFavoriteList({
+    //             pageSize: pageSize,
+    //             pageNumber: pageNumber,
+    //             query: { applyId }
+    //         }).then((res) => {
+    //             // 给每个对象添加checked属性
+    //             const pack = res.data.map((item: any) => {
+    //                 return {
+    //                     ...item,
+    //                     checked: false
+    //                 }
+    //             })
+    //             data.type = 'healthList'
+    //             paging.value.complete(pack)
+    //         }).catch((err: any) => {
+    //             bcNotify.value.error(err.message)
+    //         })
+    //     }
+    //     else {
+    //         // 康养店铺
+    //         healthShopList({
+    //             pageSize: pageSize,
+    //             pageNumber: pageNumber,
+    //             query: {}
+    //         }).then((res) => {
+    //             // 给每个对象添加checked属性
+    //             const pack = res.data.map((item: any) => {
+    //                 return {
+    //                     ...item,
+    //                     checked: false
+    //                 }
+    //             })
+    //             data.type = 'shopList'
+    //             paging.value.complete(pack)
+    //         }).catch((err: any) => {
+    //             bcNotify.value.error(err.message)
+    //         })
+    //     }
+    // }
 }
 
 const tabsChange = (val: any) => {
 
     console.log('val', val)
-
 
     val == 0 && (data.happyType = 2)
     val == 1 && (data.happyType = 3)
@@ -313,6 +377,7 @@ const reload = () => {
 }
 
 onLoad((option) => {
+    console.log('option', option)
     if (option?.type == 'course') {
         data.currentTabIndex = 0
         data.happyType = 2

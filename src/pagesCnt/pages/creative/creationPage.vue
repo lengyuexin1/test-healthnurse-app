@@ -1291,7 +1291,7 @@ defineExpose({})
             }
 
             .tag_item {
-                padding: 6rpx 24rpx;
+                padding: 6rpx 20rpx;
                 box-sizing: border-box;
                 border-radius: 26rpx;
                 display: flex;
@@ -1308,7 +1308,7 @@ defineExpose({})
                 }
 
                 .tag_item_text {
-                    font-size: 28rpx;
+                    font-size: 24rpx;
                 }
             }
         }

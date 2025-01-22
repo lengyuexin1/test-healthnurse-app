@@ -8,7 +8,9 @@
         :defaultPageSize="10"
         :hide-empty-view="true"
     >
-        <template #top></template>
+        <template #top>
+            <bc-page-navbar :bgColor="'#ffffff'" :textColor="'#000000'" :title="'我的钱包'"></bc-page-navbar>
+        </template>
 
         <view class="wrap">
             <view class="box sign-income" v-if="data.signDetail.isHave == 1">

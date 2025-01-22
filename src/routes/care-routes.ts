@@ -225,7 +225,7 @@ export const gotoWelfare = () => {
 /** 跳转到 优惠券 */
 export const gotoCoupon = () => {
     const route = {
-        path: '/User/pages/coupon/coupon',
+        path: '/pagesUser/pages/coupon/coupon',
         query: {}
     } as any
     return pageController.push(route)

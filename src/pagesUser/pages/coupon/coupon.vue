@@ -1,7 +1,8 @@
 <template>
 	<view class="container">
         <z-paging-swiper class="swiper-item">
-            <template #top> 
+            <template #top>
+                <bc-page-navbar :bgColor="'#ffffff'" :textColor="'#000000'" :title="'卡券/红包'"></bc-page-navbar>
                 <TnTabs v-model="data.currentTabIndex" :scroll="false" :bottom-shadow="false" font-size="30rpx" active-font-size="32rpx" color="#666666" bar-color="#EA3E1A" active-color="#EA3E1A" @change="tabsChange">
                     <TnTabsItem v-for="(item, index) in data.tabsData" :key="index" :title="item.text" />
                 </TnTabs>
