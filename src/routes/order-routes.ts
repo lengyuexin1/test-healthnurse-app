@@ -9,7 +9,7 @@ import { pageController } from '@bc/uni-tools'
 // 订单管理列表
  export const gotoorderList = (typeIndex:number = 0) => {
     const route = {
-        path: '/Order/pages/orderList/orderList',
+        path: '/pagesOrder/pages/orderList/orderList',
         query: {
             typeIndex
         }
