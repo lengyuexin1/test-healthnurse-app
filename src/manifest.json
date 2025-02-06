@@ -1,7 +1,7 @@
 {
-    "name" : "保椿生活",
-    "appid" : "__UNI__DD0D89D",
-    "description" : "保椿生活APP",
+    "name" : "保椿照护",
+    "appid" : "__UNI__533F2F1",
+    "description" : "保椿照护APP",
     "versionName" : "1.0.0",
     "versionCode" : 100,
     "transformPx" : false,
@@ -95,8 +95,10 @@
                 "schemes" : "ydchunhome,xizoibq7s",
                 "minSdkVersion" : 29,
                 "targetSdkVersion" : 30,
-                "minSdkVersion" : 28,
-                "schemes" : "bclifehome,xizoibq7s"
+                "permissionExternalStorage" : {
+                    "request" : "none",
+                    "prompt" : "应用保存运行状态等信息，需要获取读写手机存储（系统提示为访问设备上的照片、媒体内容和文件）权限，请允许。"
+                }
             },
             /* ios打包配置 */
             "ios" : {
