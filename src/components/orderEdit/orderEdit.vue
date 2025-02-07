@@ -106,7 +106,7 @@
 import TnDateTimePicker from '@tuniao/tnui-vue3-uniapp/components/date-time-picker/src/date-time-picker.vue'
 import ClUpload from '@/pagesCnt/uni_modules/cl-upload/components/cl-upload/cl-upload.vue'
 import { ref, reactive, watch } from 'vue'
-import { getOrderEntityConfig, houseEditOrder, gotoUserLink } from '@/api'  // Import your API methods
+// import { getOrderEntityConfig, houseEditOrder, gotoUserLink } from '@/api'  // Import your API methods
 import BCNotify from '@/components/notify/index.vue'
 // Reactive state
 const show = ref(false)

@@ -169,4 +169,25 @@ export const integralOrderAdd = (req: any) => {
     return http.content.post('/v1/bc/app/integral_product/order/add', req)
 }
 
+/* 智护产品-通知次数包 */
+export const smartNotifyPackage = async (productId: string) => {
+    return http.get('api/order/v1/bc/app/platform/product/getDetails', { productId })
+}
+/* 智护产品-通知次数包 */
+export const getLanguageList = async (productId: string) => {
+    return http.get('api/user/v1/bc/app/workerConfig/getLanguageList', { productId })
+}
+/* 智护-创建订单 */
+export const smartOrderCreate = async (optionId: string) => {
+    return http.post('api/order/v1/bc/app/platform/order/create', { optionId })
+}
 
+/* 智护-唤起支付 */
+export const smartPlatformPay = async (query: {orderId:string, openid?: string}) => {
+    // #ifdef APP-PLUS
+    return http.post('api/user/v1/bc/app/payment/wechat/platform_pay', query)
+    // #endif
+    // #ifndef APP-PLUS
+    // return http.post(GOODS_API.smartPlatformPay, query)
+    // #endif
+}
