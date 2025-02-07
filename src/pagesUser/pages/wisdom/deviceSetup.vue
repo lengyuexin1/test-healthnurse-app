@@ -98,7 +98,7 @@ import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import { gotoExpendList, gotoNoticeRecord, gotoNoticeStaff } from "@/routes/active-routes"
 import { getAccountInfo, getConfig, setConfig } from "@/api/room-api"
 import { smartNotifyPackage, smartOrderCreate, smartPlatformPay } from '@/api/goods-api'
-// import { packPayment } from "@/libs/pay/pay-tools"
+import { packPayment } from "@/libs/pay/pay-tools"
 // import { gotoMallBalance, gotoPaySuccess } from '@/route/goods-routes'
 import { onLoad, onShow } from "@dcloudio/uni-app"
 // import { TempStorage } from '@/libs/temp-storage'
@@ -129,7 +129,7 @@ onShow(() => {
 // 跳转下单结算页面
 const gotoBalance = () => {
     smartOrderCreate(data.goodsInfo.options[data.current].id).then((res: any) => {
-        console.log("创建订单成功")
+        console.log(res,"创建订单成功")
         return smartPlatformPay({
             orderId: res,
             // #ifdef MP-WEIXIN
@@ -139,15 +139,20 @@ const gotoBalance = () => {
     }).then((pay: any) => {
         console.log("支付成功", JSON.stringify(pay))
         data.goodsShow = false
-        return packPayment(pay.payParams, true)
+        return packPayment(pay.payParams)
     }).then(() => {
-        uni.$u.toast("支付成功，请前往消费记录查看")
+        uni.showToast({
+            title: '支付成功，请前往消费记录查看',
+            icon: 'none'
+        })
         getAccountInfo()
     }).catch((err: any) => {
-
         data.goodsShow = false
         console.log(err)
-        uni.$u.toast("支付失败")
+        uni.showToast({
+            title: '支付失败',
+            icon: 'none'
+        })
     })
 }
 // 获取充值数据
