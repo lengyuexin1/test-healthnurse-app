@@ -108,8 +108,8 @@
                                       @click="goOder(item.inds,item.taborIndex)">
                                     <image :src="item.icon" class="item_img" mode="aspectFit"></image>
                                     <text class="item_name">{{ item.name }}</text>
-                                    <u-badge :offset="[-5,15]" :value="item.badge" absolute bgColor="#FF2A2A" max="99"
-                                             type="error"></u-badge>
+                                    <!-- <u-badge :offset="[-5,15]" :value="item.badge" absolute bgColor="#FF2A2A" max="99"
+                                             type="error"></u-badge> -->
                                 </view>
                             </block>
                         </template>
@@ -119,8 +119,8 @@
                                       @click="goOder(item.inds,item.taborIndex)">
                                     <image :src="item.icon" class="item_img" mode="aspectFit"></image>
                                     <text class="item_name">{{ item.name }}</text>
-                                    <u-badge :offset="[-5,15]" :value="item.badge" absolute bgColor="#FF2A2A" max="99"
-                                             type="error"></u-badge>
+                                    <!-- <u-badge :offset="[-5,15]" :value="item.badge" absolute bgColor="#FF2A2A" max="99"
+                                             type="error"></u-badge> -->
                                 </view>
                             </block>
                         </template>
@@ -401,7 +401,7 @@ const data = reactive<Data>({
         {
             name: "dangan",
             title: "老人档案",
-            url: gotoelderlyFiles(),
+            // url: gotoelderlyFiles(),
             img: getAssetsPic("/mine/v1/my_list_da.png"),
             affair_id: 61
         },
@@ -481,16 +481,16 @@ interface Events {
 const emit = defineEmits<Events>()
 
 onMounted(() => {
-    uni.getSystemInfo({
-        success: (res: any) => {
-            data.safeBotomHeight = res.safeAreaInsets.bottom
-        }
-    })
+    // uni.getSystemInfo({
+    //     success: (res: any) => {
+    //         data.safeBotomHeight = res.safeAreaInsets.bottom
+    //     }
+    // })
 
-    getuserInfo()
-    PlatformManage.isRequireLogin().then((isRequireLogin) => {
-        data.isRequireLogin = isRequireLogin
-    })
+    // getuserInfo()
+    // PlatformManage.isRequireLogin().then((isRequireLogin) => {
+    //     data.isRequireLogin = isRequireLogin
+    // })
 })
 
 const toCreation = () => {

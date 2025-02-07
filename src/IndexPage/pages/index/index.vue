@@ -249,11 +249,7 @@ onHide(() => {
 onReady(() => {
     // platformRef.value.listonLoad()
 })
-
 const changeTabbar = (id:number, showrecommend:boolean) => {
-    console.log('id', id)
-    console.log('首页初始化11')
-
     if (id == 1) {
         setTimeout(() => {
             if (platformRef.value) {
@@ -261,8 +257,6 @@ const changeTabbar = (id:number, showrecommend:boolean) => {
                 (platformRef.value as any).imgInitIndex()
             }
         }, 600)
-
-
     }
     if (id == 3) {
         // 底部创作入口

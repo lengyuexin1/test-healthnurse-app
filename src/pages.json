@@ -69,6 +69,14 @@
             "navigationStyle": "custom",
             "enablePullDownRefresh": false
           }
+        }
+        {
+          "path": "pages/search/search",
+          "style": {
+            "navigationBarTitleText": "搜索",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
         },
         {
           "path": "pages/news/notice-list",
@@ -114,14 +122,6 @@
       "pages": [
         {
           "path": "pages/serviceDetail/serviceDetail",
-          "style": {
-            "navigationBarTitleText": "搜索",
-            "navigationStyle": "custom",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "pages/search/search",
           "style": {
             "navigationBarTitleText": "搜索",
             "navigationStyle": "custom",

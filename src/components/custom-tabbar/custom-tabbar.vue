@@ -7,9 +7,8 @@
                         <!-- <image class="recommend_icon" :src="data.showrecommend ?  item.activeIcon : item.icon" v-if="index == 0" /> -->
                         <!-- v-else-if -->
                         <image class="tabbar_health" :src="data.currentTabbar == index ? getAssetsUrl(item.activeIcon) : getAssetsUrl(item.activeIcon)" v-if="index == 1" />
-                        <image class="tabbar_item_icon" :src="data.currentTabbar == index ? getAssetsUrl(item.activeIcon) : getAssetsUrl(item.icon)"  v-if="index == 2" />
-                        
-                        <view class="tabbar_item_text" :class="{ 'activeText' : data.currentTabbar == index }" v-else>
+                        <image class="tabbar_item_icon" :src="data.currentTabbar == index ? getAssetsUrl(item.activeIcon) : getAssetsUrl(item.icon)"  v-else-if="index == 2" />
+                        <view class="tabbar_item_text" :class="{ 'activeText': data.currentTabbar == index }" v-else>
                             <view style="position: relative; z-index: -1;">
                                 {{ item.name }}
                                 <template v-if="index == 3 && data.allBadge > 0">
@@ -54,7 +53,7 @@ const props = defineProps<Props>()
 const data = reactive<Data>({
     currentTabbar: 0,
     allBadge: 0,
-    showrecommend: true,
+    showrecommend: true
 })
 
 
@@ -75,28 +74,29 @@ const getUnreadBadge = () => {
     data.allBadge = noticeSession.unread + sessionList.unread
 }
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
-const clickTabbar = (item:any,index:number)=>{
+const clickTabbar = (item:any, index:number) => {
 
     if (data.currentTabbar == index && data.currentTabbar == 0) {
         data.showrecommend = !data.showrecommend
     }
 
     if (index == 0) {
-        emit('changeTabbar',item.id,data.showrecommend)
-    }else{
+        emit('changeTabbar', item.id, data.showrecommend)
+    }
+    else {
         data.showrecommend = true
-        emit('changeTabbar',item.id,true)
+        emit('changeTabbar', item.id, true)
     }
 
 
     if (index == 2) {
         data.currentTabbar = data.currentTabbar
         return
-    }    
+    }
     data.currentTabbar = index
 
 }

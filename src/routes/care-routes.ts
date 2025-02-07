@@ -1,5 +1,5 @@
-import { pageController }  from '@bc/uni-tools'
-
+import { pageController } from '@bc/uni-tools'
+import { gotoserviceDetail, gotoServiceStore } from '@/routes/service-routes'
 
 
 interface ICommentListQuery {
@@ -115,7 +115,7 @@ export const gotoWithdrawall = (rewardId: number) => {
 export const gotoWithdrawalWallet = () => {
     const route = {
         path: '/Channel/pages/redEnvelope/withdrawalWallet',
-        query: {  }
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -143,7 +143,7 @@ export const gotoctivityRules = (query: ISerDetaQuery) => {
     return pageController.push(route)
 }
 /** 跳转到 照护首页 */
-export const gotoServeSwiper = (parentId: number, typeId: number, activityId: number, colnum: number, title: string, hotTag: any, taskId?:number) => {
+export const gotoServeSwiper = (parentId: number, typeId: number, activityId: number, colnum: number, title: string, hotTag: any, taskId?: number) => {
     const route = {
         path: '/pagesMall/pages/service/serviceTab',
         query: { parentId, typeId, activityId, colnum, title, hotTag, taskId }
@@ -251,7 +251,7 @@ export const loginToIndex = () => {
 
 
 /** 频道重定向回首页 */
-export const gobackIndex = (tabids: number, taskId:number) => {
+export const gobackIndex = (tabids: number, taskId: number) => {
     const route = {
         path: '/pages/daybreak/daybreak',
         query: { tabids, taskId }
@@ -314,28 +314,34 @@ export const gotoNurseDetail = (query: INurseDetailQuery) => {
 }
 
 
-// import { gotochoiceDetails, gotohealthDetails } from '@/route/plateform-routes'
 // /* 店铺类型 2：服务 3：商品 12：机构 13：康养 */
-// type TShopApply = 2 | 3 | 12 | 13
+type TShopApply = 2 | 3 | 12 | 13
 
-// /** 跳转到 店铺详情 */
-// export const gotoAttendShop = (id: string, applyId?: TShopApply) => {
-//     if (applyId === 12) {
-//         return gotochoiceDetails(id)
-//     }
-//     if (applyId === 13) {
-//         return gotohealthDetails(id)
-//     }
-//     const route = {
-//         path: '/Mall/pages/attendShop/attendShop',
-//         query: { id }
-//     }
-//     return pageController.push(route)
-// }
+/** 跳转到 店铺详情 */
+export const gotoAttendShop = (id: string, applyId?: TShopApply) => {
+    if (applyId === 12) {
+        return gotoServiceStore({ id })
+    }
+    if (applyId === 13) {
+        return gotoserviceDetail(id)
+    }
+    const route = {
+        path: '/Mall/pages/attendShop/attendShop',
+        query: { id }
+    }
+    return pageController.push(route)
+}
 
 
 /** 跳转到 照护店铺列表 */
-export const gotoSellerList = (query: { sortId: string, typeName?: string, typeId: string, item?: string, parentId: number, taskId?:number }) => {
+export const gotoSellerList = (query: {
+    sortId: string,
+    typeName?: string,
+    typeId: string,
+    item?: string,
+    parentId: number,
+    taskId?: number
+}) => {
     const route = {
         path: '/Mall/pages/attendShop/attendShopList',
         query
@@ -348,7 +354,7 @@ export const gotoSellerList = (query: { sortId: string, typeName?: string, typeI
  * handle： 1默认值表示正常的服务下单，2表示找康养服务下单
  *
  */
-export const gotoBalanceOrder = (uniqueId: string, handle = 1, typeId = 1, convenType?:any) => {
+export const gotoBalanceOrder = (uniqueId: string, handle = 1, typeId = 1, convenType?: any) => {
     const route = {
         path: '/Order/pages/confirmOrder/balanceOrder',
         query: { uniqueId, handle, typeId, convenType }

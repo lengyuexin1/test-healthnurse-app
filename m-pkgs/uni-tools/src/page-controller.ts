@@ -38,13 +38,12 @@ class PageController {
     }
 
     push(route: IRoute) {
+        console.log('pushpushpush', route)
         const url = UrlTools.buildUrlByParams(route.path, route.query)
         return new Promise<void>((reslove, reject) => {
             uni.navigateTo({
                 url,
                 success: () => {
-                    console.log('pushpushpush')
-
                     reslove()
                     this.onGlance()
 

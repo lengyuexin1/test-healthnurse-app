@@ -95,14 +95,14 @@ import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import TnSwitch from '@tuniao/tnui-vue3-uniapp/components/switch/src/switch.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
-import { gotoNoticeRecord, gotoNoticeStaff, gotoExpendList } from "@/routes/active-routes"
-import { getAccountInfo, getConfig, setConfig, smartNotifyPackage, smartOrderCreate } from "@/api/room-api"
-// import { smartNotifyPackage, smartOrderCreate, smartPlatformPay } from '@/api/goods-api'
+import { gotoExpendList, gotoNoticeRecord, gotoNoticeStaff } from "@/routes/active-routes"
+import { getAccountInfo, getConfig, setConfig } from "@/api/room-api"
+import { smartNotifyPackage, smartOrderCreate, smartPlatformPay } from '@/api/goods-api'
 // import { packPayment } from "@/libs/pay/pay-tools"
 // import { gotoMallBalance, gotoPaySuccess } from '@/route/goods-routes'
 import { onLoad, onShow } from "@dcloudio/uni-app"
 // import { TempStorage } from '@/libs/temp-storage'
-import { ref, reactive } from "vue"
+import { reactive, ref } from "vue"
 
 interface Data {
     accountInfo: any,
@@ -128,16 +128,15 @@ onShow(() => {
 })
 // 跳转下单结算页面
 const gotoBalance = () => {
-    smartOrderCreate(data.goodsInfo.options[data.current].id)
-          .then((res: any) => {
-              console.log("创建订单成功")
-              return smartPlatformPay({
-                  orderId: res,
-                  // #ifdef MP-WEIXIN
-                  openid: uni.getStorageSync('openid')
-                  // #endif
-              })
-          }).then((pay: any) => {
+    smartOrderCreate(data.goodsInfo.options[data.current].id).then((res: any) => {
+        console.log("创建订单成功")
+        return smartPlatformPay({
+            orderId: res,
+            // #ifdef MP-WEIXIN
+            openid: uni.getStorageSync('openid')
+            // #endif
+        })
+    }).then((pay: any) => {
         console.log("支付成功", JSON.stringify(pay))
         data.goodsShow = false
         return packPayment(pay.payParams, true)

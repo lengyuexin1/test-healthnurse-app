@@ -15,7 +15,7 @@ export const getNoticeConfig = () => {
 }
 
 /* 设置通知状态 */
-export const setNoticeConfig = (isPush:any) => {
+export const setNoticeConfig = (isPush: any) => {
     return http.message.post('/v1/bc/app/config/push', { isPush })
 }
 
@@ -34,7 +34,7 @@ export const getMoneyRecord = async (req: any) => {
 }
 /** 用户金额信息 **/
 export const getUserTransfer = async (req: any) => {
-    return  http.user.post('/v1/bc/app/money/transfer', req)
+    return http.user.post('/v1/bc/app/money/transfer', req)
 }
 /* 评估问题列表 */
 export const estimateQuestionList = () => {
@@ -49,7 +49,7 @@ export const happyUnfollowed = async () => {
     return http.content.get('/v1/bc/app/happy/unfollowed')
 }
 /** 收支明细 **/
-export const recordList = async (req:_v1_bc_app_reward_record_post_req) => {
+export const recordList = async (req: _v1_bc_app_reward_record_post_req) => {
     return http.user.post('/v1/bc/app/reward/record', req)
 }
 /** 提现 **/
@@ -70,7 +70,7 @@ export const getWeixinSessionKey = (req: any) => {
 }
 
 /* 获取用户信息 */
-export const getDestroyInfo = (req:_v1_bc_app_user_detail_get_req) => {
+export const getDestroyInfo = (req: _v1_bc_app_user_detail_get_req) => {
     return http.user.get('/v1/bc/app/user/detail', req)
 }
 
@@ -172,7 +172,7 @@ export const joinSalon = (req: _v1_bc_app_salon_memberList_post_req) => {
 }
 
 /** 退出沙龙 */
-export const pushExitSalon = (req:_v1_bc_app_salon_exitSalon_post_req) => {
+export const pushExitSalon = (req: _v1_bc_app_salon_exitSalon_post_req) => {
     return http.content.post('/v1/bc/app/salon/exitSalon', req)
 }
 
@@ -197,7 +197,7 @@ export const unHealthShop = (req: _v1_bc_app_favorite_shopCancel_post_req) => {
 }
 
 /** 添加收藏康养店铺 */
-export const addHealthShop = (req:_v1_bc_app_favorite_shopAdd_post_req) => {
+export const addHealthShop = (req: _v1_bc_app_favorite_shopAdd_post_req) => {
     return http.user.post('/v1/bc/app/favorite/shopAdd', req)
 }
 
@@ -243,7 +243,7 @@ export const submitComment = (req: _v1_bc_api_comment_commodity_save_post_req) =
 
 /** 分享二维码 */
 // changev2
-export const getQrcode = (page:string) => {
+export const getQrcode = (page: string) => {
 
     let QRversion = ''
     // #ifdef MP-WEIXIN
@@ -258,7 +258,7 @@ export const getQrcode = (page:string) => {
     // QRversion = 'develop' // 开发版
     // #endif
 
-    const req :any = {
+    const req: any = {
         page,
         envVersion: QRversion
     }
@@ -278,73 +278,74 @@ export const takeCoupon = (req: _v1_bc_app_coupon_collect_post_req) => {
 
 
 /** 是否收藏 */
-export const isFavoriteItem = (req:_v1_bc_app_favorite_isFavoriteItem_get_req) => {
+export const isFavoriteItem = (req: _v1_bc_app_favorite_isFavoriteItem_get_req) => {
     return http.user.get('/v1/bc/app/favorite/isFavoriteItem', req)
 }
 
 /** 搜索推荐关键字 */
-export const recommend = (req:any) => {
+export const recommend = (req: any) => {
     return http.user.get('/v1/bc/app/shop/recommend', req)
 }
 
 /** 模糊查询列表 */
 // changev2
-export const happylike = (req:any) => {
+export const happylike = (req: any) => {
     return http.get('api/search/v1/bc/public/es/happy/like', req)
 }
 
-export const featuredList = (req:any) => {
+export const featuredList = (req: any) => {
     return http.post('api/order/v1/bc/public/search/featured/list', req)
 }
 
 /** 搜索结果列表 */
 // changev2
-export const happysearch = (req:any, isRequireLogin:boolean) => {
+export const happysearch = (req: any, isRequireLogin: boolean) => {
     if (isRequireLogin) {
-        return openHttp.post('api/search/v1/bc/public/es/happy/search', req)
+        // return openHttp.post('api/search/v1/bc/public/es/happy/search', req)
+        return openHttp.post('api/search/v1/bc/public/es/new/search', req)
     }
-    return http.post('api/search/v1/bc/public/es/happy/search', req)
+    return http.post('api/search/v1/bc/public/es/new/search', req)
 }
 
 /** 地区列表 */
-export const getSonList = (req:any) => {
+export const getSonList = (req: any) => {
     return http.user.get('/v1/bc/app/district/getSonList', req)
 }
 
 /** 推荐好友列表 */
-export const recommendationList = (req:any) => {
+export const recommendationList = (req: any) => {
     return http.content.post('/v1/bc/app/friends/recommendationList', req)
 }
 
 /** 通讯录好友 */
-export const addressBookList = (req:any) => {
+export const addressBookList = (req: any) => {
     return http.content.post('/v1/bc/app/friends/addressBookList', req)
 }
 
 /** 关注推荐列表 */
-export const followRecommendList = (req:any) => {
+export const followRecommendList = (req: any) => {
     return http.content.post('/v1/bc/app/recommend/recommendationList', req)
 }
 
 /** 关注推荐看一看 */
-export const followContentList = (req:any) => {
+export const followContentList = (req: any) => {
     return http.content.post('/v1/bc/app/recommend/contentList', req)
 }
 
 /** 附近店铺推荐 */
 // changev2
-export const nearbyGoods = (req:any) => {
+export const nearbyGoods = (req: any) => {
     return openHttp.post('api/search/v1/bc/public/es/shop/list', req)
 }
 
 /** 提交定位 */
-export const Postlocation = (req:any) => {
+export const Postlocation = (req: any) => {
     return http.content.post('/v1/bc/app/article/user/location', req)
 }
 
 /** 附近发现内容列表 */
 // changev2
-export const nearbyList = (req:any, isRequireLogin:boolean = true) => {
+export const nearbyList = (req: any, isRequireLogin: boolean = true) => {
     if (isRequireLogin) {
         return openHttp.post('api/search/v1/bc/public/es/nearby/list', req)
     }
@@ -352,32 +353,32 @@ export const nearbyList = (req:any, isRequireLogin:boolean = true) => {
 }
 
 /** 附近的人列表 */
-export const peopleList = (req:any) => {
+export const peopleList = (req: any) => {
     return http.content.post('/v1/bc/app/nearby/list', req)
 }
 
 /** 添加第三方回答-讯飞 */
-export const saveChatXunFei = (req:any) => {
+export const saveChatXunFei = (req: any) => {
     return http.content.post('/v1/bc/app/chat/saveChat', req)
 }
 
 /** 关联店铺列表 */
-export const relationList = (req:any) => {
+export const relationList = (req: any) => {
     return http.user.post('/v1/bc/app/shop/searchByDistance', req)
 }
 
 /** 地区字典 */
-export const amapcity = (req:any) => {
+export const amapcity = (req: any) => {
     return http.user.get('/v1/bc/amap/city', req)
 }
 
 /** 我的群聊列表 */
-export const myGroupChatList = (req:any) => {
+export const myGroupChatList = (req: any) => {
     return http.message.post('/v1/bc/app/group_chat/my/list', req)
 }
 
 /** 群聊列表 */
-export const groupChatList = (req:any) => {
+export const groupChatList = (req: any) => {
     return http.message.post('/v1/bc/app/group_chat/list', req)
 }
 
@@ -492,88 +493,88 @@ export const updateTalkStatus = (req) => {
 }
 
 /** 邀请好友活动配置信息 */
-export const inviteconfigDetail = (req:_v1_bc_api_invite_config_get_req) => {
+export const inviteconfigDetail = (req: _v1_bc_api_invite_config_get_req) => {
     return http.user.get('/v1/bc/api/invite/config', req)
 }
 
 /** 邀请信息 */
-export const inviteinfoDetail = (req:_v1_bc_api_invite_info_get_req) => {
+export const inviteinfoDetail = (req: _v1_bc_api_invite_info_get_req) => {
     return http.user.get('/v1/bc/api/invite/info', req)
 }
 
 /** 邀请好友兑换记录 */
-export const inviteList = (req:any) => {
+export const inviteList = (req: any) => {
     return http.user.get('/v1/bc/api/invite/list', req)
 }
 
 /** 邀请分享二维码 */
-export const getqrcodeImg = (req:_v1_bc_api_invite_qrcode_get_req) => {
+export const getqrcodeImg = (req: _v1_bc_api_invite_qrcode_get_req) => {
     return http.user.get('/v1/bc/api/invite/qrcode', req)
 }
 
 /** 邀请id */
-export const getshareId = (req:_v1_bc_api_invite_share_post_req) => {
+export const getshareId = (req: _v1_bc_api_invite_share_post_req) => {
     return http.user.post('/v1/bc/api/invite/share', req)
 }
 
 /** 注销账号 */
-export const cancellation = (req:any) => {
+export const cancellation = (req: any) => {
     // /v1/bc/company/shop/cancellation
     return http.user.post('/v1/bc/app/user/destroy', req)
 }
 
 /** 获取绑定授权信息 */
-export const getsimpleInfo = (req:any) => {
+export const getsimpleInfo = (req: any) => {
     return http.user.get('/v1/bc/app/organization/simpleInfo', req)
 }
 
 /** 绑定商户提现 */
-export const getMoneyBang = (req:any) => {
+export const getMoneyBang = (req: any) => {
     return http.content.post('/v1/bc/app/money/bang', req)
 }
 
 /** 规则类目 */
-export const ruleCategory = (req:any) => {
+export const ruleCategory = (req: any) => {
     return http.user.get('/v1/bc/public/public/article/category/tree', req)
 }
 
 /** 规则列表 */
-export const ruleList = (req:any) => {
+export const ruleList = (req: any) => {
     return http.user.post('/v1/bc/public/public/article/list', req)
 }
 
 /** 规则详情 */
-export const ruleDetail = (req:any) => {
+export const ruleDetail = (req: any) => {
     return http.user.get('/v1/bc/public/public/article/detail', req)
 }
 
 /** 问题反馈投诉 */
-export const feedbackList = (req:any) => {
+export const feedbackList = (req: any) => {
     return http.user.post('/v1/bc/api/complaint/list', req)
 }
 
 /** 获取投诉类型原因 */
-export const getTypeReason = (req:any) => {
+export const getTypeReason = (req: any) => {
     return http.user.get('/v1/bc/api/complaint/typeReason', req)
 }
 
 /** 提交投诉类型原因 */
-export const saveTypeReason = (req:any) => {
+export const saveTypeReason = (req: any) => {
     return http.user.post('/v1/bc/api/complaint/save', req)
 }
 
 /** 获取投诉详情 */
-export const getTypeReasonDetail = (req:any) => {
+export const getTypeReasonDetail = (req: any) => {
     return http.user.get('/v1/bc/api/complaint/details', req)
 }
 
 /** 社区朋友 */
-export const communityFriendList = (req:any) => {
+export const communityFriendList = (req: any) => {
     return http.content.post('/v1/bc/app/community/friend/communityFriendList', req)
 }
 
 /** 收益列表(商家收益) */
-export const getmoneyList = (req:any) => {
+export const getmoneyList = (req: any) => {
     return http.content.post('/v1/bc/app/money/list', req)
 }
 
@@ -583,7 +584,7 @@ export const getmoneyDetail = () => {
 }
 
 /** 商家提现 */
-export const moneytransfer = (req:any) => {
+export const moneytransfer = (req: any) => {
     return http.content.post('/v1/bc/app/money/transfer', req)
 }
 
@@ -598,10 +599,10 @@ export const checkFacebody = (req: any) => {
 }
 
 /** 数据上报 */
-export const deviceRecord = (req:any) => {
+export const deviceRecord = (req: any) => {
     console.log('每次调用上报执行', WEB_ENV)
 
-    const NullPromise = new Promise((resolve, reject) => {})
+    const NullPromise = new Promise((resolve, reject) => { })
 
     // test环境不进行上报
     if (!(WEB_ENV == 'pre' || WEB_ENV == 'prod')) {
@@ -611,12 +612,12 @@ export const deviceRecord = (req:any) => {
 }
 
 /** 获取推广 */
-export const marketingDetail = (id:string) => {
+export const marketingDetail = (id: string) => {
     return openHttp.order.get('/public/app/marketing/detail', { id })
 }
 
 /** 举报列表 */
-export const getReportList = (req:any) => {
+export const getReportList = (req: any) => {
     return http.content.post('/v1/bc/app/denounce/list', req)
 }
 
@@ -626,7 +627,7 @@ export const delReport = (req: _v1_bc_app_item_browse_history_del_post_req) => {
 }
 
 /** 举报详情 */
-export const reportDetail = (id:string) => {
+export const reportDetail = (id: string) => {
     return http.content.get('/v1/bc/app/denounce/detail', { id })
 }
 
