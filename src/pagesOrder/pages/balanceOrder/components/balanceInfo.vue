@@ -20,7 +20,7 @@
                             ￥{{ props.balanceInfoObj.optionprice / 100 }}
                         </view>
                         <view>
-                            <TnNumberBox v-model="data.vModelValue" bg-color="#f5f5f5" :max="data.maxStock"
+                            <TnNumberBox v-model="data.vModelValue" bg-color="#f5f5f5" :max="data.maxStock" 
                             :min="1" buttonSize="56rpx" inputWidth="66rpx" @change="changevalue">
                             </TnNumberBox>
                         </view>
@@ -36,7 +36,7 @@
         </view>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
 import TnNumberBox from '@tuniao/tnui-vue3-uniapp/components/number-box/src/number-box.vue'

@@ -7,7 +7,7 @@ import { pageController } from '@bc/uni-tools'
  */
 
 // 订单管理列表
- export const gotoorderList = (typeIndex:number = 0) => {
+export const gotoorderList = (typeIndex:number = 0) => {
     const route = {
         path: '/Order/pages/orderList/orderList',
         query: {
@@ -25,10 +25,10 @@ import { pageController } from '@bc/uni-tools'
  */
 
 // 服务订单详情
-export const gotoOrderDetail = (itemId:string, isdel:boolean = false) =>{
+export const gotoOrderDetail = (itemId:string, isdel:boolean = false) => {
     const route = {
-        path: '/pagesOrder/pages/serviceOrderDetail/serviceOrderDetail',
-        query: {itemId}
+        path: '/pagesOrder/pages/service/orderDetail/serviceOrderDetail',
+        query: { itemId }
     }as any
     return isdel ? pageController.replace(route) : pageController.push(route)
 }
@@ -44,7 +44,7 @@ export const gotoOrderDetail = (itemId:string, isdel:boolean = false) =>{
 export const GoodsOrderDetail = (itemId:string, isdel:boolean = false) => {
     const route = {
         path: '/pagesOrder/pages/goodsOrderDetail/goodsOrderDetail',
-        query: {itemId}
+        query: { itemId }
     }as any
     return isdel ? pageController.replace(route) : pageController.push(route)
 }
@@ -52,8 +52,8 @@ export const GoodsOrderDetail = (itemId:string, isdel:boolean = false) => {
 // 服务下单结算
 export const gotoBalanceOrder = (uniqueId:any, handle:number = 1) => {
     const route = {
-        path : '/pagesOrder/pages/balanceOrder/balanceOrder',
-        query: {uniqueId,handle}
+        path: '/pagesOrder/pages/balanceOrder/balanceOrder',
+        query: { uniqueId, handle }
     }as any
     return pageController.push(route)
 }
@@ -61,8 +61,8 @@ export const gotoBalanceOrder = (uniqueId:any, handle:number = 1) => {
 // 商品下单结算
 export const gotoBalanceGood = (uniqueId:any) => {
     const route = {
-        path : '/pagesOrder/pages/balanceGoods/balanceGoods',
-        query: {uniqueId}
+        path: '/pagesOrder/pages/balanceGoods/balanceGoods',
+        query: { uniqueId }
     }as any
     return pageController.push(route)
 }
@@ -70,8 +70,8 @@ export const gotoBalanceGood = (uniqueId:any) => {
 // 课程下单结算
 export const gotoBalanceCourse = (itemId:string) => {
     const route = {
-        path : '/pagesOrder/pages/balanceOrder/balanceCourse',
-        query: {itemId}
+        path: '/pagesOrder/pages/balanceOrder/balanceCourse',
+        query: { itemId }
     }as any
     return pageController.push(route)
 }
@@ -79,8 +79,8 @@ export const gotoBalanceCourse = (itemId:string) => {
 // 课程订单详情
 export const courseOrderDetail = (orderId:string) => {
     const route = {
-        path : '/pagesOrder/pages/courseOrderDetail/courseOrderDetail',
-        query: {orderId}
+        path: '/pagesOrder/pages/courseOrderDetail/courseOrderDetail',
+        query: { orderId }
     }as any
     return pageController.push(route)
 }
@@ -88,7 +88,7 @@ export const courseOrderDetail = (orderId:string) => {
 // 康养订单退款
 export const torefundOrder = (query:any) => {
     const route = {
-        path : '/pagesOrder/pages/refundOrder/refundOrder',
+        path: '/pagesOrder/pages/refundOrder/refundOrder',
         query
     }as any
     return pageController.push(route)
@@ -103,7 +103,7 @@ export const torefundOrder = (query:any) => {
  */
 export const gotorefundShopOrder = (query:any) => {
     const route = {
-        path : '/pagesOrder/pages/refundOrder/refundGoodsOrder',
+        path: '/pagesOrder/pages/refundOrder/refundGoodsOrder',
         query
     }as any
     return pageController.push(route)
@@ -116,7 +116,7 @@ export const gotorefundShopOrder = (query:any) => {
  */
 export const gotoexchangeDetail = (query:any) => {
     const route = {
-        path : '/pagesOrder/pages/exchangeDetail/exchangeDetail',
+        path: '/pagesOrder/pages/exchangeDetail/exchangeDetail',
         query
     }as any
     return pageController.push(route)
@@ -129,7 +129,7 @@ export const gotoexchangeDetail = (query:any) => {
  */
 export const gotorefundDetail = (query:any) => {
     const route = {
-        path : '/pagesOrder/pages/refundDetail/refundDetail',
+        path: '/pagesOrder/pages/refundDetail/refundDetail',
         query
     }as any
     return pageController.push(route)

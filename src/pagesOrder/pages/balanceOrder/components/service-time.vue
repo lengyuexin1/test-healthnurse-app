@@ -16,7 +16,7 @@
     </view>
     <TnDateTimePicker mode="datetime" v-model="datetime" v-model:open="openDateTimePicker" />
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -34,7 +34,7 @@ interface Events {
 const emit = defineEmits<Events>()
 
 const blur = () => {
-    emit('inpbur',inputValue.value)
+    emit('inpbur', inputValue.value)
 }
 
 defineExpose({
@@ -46,7 +46,7 @@ defineExpose({
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .container{
     background: #fff;
@@ -129,4 +129,3 @@ defineExpose({
     }
 }
 </style>
-  

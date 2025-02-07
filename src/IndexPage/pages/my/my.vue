@@ -595,6 +595,9 @@ const listClick = (item) => {
             case 'youhuiquan':
                 gotoCoupon()
                 break
+            case 'cart':
+                gotoShoppingCart()
+                break
             default:
                 item.url()
         }
