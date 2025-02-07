@@ -68,7 +68,7 @@ const data = reactive<Data>({
     tabsData : [
         {id:1,name:'康养订单'},
         {id:2,name:'适品订单'},
-        {id:3,name:'云课堂订单'}
+        // {id:3,name:'云课堂订单'}
     ],
     currentTabIndex:0,
 })
