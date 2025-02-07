@@ -17,7 +17,32 @@
                 <view class="order_info">
                     <orderInfo :serviceInfo="data.serviceInfo" :showInfo="data.showInfo" ></orderInfo>
                 </view>
-
+                <!-- 联系客服 -->
+                <!-- 机构订单与服务订单区别展示 -->
+                <view class="question">
+                    <view class="question_box">
+                        <view class="question_box_icon">
+                            <image class="icon_img" :src="getAssetsUrl('/shop/shopicon.png')" mode="scaleToFill" />
+                        </view>
+                        <view class="question_box_title" @click="gotoIMSessionChat(2)">
+                            <view class="question_title">联系商家</view>
+                            <view class="question_bace">物流/售后咨询</view>
+                        </view>
+                    </view>
+                    <view class="question_box">
+                        <view class="question_box_icon">
+                            <image class="icon_img" :src="getAssetsUrl('/shop/pticon.png')" mode="scaleToFill" />
+                        </view>
+                        <view class="question_box_title" @click="gotoIMSessionChat(1)">
+                            <view class="question_title">平台客服</view>
+                            <view class="question_bace">其他问题/纠纷</view>
+                        </view>
+                    </view>
+                    <view class="border_box"></view>
+                 </view>
+                <view class="order_info">
+                    <!-- <contactService :serviceInfo="data.serviceInfo" :showInfo="data.showInfo" ></contactService> -->
+                </view>
                 <view class="workerInfo" v-if="![65537,262146].includes(data.osObj.status) && !isinstitution">
                     <workerInfo :serviceInfo="data.serviceInfo" :showInfo="data.showInfo"></workerInfo>
                 </view>
@@ -120,7 +145,7 @@
                 <!-- <view @click="getdelreason">test</view> -->
             </template>
         </z-paging>
-
+        <orderEdit ref="ordEdit" @updateOrder="updateOrder" :shopId="data.serviceInfo.entity && data.serviceInfo.entity.shopId"></orderEdit>
 		<BCNotify ref="bcNotify"></BCNotify>
 
         <TnPopup v-model="data.showreason" :close-btn="true" @close="data.showreason = false" open-direction="bottom" round="32rpx">
@@ -149,11 +174,12 @@
 
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch, computed } from 'vue'
-
+import orderEdit from '@/components/orderEdit/orderEdit.vue'
 import BCNotify from '@/components/notify/index.vue'
 import PageTopbg from "@/components/page-topbg/page-topbg.vue"
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
+import { getAssetsPic } from '@/common/setPicture'
 
 import orderState from './order-state.vue'
 import orderInfo from './order-info.vue'
@@ -161,7 +187,6 @@ import workerInfo from './workerInfo.vue'
 import priceInfo from './price-info.vue'
 import orderDetail from './order-detail.vue'
 import orderFoot from './orderFoot.vue'
-
 import {
     getserviceOrderDetail,
     getAftersaleReason,
@@ -177,11 +202,11 @@ import { TempStorage } from "@bc/base"
 import { gotoBalanceOrder } from '@/routes/order-routes'
 import { gotoComment } from '@/routes/user-routes'
 import { PlatformManage } from "@bc/sys"
-
+import { gotoChatPage } from "@/routes/nim-routes"
+import { createTeam } from "@/api/nim-api"
 interface Props {
     orderId: any
     isAppOpen: boolean
-
 }
 
 const props = defineProps<Props>()
@@ -209,7 +234,32 @@ const data = reactive<Data>({
 
 
 })
-
+const gotoIMSessionChat = (type:number) => {
+    PlatformManage.getToken().then((token:any) => {
+        createTeam({
+            userId: token?.id,
+            userName: token?.nickname,
+            userThumb: token?.avatar,
+            flag: 1, //1小程序用户，2服务人员
+            shopId: data.serviceInfo.shopinfo.shopId,
+            type // 1平台，2店铺
+        }).then((res) => {
+            gotoChatPage({
+                to: res.tid,
+                scene: 'customer'
+            })
+        }).catch((err) => {
+            bcNotify.value.show(err.message)
+        })
+    })
+}
+const getAssetsUrl = computed(() => (src:string) => {
+    return getAssetsPic(src)
+})
+const updateOrder = () => {
+    bcNotify.value.show('修改成功')
+    getDetail(props.orderId)
+}
 const showBottom = computed(() => {
     if (!data.osObj.actionableList) {
         console.log(1)
@@ -651,7 +701,54 @@ const operate = (type:string) => {
         }
     }
 }
-
+.question {
+    width: 100%;
+    height: 160rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 24rpx;
+    position: relative;
+    margin-bottom: 36rpx;
+    margin-top: 20rpx;
+    .question_box {
+        width: 50%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .question_box_icon {
+            width: 76rpx;
+            height: 76rpx;
+            margin-right: 12rpx;
+            .icon_img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .question_box_title {
+            .question_title {
+                font-size: 28rpx;
+                font-weight: 500;
+                color: #333333;
+            }
+            .question_bace {
+                font-size: 24rpx;
+                color: #999999;
+            }
+        }
+    }
+    .border_box {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 2px;
+        height: 60%;
+        background: #e5e5e5;
+        transform: translate(0%, -50%);
+    }
+}
 .prompt_box {
     padding: 30rpx;
     background: #ffffff;

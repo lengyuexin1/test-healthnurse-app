@@ -115,13 +115,13 @@
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
 
 import { formattime } from '@/common/formatTime'
 import { torefundOrder } from '@/routes/order-routes'
- 
+
 interface Props {
     serviceInfo:any,
     showInfo:boolean,
@@ -133,57 +133,57 @@ interface data {
     shopInfo:any
 }
 const data = reactive<data>({
-    shopInfo:{}
+    shopInfo: {}
 })
 
 // 判断是否机构订单
-const isinstitution = computed(()=>{
+const isinstitution = computed(() => {
     return props.serviceInfo.kind === 3
 })
 
 
-const date = computed(()=>(time:number)=>{
-    return formattime((time * 1000) ,'YYYY-MM-DD HH:mm')
+const date = computed(() => (time:number) => {
+    return formattime((time * 1000), 'YYYY-MM-DD HH:mm')
 })
 
 const isKeep = computed(() => {
     return [65795, 65796].includes(props.serviceInfo.templateCodeId)
 })
 
-const showVisitEnd = computed(()=>{
+const showVisitEnd = computed(() => {
     return ![4, 7].includes(props.serviceInfo.shopList[0].entityList[0].optionExtend?.serviceWorkingHours.unit)
 })
 
 
-const timeformat = computed(()=>(time:number)=>{
-    return formattime(time ,'YYYY-MM-DD HH:mm:ss')
+const timeformat = computed(() => (time:number) => {
+    return formattime(time, 'YYYY-MM-DD HH:mm:ss')
 })
 
-const showutcTime = computed(()=>(timeList:any)=>{
+const showutcTime = computed(() => (timeList:any) => {
     const timeObj = timeList.find((item:any) => {
         return item.status == 131079
     })
     if (timeObj) {
-        return formattime(timeObj.utcTime,'YYYY-MM-DD HH:mm')
+        return formattime(timeObj.utcTime, 'YYYY-MM-DD HH:mm')
     }
 })
 
-onMounted(()=>{
-    console.log('props.serviceInfo.shopInfo',props.serviceInfo.info);
+onMounted(() => {
+    console.log('props.serviceInfo.shopInfo', props.serviceInfo.info)
 })
 
 
 const gotorefund = () => {
     // 申请退款
-    torefundOrder({orderId:props.serviceInfo.id})
+    torefundOrder({ orderId: props.serviceInfo.id })
 }
 
-const tominutes = (index:number) =>{ 
+const tominutes = (index:number) => {
     // 退款记录
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .container{
     background: #fff;
@@ -318,7 +318,7 @@ const tominutes = (index:number) =>{
             color: #999999;
 
         }
-        
+
     }
     .record_box {
         padding-top: 20rpx;
@@ -381,4 +381,3 @@ const tominutes = (index:number) =>{
     }
 }
 </style>
-  

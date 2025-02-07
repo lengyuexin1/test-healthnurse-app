@@ -9,7 +9,7 @@
                 <div class="fotbtn editbtn" v-if="actionList.includes('edit') && kind != 3" @click="operate('showEdit')">
 					<view >修改订单</view>
 				</div>
-				
+
 				<div class="fotbtn commentbtn" v-if="actionList.includes('comment') " @click="operate('goComment')">
 					<view >去评价</view>
 				</div>
@@ -25,15 +25,15 @@
 				<div class="fotbtn btn" v-if="actionList.includes('use_now')" @click="operate('goUse')">
 					<view >立即使用</view>
 				</div>
-                
+
 			</div>
 		</div>
-        
+
 		<div class="bottom_spage"></div>
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 
@@ -45,7 +45,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const actionList = computed(()=>{
+const actionList = computed(() => {
     if (!props.actionableList) { return [] }
     const arr = []
     for (const action in props.actionableList) {
@@ -67,13 +67,13 @@ onMounted(() => {
 
 
 const operate = (type:string) => {
-    emit('operate',type)
+    emit('operate', type)
 }
 
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .footer{
 	background: #FFFFFF;
@@ -131,4 +131,4 @@ const operate = (type:string) => {
     height: 100rpx;
 }
 </style>
- 
+

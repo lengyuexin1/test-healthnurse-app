@@ -29,6 +29,11 @@
                         <!-- 服务时间\备注 -->
                         <serviceTime @inpbur="inpbur" ref="timeRef"></serviceTime>
                     </view>
+                         <!-- 价格明细 -->
+                    <view class="price_infoBox">
+                        <!-- :showInfo="data.showInfo" -->
+                    <priceInfo :serviceInfo="data.balanceInfoObj" :showInfo="data.showInfo" :isinstitution="true"></priceInfo>
+                 </view>
                 </view>
             </template>
             <!-- 机构服务订单确认服务 -->
@@ -92,7 +97,6 @@
                             <div class="voucher_Notice_days" v-if="data.agencyObj.isExclusive == 1">·不可同时享受商家其他优惠</div>
                             <div class="voucher_Notice_days" v-if="data.agencyObj.isExclusive == 2">·可同时享受商家其他优惠</div>
                             <div class="voucher_Notice_days" v-if="data.agencyObj.isExclusive == 3">·可同时享受商家{{ data.agencyObj.exclusiveData }}优惠</div>
-
                             <div class="voucher_Notice_days">·有效期以具体时间为准</div>
                             <div class="voucher_Notice_days">·每人最多购买{{`${data.agencyObj.isRestrictBuyQuantity == 0 ? '不限制数量' : `${data.agencyObj.restrictBuyQuantity}`}`}}张</div>
                         </div>
@@ -142,13 +146,13 @@
                     </view>
                 </view>
             </template>
-
     		<BCNotify ref="bcNotify"></BCNotify>
         </z-paging>
     </view>
 </template>
 
 <script setup lang="ts">
+import priceInfo from './price-info.vue'
 import { ref, reactive, computed, onMounted } from 'vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import { TempStorage } from "@bc/base"
@@ -180,6 +184,7 @@ const props = defineProps<Props>()
 interface Data {
     showPage:boolean,
     uniqueId:any,
+    showInfo:boolean,
     balanceInfoObj:any,
     consumerAttr:any,
     archives:any, //照护人信息
@@ -198,6 +203,7 @@ interface Data {
 
 }
 const data = reactive<Data>({
+    showInfo: true,
     showPage: false,
     uniqueId: '',
     balanceInfoObj: {},
