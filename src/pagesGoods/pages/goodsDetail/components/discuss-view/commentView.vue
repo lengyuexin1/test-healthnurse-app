@@ -122,6 +122,9 @@ const togoodsComment = () => {
         color: #333333;
         margin-right: 16rpx;
     }
+    .evaluateScore{
+        margin: 16rpx 0;
+    }
 
     .evaluate-num {
         font-size: 68rpx;

@@ -11,6 +11,7 @@ export const gotoserviceDetail = (itemId: string) => {
     console.log('没有服务详情界面')
     const route = {
         path: '/pagesService/pages/serviceDetail/serviceDetail',
+        // path: '/pagesService/pages/Servicestore/healthproductDetails',
         query: { itemId }
     } as any
     return pageController.push(route)
@@ -102,7 +103,7 @@ export const toInnerPage = (query:any) => {
  */
 export const gotosearch = (query?:any) => {
     const route = {
-        path: '/pagesService/pages/search/search',
+        path: '/IndexPage/pages/search/search',
         query
     } as any
     return pageController.push(route)
@@ -152,7 +153,7 @@ export const gotoScanCode = (path:any, query:any) => {
         query
     } as any
 
-    console.log('route',route);
+    console.log('route', route)
 
 
     return pageController.push(route)

@@ -1,9 +1,7 @@
 <template>
     <view class="container">
         <z-paging ref="paging" v-model="data.dataList" :auto="true" :auto-scroll-to-top-when-reload="false"
-                  :auto-show-system-loading="true"
-                  :defaultPageSize="10" :fixed="true" :hide-empty-view="true"
-                  @query="queryList">
+            :auto-show-system-loading="true" :defaultPageSize="10" :fixed="true" :hide-empty-view="true" @query="queryList">
             <template #top>
                 <bc-page-navbar :bgColor="'#56CC7D'" :textColor="'#ffffff'" :title="'我的'">
                     <template #back>
@@ -18,33 +16,28 @@
                         <view class="avatar_box_top">
                             <view class="avatar_box_left" @click="toEditProfile">
                                 <view class="avatar_img_box">
-                                    <image :src="data.userinfo.avatar" class="avatar_img"
-                                           mode="aspectFill"/>
+                                    <image :src="data.userinfo.avatar" class="avatar_img" mode="aspectFill" />
                                 </view>
                                 <view class="user_text_box">
                                     <view class="user_namr">{{ data.userinfo.nickname }}</view>
                                     <view class="user_bcId_box">
                                         <view class="user_bcId">账号名: {{
-                                                data.homeObj.regCode ? data.homeObj.regCode :
-                                                      'ABCDEF'
-                                            }}
+                                            data.homeObj.regCode ? data.homeObj.regCode :
+                                            'ABCDEF'
+                                        }}
                                         </view>
                                     </view>
                                 </view>
                             </view>
                             <view class="row i-center j-center">
                                 <view class="set_li">
-                                    <image :src="getAssetsUrl('/mine/v1/my_set_xx.svg')"
-                                           class="top_menu_right_icon share"
-                                           mode="scaleToFill"
-                                           @click.stop="toSetting"/>
+                                    <image :src="getAssetsUrl('/mine/v1/my_set_xx.svg')" class="top_menu_right_icon share"
+                                        mode="scaleToFill" @click.stop="toSetting" />
                                     <view class="txt">消息</view>
                                 </view>
                                 <view class="set_li">
-                                    <image :src="getAssetsUrl('/mine/v1/my_set_sz.svg')"
-                                           class="top_menu_right_icon share"
-                                           mode="scaleToFill"
-                                           @click.stop="toSetting"/>
+                                    <image :src="getAssetsUrl('/mine/v1/my_set_sz.svg')" class="top_menu_right_icon share"
+                                        mode="scaleToFill" @click.stop="toSetting" />
                                     <view class="txt">设置</view>
                                 </view>
                             </view>
@@ -52,7 +45,7 @@
                     </view>
                     <view v-else class="tologin" @click="toLogin">
                         <image :src="getAssetsUrl('/leyou/static/default_avatar.png')" class="avatar_img"
-                               mode="aspectFill"/>
+                            mode="aspectFill" />
                         <view class="tologin_text">
                             点击头像登录
                         </view>
@@ -65,7 +58,7 @@
                                 {{ data.homeObj.cntFollow ? data.homeObj.cntFollow : '--' }}
                             </view>
                             <view class="data_text">我的关注
-                                <TnIcon color="#ffffff" name="right" size="28"/>
+                                <TnIcon color="#ffffff" name="right" size="28" />
                             </view>
                         </view>
                         <view class="operate_data_item haveborder" @click="todataManage(2)">
@@ -73,7 +66,7 @@
                                 {{ data.homeObj.totalFans ? data.homeObj.totalFans : '--' }}
                             </view>
                             <view class="data_text">我的粉丝
-                                <TnIcon color="#ffffff" name="right" size="28"/>
+                                <TnIcon color="#ffffff" name="right" size="28" />
                             </view>
                         </view>
                         <view class="operate_data_item">
@@ -89,38 +82,32 @@
 
                 <view class="my_functionMuen">
                     <TnTabs v-model="data.currentTabIndex" :bottom-shadow="false" active-font-size="32rpx"
-                            bar-color="#56cc7d" class="my_functionTabs"
-                            font-size="30rpx">
-                        <TnTabsItem v-for="item  in data.tabsData" :key="item.id"
-                                    :title="item.name"
-                                    active-color="#000"
-                                    color="#666666"
-                        />
+                        bar-color="#56cc7d" class="my_functionTabs" font-size="30rpx">
+                        <TnTabsItem v-for="item  in data.tabsData" :key="item.id" :title="item.name" active-color="#000"
+                            color="#666666" />
                     </TnTabs>
                     <view class="top_left" @click="toFunctionPage">
                         <view>查看全部</view>
-                        <TnIcon color="#999999" name="right" size="28"/>
+                        <TnIcon color="#999999" name="right" size="28" />
                     </view>
                     <view class="item" style="padding: 0 30rpx 30rpx 30rpx;">
                         <template v-if="data.currentTabIndex == 0">
-                            <block v-for="(item,index) in data.serviceList" :key="index">
-                                <view class="flex" style="position: relative"
-                                      @click="goOder(item.inds,item.taborIndex)">
+                            <block v-for="(item, index) in data.serviceList" :key="index">
+                                <view class="flex" style="position: relative" @click="goOder(item.inds, item.taborIndex)">
                                     <image :src="item.icon" class="item_img" mode="aspectFit"></image>
                                     <text class="item_name">{{ item.name }}</text>
-                                    <u-badge :offset="[-5,15]" :value="item.badge" absolute bgColor="#FF2A2A" max="99"
-                                             type="error"></u-badge>
+                                    <!-- <u-badge :offset="[-5,15]" :value="item.badge" absolute bgColor="#FF2A2A" max="99"
+                                             type="error"></u-badge> -->
                                 </view>
                             </block>
                         </template>
                         <template v-if="data.currentTabIndex == 1">
-                            <block v-for="(item,index) in data.productList" :key="index">
-                                <view class="flex" style="position: relative"
-                                      @click="goOder(item.inds,item.taborIndex)">
+                            <block v-for="(item, index) in data.productList" :key="index">
+                                <view class="flex" style="position: relative" @click="goOder(item.inds, item.taborIndex)">
                                     <image :src="item.icon" class="item_img" mode="aspectFit"></image>
                                     <text class="item_name">{{ item.name }}</text>
-                                    <u-badge :offset="[-5,15]" :value="item.badge" absolute bgColor="#FF2A2A" max="99"
-                                             type="error"></u-badge>
+                                    <!-- <u-badge :offset="[-5,15]" :value="item.badge" absolute bgColor="#FF2A2A" max="99"
+                                             type="error"></u-badge> -->
                                 </view>
                             </block>
                         </template>
@@ -134,8 +121,8 @@
                         </view>
                     </view>
                     <view class="item" style="padding: 0 30rpx 30rpx 30rpx;">
-                        <block v-for="(item,index) in data.wisdomList" :key="index">
-                            <view class="flex" @click="gotoPersonnel(item,index)">
+                        <block v-for="(item, index) in data.wisdomList" :key="index">
+                            <view class="flex" @click="gotoPersonnel(item, index)">
                                 <image :src="item.icon" mode="aspectFit" style="width:56rpx; height:56rpx;"></image>
                                 <text class="item_name">{{ item.name }}</text>
                             </view>
@@ -150,18 +137,15 @@
                         </view>
                     </view>
                     <TnScrollList :indicator-block-color="'rgba(0, 216, 134,1)'" :indicator-block-width="15"
-                                  :indicator-width="30"
-                                  class="server_scroll"
-                                  indicator-color="rgba(150, 243, 222,0.8)">
+                        :indicator-width="30" class="server_scroll" indicator-color="rgba(150, 243, 222,0.8)">
                         <view class="scroll-list">
                             <view v-for="(item, index) in newmenu" :key="index" class="scroll-list__line">
                                 <block v-for="(item1, index1) in item" :key="index1">
                                     <view @click="listClick(item1)">
-                                        <view :class="[(index1 === item.length - 1) && 'scroll-list__line__item--no-margin-right']"
-                                              class="scroll-list__line__item"
-                                        >
-                                            <image :src="item1.img" class="scroll-list__line__item__image"
-                                                   mode=""></image>
+                                        <view
+                                            :class="[(index1 === item.length - 1) && 'scroll-list__line__item--no-margin-right']"
+                                            class="scroll-list__line__item">
+                                            <image :src="item1.img" class="scroll-list__line__item__image" mode=""></image>
                                             <text class="scroll-list__line__item__text">{{ item1.title }}</text>
                                         </view>
                                     </view>
@@ -198,7 +182,7 @@
                 <view class="orders">
                     <view class="orders_left">我的钱包</view>
                     <view class="item" style="padding: 0 30rpx 30rpx 30rpx;">
-                        <block v-for="(item,index) in data.wallet" :key="index">
+                        <block v-for="(item, index) in data.wallet" :key="index">
                             <view class="flex" style="position: relative" @click="listClick(item)">
                                 <image :src="item.icon" class="item_img" mode="aspectFit"></image>
                                 <text class="item_name">{{ item.title }}</text>
@@ -401,7 +385,7 @@ const data = reactive<Data>({
         {
             name: "dangan",
             title: "老人档案",
-            url: gotoelderlyFiles(),
+            // url: gotoelderlyFiles(),
             img: getAssetsPic("/mine/v1/my_list_da.png"),
             affair_id: 61
         },
@@ -481,16 +465,16 @@ interface Events {
 const emit = defineEmits<Events>()
 
 onMounted(() => {
-    uni.getSystemInfo({
-        success: (res: any) => {
-            data.safeBotomHeight = res.safeAreaInsets.bottom
-        }
-    })
+    // uni.getSystemInfo({
+    //     success: (res: any) => {
+    //         data.safeBotomHeight = res.safeAreaInsets.bottom
+    //     }
+    // })
 
-    getuserInfo()
-    PlatformManage.isRequireLogin().then((isRequireLogin) => {
-        data.isRequireLogin = isRequireLogin
-    })
+    // getuserInfo()
+    // PlatformManage.isRequireLogin().then((isRequireLogin) => {
+    //     data.isRequireLogin = isRequireLogin
+    // })
 })
 
 const toCreation = () => {
@@ -644,7 +628,7 @@ const toenjoy = () => {
 
 const scanCode = () => {
     uni.scanCode({
-        success: function(res) {
+        success: function (res) {
 
             const [path, str] = res.path.split('?')
             const [type, scene] = str.split('=')
@@ -765,6 +749,11 @@ const toFunctionPage = () => {
         gotoorderList()
     })
 
+}
+
+// 订单/售后
+const goOder = (sub = 0, taborIndex = 0) => {
+    gotoorderList(sub)
 }
 
 const changetabs = (item: any, index: number) => {

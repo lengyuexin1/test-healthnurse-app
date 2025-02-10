@@ -3,7 +3,7 @@
         <view class="WaterFall_img_box">
             <image
                 class="WaterFall_img"
-                :class="{ 'right' : isSmall }"
+                :class="{ 'right': isSmall }"
                 :src="item.thumb"
                 mode="aspectFill"
             />
@@ -52,7 +52,7 @@
         </view>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 import { ref, computed, reactive, onMounted } from 'vue'
@@ -64,7 +64,7 @@ import { getDistances } from '@/utils/distance'
 interface Props {
     item: any,
     isSmall:boolean,
-    
+
 }
 
 const props = defineProps<Props>()
@@ -73,14 +73,14 @@ interface Data {
     rateValue:number,
     mylat:number,
     mylng:number,
-    positioning:boolean,//是否展示距离
+    positioning:boolean, //是否展示距离
 
 }
 const data = reactive<Data>({
-    rateValue:3,
-    mylat:0,
-    mylng:0,
-    positioning:false,
+    rateValue: 3,
+    mylat: 0,
+    mylng: 0,
+    positioning: false
 
 })
 
@@ -90,7 +90,7 @@ interface Events {
 const emit = defineEmits<Events>()
 
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
@@ -103,7 +103,7 @@ onMounted(() => {
 
 
 
-const getdistance = computed(()=>(lat:number, lng:number)=>{
+const getdistance = computed(() => (lat:number, lng:number) => {
     if (!data.mylat || !data.mylng) { return '' }
     const distance = getDistances(
         data.mylat,
@@ -140,15 +140,15 @@ const getDistancesfun = () => {
 
 
 
-const todetail = (item:any) =>{
-    emit('clickwaterItem',item)
+const todetail = (item:any) => {
+    emit('clickwaterItem', item)
 }
 
 
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .WaterFall_item{
     display: flex;
@@ -197,7 +197,7 @@ const todetail = (item:any) =>{
             }
         }
     }
-    
+
     .WaterFall_text_box{
         padding: 16rpx 20rpx;
         box-sizing: border-box;
@@ -225,7 +225,7 @@ const todetail = (item:any) =>{
             font-size: 28rpx;
             margin-bottom: 12rpx;
             width: 100%;
-            white-space: nowrap; 
+            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
@@ -292,4 +292,3 @@ const todetail = (item:any) =>{
 
 }
 </style>
-  

@@ -6,7 +6,7 @@ import { pageController } from '@bc/uni-tools'
  *
  */
 
- export const gotogoodsDetail = (itemId:string, livePlayId?: string) => {
+export const gotogoodsDetail = (itemId: string, livePlayId?: string) => {
     const route = {
         path: '/pagesGoods/pages/goodsDetail/goodsDetail',
         query: { itemId, livePlayId }
@@ -23,7 +23,7 @@ export const gotoShoppingCart = () => {
     return pageController.push(route)
 }
 // 跳转到 签到红包
-export const gotoRegister = (query? : any) => {
+export const gotoRegister = (query?: any) => {
     const route = {
         path: '/pagesCnt/pages/redEnvelope/register',
         query
@@ -49,7 +49,7 @@ export const gotoGoodsPerferShop = () => {
 }
 
 // 订单物流
-export const gotoSalePutlogis = (query:any) => {
+export const gotoSalePutlogis = (query: any) => {
     const route = {
         path: '/pagesGoods/pages/logistics/logistics',
         query
@@ -57,8 +57,8 @@ export const gotoSalePutlogis = (query:any) => {
     return pageController.push(route)
 }
 
- // 商品评论列表
-export const gotogoodsComment = (query:any) => {
+// 商品评论列表
+export const gotogoodsComment = (query: any) => {
     const route = {
         path: '/pagesGoods/pages/goodsComment/goodsComment',
         query
@@ -70,7 +70,7 @@ export const gotogoodsComment = (query:any) => {
 export const gotogoodsRanking = () => {
     const route = {
         path: '/pagesGoods/pages/goodsRanking/goodsRanking',
-        query : {}
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -79,7 +79,7 @@ export const gotogoodsRanking = () => {
 export const gotorankingDetail = () => {
     const route = {
         path: '/pagesGoods/pages/goodsRanking/rankingDetail',
-        query : {}
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -88,7 +88,7 @@ export const gotorankingDetail = () => {
 export const gotointegralMallGoods = () => {
     const route = {
         path: '/pagesGoods/pages/integralMall/integralMallGoods',
-        query : {}
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -97,13 +97,13 @@ export const gotointegralMallGoods = () => {
 export const gotomyIntegral = () => {
     const route = {
         path: '/pagesGoods/pages/integralMall/myIntegral',
-        query : {}
+        query: {}
     } as any
     return pageController.push(route)
 }
 
 // 积分商品详情
-export const gotointegralGoodsDetail = (query:any) => {
+export const gotointegralGoodsDetail = (query: any) => {
     const route = {
         path: '/pagesGoods/pages/integralMall/integralGoodsDetail',
         query
@@ -112,7 +112,7 @@ export const gotointegralGoodsDetail = (query:any) => {
 }
 
 // 兑换积分商品
-export const tobalanceRule = (query:any) => {
+export const tobalanceRule = (query: any) => {
     const route = {
         path: '/pagesGoods/pages/integralMall/balanceRule',
         query
@@ -121,7 +121,7 @@ export const tobalanceRule = (query:any) => {
 }
 
 // 积分物流详情
-export const gotointegralLogistics = (query:any) => {
+export const gotointegralLogistics = (query: any) => {
     const route = {
         path: '/pagesGoods/pages/integralLogistics/integralLogistics',
         query

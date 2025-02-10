@@ -28,13 +28,13 @@
                             </view>
                         </template>
                         <template v-else>
-                            <view class="hide_nav_box" :class="{ 'first_Navbox' : data.currentTabIndex == 999 }">
+                            <view class="hide_nav_box" :class="{ 'first_Navbox': data.currentTabIndex == 999 }">
                                 <view class="back_icon" @click="backInitIndex">
                                     <TnIcon name="left" color="#2F2F2F" size="38" bold ></TnIcon>
                                 </view>
-                                <view class="hide_scroll" :class="{ 'first_page' : data.currentTabIndex == 999 }">
+                                <view class="hide_scroll" :class="{ 'first_page': data.currentTabIndex == 999 }">
                                     <view class="hide_nav_list">
-                                        <view class="hideNav_item" :class="{ 'is_select': data.hidNavIndex == index , 'not_right' : data.hidNavList.length == (index + 1)}" @click="changeHidNav(item, index)" v-for="(item,index) in data.hidNavList" :key="item.id">
+                                        <view class="hideNav_item" :class="{ 'is_select': data.hidNavIndex == index , 'not_right': data.hidNavList.length == (index + 1) }" @click="changeHidNav(item, index)" v-for="(item,index) in data.hidNavList" :key="item.id">
                                             <view>
                                                 {{ item.text ? item.text : item.name }}
                                             </view>
@@ -111,7 +111,7 @@
                         mode="scaleToFill"
                         @click="goRedBag"
                     />
-                    
+
 
                     <view class="inp_box" :class="{ 'have_hongbao': data.envelopeStatus && data.activityType }" @click="tosearch">
                         <!-- 放大镜 -->
@@ -211,7 +211,7 @@
                     @changeNav="indexListchangeNav"
                     @gethidNavList="gethidNavList"
                     ></salonList>
-                
+
                 <!-- 爱聊 -->
                 <view v-if="data.currentTabIndex == 2" :style="{ height: data.parentHeight + 'px' }">
                     <likechatPage
@@ -233,7 +233,7 @@
                 <BCNotify ref="bcNotify"></BCNotify>
 
             </view>
-            
+
 
             <template #bottom>
                 <view class="index_bottom_box"></view>
@@ -249,7 +249,7 @@
                     <view v-if="!data.touchSearchText" class="not_text">语音搜索，轻松找到您想要的~</view>
                     <view v-else>{{ data.touchSearchText }}</view>
                 </view>
-                
+
                 <view class="sound_icon_box">
                     <image
                         class="sound_icon"
@@ -405,7 +405,7 @@ const data = reactive<Data>({
     showAiSearch: false,
     isTouch: false,
     touchSearchText: '',
-    RECORDER: uni.getRecorderManager(),
+    RECORDER: uni.getRecorderManager()
 
 })
 
@@ -469,7 +469,7 @@ onMounted(async () => {
     data.titleRight = 8
     // #endif
 
-    console.log(',data.titleRight',data.titleRight)
+    console.log(',data.titleRight', data.titleRight)
 
 
     getCity()
@@ -531,11 +531,11 @@ onMounted(async () => {
         }
         // #endif
     }).exec()
-    console.log('7891011,data.titleRight',data.titleRight)
+    console.log('7891011,data.titleRight', data.titleRight)
 
 
     // 百科 云课堂 沙龙
-    const liveArr = [5,6,8]
+    const liveArr = [5, 6, 8]
     liveArr.forEach((item:any) => {
         initLive(item)
     })
@@ -547,18 +547,18 @@ onMounted(async () => {
         }
     }).exec()
 
-    console.log('78,data.titleRight',data.titleRight)
+    console.log('78,data.titleRight', data.titleRight)
 
 
     data.RECORDER.onStart(() => {
-        console.log('开始录音');
-        
+        console.log('开始录音')
+
     })
 
     // 结束录音
     data.RECORDER.onStop((e: any) => {
-        console.log('结束录音e',e);
-        
+        console.log('结束录音e', e)
+
     })
 
 })
@@ -610,15 +610,9 @@ const changeTabs = (item:any, index:number) => {
             }, 1000)
             return
         }
-
-        
-
         data.currentTabIndex = index
         // 初始化每个模块类目index,
-        
         data.hidNavIndex = 0
-        console.log('data.hidNavIndex',data.hidNavIndex);
-        console.log('item',item);
         data.showNav = true
 
         item.id == 1 && typePreviewReport('course')
@@ -636,7 +630,7 @@ const imgInitIndex = () => {
     data.showNav = false
     if (indexListRef.value) {
         (indexListRef.value as any).pagingReload();
-        (indexListRef.value as any).changeContentHideNav();
+        (indexListRef.value as any).changeContentHideNav()
     }
 }
 
@@ -696,12 +690,12 @@ const gotocarrySearch = () => {
 const scanCode = () => {
     uni.scanCode({
         success: function(res) {
-            console.log('扫码res',res);
+            console.log('扫码res', res)
 
-            let [path, str] = res.path.split('?');
-            let [type, scene] = str.split('=');
+            const [path, str] = res.path.split('?')
+            const [type, scene] = str.split('=')
 
-            getQRPage({scene}).then((page) => {
+            getQRPage({ scene }).then((page) => {
                 console.log('page', page)
                 uni.navigateTo({
                     url: decodeURIComponent(page)
@@ -713,9 +707,9 @@ const scanCode = () => {
 
             // gotoScanCode(path,sceneObj)
 
-            console.log('path',path);
-            console.log('str',str);
-            
+            console.log('path', path)
+            console.log('str', str)
+
 
         }
     })
@@ -753,7 +747,7 @@ const backInitIndex = () => {
 const changeHidNav = (item:any, index:number) => {
 
     if (data.currentTabIndex == 3) {
-        console.log('文娱切换顶部栏');
+        console.log('文娱切换顶部栏')
         if (index == 1 || index == 2) {
             bcNotify.value.show('敬请期待')
             return
@@ -794,7 +788,7 @@ const changeToplist = (item:any, index:number) => {
 
 const initLive = (type: number) => {
     liveLists({
-        query:{
+        query: {
             categoryIds: [],
             businessType: type
         },
@@ -803,28 +797,28 @@ const initLive = (type: number) => {
     }).then((res:any) => {
         let key = ''
         if (type == 5) {
-            key = 'channel';
+            key = 'channel'
         }
         if (type == 6) {
-            key = 'course';
+            key = 'course'
         }
         if (type == 8) {
-            key = 'salon';
+            key = 'salon'
         }
 
-        data.liveType[key] = res.data.length > 0 ? true : false
+        data.liveType[key] = res.data.length > 0
     })
 }
 
 const typePreviewReport = (type: string) => {
-    Debounce(()=>{
+    Debounce(() => {
         // createCollectAndReport.prototype(type)
         createCollectAndReport().previewReport(type)
-    },300)
+    }, 300)
 }
 
 const openAisearch = () => {
-    
+
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
             bcNotify.value.show('登录失效,请重新登录')
@@ -835,15 +829,15 @@ const openAisearch = () => {
         }
         data.showAiSearch = true
         data.touchSearchText = ''
-        
+
     })
-    
+
 }
 
-let timer = ref<any>(null)
+const timer = ref<any>(null)
 
 const startTime = () => {
-    timer.value = setTimeout(()=>{
+    timer.value = setTimeout(() => {
         data.isTouch = true
 
         // 开始录音
@@ -853,11 +847,11 @@ const startTime = () => {
         })
 
         data.RECORDER.onStart(() => {
-            console.log('开始录音111');
+            console.log('开始录音111')
         })
 
     }, 300)
-    
+
 }
 
 const endTime = () => {
@@ -869,24 +863,24 @@ const endTime = () => {
 
     // 结束录音
     data.RECORDER.onStop((e: any) => {
-        console.log('结束录音222',e);
+        console.log('结束录音222', e)
         uploadAudio(e.tempFilePath).then((oss: any) => {
-            console.log('oss',oss)
-            
+            console.log('oss', oss)
+
             speechText({ url: oss.url }).then((res: any) => {
                 data.touchSearchText = res.replace(/^[#*]+|[#*]+$/g, "").replace(/[.。，,]+/g, "").trim()
-                
-                setTimeout(()=>{
-                    console.log('data.touchSearchText',data.touchSearchText);
+
+                setTimeout(() => {
+                    console.log('data.touchSearchText', data.touchSearchText)
                     data.showAiSearch = false
                     gotosearch({
                         searchText: data.touchSearchText,
                         tosearch: 1
                     })
-                    
-                },800)
 
-                
+                }, 800)
+
+
             }).catch((err: any) => {
                 bcNotify.value.show(err.message)
             }).finally(() => {
@@ -1000,7 +994,7 @@ defineExpose({
             justify-content: space-between;
             // #ifdef MP-WEIXIN
             // #endif
-            
+
             // #ifdef APP-PLUS || H5
             padding-right: 20rpx;
             // #endif
@@ -1044,7 +1038,7 @@ defineExpose({
             // #ifdef APP-PLUS || H5
             justify-content: space-between;
             // #endif
-            
+
             width: 100%;
             padding-right: 10rpx;
             box-sizing: border-box;
@@ -1065,7 +1059,7 @@ defineExpose({
             // #ifdef APP-PLUS || H5
             width: 80rpx;
             // #endif
-                        
+
             height: 10rpx;
         }
         .back_icon{
@@ -1089,7 +1083,7 @@ defineExpose({
             // #endif
 
 
-            overflow-x: scroll; 
+            overflow-x: scroll;
             &.first_page{
                 // #ifdef APP-PLUS || H5
                 margin-left: 34rpx;
@@ -1521,7 +1515,7 @@ defineExpose({
         font-weight: 400;
         margin-bottom: 52rpx;
     }
-    
+
 
 }
 

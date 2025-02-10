@@ -1,22 +1,15 @@
 <template>
     <view class="wrap" style="height: 100vh" v-if="showPage">
-        <z-paging
-            ref="paging"
-            v-model="dataList"
-            @query="queryList"
-            :defaultPageSize="10"
-            empty-view-text="还没有数据哦~"
-            :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
-            @scroll="pagingScroll"
-        >
+        <z-paging ref="paging" v-model="dataList" @query="queryList" :defaultPageSize="10" empty-view-text="还没有数据哦~"
+            :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" @scroll="pagingScroll">
             <template #top>
                 <!-- <PageTopbg></PageTopbg> -->
 
                 <view id="wrap" class="wrap_box" v-if="showtab" :style="'opacity:' + (opacityNumber)">
                     <view class="navbar_box" :style="{ paddingTop: titleTop + 'px', paddingRight: titleRight + 'px' }">
                         <view class="top_box" :style="{ height: sBarHeight + 'px' }">
-                            <view @click="goback" >
-                                <TnIcon name="left" color="#333333" size="38" :bold="true"/>
+                            <view @click="goback">
+                                <TnIcon name="left" color="#333333" size="38" :bold="true" />
                             </view>
                             <view class="title_text">详情</view>
 
@@ -27,24 +20,12 @@
                         </view>
                     </view>
 
-                    <div class="tab_box" >
-                        <TnTabs
-                            v-model="tabCurrent"
-                            color="#fff"
-                            :scroll="false"
-                            bg-color="#fff"
-                            bar-color="#29C86F"
-                            :bottom-shadow="false"
-                        >
-                            <TnTabsItem
-                            v-for="(item, index) in tabList"
-                            :key="index"
-                            :title="item.name"
-                            font-size="28rpx"
-                            active-color="#333333"
-                            color="#999999"
-                            @click="changeTab(item,index)"
-                            />
+                    <div class="tab_box">
+                        <TnTabs v-model="tabCurrent" color="#fff" :scroll="false" bg-color="#fff" bar-color="#29C86F"
+                            :bottom-shadow="false">
+                            <TnTabsItem v-for="(item, index) in tabList" :key="index" :title="item.name"
+                                font-size="28rpx" active-color="#333333" color="#999999"
+                                @click="changeTab(item, index)" />
                         </TnTabs>
                     </div>
 
@@ -52,123 +33,106 @@
             </template>
 
             <view class="back_icon" v-if="!showtab" @click="goback">
-                <TnIcon name="left" color="#fff" size="38" :bold="true"/>
+                <TnIcon name="left" color="#fff" size="38" :bold="true" />
             </view>
 
             <div class="head_box" id="toView1">
-                <swiper
-                    class="swiper_box"
-                    autoplay
-                    circular
-                    :current="currentSwiperIndex"
-                    @change="changeSwiper"
-                >
-                    <swiper-item class="swiper_item" v-for="(item,index) in orderObj.multimedia" :key="index">
-                        <image
-                            class="image"
-                            :src="item"
-                            mode="aspectFill"
-                            @click="preImage(currentSwiperIndex,orderObj.multimedia)"
-                        />
+                <swiper class="swiper_box" autoplay circular :current="currentSwiperIndex" @change="changeSwiper">
+                    <swiper-item class="swiper_item" v-for="(item, index) in orderObj.multimedia" :key="index">
+                        <image class="image" :src="item" mode="aspectFill"
+                            @click="preImage(currentSwiperIndex, orderObj.multimedia)" />
                     </swiper-item>
                 </swiper>
                 <view class="indicator_box">
-                    <view class="indicator_item" :class="{ 'is_Selected': index == currentSwiperIndex }" v-for="(item,index) in orderObj.multimedia" :key="index"></view>
+                    <view class="indicator_item" :class="{ 'is_Selected': index == currentSwiperIndex }"
+                        v-for="(item, index) in orderObj.multimedia" :key="index"></view>
                 </view>
             </div>
             <couponGet v-if="couparr.length" @getCoupon="getCoupon" />
 
-                <view class="servebox" id="serveBox">
-                    <view class="serve-info">
-                        <view class="goods">
-                            <view class="serve-more row j-between">
-                                <view class="serve-abt">
-                                    <view class="goods-up">
-                                        <text class="goods-title u-line-2 u-font-xl">{{
-                                            orderObj.name
+            <view class="servebox" id="serveBox">
+                <view class="serve-info">
+                    <view class="goods">
+                        <view class="serve-more row j-between">
+                            <view class="serve-abt">
+                                <view class="goods-up">
+                                    <text class="goods-title u-line-2 u-font-xl">{{
+                                        orderObj.name
                                         }}</text>
-                                    </view>
-                                    <view class="servebat row i-center u-line-1">
-                                        <text class="servebatli">{{orderObj.desc}}</text>
-                                    </view>
                                 </view>
-                                <view class="serve-opt row">
-                                    <view class="serve-opt-li column i-center j-center" @click="setcollect">
-                                        <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
-                                            <image width="36rpx" height="36rpx" :src="favoriteImg"></image>
-                                        </view>
-                                        <text :style="{ color: isFavorite ? '#ffae21' : '' }">收藏</text>
-                                    </view>
-                                    <view class="serve-opt-li column i-center j-center" @click="share">
-                                        <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
-                                        <image width="36rpx" height="36rpx" :src="getAssetsUrl('/default/v1/share.svg')"></image>
-                                        </view>
-                                        <text>分享</text>
-                                    </view>
+                                <view class="servebat row i-center u-line-1">
+                                    <text class="servebatli">{{ orderObj.desc }}</text>
                                 </view>
                             </view>
-
-                            <view class="servemore row i-center j-between">
-                                <view class="serveprice" v-if="optionList.length">￥{{moneyFilter(monovalent) }}<text>/{{optionList[0].extend.serviceWorkingHours.unitName}}起</text></view>
-                                <view class="servenum">已服务<text>{{ orderObj.saleVolume || 0 }}</text>位客户</view>
-                            </view>
-
-                            <view class="hospital row" v-if="hospital.name">
-                                所属医院：<view class="name">{{ hospital.name }}</view>
-                            </view>
-
-                            <!-- 服务提示 -->
-                            <view class="servernote" v-if="orderObj.note">
-                                <view class="notetit">服务提示：</view>
-                                <view>
-                                    <expandable  :lineHeight="48" expandText="查看更多" :longText="orderObj.note"></expandable>
+                            <view class="serve-opt row">
+                                <view class="serve-opt-li column i-center j-center" @click="setcollect">
+                                    <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
+                                        <image width="36rpx" height="36rpx" :src="favoriteImg"></image>
+                                    </view>
+                                    <text :style="{ color: isFavorite ? '#ffae21' : '' }">收藏</text>
+                                </view>
+                                <view class="serve-opt-li column i-center j-center" @click="share">
+                                    <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
+                                        <image width="36rpx" height="36rpx"
+                                            :src="getAssetsUrl('/default/v1/share.svg')"></image>
+                                    </view>
+                                    <text>分享</text>
                                 </view>
                             </view>
                         </view>
-                    </view>
 
-                    <view class="ensure">
-                        <certifiedView />
-                        <view class="goodssel row i-center j-between" @click="openSelect(false)">
-                            <view class="godsellef row i-center" v-if="optionInfo.id">
-                                <text class="godseltip">服务套餐：</text>
-                                <view class="u-line-1"><text class="godseltion">{{ optionInfo.name }}</text></view>
-                                <text class="godselprice">￥{{ moneyFilter(optionInfo.price) }}</text>
-                            </view>
-                                <view class="godsellef row i-center" v-else>
-                                <text class="godseltip">请选择</text>
-                            </view>
-                            <view class="godselrig row i-center">
-                                <view class="u-line-1">共{{optionList.length}}种规格可选</view>
-                                <u-icon
-                                    name="arrow-right"
-                                    size="38rpx"
-                                    bold
-                                    color="#C5C5C5"
-                                ></u-icon>
+                        <view class="servemore row i-center j-between">
+                            <view class="serveprice" v-if="optionList.length">￥{{ moneyFilter(monovalent)
+                                }}<text>/{{ optionList[0].extend.serviceWorkingHours.unitName }}起</text></view>
+                            <view class="servenum">已服务<text>{{ orderObj.saleVolume || 0 }}</text>位客户</view>
+                        </view>
+
+                        <view class="hospital row" v-if="hospital.name">
+                            所属医院：<view class="name">{{ hospital.name }}</view>
+                        </view>
+
+                        <!-- 服务提示 -->
+                        <view class="servernote" v-if="orderObj.note">
+                            <view class="notetit">服务提示：</view>
+                            <view>
+                                <expandable :lineHeight="48" expandText="查看更多" :longText="orderObj.note"></expandable>
                             </view>
                         </view>
                     </view>
                 </view>
+
+                <view class="ensure">
+                    <view class="goodssel row i-center j-between" @click="openSelect(false)">
+                        <view class="godsellef row i-center" v-if="optionInfo.id">
+                            <text class="godseltip">服务套餐：</text>
+                            <view class="u-line-1"><text class="godseltion">{{ optionInfo.name }}</text></view>
+                            <text class="godselprice">￥{{ moneyFilter(optionInfo.price) }}</text>
+                        </view>
+                        <view class="godsellef row i-center" v-else>
+                            <text class="godseltip">请选择</text>
+                        </view>
+                        <view class="godselrig row i-center">
+                            <view class="u-line-1">共{{ optionList.length }}种规格可选</view>
+                            <TnIcon name="right" size="38rpx" bold color="#C5C5C5"></TnIcon>
+                        </view>
+                    </view>
+                </view>
+            </view>
 
             <!-- 评论组件 -->
             <view class="serbox" id="toView2">
                 <commentView :applyId="3" :itemId="itemId" :shopId="baseId"></commentView>
             </view>
 
-            <view class="serbox"  v-if="baseId">
+            <view class="serbox" v-if="baseId">
                 <shopView :baseId="baseId" @gotoShop="linkAttendShop" @setShop="getBaseInfo"></shopView>
             </view>
 
             <!-- 长图片详情 -->
             <view id="toView3">
-                <block v-for="(item,index) in orderObj.noticeMultimedia" :key="index">
-                    <image
-                    @click="preImage(index,orderObj.noticeMultimedia)"
-                    :src="item"
-                    width="750rpx"
-                    height="auto"
-                    mode="widthFix"></image>
+                <block v-for="(item, index) in orderObj.noticeMultimedia" :key="index">
+                    <image @click="preImage(index, orderObj.noticeMultimedia)" :src="item" width="750rpx" height="auto"
+                        mode="widthFix"></image>
                 </block>
             </view>
 
@@ -178,7 +142,8 @@
                 <WaterfallsFlow :wfList="dataList" @waterItem="clickwaterItem"></WaterfallsFlow>
             </view>
 
-            <image class="shop-service" :src="getAssetsUrl('/leyou/icon/customer_service.png')" mode="scaleToFill" @tap="clickCustomerService" />
+            <image class="shop-service" :src="getAssetsUrl('/leyou/icon/customer_service.png')" mode="scaleToFill"
+                @tap="clickCustomerService" />
             <template #bottom>
                 <!--  @linkShop="linkAttendShop" @openCoupon="getCoupon"  @formBtn="openSelect" @goCart="linkCart" -->
                 <tabbar @clickTab="clickTab" :btnTxt="couparr.length && couparr[0].length ? '领券购买' : '立即下单'"></tabbar>
@@ -189,22 +154,17 @@
     </view>
 
     <!-- 选择规格 -->
-    <optionSelect
-        ref="optSel"
-        @getOptionItem="setOption"
-        :type="1"
-        :info="orderObj"
-        :list="optionList"
-        :baseName="shareData.baseInfo.name"
-        :btnTxt="couparr.length && couparr[0].length ? '领券购买' : '立即下单'"
-    />
+    <optionSelect ref="optSel" @getOptionItem="setOption" :type="1" :info="orderObj" :list="optionList"
+        :baseName="shareData.baseInfo.name" :btnTxt="couparr.length && couparr[0].length ? '领券购买' : '立即下单'" />
 
     <!-- 优惠券 coupon-->
-    <receiveCoupon ref="refCoup" :list="couparr" @openSkunotice="openSkunotice"/>
+    <receiveCoupon ref="refCoup" :list="couparr" @openSkunotice="openSkunotice" />
 
     <!-- 分享 -->
-    <shareView ref="shareBox" @sharePage="sharePage" @sharePoster="sharePoster" :status="status" :imgUrl="shareimgUrl"></shareView>
-    <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="254" height="344" style="width:254px; height:344px"></canvas>
+    <shareView ref="shareBox" @sharePage="sharePage" @sharePoster="sharePoster" :status="status" :imgUrl="shareimgUrl">
+    </shareView>
+    <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="254" height="344"
+        style="width:254px; height:344px"></canvas>
 
 
 
@@ -221,7 +181,7 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnSwiper from '@tuniao/tnui-vue3-uniapp/components/swiper/src/swiper.vue'
 import TnTabs from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue'
 import TnTabsItem from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue'
-import expandable from  './components/expandable-text.vue'
+import expandable from './components/expandable-text.vue'
 import { recommendList } from '@/api/goods-api'
 // import {
 //     getServeDetail,
@@ -261,7 +221,13 @@ const dataList: any = ref([])
 const isFavorite = ref(false)
 const currentSwiperIndex = ref(0)
 const baseId = ref('')
-const itemId:any = ref('')
+const itemId = ref('')
+const props = defineProps({
+    itemId: {
+        type: String,
+        default: ''
+    }
+})
 const livePlayId = ref('')
 const paging = ref()
 const shaView = ref()
@@ -305,6 +271,8 @@ const titleRight = ref(0)
 const sBarHeight = ref(0)
 
 onLoad((options: any) => {
+    console.log('options', options)
+
     itemId.value = options.itemId
     livePlayId.value = options?.livePlayId
     getDetail(itemId.value)
@@ -319,12 +287,12 @@ onLoad((options: any) => {
 const instance = getCurrentInstance() // 获取组件实例
 const query = uni.createSelectorQuery().in(instance)
 // 选择规格
-const getOptionItem = (data:any) => {
+const getOptionItem = (data: any) => {
     optionInfo.value = data
 }
 
 onReady(() => {
-    query.select('#wrap').boundingClientRect((wrap:any) => {
+    query.select('#wrap').boundingClientRect((wrap: any) => {
         wrapheight.value = wrap?.height
     }).exec()
 })
@@ -397,6 +365,7 @@ const getDetail = (id: any) => {
         // getElementTop()
         showPage.value = true
     }).catch((err) => {
+        throw new Error(err.message)
         bcNotify.value.error(err.message)
     })
 }
@@ -408,7 +377,7 @@ const hospital: any = ref({})
 const optionList: any = ref([])
 
 
-const clickTab = (type:string) => {
+const clickTab = (type: string) => {
     console.log('tyep', type)
     // 检查登录状态
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
@@ -428,7 +397,7 @@ const clickTab = (type:string) => {
     })
 }
 
-const getAssetsUrl = computed(() => (src:string) => {
+const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 
@@ -517,7 +486,7 @@ const celcoll = () => {
         })
 }
 
-const setOption = (str:string) => {
+const setOption = (str: string) => {
     optionValueNames.value = str || ''
 }
 
@@ -561,7 +530,7 @@ const queryList = (pageNumber = 1, pageSize = 10) => {
 }
 
 // 打开sku面板
-const openSelect = (type:boolean | number) => {
+const openSelect = (type: boolean | number) => {
     optSel.value.godOpen(type)
 }
 // 打开面板确认下单后的自动领取优惠卷
@@ -578,9 +547,9 @@ const openSkunotice = () => {
 const { couparr } = toRefs(shareInfo)
 
 // 滚动计算透明导航栏
-const pagingScroll = (e:any) => {
+const pagingScroll = (e: any) => {
     tabList.value.forEach((item, index) => {
-        query.select('#' + item.jumpId).boundingClientRect((rect:any) => {
+        query.select('#' + item.jumpId).boundingClientRect((rect: any) => {
             if (rect.top <= 150 && rect.top >= 50) {
                 tabCurrent.value = index
             }
@@ -599,12 +568,12 @@ const pagingScroll = (e:any) => {
 }
 
 // 导航栏跳转定位
-const changeTab = (item:any, index:number) => {
+const changeTab = (item: any, index: number) => {
     tabCurrent.value = index
     paging.value.scrollIntoViewById(item.jumpId, 150)
 }
 
-const preImage = (current:number, urls:any) => {
+const preImage = (current: number, urls: any) => {
     uni.previewImage({
         current,
         urls
@@ -646,7 +615,7 @@ const linkCart = () => {
     gotoShoppingCart()
 }
 
-const clickwaterItem = (item:any) => {
+const clickwaterItem = (item: any) => {
     gotogoodsDetail(item.id)
 }
 
@@ -664,7 +633,7 @@ const goback = () => {
 
 // 微信小程序分享
 //#ifdef MP-WEIXIN
-onShareAppMessage((res:any) => {
+onShareAppMessage((res: any) => {
     return {
         title: orderObj.value.name,
         imageUrl: orderObj.value.thumb,
@@ -679,7 +648,7 @@ const sharePoster = async () => {
 
     const coverUrl = await drawBGIMG(orderObj.value.thumb)
     // 二维码链接图片
-    const qrimg =  await getQrcode(`/pagesService/pages/serviceDetail/serviceDetail?itemId=${orderObj.value.id}`).then((img:any) => {
+    const qrimg = await getQrcode(`/pagesService/pages/serviceDetail/serviceDetail?itemId=${orderObj.value.id}`).then((img: any) => {
         return img
     })
     const qrimgUrl = await drawBGIMG(qrimg)
@@ -748,7 +717,7 @@ const sharePoster = async () => {
         setTimeout(async () => {
             uni.canvasToTempFilePath({
                 canvasId: 'mycanvas',
-                success: (res:any) => {
+                success: (res: any) => {
                     shareimgUrl.value = res.tempFilePath
                     status.value = 2
                     title = ''
@@ -807,7 +776,7 @@ const closeShare = () => {
     (shareBox.value as any).close()
 }
 
-const changeSwiper = (e:any) => {
+const changeSwiper = (e: any) => {
     currentSwiperIndex.value = e.detail.current
 }
 
@@ -819,22 +788,24 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-#wrap{
+#wrap {
     position: relative;
 }
-.wrap_box{
+
+.wrap_box {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
     background: #FFFFFF;
-    .navbar_box{
+
+    .navbar_box {
         // #ifdef APP-PLUS || H5
         padding-bottom: 12rpx;
         // #endif
 
-        .top_box{
+        .top_box {
 
             padding-left: 26rpx;
             padding-right: 136rpx;
@@ -848,10 +819,10 @@ defineExpose({
             // #ifdef APP-PLUS || H5
             width: 100%;
             padding-right: 26rpx;
-            height: auto!important;
+            height: auto !important;
             // #endif
 
-            .title_text{
+            .title_text {
                 font-size: 34rpx;
                 color: #333333;
                 font-weight: 500;
@@ -865,6 +836,7 @@ defineExpose({
 
 .servebox {
     margin: 20rpx;
+
     .serve-info {
         background-color: #fff;
         padding-bottom: 1rpx;
@@ -875,16 +847,20 @@ defineExpose({
         padding: 30rpx 40rpx;
         display: flex;
         flex-direction: column;
+
         .serve-more {
             align-items: flex-start;
         }
-        .serve-abt{
+
+        .serve-abt {
             flex: 1;
         }
+
         .servebat {
             flex-wrap: nowrap;
             margin-top: 16rpx;
         }
+
         .servebatli {
             font-size: 26rpx;
             font-weight: 400;
@@ -895,7 +871,7 @@ defineExpose({
             display: inline-flex;
             align-items: center;
 
-            &::after{
+            &::after {
                 content: '';
                 display: inline-block;
                 height: 24rpx;
@@ -903,34 +879,37 @@ defineExpose({
                 margin-left: 6rpx;
             }
 
-            &:last-child{
-                &::after{
+            &:last-child {
+                &::after {
                     display: none;
                 }
             }
-            &:first-child{
+
+            &:first-child {
                 padding-left: 0rpx;
             }
         }
-        .servemore{
+
+        .servemore {
             margin-top: 40rpx;
 
-            .serveprice{
+            .serveprice {
                 font-size: 40rpx;
                 font-weight: 500;
                 color: #FF0000;
 
-                text{
+                text {
                     font-size: 24rpx;
                 }
             }
         }
+
         .servenum {
             font-size: 24rpx;
             font-weight: 400;
             color: #666666;
 
-            text{
+            text {
                 color: #FF9E1E;
                 margin: 4rpx;
             }
@@ -946,7 +925,7 @@ defineExpose({
             }
         }
 
-        .servernote{
+        .servernote {
             margin-top: 20rpx;
             padding: 24rpx;
             background: #F5F7FB;
@@ -956,7 +935,7 @@ defineExpose({
             line-height: 48rpx;
             color: #666666;
 
-            .notetit{
+            .notetit {
                 font-size: 28rpx;
                 font-weight: 500;
                 line-height: 44rpx;
@@ -970,6 +949,7 @@ defineExpose({
             // align-items: center;
             // justify-content: space-between;
         }
+
         .goods-title {
             display: flex;
             flex-direction: row;
@@ -978,17 +958,21 @@ defineExpose({
             font-weight: 500;
             color: #333333;
         }
+
         .serve-opt {
             font-size: 22rpx;
             font-weight: 400;
             color: #878787;
+
             text {
                 margin-top: 8rpx;
             }
         }
+
         .serve-opt-li {
             margin-left: 40rpx;
-            position:relative;
+            position: relative;
+
             button {
                 position: absolute;
                 top: 0;
@@ -1003,8 +987,9 @@ defineExpose({
 }
 
 
-    .servebox {
+.servebox {
     margin: 20rpx 0;
+
     .serve-info {
         background-color: #fff;
         padding-bottom: 1rpx;
@@ -1015,16 +1000,20 @@ defineExpose({
         padding: 30rpx 0rpx;
         display: flex;
         flex-direction: column;
+
         .serve-more {
             align-items: flex-start;
         }
-        .serve-abt{
+
+        .serve-abt {
             flex: 1;
         }
+
         .servebat {
             flex-wrap: nowrap;
             margin-top: 16rpx;
         }
+
         .servebatli {
             font-size: 26rpx;
             font-weight: 400;
@@ -1035,7 +1024,7 @@ defineExpose({
             display: inline-flex;
             align-items: center;
 
-            &::after{
+            &::after {
                 content: '';
                 display: inline-block;
                 height: 24rpx;
@@ -1043,34 +1032,37 @@ defineExpose({
                 margin-left: 6rpx;
             }
 
-            &:last-child{
-                &::after{
+            &:last-child {
+                &::after {
                     display: none;
                 }
             }
-            &:first-child{
+
+            &:first-child {
                 padding-left: 0rpx;
             }
         }
-        .servemore{
+
+        .servemore {
             margin-top: 40rpx;
 
-            .serveprice{
+            .serveprice {
                 font-size: 40rpx;
                 font-weight: 500;
                 color: #FF0000;
 
-                text{
+                text {
                     font-size: 24rpx;
                 }
             }
         }
+
         .servenum {
             font-size: 24rpx;
             font-weight: 400;
             color: #666666;
 
-            text{
+            text {
                 color: #FF9E1E;
                 margin: 4rpx;
             }
@@ -1086,7 +1078,7 @@ defineExpose({
             }
         }
 
-        .servernote{
+        .servernote {
             margin-top: 20rpx;
             padding: 24rpx;
             background: #F5F7FB;
@@ -1096,7 +1088,7 @@ defineExpose({
             line-height: 48rpx;
             color: #666666;
 
-            .notetit{
+            .notetit {
                 font-size: 28rpx;
                 font-weight: 500;
                 line-height: 44rpx;
@@ -1110,6 +1102,7 @@ defineExpose({
             // align-items: center;
             // justify-content: space-between;
         }
+
         .goods-title {
             display: flex;
             flex-direction: row;
@@ -1118,17 +1111,21 @@ defineExpose({
             font-weight: 500;
             color: #333333;
         }
+
         .serve-opt {
             font-size: 22rpx;
             font-weight: 400;
             color: #878787;
+
             text {
                 margin-top: 8rpx;
             }
         }
+
         .serve-opt-li {
             margin-left: 40rpx;
-            position:relative;
+            position: relative;
+
             button {
                 position: absolute;
                 top: 0;
@@ -1142,16 +1139,18 @@ defineExpose({
     }
 }
 
-.head_box{
+.head_box {
     position: relative;
 
-    .swiper_box{
+    .swiper_box {
         width: 750rpx;
         height: 750rpx;
-        .swiper_item{
+
+        .swiper_item {
             width: 100%;
             height: 100%;
             z-index: 10;
+
             .image {
                 width: 100%;
                 height: 100%;
@@ -1160,20 +1159,23 @@ defineExpose({
         }
 
     }
-    .indicator_box{
+
+    .indicator_box {
         position: absolute;
         bottom: 56rpx;
         right: 40rpx;
         display: flex;
         align-items: center;
-        .indicator_item{
+
+        .indicator_item {
             width: 12rpx;
             height: 12rpx;
             background: #000000;
             opacity: 0.2;
             border-radius: 50%;
             margin-right: 12rpx;
-            &.is_Selected{
+
+            &.is_Selected {
                 opacity: 1;
                 background: #18181A;
                 border-radius: 6rpx 6rpx 6rpx 6rpx;
@@ -1184,9 +1186,11 @@ defineExpose({
     }
 
 }
+
 .swiper-data {
     width: 100%;
     height: 100%;
+
     .image {
         width: 100%;
         height: 100%;
@@ -1200,8 +1204,8 @@ defineExpose({
     background: #FFFFFF;
     border-radius: 24rpx;
 
-    .info-about{
-        .serve-abt{
+    .info-about {
+        .serve-abt {
             .goods-title {
                 display: flex;
                 flex-direction: row;
@@ -1215,6 +1219,7 @@ defineExpose({
                 flex-wrap: wrap;
                 margin-top: 16rpx;
             }
+
             .servebatli {
                 /* height: 46rpx;
                 background: #fff1e8;
@@ -1235,26 +1240,29 @@ defineExpose({
                 display: inline-flex;
                 align-items: center;
 
-                &::after{
+                &::after {
                     content: '|';
                     font-size: 26rpx;
                     font-weight: 400;
                     color: #999999;
                     margin-left: 6rpx;
                 }
-                &:last-child::after{
+
+                &:last-child::after {
                     display: none;
                 }
             }
-            .servemation{
+
+            .servemation {
                 margin-top: 20rpx;
 
-                .serveprice{
+                .serveprice {
                     margin-right: 30rpx;
                     font-size: 32rpx;
                     font-weight: 500;
                     color: #FF0000;
                 }
+
                 .servenum {
                     font-size: 28rpx;
                     font-weight: 400;
@@ -1262,16 +1270,20 @@ defineExpose({
                 }
             }
         }
+
         .serve-opt {
             font-size: 22rpx;
             font-weight: 400;
             color: #878787;
+
             text {
                 margin-top: 8rpx;
             }
+
             .serve-opt-li {
                 margin-left: 40rpx;
-                position:relative;
+                position: relative;
+
                 button {
                     position: absolute;
                     top: 0;
@@ -1284,41 +1296,47 @@ defineExpose({
         }
     }
 
-    .optbox{
+    .optbox {
         margin-top: 40rpx;
 
-        .optit{
+        .optit {
             font-size: 32rpx;
             font-weight: 500;
             color: #333333;
         }
-        .godinfo{
+
+        .godinfo {
             margin-top: 30rpx;
-            .surelef{
+
+            .surelef {
                 font-size: 26rpx;
                 font-weight: bold;
                 color: #333333;
                 margin-right: 50rpx;
             }
-            .godirig{
+
+            .godirig {
                 flex: 1;
-                .seltex{
+
+                .seltex {
                     font-size: 26rpx;
                     font-weight: 400;
                     color: #666666;
                 }
-                .godcls{
+
+                .godcls {
                     margin-top: 16rpx;
 
-                    .godsclsimg{
-                        image{
+                    .godsclsimg {
+                        image {
                             width: 60rpx;
                             height: 60rpx;
                             border-radius: 8rpx;
                             margin-right: 12rpx;
                         }
                     }
-                    .godsclstex{
+
+                    .godsclstex {
                         padding: 0 16rpx;
                         height: 50rpx;
                         background: #F8F8F8;
@@ -1334,7 +1352,7 @@ defineExpose({
     }
 }
 
-.serbox{
+.serbox {
     margin: 20rpx;
 }
 
@@ -1351,7 +1369,7 @@ defineExpose({
     height: 80rpx;
     padding: 0 16rpx 0 24rpx;
 
-    text{
+    text {
         flex-shrink: 0;
     }
 
@@ -1360,16 +1378,19 @@ defineExpose({
         font-weight: 400;
         color: #999999;
     }
+
     .godseltion {
         font-size: 28rpx;
         font-weight: 500;
         color: #333333;
     }
+
     .godselprice {
         font-size: 28rpx;
         font-weight: 500;
         color: #ff0000;
     }
+
     .godselrig {
         font-size: 28rpx;
         font-weight: 400;
@@ -1399,7 +1420,7 @@ defineExpose({
     height: 20rpx;
 }
 
-.back_icon{
+.back_icon {
     padding: 10rpx;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.3);
@@ -1412,7 +1433,7 @@ defineExpose({
     z-index: 1000;
 }
 
-.tab_box{
+.tab_box {
     height: 44px;
     background: #FFFFFF;
     // position: absolute;
@@ -1421,15 +1442,18 @@ defineExpose({
     // right: 0;
     // z-index: 10000;
 }
-.bilvas{
+
+.bilvas {
     border-radius: 20rpx;
     position: relative;
     left: -750px;
 }
-.list_box{
+
+.list_box {
     padding: 0rpx 14rpx;
     box-sizing: border-box;
-    .list_title{
+
+    .list_title {
         padding: 10rpx 16rpx;
         padding-bottom: 30rpx;
         box-sizing: border-box;
@@ -1447,8 +1471,4 @@ defineExpose({
     bottom: 350rpx;
     z-index: 1000;
 }
-
-
-
-
 </style>

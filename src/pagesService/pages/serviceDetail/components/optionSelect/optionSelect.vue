@@ -1,5 +1,5 @@
 <template>
-	<TnPopup v-model="show" open-direction="bottom" @close="close" @open="open" round="40rpx" closeable>
+	<TnPopup v-model="show" open-direction="bottom" @close="close" round="40rpx" closeable>
 		<view class="content">
             <view class="mation">
                 <view class="gods row" v-if="props.list.length">
@@ -36,7 +36,7 @@
                                     <view class="optname">{{ item.name }}</view>
                                     <view class="optprice">￥{{ moneyFilter(item.price) }}</view>
                                 </view>
-                                <u-icon name="checkmark-circle-fill" size="44rpx" :color="isSet(index) ? '#29C86F' : '#C9C9C9'"></u-icon>
+                                <TnIcon name="checkmark-circle-fill" size="44rpx" :color="isSet(index) ? '#29C86F' : '#C9C9C9'"></TnIcon>
                             </view>
                         </block>
                     </scroll-view>
@@ -57,6 +57,7 @@
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import TnNumberBox from '@tuniao/tnui-vue3-uniapp/components/number-box/src/number-box.vue'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
+import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 
 import { ref, reactive, computed, onMounted, nextTick } from "vue"
 import { TempStorage } from "@bc/base"
@@ -73,7 +74,7 @@ const props = defineProps({
     },
     info: {
         type: Object,
-        required: true
+        required: false
     },
     baseName: {
         type: String,
@@ -112,6 +113,7 @@ const emit = defineEmits<Events>()
 const close = () => {
     show.value = false
 }
+
 
 const godOpen = (type:boolean) => {
     isCar.value = type

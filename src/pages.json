@@ -71,6 +71,14 @@
           }
         },
         {
+          "path": "pages/search/search",
+          "style": {
+            "navigationBarTitleText": "搜索",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
           "path": "pages/news/notice-list",
           "style": {
             "navigationBarTitleText": "",
@@ -114,14 +122,6 @@
       "pages": [
         {
           "path": "pages/serviceDetail/serviceDetail",
-          "style": {
-            "navigationBarTitleText": "搜索",
-            "navigationStyle": "custom",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
-          "path": "pages/search/search",
           "style": {
             "navigationBarTitleText": "搜索",
             "navigationStyle": "custom",
@@ -1594,6 +1594,13 @@
             "navigationStyle": "custom"
           }
         }
+        // {
+        //   "path": "pages/service/serviceTab",
+        //   "style": {
+        //     "navigationBarTitleText": "照护服务",
+        //     "navigationStyle": "custom"
+        //   }
+        // }
       ]
     }
   ],
