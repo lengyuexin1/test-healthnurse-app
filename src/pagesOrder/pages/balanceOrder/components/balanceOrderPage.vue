@@ -32,7 +32,8 @@
                          <!-- 价格明细 -->
                     <view class="price_infoBox">
                         <!-- :showInfo="data.showInfo" -->
-                    <priceInfo :serviceInfo="data.balanceInfoObj" :showInfo="data.showInfo" :isinstitution="true"></priceInfo>
+                        <priceInfo :serviceInfo="data.balanceInfoObj" :showInfo="data.showInfo" :isinstitution="true"></priceInfo>
+
                  </view>
                 </view>
             </template>
@@ -101,9 +102,7 @@
                             <div class="voucher_Notice_days">·每人最多购买{{`${data.agencyObj.isRestrictBuyQuantity == 0 ? '不限制数量' : `${data.agencyObj.restrictBuyQuantity}`}`}}张</div>
                         </div>
                     </div>
-
                     <view class="sapge_bottom"></view>
-
                 </view>
             </template>
 

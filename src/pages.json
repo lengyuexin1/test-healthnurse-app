@@ -131,7 +131,7 @@
         {
           "path": "pages/Servicestore/ServicestoreDetail",
           "style": {
-            "navigationBarTitleText": "乐悠详情",
+            "navigationBarTitleText": "机构详情",
             "navigationStyle": "custom",
             "enablePullDownRefresh": false
           }

@@ -37,16 +37,15 @@
                     </view>
                 </view>
                 <view v-if="props.orderInfo.isOrderPackage == 0">
-					<view class="order-time" 
+					<view class="order-time"
                     v-if="props.orderInfo.utcVisitStart && props.orderInfo.kind != 3">
-                        服务时间：{{ date(props.orderInfo.utcVisitStart) }} 
+                        服务时间：{{ date(props.orderInfo.utcVisitStart) }}
                         <text v-if="props.orderInfo.utcVisitEnd && showVisitEnd">至 {{ date(props.orderInfo.utcVisitEnd) }}</text>
                     </view>
 					<view class="order-time" v-else>
 						下单时间：{{ date(props.orderInfo.utcCreated)}}
 					</view>
 				</view>
-                
                 <view class="order_type">
                     <view class="order-tpe-lef">
 						<view class="order-tpe-tex">{{props.orderInfo.statusName}}</view>
@@ -97,18 +96,18 @@
 							<text class="order-allbtn-contact-text">立即使用</text>
 						</view>
 
-						<view class="order-allbtn-contact btn-border-kong" v-if="props.orderInfo.actionableList.includes('comment')" 
+						<view class="order-allbtn-contact btn-border-kong" v-if="props.orderInfo.actionableList.includes('comment')"
 						>
 							<text class="order-allbtn-contact-text">去评价</text>
 						</view>
-                        
+
 					</view>
                 </view>
 
             </view>
 
         </view>
-        
+
     </view>
 </template>
 
@@ -118,12 +117,12 @@ import { ref, reactive, computed } from 'vue'
 import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/count-down.vue'
 import TnBubbleBox from '@tuniao/tnui-vue3-uniapp/components/bubble-box/src/bubble-box.vue'
 
-import { gotoOrderDetail } from "@bc/api/routes/order-routes"
+import { gotoOrderDetail } from "@/routes/order-routes"
 
 
-import dayjs from 'dayjs';
-import 'dayjs/locale/zh-cn';
-dayjs.locale('zh-cn');
+import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
+dayjs.locale('zh-cn')
 
 
 interface Props {
@@ -144,48 +143,49 @@ const data = reactive<data>({
 })
 
 
-const date = computed( () => (tiem:number)=> {
-    return dayjs(tiem * 1000).format('YYYY-MM-DD HH:mm:ss');
+const date = computed(() => (tiem:number) => {
+    return dayjs(tiem * 1000).format('YYYY-MM-DD HH:mm:ss')
 })
 
-const showVisitEnd = computed(()=>{
+const showVisitEnd = computed(() => {
     return ![4, 7].includes(props.orderInfo.shopList[0].entityList[0].optionExtend?.serviceWorkingHours.unit)
 })
 
 
-const isCancel = computed(()=>{
+const isCancel = computed(() => {
     return (props.orderInfo.actionableList.includes("cancel") || props.orderInfo.actionableList.includes("apply_refund"))
 })
-const isLaint = computed (()=>{
+const isLaint = computed(() => {
     return props.orderInfo.actionableList.includes("complaint")
 })
 
-const bubbleOptions = computed(()=>{
+const bubbleOptions = computed(() => {
     // {text:'test',id:1}
-    let bubbleOptionslist = []
-    console.log('props.orderInfo.actionableList',props.orderInfo.actionableList);
-    
+    const bubbleOptionslist = []
+    console.log('props.orderInfo.actionableList', props.orderInfo.actionableList)
+
     if (props.orderInfo.actionableList.includes("cancel") || props.orderInfo.actionableList.includes("apply_refund")) {
-        bubbleOptionslist.push({text:'取消订单',id:1})
+        bubbleOptionslist.push({ text: '取消订单', id: 1 })
     }
     if (props.orderInfo.actionableList.includes("complaint")) {
-        bubbleOptionslist.push({text:'纠纷申诉',id:2})
+        bubbleOptionslist.push({ text: '纠纷申诉', id: 2 })
     }
     return bubbleOptionslist
 })
 
 const cancelOrder = () => {
-    console.log('取消订单');
-    emit('cancelOrder',props.orderInfo)
+    console.log('取消订单')
+    emit('cancelOrder', props.orderInfo)
 }
 
-const BubbleBtn = (index:number)=>{
+const BubbleBtn = (index:number) => {
     if (bubbleOptions.value[index].id == 1) {
         cancelOrder()
-    }else if(bubbleOptions.value[index].id == 2){
-        console.log('纠纷申诉');
     }
-    
+    else if (bubbleOptions.value[index].id == 2) {
+        console.log('纠纷申诉')
+    }
+
 }
 
 const toOrderDetail = () => {
@@ -236,7 +236,7 @@ const toOrderDetail = () => {
                 color: #666666;
             }
         }
-        
+
     }
     .entity_box{
         .entity_good{
@@ -342,7 +342,7 @@ const toOrderDetail = () => {
             padding-top: 24rpx;
             padding-left: 18rpx;
             box-sizing: border-box;
-            
+
         }
         .BubbleBox{
             font-size: 24rpx;

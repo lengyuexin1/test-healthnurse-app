@@ -5,10 +5,10 @@
                 <PageTopbg ></PageTopbg>
                 <bc-page-navbar :title="'订单管理'"></bc-page-navbar>
                 <view >
-                    <TnTabs 
+                    <TnTabs
                         v-model="data.currentTabIndex"
-                        bg-color="transparent" 
-                        bar-color="#29C86F" 
+                        bg-color="transparent"
+                        bar-color="#29C86F"
                         :bottom-shadow="false"
                     >
                         <TnTabsItem
@@ -23,7 +23,7 @@
                     </TnTabs>
                 </view>
             </template>
-            <swiper class="swiper" :current="data.currentTabIndex" 
+            <swiper class="swiper" :current="data.currentTabIndex"
 				@change="onswiperchange">
                 <swiper-item>
 					<serviceOrder ref="service"></serviceOrder>
@@ -65,20 +65,20 @@ interface Data{
 }
 
 const data = reactive<Data>({
-    tabsData : [
-        {id:1,name:'康养订单'},
-        {id:2,name:'适品订单'},
+    tabsData: [
+        { id: 1, name: '服务订单' },
+        { id: 2, name: '商品订单' }
         // {id:3,name:'云课堂订单'}
     ],
-    currentTabIndex:0,
+    currentTabIndex: 0
 })
 
 
-const onswiperchange = (e:any)=>{
+const onswiperchange = (e:any) => {
     data.currentTabIndex = e.detail.current
-}   
+}
 
-onLoad((option:any)=>{
+onLoad((option:any) => {
     data.currentTabIndex = Number(option.typeIndex) ? Number(option.typeIndex) : 0
 })
 
@@ -86,10 +86,10 @@ onLoad((option:any)=>{
 const service = ref()
 const goods = ref()
 const course = ref()
-onShow(()=>{
-    data.currentTabIndex == 0 && (service.value as any).reloadPage();
-    data.currentTabIndex == 1 && (goods.value as any).reloadPage();
-    data.currentTabIndex == 2 && (course.value as any).reloadPage();
+onShow(() => {
+    data.currentTabIndex == 0 && (service.value as any).reloadPage()
+    data.currentTabIndex == 1 && (goods.value as any).reloadPage()
+    data.currentTabIndex == 2 && (course.value as any).reloadPage()
 })
 
 

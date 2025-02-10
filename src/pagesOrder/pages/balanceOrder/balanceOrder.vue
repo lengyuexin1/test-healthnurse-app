@@ -2,7 +2,6 @@
     <view class="container">
         <balanceOrderPage :uniqueId="data.uniqueId" :handle="data.handle"></balanceOrderPage>
         <verifyAccount ref="accountUserRef" ></verifyAccount>
-
     </view>
 </template>
 

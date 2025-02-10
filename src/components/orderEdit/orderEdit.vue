@@ -12,22 +12,22 @@
                                 <div>{{ressinfo.name}}  {{ressinfo.mobile}}</div>
                             </div>
                             <div class="conbtn">
-                                <TnButton plain size="mini" text="修改" shape="circle" color="#F2F2F2" :customStyle="btnStyle"></TnButton>
+                                <TnButton width="60rpx" style="border: none;" bg-color="white" height="60rpx" size="mini" font-size="28rpx" shape="circle" color="#666666" >修改</TnButton>
                             </div>
                         </div>
                     </div>
-
-                    <div class="conli" v-if="consumerTime && isOrderPackage != 1">
+                    <!-- v-if="consumerTime && isOrderPackage != 1" -->
+                    <div class="conli" @click="clickSelectTime">
                         <div class="conltit">服务时间</div>
                         <TnDateTimePicker mode="datetime" v-model="datetime" v-model:open="openDateTimePicker" />
-                        <orderDatetimeSelect :serviceRules="serviceRules" :optionUnit="optionUnit" @setTiem="getSerTime" ref="dataTime">
+                        <!-- <orderDatetimeSelect :serviceRules="serviceRules" :optionUnit="optionUnit" @setTiem="getSerTime" ref="dataTime">
                             <div class="conadrs row j-between">
                                 <div class="contip">{{parameter.utcVisitStart * 1000 | date('yyyy-mm-dd hh:MM')}}</div>
                                 <div class="conbtn">
                                     <TnButton @click="showTime" plain size="mini" text="修改" shape="circle" color="#F2F2F2" :customStyle="btnStyle"></TnButton>
                                 </div>
                             </div>
-                        </orderDatetimeSelect>
+                        </orderDatetimeSelect> -->
                     </div>
 
                     <div class="conli" v-if="informationVisi">
@@ -37,32 +37,32 @@
                             <input class="contarea" v-model="parameter.patient" :maxlength="7" placeholder="请输入就诊人" />
                         </div>
                     </div>
-
-                    <div class="conli" @click="getAdres" v-if="contactVisi">
+                    <!-- v-if="contactVisi" -->
+                    <div class="conli" @click="getAdres">
                         <div class="conltit">联系人</div>
                         <div class="conadrs row j-between">
                             <div class="contip">
                                 <div>{{ressinfo.name}}  {{ressinfo.mobile}}</div>
                             </div>
                             <div class="conbtn">
-                                <TnButton plain size="mini" text="修改" shape="circle" color="#F2F2F2" :customStyle="btnStyle"></TnButton>
+                                <TnButton plain size="mini" width="60rpx" style="border: none;"  bg-color="white"  height="60rpx" shape="circle" color="#666666"  font-size="28rpx">修改</TnButton>
                             </div>
                         </div>
                     </div>
-
-                    <div class="conli" @click="deliveryShow = true" v-if="methodVisi">
+                    <!-- v-if="methodVisi" -->
+                    <div class="conli" @click="deliveryShow = true" >
                         <div class="conltit">代送方式</div>
                         <div class="conadrs row j-between">
                             <div class="contip">
                                 <div>{{parameter.deliveryMethodName}}</div>
                             </div>
                             <div class="conbtn">
-                                <TnButton plain size="mini" text="修改" shape="circle" color="#F2F2F2" :customStyle="btnStyle"></TnButton>
+                                <TnButton plain size="mini" shape="circle" style="border: none;" color="#666666" bg-color="white" width="60rpx" height="60rpx">修改</TnButton>
                             </div>
                         </div>
                     </div>
-
-                    <div class="conli" @click="getAdres" v-if="deliveryVisi">
+                    <!-- v-if="deliveryVisi" -->
+                    <div class="conli" @click="getAdres">
                         <div class="conltit">配送地址</div>
                         <div class="conadrs row j-between">
                             <div class="contip">
@@ -70,16 +70,29 @@
                                 <div>{{ressinfo.name}}  {{ressinfo.mobile}}</div>
                             </div>
                             <div class="conbtn">
-                                <TnButton plain size="mini" text="修改" shape="circle" color="#F2F2F2" :customStyle="btnStyle"></TnButton>
+                                <TnButton plain size="mini" style="border: none;" shape="circle" color="#F2F2F2" :customStyle="btnStyle">修改</TnButton>
                             </div>
                         </div>
                     </div>
-
-                    <div class="conli" v-if="certificateVisi">
+                    <!-- v-if="certificateVisi" -->
+                    <div class="conli" >
                         <div class="conltit">代送凭证</div>
                         <div class="conadrs row j-between">
-                            <div class="contip">
-                                <ClUpload @change="handleChange" :maxCount="9" width="60px" height="60px" v-model="fileList1" uploadPath="errand" uploadIcon="plus" />
+                    <div class="contip">
+                        <imgUpload v-model:imageArr="fileList1" :limit="3" ref="imgUploadref">
+                        <template #uploadBtn>
+                            <view @click="openUp" class="up_box">
+                                <view class="up_icon">
+                                    <TnIcon name="add" color="#C9C9C9" size="80"/>
+                                </view>
+                                <view class="up_text">
+                                    代送凭证
+                                </view>
+                            </view>
+                        </template>
+                    </imgUpload>
+                              <!-- <imgUpload v-model:imageArr="fileList1" :limit="1" ref="imgUploadref" @upchange="changeisNext"></imgUpload> -->
+                      <!-- <ClUpload @change="handleChange" :maxCount="9" width="60px" height="60px" v-model="fileList1" uploadPath="errand" uploadIcon="plus" /> -->
                             </div>
                         </div>
                     </div>
@@ -91,10 +104,10 @@
                         </div>
                     </div>
                 </scroll-view>
-                <div class="consub"><TnButton @click="submit" :throttleTime="1000" text="提交" shape="circle" color="#29C86F"></TnButton></div>
+                <div class="consub"><TnButton @click="submit" :throttleTime="1000"  style="width: 100%; border-radius: 10rpx; color: #ffffff;height: 80rpx;" shape="circle" bg-color="#29C86F" color="#ffffff">提交</TnButton></div>
             </div>
             <!-- 配送方式 -->
-            <u-picker :show="deliveryShow" :columns="deliveryList" keyName="label" @confirm="setDelivery"></u-picker>
+            <TnPicker v-model="parameter.deliveryMethodId" v-model:open="deliveryShow" :data="deliveryList" @confirm="setDelivery" />
             <BCNotify ref="uToast"></BCNotify>
 		</TnPopup>
         <BCNotify ref="bToast"></BCNotify>
@@ -103,17 +116,22 @@
 </template>
 
 <script setup>
+import TnPicker from '@tuniao/tnui-vue3-uniapp/components/picker/src/picker.vue'
+import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
+import imgUpload from '@/components/upload/img-upload.vue'
+import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
+import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import TnDateTimePicker from '@tuniao/tnui-vue3-uniapp/components/date-time-picker/src/date-time-picker.vue'
-import ClUpload from '@/pagesCnt/uni_modules/cl-upload/components/cl-upload/cl-upload.vue'
-import { ref, reactive, watch } from 'vue'
-import { getOrderEntityConfig, houseEditOrder, gotoUserLink } from '@/api'  // Import your API methods
-import BCNotify from '@/components/notify/index.vue'
-// Reactive state
+import { ref, reactive, watch, nextTick } from 'vue'
+import { getOrderEntityConfig, editGodsOrder } from '@/api/order-api'
+// import { gotoUserLink } from '@/route/user-routes'
+const openDateTimePicker = ref(false)
 const show = ref(false)
 const ressinfo = ref({})
 const isOrderPackage = ref(false)
 const orderId = ref(null)
 const fileList1 = ref([])
+const deliveryShow = ref()
 const parameter = reactive({
     note: '',
     utcVisitStart: null,
@@ -131,7 +149,7 @@ const optionMation = reactive({
 const timeUnit = ref('')
 const serviceRules = ref('')
 const optionUnit = ref('')
-
+const deliveryList = [[{ label: '同城', id: 1 }, { label: '邮寄', id: 2 }]]
 const consumerAdrs = ref(null)
 const deliveryVisi = ref(false)
 const informationVisi = ref(false)
@@ -144,7 +162,16 @@ const contactVisi = ref(false)
 const handleChange = (item) => {
     fileList1.value = item
 }
-
+const imgUploadref = ref()
+const openUp = () => {
+    nextTick(() => {
+        console.log('手动调用', imgUploadref, imgUploadref.value)
+        imgUploadref.value.chooseFileFun()
+    })
+}
+const clickSelectTime = () => {
+    openDateTimePicker.value = true
+}
 const exist = (str) => {
     const item = consumerAttr.value.find(x => x.field === str)
     return !!item
@@ -179,7 +206,7 @@ const open = async (optionId, data) => {
 
 const submit = async () => {
     try {
-        await houseEditOrder({
+        await editGodsOrder({
             orderId: orderId.value,
             note: parameter.note,
             attr: {
@@ -212,7 +239,7 @@ const submit = async () => {
 const getAdres = (type = 0) => {
     const req = {}
     if (type === 1) { req.shopId = shopId.value }
-    gotoUserLink(req, 'dizhi')
+    // gotoUserLink(req, 'dizhi')
 }
 
 const getSerTime = (e) => {
@@ -225,21 +252,36 @@ const showTime = () => {
 }
 
 const setDelivery = (e) => {
-    // Assuming `deliveryShow` is used to control a modal or visibility
+    console.log(e)
     deliveryShow.value = false
     parameter.deliveryMethodId = e.value[0].id
     parameter.deliveryMethodName = e.value[0].label
 }
 
-// Watchers
-// For example, if you need to watch changes to 'parameter.utcVisitStart'
+
 watch(() => parameter.utcVisitStart, (newValue, oldValue) => {
     console.log('UTC Visit Start changed:', newValue)
 })
+defineExpose({ open })
 </script>
 
 
 <style lang="scss" scoped>
+    .up_box{
+            width: 228rpx;
+            height: 228rpx;
+            background: #F8F8F8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            .up_text{
+                margin-top: 24rpx;
+                font-size: 24rpx;
+                color: #C9C9C9;
+                font-weight: 400;
+            }
+        }
 .conbox{
     padding: 0 50rpx 30rpx;
 
@@ -287,6 +329,7 @@ watch(() => parameter.utcVisitStart, (newValue, oldValue) => {
     .consub{
         margin-top: 50rpx;
         padding: 20rpx 0rpx;
+        width: 100%;
     }
 }
 </style>

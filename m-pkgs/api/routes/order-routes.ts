@@ -8,10 +8,10 @@ import { pageController } from '@bc/uni-tools'
  */
 
 
- export const gotoOrderDetail = (itemId:string) =>{
+export const gotoOrderDetail = (itemId:string) => {
     const route = {
         path: '/pagesOrder/pages/serviceOrderDetail/serviceOrderDetail',
-        query: {itemId}
+        query: { itemId }
     }as any
     return pageController.push(route)
 

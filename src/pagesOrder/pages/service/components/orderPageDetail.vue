@@ -41,7 +41,6 @@
                     <view class="border_box"></view>
                  </view>
                 <view class="order_info">
-                    <!-- <contactService :serviceInfo="data.serviceInfo" :showInfo="data.showInfo" ></contactService> -->
                 </view>
                 <view class="workerInfo" v-if="![65537,262146].includes(data.osObj.status) && !isinstitution">
                     <workerInfo :serviceInfo="data.serviceInfo" :showInfo="data.showInfo"></workerInfo>
@@ -137,6 +136,7 @@
                 <view class="order_detail">
                     <orderDetail :serviceInfo="data.serviceInfo" :showInfo="data.showInfo"></orderDetail>
                 </view>
+
             </view>
             <template #bottom>
                 <view class="bottom_btn" v-if="showBottom">
@@ -145,7 +145,7 @@
                 <!-- <view @click="getdelreason">test</view> -->
             </template>
         </z-paging>
-        <orderEdit ref="ordEdit" @updateOrder="updateOrder" :shopId="data.serviceInfo.entity && data.serviceInfo.entity.shopId"></orderEdit>
+        <orderEdit ref="ordEdit" @updateOrder="updateOrder" :shopId="data.serviceInfo.shopinfo &&  data.serviceInfo.shopinfo.shopId"></orderEdit>
 		<BCNotify ref="bcNotify"></BCNotify>
 
         <TnPopup v-model="data.showreason" :close-btn="true" @close="data.showreason = false" open-direction="bottom" round="32rpx">
@@ -232,7 +232,6 @@ const data = reactive<Data>({
     reasonItemid: '',
     payId: ''
 
-
 })
 const gotoIMSessionChat = (type:number) => {
     PlatformManage.getToken().then((token:any) => {
@@ -256,6 +255,27 @@ const gotoIMSessionChat = (type:number) => {
 const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
+/* 修改订单 */
+const showEdit = ()  => {
+    ordEdit.value.open(data.serviceInfo.info.optionId, {
+        utcVisitStart: data.serviceInfo.utcVisitStart,
+        ressinfo: data.serviceInfo.addressInfo,
+        note: data.serviceInfo.renewNote,
+        orderId: props.orderId,
+        contactMobile: data.serviceInfo.contactMobile,
+        contactPerson: data.serviceInfo.contactPerson,
+        isOrderPackage: data.serviceInfo.isOrderPackage,
+
+        patientId: data.serviceInfo.patientId, //老人档案ID，只有居家照护需要填写照护人
+        hospitalId: data.serviceInfo.accompany ? data.serviceInfo.accompany.hospitalId : null, //医院id
+        hospital: data.serviceInfo.accompany ? data.serviceInfo.accompany.hospitalId ? null : data.serviceInfo.accompany.hospital : null,
+        patient: data.serviceInfo.accompany ? data.serviceInfo.accompany.patient : null, //就诊人名称
+        patientMobile: data.serviceInfo.accompany ? data.serviceInfo.accompany.patientMobile : null, //就诊人电话
+        deliveryMethodId: data.serviceInfo.accompany ? data.serviceInfo.accompany.deliveryMethodId : null, //配送方式 id
+        deliveryMethodName: data.serviceInfo.accompany ? data.serviceInfo.accompany.deliveryMethodName : null
+        // deliveryCertificate: this.fileList1 //代取凭证
+    })
+}
 const updateOrder = () => {
     bcNotify.value.show('修改成功')
     getDetail(props.orderId)
@@ -330,9 +350,7 @@ const getDetail = (orderId:string) => {
         orderId
     }).then((res:any) => {
         data.osObj = res
-
         data.showInfo = true
-
         data.serviceInfo = {
             info: res?.shopList[0]?.entityList[0],
             shopinfo: res?.shopList[0],
@@ -360,7 +378,7 @@ const getorganizationDetail = (shopId:string) => {
         data.detailObj = res || {}
     })
 }
-
+const ordEdit = ref()
 const bcNotify = ref()
 const delreasonNotify = ref()
 // 获取取消原因
@@ -581,7 +599,8 @@ const operate = (type:string) => {
         getdelreason()
     }
     if (type == 'showEdit') {
-        console.log('修改订单')
+        // console.log('修改订单')
+        showEdit()
     }
     if (type == 'goComment') {
         console.log('去评价')
