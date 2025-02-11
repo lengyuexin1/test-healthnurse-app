@@ -1,9 +1,9 @@
-import type { 
+import type {
     _ali_sms_sendLoginCode_get_req,
     _v1_bc_app_user_mobileCodeLogin_post_req,
     _v1_bc_company_admin_customerServiceLogin_post_req,
     _v1_bc_public_customerServiceAccountLogin_post_req,
-    } from "@bc/api/types/user/api-types"
+} from "@bc/api/types/user/api-types"
 import { openHttp, http } from "@bc/api"
 import { APP_CODE, APP_VERSION } from "@/sys/constant"
 import { compareVersions } from "@/sys/versionCompare"
@@ -15,8 +15,8 @@ import { compareVersions } from "@/sys/versionCompare"
 //================================================================================
 
 /** 用户登录 */
-export const userLogin = (req:any) =>{
-    return openHttp.user.post('/v1/bc/public/app/user/login',req)
+export const userLogin = (req: any) => {
+    return openHttp.user.post('/v1/bc/public/app/user/login', req)
 }
 
 /** 验证码登录 */
@@ -32,8 +32,8 @@ export const userGetCode = (req: any) => {
 }
 
 /** 获取手机号码 */
-export const getWxPhoneNumber = (req:any) => {
-    return openHttp.user.post('/v1/bc/public/app/user/getPhoneNumber',req)
+export const getWxPhoneNumber = (req: any) => {
+    return openHttp.user.post('/v1/bc/public/app/user/getPhoneNumber', req)
 }
 
 /** 获取im授权 */
@@ -42,8 +42,8 @@ export const getImToken = () => {
 }
 
 /** 切换账号 */
-export const mutiMobileLogin = (req:any) => {
-    return openHttp.user.post('/v1/bc/public/app/user/mutiMobileLogin',req)
+export const mutiMobileLogin = (req: any) => {
+    return openHttp.user.post('/v1/bc/public/app/user/mutiMobileLogin', req)
 }
 
 /** 获取微信session */
@@ -88,4 +88,7 @@ export const getQRPage = (req: any) => {
     return http.user.get('/v1/bc/public/app/common/getPage', req)
 }
 
-
+/* 搜索列表flag */
+export const searListFlag = (req: any) => {
+    return http.post('api/search/v1/bc/public/es/v2/search', req) as Promise<[]>
+}

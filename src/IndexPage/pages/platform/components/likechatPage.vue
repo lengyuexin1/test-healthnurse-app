@@ -34,6 +34,66 @@
             </view>
         </template>
 
+        <!-- 聊天模块盒子 -->
+        <view class="chatModule_box">
+            <view class="module_right" @tap="clickLoveChatWrap">
+                <image
+                    class="likeChat_img"
+                    :src="getAssetsUrl('/leyou/newpagemenu/likeChat_img.svg')"
+                    mode="scaleToFill"
+                />
+                <view class="likeChat_title">
+                    爱聊匹配
+                </view>
+                <view class="joinlikeChat">
+                    <view>匹配对象</view>
+                    <image
+                        class="left_icon"
+                        :src="getAssetsUrl('/leyou/newpagemenu/left_icon1.svg')"
+                        mode="scaleToFill"
+                    />
+                </view>
+            </view>
+            <view class="module_left">
+                <view class="chatList_box" @tap="clickNameChatWrap">
+                    <image
+                        class="module_leftImg"
+                        :src="getAssetsUrl('/leyou/newpagemenu/chatList_img.png')"
+                        mode="scaleToFill"
+                    />
+                    <view class="left_join_title">
+                        聊天号
+                    </view>
+                    <view class="left_join_text">
+                        <view>匹配对象</view>
+                        <image
+                            class="left_icon"
+                            :src="getAssetsUrl('/leyou/newpagemenu/left_icon2.svg')"
+                            mode="scaleToFill"
+                        />
+                    </view>
+                </view>
+                <view class="Aichat_box" @tap="clickAIChatWrap">
+                    <image
+                        class="module_leftImg"
+                        :src="getAssetsUrl('/leyou/newpagemenu/Aichat_img.png')"
+                        mode="scaleToFill"
+                    />
+                    <view class="left_join_title">
+                        AI问聊
+                    </view>
+                    <view class="left_join_text ai_text" >
+                        <view>提问找答案</view>
+                        <image
+                            class="left_icon"
+                            :src="getAssetsUrl('/leyou/newpagemenu/left_icon3.svg')"
+                            mode="scaleToFill"
+                        />
+                    </view>
+                </view>
+            </view>
+        </view>
+
         <view class="banner_box" v-if="data.courseIndex == 1">
             <view class="live_swiper" v-if="data.swiperList.length != 0">
                 <swiper
@@ -49,17 +109,13 @@
                         <image
                             class="live_swiper_img"
                             :src="item.cover"
-                            mode="scaleToFill"
+                            mode="aspectFill"
                             @click="liveList(item)"
 
                         />
                         <view class="live_box" v-if="( (item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon) )">
                             <view class="live_left_box">
-                                <image
-                                    class="live_img"
-                                    :src="getAssetsUrl('/leyou/icon/live.png')"
-                                    mode="scaleToFill"
-                                />
+                                <BarPlaying bgColor="#FFFFFF"></BarPlaying>
                                 <view>直播中</view>
                             </view>
                             <view class="live_number_box" v-if="false">
@@ -74,33 +130,30 @@
             </view>
         </view>
 
+        <view class="divide_title_box" @tap="clickGroupChatWrap">
+            <view class="divide_title">精选群聊</view>
+            <view class="group_chat">
+                <view>群聊大厅</view>
+                <TnIcon color="#EA3E1A" name="right" size="24rpx"></TnIcon>
+            </view>
+
+        </view>
+
         <!-- 群聊二级类目 -->
         <view class="scrollList-wrap" v-if="data.courseIndex == 1">
-            <!-- <TnScrollList :indicator="false">
-                <view class="item-container tn-flex-row">
-                    <view v-for="(item, index) in data.categoryList" :key="index" class="scroll-item tn-flex-center tn-flex-column" :class="[data.activeCategory == index ? 'active' : '']" @tap="clickCategoryList(item.id, index)">
-                        <view class="title">{{ item.name }}</view>
-                    </view>
-                </view>
-            </TnScrollList> -->
 
-
-
-            <view class="tabs_conten">
-                <view class="Tabs_list">
-                    <view class="Tabs_item"
-                        v-for="(item, index) in data.categoryList"
-                        :key="index"
-                        @click="clickCategoryList(item.id, index)"
-                    >
-                        <view class="Tabs_item_text" :class="{ 'is_select': data.activeCategory == index }">
-                            {{ item.name }}
-                        </view>
+            <view class="nav_box">
+                <view class="scroll_box">
+                    <view class="scroll_item" v-for="(item, index) in data.categoryList" :key="item.id" @click="clickCategoryList(item.id,index)">
+                        <view class="scroll_text" :class="{ 'is_select': data.activeCategory == index }">{{ item.name }}</view>
+                        
                         <view class="barbox" v-if="data.activeCategory == index"></view>
                     </view>
                 </view>
+                <view class="more_box">
+                    <TnIcon name="down" color="#6E6E6E" size="32" :bold="true"/>
+                </view>
             </view>
-
 
         </view>
 
@@ -111,51 +164,6 @@
         <view v-else>
             <!-- 聊天号列表 -->
             <template v-if="data.courseIndex == 0">
-                <!-- 积分面板 -->
-                <view class="icon_box" v-if="false">
-                    <view class="icon_item left" @click="timeIntegral">
-                        <view class="icon_title">已收获积分</view>
-                        <view class="icon_content">{{ data.IntegralObj.points ? data.IntegralObj.points : '--' }}</view>
-                        <view class="icon_bottom">
-                            <view>可获得积分奖励</view>
-                            <image
-                                @click.stop="tointegralRule"
-                                class="icon_bottom_img"
-                                :src="getAssetsUrl('/leyou/create/like_rule_icon.svg')"
-                                mode="scaleToFill"
-                            />
-                        </view>
-                        <image
-                            class="flex_img"
-                            :src="getAssetsUrl('/leyou/create/like_left.svg')"
-                            mode="scaleToFill"
-                        />
-                    </view>
-
-                    <view class="icon_item right" @click="timeShop">
-                        <view class="icon_title">积分商城</view>
-                        <view class="icon_right_content">
-                            <view class="content_text">去兑换</view>
-                            <TnIcon color="#566ED8" name="right" size="20rpx"></TnIcon>
-                        </view>
-                        <view class="icon_bottom">
-                            <view>快去兑换礼品吧</view>
-                        </view>
-                        <image
-                            class="flex_img"
-                            :src="getAssetsUrl('/leyou/create/like_right.svg')"
-                            mode="scaleToFill"
-                        />
-                    </view>
-                </view>
-
-                <view class="reload_box" v-if="false">
-                    <view class="reload_title">探索发现</view>
-                    <view class="reload_icon" @click="reloadFun" v-if="false">
-                        <view class="reload_icon_text">抖一抖</view>
-                        <TnIcon color="#666666" name="refresh" size="32rpx"></TnIcon>
-                    </view>
-                </view>
                 <likeWaterFall ref="likechatList" :wfList="data.dataList" @waterItem="clickwaterItem"></likeWaterFall>
             </template>
 
@@ -166,83 +174,8 @@
                 </view>
             </template>
 
-            <!-- 爱聊 -->
-            <template v-else-if="data.courseIndex == 2">
-                <!-- { height: props.parentHeight - data.barHeight - 57 + 'px', backgroundColor: 'white' } -->
-                <view :style="{ height: props.parentHeight + 'px', backgroundColor: 'white' }">
-                    <view class="likeChat tn-flex-column tn-flex-center" v-if="data.step == 1">
-                        <image :src="getAssetsUrl('/leyou/assets/chat.png')" mode="scaleToFill" />
-                        <view class="txt">乐悠爱聊，分享生活点滴</view>
-                        <view class="txt">让健康与快乐同行</view>
-                        <view class="btn tn-flex-center-center" @tap="startLikeChat">开始爱聊之旅</view>
-                    </view>
-                    <view class="likeChat tn-flex-column" v-if="data.step == 2">
-                        <image :src="getAssetsUrl('/leyou/assets/empty.png')" mode="scaleToFill" />
-                        <view class="txt">您的资料还不完整，无法进行推荐</view>
-                        <view class="empty-btn tn-flex-center-center" @tap="clickFillInfo">去完善资料</view>
-                    </view>
-                    <view class="likeChat tn-flex-column tn-flex-center" v-if="data.step == 3">
-                        <view class="ripple-wrap">
-                            <image class="ripple" :src="getAssetsUrl('/leyou/assets/ripple.png')" mode="scaleToFill" />
-                            <image class="user"
-                                v-for="(item) in data.matchInfo"
-                                mode="aspectFill"
-                                :src="item.accountInfo.avatar"
-                                :style="{
-                                    position: 'absolute',
-                                    top: item.accountInfo.top + 'rpx',
-                                    left: item.accountInfo.left + 'rpx',
-                                    opacity: item.accountInfo.opacity
-                                }"
-                                @tap="clickUserInfo(item.accountInfo.id)"
-                            />
-                            <view class="txt">正在根据您的择偶要求</view>
-                            <view class="txt">搜寻匹配的人...</view>
-
-                            <view class="btn-wrap tn-flex-center-center">
-                                <view>
-                                    <TnButton width="250rpx" height="76rpx" font-size="30rpx" bg-color="#F46955" text-color="#FFFFFF" :debounce="true" @tap="startLikeChat">
-                                        重新匹配
-                                    </TnButton>
-                                </view>
-                                <view class="editBtn">
-                                    <TnButton width="250rpx" height="76rpx" font-size="30rpx" bg-color="#FFEEEE" text-color="#EB4321" :debounce="true" @tap="editInfo">
-                                        修改资料
-                                    </TnButton>
-                                </view>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-            </template>
-
-            <!-- AI聊 -->
-            <template v-else-if="data.courseIndex == 3">
-                <AIChat :parentHeight="props.parentHeight" :topViewHeight="props.topViewHeight" :barHeight="data.barHeight"></AIChat>
-            </template>
         </view>
-
-        <template #bottom>
-            <view class="create-chat tn-flex-row" v-if="data.courseIndex == 1">
-                <view class="tn-flex-center-center" @tap="clickCreate">
-                    <image :src="getAssetsUrl('/leyou/assets/create.png')" mode="scaleToFill" /> 创建群聊
-                </view>
-                <view class="line"></view>
-                <view class="tn-flex-center-center" @tap="randomMate">
-                    <image :src="getAssetsUrl('/leyou/assets/connect.png')" mode="scaleToFill"  />随机匹配
-                </view>
-            </view>
-        </template>
-        <BCPopup
-            ref="bcPopup"
-            title="匹配不到？"
-            content=""
-            subBtn="重新匹配"
-            cancelBtn="去完善资料"
-            subBtnColor="#29C86F"
-            @clickLeftBtn="reTry"
-            @clickRightBtn="fillInfo">
-        </BCPopup>
+        
         <BCNotify ref="bcNotify"></BCNotify>
     </z-paging>
     <image
@@ -259,13 +192,11 @@ import { ref, reactive, computed, onMounted, defineExpose, getCurrentInstance } 
 import { getAssetsPic } from '@/common/setPicture'
 
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
-import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
-import TnScrollList from '@tuniao/tnui-vue3-uniapp/components/scroll-list/src/scroll-list.vue'
 import likefollowListVue from './likefollowList.vue'
 import likeWaterFall from './likeWaterFall.vue'
 import chatCard from './chatCard.vue'
 import AIChat from './AIChat.vue'
-
+import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { chatList, indexBannerList, getsalonCategoryList } from "@/api/create-api"
 import BCNotify from '@/components/notify/index.vue'
 import { gotochatDetail, gotovideoPreview, upChatPage, gotoarticledetails } from '@/routes/create-routes'
@@ -274,7 +205,7 @@ import { gotoCreateChat, gotoFillInfo, gotoUserInfo, gotoLiveList } from '@/rout
 import { timePointsDetail } from '@/api/goods-api'
 import { gotoLogin } from "@/routes/public-routes"
 import { groupChatList, getRandomChat, loveChatMatch, myGroupChatList, updateRealCoordinate, loveChatGetDataStatus } from '@/api/user-api'
-import { gotoChatPage } from '@/routes/nim-routes'
+import { gotoAIChatWrap, gotoChatPage, gotoGroupChatWrap, gotoLoveChatWrap, gotoNameChatWrap } from '@/routes/nim-routes'
 
 import { PlatformManage } from '@bc/sys'
 import { addWEventsListener, GlobalEvents } from '@/events/event-registry'
@@ -348,7 +279,7 @@ const data = reactive<Data>({
         { id: 66, name: 'AI问聊' }
     ],
     // courseIndex: 2,
-    courseIndex: 0,
+    courseIndex: 1,
     accountIds: [],
     IntegralObj: {},
     categoryList: [],
@@ -711,6 +642,22 @@ const liveList = (item:any) => {
     }
 }
 
+const clickLoveChatWrap = () => {
+    gotoLoveChatWrap()
+}
+
+const clickNameChatWrap = () => {
+    gotoNameChatWrap()
+}
+
+const clickAIChatWrap = () => {
+    gotoAIChatWrap()
+}
+
+const clickGroupChatWrap = () => {
+    gotoGroupChatWrap()
+}
+
 defineExpose({
     iscourse,
     loadPage
@@ -1033,36 +980,32 @@ defineExpose({
     padding: 0rpx 20rpx;
     padding-right: 0rpx;
     box-sizing: border-box;
-    .tabs_conten{
-        flex: 1;
-        overflow-x: scroll;
+    
+    .nav_box{
+        width: 100%;
         height: 100%;
-        display: flex;
-        align-items: center;
-        padding-right: 20rpx;
-        box-sizing: border-box;
-        .Tabs_list{
+        position: relative;
+        .scroll_box{
+            padding: 0rpx 20rpx;
+            padding-right: 114rpx;
+            box-sizing: border-box;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            box-sizing: border-box;
             width: 100%;
-            .Tabs_item{
+            height: 100%;
+            overflow-x: scroll;
+            .scroll_item{
                 position: relative;
                 flex-shrink: 0;
-                // margin-right: 50rpx;
-                .Tabs_item_text{
+                margin-right: 50rpx;
+
+                .scroll_text{
                     font-size: 34rpx;
                     margin-bottom: 6rpx;
                     color: #8C8C8C;
                     &.is_select{
                         color: #333333;
                     }
-                }
-                .Tabs_item_img{
-                    width: 120rpx;
-                    height: 32rpx;
-                    margin-bottom: 6rpx;
                 }
                 .barbox{
                     width: 36rpx;
@@ -1076,6 +1019,21 @@ defineExpose({
                     z-index: 100;
                 }
             }
+            
+        }
+        .more_box{
+            width: 130rpx;
+            height: 72rpx;
+            background: linear-gradient( 88deg, rgba(242,243,245,0) 0%, #FFF9F3 30%);
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 18rpx 28rpx;
+            padding-bottom: 0rpx;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;            
         }
     }
 }
@@ -1102,13 +1060,117 @@ defineExpose({
         border: 1px solid #EA3E1A;
     }
 }
+
+.chatModule_box{
+    width: 710rpx;
+    height: 334rpx;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28rpx;
+    
+    .module_right{
+        width: 348rpx;
+        height: 100%;
+        position: relative;
+
+        .likeChat_img{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        .likeChat_title{
+            position: absolute;
+            top: 24rpx;
+            left: 28rpx;
+            font-size: 36rpx;
+            font-weight: 500;
+            color: #414141;
+        }
+        .joinlikeChat{
+            position: absolute;
+            top: 82rpx;
+            left: 28rpx;
+            display: flex;
+            align-items: center;
+            font-size: 28rpx;
+            font-weight: 400;
+            color: #E5A44E;
+            line-height: 28rpx;
+        }
+    }
+    .module_left{
+        width: 348rpx;
+        height: 100%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: column;
+        .module_leftImg{
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
+        }
+        .left_join_title{
+            font-size: 36rpx;
+            color: #3E3E3E;
+            font-weight: 500;
+            position: absolute;
+            top: 24rpx;
+            left: 24rpx;
+        }
+        .left_join_text{
+            position: absolute;
+            top: 96rpx;
+            left: 24rpx;
+            display: flex;
+            align-items: center;
+            font-size: 28rpx;
+            font-weight: 400;
+            color: #F6844C;
+            line-height: 28rpx;
+            &.ai_text{
+                color: #6899CF;
+            }
+            
+        }
+
+        .chatList_box{
+            width: 100%;
+            height: 160rpx;
+            position: relative;
+            
+        }
+        .Aichat_box{
+            width: 100%;
+            height: 160rpx;
+            position: relative;
+
+        }
+
+
+        
+        
+    }
+    .left_icon{
+        width: 30rpx;
+        height: 30rpx;
+    }
+}
 .banner_box{
     .live_swiper{
         position: relative;
         border-radius: 12rpx;
         overflow: hidden;
-        width: 730rpx;
-        height: 280rpx;
+        width: 710rpx;
+        height: 144rpx;
         margin: auto;
         padding-top: 10rpx;
         box-sizing: border-box;
@@ -1179,6 +1241,35 @@ defineExpose({
                 }
             }
         }
+
+    }
+}
+
+.divide_title_box{
+    width: 690rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+    padding: 20rpx 0rpx;
+    box-sizing: border-box;
+    .divide_title{
+        font-weight: 500;
+        font-size: 36rpx;
+        color: #333333;
+    }
+    .group_chat{
+        display: flex;
+        align-items: center;
+        font-weight: 400;
+        font-size: 28rpx;
+        color: #EA3E1A;
+        padding: 12rpx 16rpx;
+        box-sizing: border-box;
+        border-radius: 36rpx;
+        background: #FFECEC;
+        line-height: 28rpx;
+
 
     }
 }

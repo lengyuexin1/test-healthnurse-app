@@ -1,0 +1,2013 @@
+import { NERtcEngineImpl } from './impl/NERtcEngineImpl';
+import { 
+	NERTCLogLevel,
+	NERTCRenderMode,
+	NERTCChannelConnectionState,
+	NERTCMirrorMode, 
+	NERtcVideoStreamType, 
+	NERtcVideoFrameRate, 
+	NERtcVideoCropMode,
+	NERtcDegradationPreference,
+	NERtcVideoOutputOrientationMode,
+	NERtcVideoProfileType,
+	NERtcRemoteVideoStreamType,
+	NERTCAudioDevice,
+	NERTCAudioDeviceType,
+	NERTCAudioDeviceState,
+	NERTCVideoDeviceState,
+	NERTCConnectionType,
+	NERTCErrorCode,
+	NERtcAudioVolumeInfo,
+	NERTCAudioProfile,
+	NERTCAudioScenario,
+	NERTCChannelProfile,
+	NERTCUserRole,
+	NERtcSubStreamContentPrefer,
+	NERTCAudioMixingState,
+	NERtcBeautyEffectType
+} from './NERtcDefines';
+
+export default class NERtcEngineApp {
+	/**
+	 * 创建 NERtc 实例。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：创建 NERtc 实例。 通过本接口可以实现创建 NERtc 实例并初始化 NERTC SDK 服务。
+	 * 业务场景：是使用NERtc服务的前提。
+	 * 调用时机：请确保在调用其他 API 前先调用该方法创建并初始化 NERtc 实例。
+	 * 使用限制：无。
+	 * 注意事项：
+	 *   1. 使用同一个 App Key 的 App 才能进入同一个房间进行通话或直播。
+	 *   2. 一个 App Key 只能用于创建一个 NERtc 实例；若您需要更换 App Key，必须先调用 NERTC.destroyEngine 方法销毁当前实例，再调用本方法重新创建实例。
+	 * 	 3. 创建实例时，如果参数设置错误，可能会出现 Exception、Error 异常回调通知。
+	 隐私保护申明：请勿在此接口填写用户敏感信息，包括但不限于手机号、身份证号、护照编号、真实姓名等。
+	 * 相关回调：
+	 *   1. 当用户参数传递异常时可能会触发 [onWarning] 回调通知开发者异常，可跟进通知的code寻找具体的原因。
+	 *   2. 当初始化引擎异常时可能会触发 [onError] 回调通知开发者异常，可跟进通知的code寻找具体的原因。
+	 * 相关接口：
+	 *   1.若您不再使用 NERtc 实例，需要调用 [destroyEngine] 方法进行销毁。
+	 *
+	 * @param {Object} engineParam 创建NERTC引擎时的参数
+     * @param {String} engineParam.appKey 应用的 App Key。在云信控制台创建应用后，可以查看对应的 App Key
+     * @param {String} engineParam.logDir SDK日志log文件的路径，可以传递为''
+     * @param {NERTCLogLevel} engineParam.logLevel SDK日志log等级
+     * @memberof NERTC
+	 * @return NERTCEngine
+	 * @example
+	 *  import NERTC from "@/NERtcUniappSDK-JS/lib/index";
+	    import NERTCLogLevel from "@/NERtcUniappSDK-JS/lib/NERtcDefines"
+     *  this.engine = NERTC.setupEngineWithContext({
+			appKey: 'xxxxxxxxxx', // your appkey
+			logDir: '', // expected log directory
+			logLevel: NERTCLogLevel.INFO,
+		});
+	*/
+	static setupEngineWithContext(engineParam) {
+	    return NERtcEngineImpl.setupEngineWithContext(engineParam);
+	}
+	/**
+	 * 销毁 NERtc 实例，释放资源。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：该方法释放 NERTC SDK 使用的所有资源。有些 App 只在用户需要时才进行实时音视频通信，完成音视频通话后，则将资源释放出来用于其他操作，该方法适用于此类情况。
+	 * 调用时机：该接口需要在调用 leaveChannel、并收到 onUserLeave 回调后调用。或收到 onDisconnect 回调、重连失败时调用此接口销毁实例，并释放资源。
+	 * 调用 destroyEngine 方法后，您将无法再使用 SDK 的其它方法和回调。如需再次使用实时音视频通话功能，您必须等待 destroyEngine 方法执行结束后，重新创建一个新的 NERtc 实例。
+	 * 使用限制：无。
+	 * 注意事项：
+	 *   1. 请避免 [destroyEngine] 和 [leaveChannel] 同时调用
+	 * 相关回调：
+	 *   1. 异常时可能会触发 [onError] 回调通知开发者异常，可跟进通知的code寻找具体的原因。
+	 * @memberof NERTC
+	 * @return void
+	 * @example
+	 *  
+		this.engine.destroyEngine();
+	*/
+	static destroyEngine() {
+	    return NERtcEngineImpl.getInstance().destroyEngine();
+	}
+	
+	/**
+	 * 原生插件日志接口。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：原生SDK暴露的日志输出接口，可以输入到android Studio的控制台，以及写入手机日志文件中。
+	 * 调用时机：开发者js开发语言的业务console日志需要存入系统日志文件时。
+	 * 注意事项：
+	 *   1. 该接口默认写入sdk的系统日志文件中，日志等级为INFO。
+	 * @memberof NERTC
+	 * @example
+	 *  
+		const message = "这是一个调试日志"
+		this.engine.nertcPrint(message);
+	*/
+	nertcPrint(message) {
+		return NERtcEngineImpl.getInstance().nertcPrint(message)
+	}
+	
+	/**
+	 * 获取当前房间连接状态。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 调用时机：请在初始化后调用该方法。
+	 * @memberof NERTC
+	 * @@return {NERTCChannelConnectionState}
+	 * 
+	 * @example
+	 * 
+	 *  const connectState = this.engine.getConnectionState();
+	*/
+	getConnectionState(channelProfile) {
+	    return NERtcEngineImpl.getInstance().getConnectionState(channelProfile);
+	}
+	
+	/**
+	 * 	统计信息观测。。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：注册统计信息观测器，设置统计信息回调
+	 * 调用时机：请在初始化后调用该方法。
+	 * 相关回调:
+	     1. 启用该方法后，只要房间内有媒体，SDK 都会在加入房间后根间隔触发 onNetworkQuality()、onRtcStats()、onLocalAudioStats()、onRemoteAudioStats()、onLocalVideoStats()、 onRemoteVideoStats()回调。
+
+	 * @param {Boolean} enable 是否开启统计信息的监听器：
+	 * @memberof NERTC
+	 * @example
+	 *  
+		this.engine.setStatsObserver(true);
+	*/
+	setStatsObserver(enable) {
+		return NERtcEngineImpl.getInstance().setStatsObserver(enable)
+	}
+	
+	/**
+	 * 上传 SDK 信息。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：上传的信息包括 log 和 Audio dump 等文件。
+	 * 调用时机：只能在加入房间后调用。
+	 * @memberof NERTC
+	 * @example
+	 *  
+		this.engine.uploadSdkInfo();
+	*/
+	uploadSdkInfo() {
+		return NERtcEngineImpl.getInstance().uploadSdkInfo()
+	}
+			
+	/**
+	 * 设置房间场景。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述： 通过此接口可以实现设置房间场景为通话（默认）或直播场景。针对不同场景采取的优化策略不同，如通话场景侧重语音流畅度，直播场景侧重视频清晰度。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间前调用。
+	 *
+	 * @param {NERTCChannelProfile} channelProfile 加入房间时的参数
+	 *  - COMMUNICATION: 通话场景
+	 * 	- LIVE_BROADCASTING: 直播场景
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 * //设置房间场景为直播场景
+	 *  this.engine.setChannelProfile(NERTCChannelProfile.LIVE_BROADCASTING);
+	*/
+	setChannelProfile(channelProfile) {
+		return NERtcEngineImpl.getInstance().setChannelProfile(channelProfile);
+	}
+
+	/**
+	 * 设置直播场景下的用户角色。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现将用户角色在“主播”（CLIENT_ROLE_BROADCASTER）和“观众“（CLIENT_ROLE_AUDIENCE）之间的切换，用户加入房间后默认为“主播”。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间前调用。
+	 * 使用限制：该方法仅在通过 setChannelProfile() 方法设置房间场景为直播场景（LIVE_BROADCASTING）时调用有效。
+	 * 业务场景：适用于观众上下麦与主播互动的互动直播场景。
+	 * 注意事项：用户切换为观众角色时，SDK 会自动关闭音视频设备。
+	 * 相关回调：
+	 *   1. 加入房间前调用该方法设置用户角色，不会触发任何回调，在加入房间成功后角色自动生效：
+	 *   	- 设置用户角色为主播：加入房间后，远端用户触发 onUserJoined() 回调。
+	 *   	- 设置用户角色为观众：加入房间后，远端用户不触发任何回调。
+	 *   2. 加入房间后调用该方法切换用户角色
+	 * 		- 从观众角色切为主播：本端用户触发 onClientRoleChange() 回调，远端用户触发 onUserJoined() 回调。
+	 *		- 从主播角色切为观众：本端用户触发 onClientRoleChange() 回调，远端用户触发 onUserLeave() 回调。
+	 * @param {NERTCUserRole} role 用户角色
+	 *  - CLIENT_ROLE_BROADCASTER: 设置用户角色为主播。主播可以开关摄像头等设备、可以发布流、可以操作互动直播推流相关接口、加入或退出房间状态对其他房间内用户可见。
+	 * 	- CLIENT_ROLE_AUDIENCE: 设置用户角色为观众。观众只能收流不能发流加入或退出房间状态对其他房间内用户不可见
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  //切换用户角色为主播
+	 *  this.engine.setClientRole(NERTCUserRole.CLIENT_ROLE_BROADCASTER);
+	*/
+	setClientRole(role) {
+		return NERtcEngineImpl.getInstance().setClientRole(role);
+	}
+
+	/**
+	 * 设置音视频通话的相关参数。。
+	 *
+	 * 支持版本：5.5.21 及以上。
+	 * 详情描述：此接口提供技术预览或特别定制功能（比如AI降噪功能），详情请咨询技术支持或者开发者文档。
+	 * 调用时机：请在初始化后调用该方法，且该方法在加入房间前后均可调用。
+	 * 使用限制：无。
+	 *
+	 * @param {Object} param 设置本地视频画布的参数
+	 * @param {Boolean} param.keyAudioAINSEnable 是否开启AI降噪功能。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.setParameters({
+			keyAudioAINSEnable: true
+		})
+	*/
+	setParameters(param) {
+		return NERtcEngineImpl.getInstance().setParameters(param);
+	}
+	/**
+	 * 安卓端专用：用于检查当前APP是否配置启动了某些服务（比如前台服务）。
+	 *
+	 * 支持版本：5.5.21 及以上。
+	 * 详情描述：用于检查当前APP是否配置启动了某些服务，详情请咨询技术支持或者开发者文档。
+	 * 调用时机：请在初始化后调用该方法，且该方法在加入房间前后均可调用。
+	 * 使用限制：仅仅安卓端APP支持，使用上请限制一下系统类型。
+	 *
+	 * @param {String} serverType 要检查了安卓服务类型
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 * //检查是否开启了前台服务 
+	 * this.engine.isServiceEnable('FOREGROUND_SERVICE')
+	*/
+	isServiceEnable(serverType) {
+		return NERtcEngineImpl.getInstance().isServiceEnable(serverType);
+	}
+	
+	/**
+	 * 加入音视频房间。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现加入音视频房间，加入房间后可以与房间内的其他用户进行音视频通话。
+	 * 调用时机：请在初始化引擎后调用该方法。
+	 * 使用限制：无。
+	 * 注意事项：
+	 *   1. 调用 joinChannel 方法之后，NERTC SDK 会通过按照默认配置调整音频模式（audio mode），此后请勿修改 SDK 调整过的音频模式，否则可能会导致音频路由错误等问题。
+	 *   2. 加入音视频房间时，如果指定房间尚未创建，云信服务器内部会自动创建一个同名房间。
+	 * 	 3. 传参中 uid 可选，若不指定则默认为 0，SDK 会自动分配一个随机 uid，并在 onJoinChannel() 回调方法中返回；App 层必须记住该返回值并维护，SDK 不对该返回值进行维护。
+	 *   4. 同一个房间内的用户可以互相通话，多个用户加入同一个房间，可以群聊。使用不同 App Key 的 App 之间不能互通。
+	 *   5. 用户成功加入房间后，默认订阅房间内所有其他用户的音频流，可能会因此产生用量并影响计费；若您想取消自动订阅，可以在通话前通过调用 [setParameters] 方法实现。隐私保护申明：请勿在此接口填写用户敏感信息，包括但不限于手机号、身份证号、护照编号、真实姓名等。
+	 *	 6. 若使用了云代理功能，uid 不允许传 0，请用真实的 uid。
+	 *   7. myStringUid和myUid互斥，如果使用myStringUid，myUid请填写 0。
+	 * 相关接口：
+	 *   1. 您可以调用 leaveChannel() 方法离开房间。
+	 * 相关回调：
+	 *   1.成功调用该方法加入房间后，本地会触发 onJoinChannel 回调通知，远端会触发 onUserJoined 回调通知。
+	 *
+	 * @param {Object} channelParam 加入房间时的参数
+	 * @param {String} channelParam.token 安全认证签名（NERTC Token），可以设置为：
+		- null。调试模式下可设置为 null。安全性不高，建议在产品正式上线前在云信控制台中将鉴权方式恢复为默认的安全模式。
+		- 已获取的NERTC Token。安全模式下必须设置为获取到的 Token 。若未传入正确的 Token 将无法进入房间。推荐使用安全模式。
+	 * @param {String} channelParam.channelName 房间名称，设置相同房间名称的用户会进入同一个通话房间。
+	 * 	- 字符串格式，长度为 1 ~ 64 字节。
+	 *  - 支持以下 89 个字符：a-z, A-Z, 0-9, space, !#$%&()+-:;≤.,>? @[]^_{|}~”
+	 * @param {Number} channelParam.myUid 用户的唯一标识 ID。
+	 * @param {String} channelParam.myStringUid 用户的唯一标识 字符串格式的ID，用户如果业务上要求myUid需要超过number的范围时，可以考虑使用字符串格式的myUid。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.joinChannel({
+			token: '',
+			channelName: 'xxx',
+			myUid: 100
+		});
+	*/
+	joinChannel(channelParam) {
+		return NERtcEngineImpl.getInstance().joinChannel(channelParam);
+	}
+
+	/**
+	 * 离开音视频房间。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现挂断或退出通话，并释放本房间内的相关资源。
+	 * 调用时机：请在初始化并成功加入房间后调用该方法。
+	 * 注意事项：
+	 *   1. 结束通话时必须调用此方法离开房间，否则无法开始下一次通话。
+	 * 相关回调：
+	 *   1. 成功调用该方法离开房间后，本地会触发 onLeaveChannel 回调通知，远端会触发 onUserLeave() 回调通知。
+	 * @memberof NERTC
+	 * @example
+	 *  
+		this.engine.leaveChannel();
+	*/
+	leaveChannel() {
+		return NERtcEngineImpl.getInstance().leaveChannel();
+	}
+
+	/**
+	 * 设置本地用户视图。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现绑定本地用户和显示视图，并设置本地用户视图在本地显示时的镜像模式和裁减比例，只影响本地用户看到的视频画面。
+	 * 调用时机：请在初始化后调用该方法，且该方法在加入房间前后均可调用。
+	 * 使用限制：无。
+	 * 注意事项：
+	 *   1. 在实际业务中，通常建议在初始化后即调用该方法进行本地视图设置，然后再加入房间或开启预览。
+	 *   2. 在无需使用画布时，建议及时释放之前的画布，否则可能会引起系统 EGL 资源耗尽而导致程序崩溃。
+	 *
+	 * @param {Object} videoCanvasParam 设置本地视频画布的参数
+	 * @param {Boolean} videoCanvasParam.isMediaOverlay 设置视频View是否在Z轴上覆盖。
+	 * @param {NERTCMirrorMode} videoCanvasParam.mirrorMode 设置视频镜像模式。
+	 * @param {NERTCRenderMode} videoCanvasParam.renderMode 设置适应视频，视频尺寸等比缩放。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.setupLocalVideoCanvas({
+			renderMode: NERTCRenderMode.Fit, // Fit表示应区域。视频尺寸等比缩放,保证所有区域被填满,视频超出部分会被裁剪
+			mirrorMode: NERTCMirrorMode.AUTO, //AUTO表示使用默认值,由sdk控制
+			isMediaOverlay: false //表示小画布置于大画布上面
+		})
+	*/
+	setupLocalVideoCanvas(videoCanvasParam) {
+		return NERtcEngineImpl.getInstance().setupLocalVideoCanvas(videoCanvasParam);
+	}
+
+	/**
+	 * 销毁本地用户视图。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现解绑本地用户和显示视图。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.destroyLocalVideoCanvas()
+	*/
+	destroyLocalVideoCanvas(){
+		return NERtcEngineImpl.getInstance().destroyLocalVideoCanvas();
+	}
+
+	/**
+	 * 销毁本地用户视图。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现解绑本地用户和显示视图，并且清除loacl-video-view的内部存储。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.destroyLocalVideoCanvasAndVideoView()
+	*/
+	destroyLocalVideoCanvasAndVideoView(){
+		return NERtcEngineImpl.getInstance().destroyLocalVideoCanvasAndVideoView();
+	}
+
+	/**
+	 * 设置远端用户视图。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现绑定远端用户和显示视图，并设置远端用户视图在本地显示时的镜像模式和裁减比例，只影响本地用户看到的视频画面。
+	 * 调用时机：请在初始化后调用该方法，且该方法在加入房间前后均可调用。
+	 * 注意事项：
+	 *   1. 退出房间后，SDK 也会主动清除远端用户和视图的绑定关系。
+	 * @param {Object} videoCanvasParam 设置视频画布的参数
+	 * @param {Number} videoCanvasParam.userID 设置要展示的对端具体成员的userID。
+	 * @param {String} videoCanvasParam.userStringID 设置要展示的对端具体成员的字符串格式的userID，用户如果业务上要求userID需要超过number的范围时可以使用。
+	 * @param {Boolean} videoCanvasParam.isMediaOverlay 设置视频View是否在Z轴上覆盖。
+	 * @param {NERTCMirrorMode} videoCanvasParam.mirrorMode 设置视频镜像模式。
+	 * @param {NERTCRenderMode} videoCanvasParam.renderMode 设置适应视频，视频尺寸等比缩放。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  
+		this.engine.addEventListener("onUserVideoStart", (userID, maxProfile) => {
+			const message = `onUserVideoStart通知：对方开启视频，userID = ${userID}, maxProfile = ${maxProfile}`
+			console.log(message)
+			//设置对端的视频画布
+			this.engine.setupRemoteVideoCanvas({
+				renderMode: NERTCRenderMode.Fit, // Fit表示应区域。视频尺寸等比缩放,保证所有区域被填满,视频超出部分会被裁剪
+				mirrorMode: NERTCMirrorMode.AUTO, //AUTO表示使用默认值,由sdk控制
+				isMediaOverlay: false, //表示小画布置于大画布上面
+				userID: userID //对方userID
+			})
+			//主动去订阅对端视频
+			this.engine.subscribeRemoteVideo({
+				userID: userID,
+				streamType: NERtcRemoteVideoStreamType.HIGH, //HIGH: 大流, LOW: 小流 
+				SUBscribe: true //true表示订阅，false表示取消订阅
+			})
+		});
+	*/
+	setupRemoteVideoCanvas(videoCanvasParam) {
+		return NERtcEngineImpl.getInstance().setupRemoteVideoCanvas(videoCanvasParam);
+	}
+
+	/**
+	 * 销毁远端用户视图。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：销毁远端用户视图
+	 *
+	 * @param {Object} videoCanvasParam 设置视频画布的参数
+	 * @param {Number} videoCanvasParam.userID 设置要展示的对端具体成员的userID。
+	 * @param {String} videoCanvasParam.userStringID 设置要展示的对端具体成员的字符串格式的userID，用户如果业务上要求userID需要超过number的范围时可以使用。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  
+		this.engine.destroyRemoteVideoCanvas({userID: 111})
+	*/
+	destroyRemoteVideoCanvas(videoCanvasParam) {
+		return NERtcEngineImpl.getInstance().destroyRemoteVideoCanvas(videoCanvasParam);
+	}
+
+	/**
+	 * 设置本端用户的视频辅流画布。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过此接口可以实现设置本端用户的辅流显示视图。
+	 * 调用时机：请在初始化后调用该方法，且该方法在加入房间前后均可调用。
+	 * 使用限制：无。
+	 * 注意事项：
+	 *   1. 在实际业务中，通常建议在初始化后即调用该方法进行本地视图设置，然后再加入房间或开启预览。
+	 *   2. 在无需使用画布时，建议及时释放之前的画布，否则可能会引起系统 EGL 资源耗尽而导致程序崩溃。
+	 * @param {Object} videoCanvasParam 设置本地视频辅流画布的参数
+	 * @param {Boolean} videoCanvasParam.isMediaOverlay 设置视频辅流View是否在Z轴上覆盖。
+	 * @param {NERTCMirrorMode} videoCanvasParam.mirrorMode 设置视频辅流镜像模式。
+	 * @param {NERTCRenderMode} videoCanvasParam.renderMode 设置适应视频辅流，视频辅流尺寸等比缩放。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.setupLocalSubStreamVideoCanvas({
+			renderMode: NERTCRenderMode.Fit, // Fit表示应区域。视频辅流尺寸等比缩放,保证所有区域被填满,视频辅流超出部分会被裁剪
+			mirrorMode: NERTCMirrorMode.AUTO, //AUTO表示使用默认值,由sdk控制
+			isMediaOverlay: false //表示小画布置于大画布上面
+		})
+	*/
+	setupLocalSubStreamVideoCanvas(videoCanvasParam) {
+		return NERtcEngineImpl.getInstance().setupLocalSubStreamVideoCanvas(videoCanvasParam);
+	}
+
+	/**
+	 * 销毁本地视频辅流的视图。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现解绑本地视频辅流用户和显示视图。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.destroyLocalSubStreamVideoCanvas()
+	*/
+	destroyLocalSubStreamVideoCanvas(){
+		return NERtcEngineImpl.getInstance().destroyLocalSubStreamVideoCanvas();
+	}
+
+	/**
+	 * 设置远端用户的视频辅流视图。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现绑定远端用户和显示视图，并设置远端用户视图在本地显示时的镜像模式和裁减比例，只影响本地用户看到的视频画面。
+	 * 调用时机：请在初始化后调用该方法，且该方法在加入房间前后均可调用。
+	 * 使用限制：建议在收到远端用户加入房间的 onUserJoined(long uid, NERtcUserJoinExtraInfo joinExtraInfo) 回调后，再调用此接口通过回调返回的 uid 设置对应视图。。
+	 * 注意事项：
+	 *   1. 退出房间后，SDK 也会主动清除远端用户和视图的绑定关系。
+	 *
+	 * @param {Object} videoCanvasParam 设置视频画布的参数
+	 * @param {Number} videoCanvasParam.userID 设置要展示的对端具体成员的userID。
+	 * @param {String} videoCanvasParam.userStringID 设置要展示的对端具体成员的字符串格式的userID，用户如果业务上要求userID需要超过number的范围时可以使用。
+	 * @param {Boolean} videoCanvasParam.isMediaOverlay 设置视频View是否在Z轴上覆盖。
+	 * @param {NERTCMirrorMode} videoCanvasParam.mirrorMode 设置视频镜像模式。
+	 * @param {NERTCRenderMode} videoCanvasParam.renderMode 设置适应视频，视频尺寸等比缩放。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  
+		this.engine.addEventListener("onUserSubStreamVideoStart", (userID, maxProfile) => {
+			const message = `onUserSubStreamVideoStart通知：对方开启屏幕共享，userID = ${userID}, maxProfile = ${maxProfile}`
+			this.engine.setupRemoteSubStreamVideoCanvas({
+				renderMode: NERTCRenderMode.Fit, // Fit表示应区域。视频尺寸等比缩放,保证所有区域被填满,视频超出部分会被裁剪
+				mirrorMode: NERTCMirrorMode.AUTO, //AUTO表示使用默认值,由sdk控制
+				isMediaOverlay: false, //表示小画布置于大画布上面
+				userID: userID //对方userID
+			})
+			//主动去订阅对端视频辅流
+			this.engine.subscribeRemoteSubStreamVideo({
+				userID: userID,
+				streamType:NERtcRemoteVideoStreamType.HIGH, //HIGH: 大流, LOW: 小流 
+				subscribe: true //true表示订阅，false表示取消订阅
+			})
+		});
+	*/
+	setupRemoteSubStreamVideoCanvas(videoCanvasParam) {
+		return NERtcEngineImpl.getInstance().setupRemoteSubStreamVideoCanvas(videoCanvasParam);
+	}
+
+	/**
+	 * 消耗远端用户视频辅流视图。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * @param {Object} videoCanvasParam 设置视频画布的参数
+	 * @param {Number} videoCanvasParam.userID 设置要展示的对端具体成员的userID。
+	 * @param {String} videoCanvasParam.userStringID 设置要展示的对端具体成员的字符串格式的userID，用户如果业务上要求userID需要超过number的范围时可以使用。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  
+		this.engine.destroyRemoteSubStreamVideoCanvas({userID: 111})
+	*/
+	destroyRemoteSubStreamVideoCanvas(videoCanvasParam) {
+		return NERtcEngineImpl.getInstance().destroyRemoteSubStreamVideoCanvas(videoCanvasParam);
+	}
+
+	/**
+	 * 交换本端和远端视频的视图。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：1V1场景下，一般是大小屏渲染（远端大屏，本端小屏展示在右上角），本接口允许用户动态切换两者的视图窗口。
+	 * 调用时机：请在双方视图都已经渲染的情况下，调用次接口。
+	 * 注意事项：
+	 *   1. 只支持视图主流窗口视图切换。
+	 * @param {Object} videoCanvasParam 设置视频画布的参数
+	 * @param {Object} videoCanvasParam.localVideoCanvasConfig 本端视频画布的参数
+	 * @param {NERTCMirrorMode} videoCanvasParam.localVideoCanvasConfig.mirrorMode 设置视频镜像模式。
+	 * @param {NERTCRenderMode} videoCanvasParam.localVideoCanvasConfig.renderMode 设置适应视频，视频尺寸等比缩放。
+	 * @param {Object} videoCanvasParam.remoteVideoCanvasConfig 远端视频画布的参数
+	 * @param {Number} videoCanvasParam.remoteVideoCanvasConfig.userID 设置要展示的对端具体成员的userID。
+	 * @param {String} videoCanvasParam.remoteVideoCanvasConfig.userStringID 设置要展示的对端具体成员的字符串格式的userID，用户如果业务上要求userID需要超过number的范围时可以使用。
+	 * @param {NERTCMirrorMode} videoCanvasParam.remoteVideoCanvasConfig.mirrorMode 设置视频镜像模式。
+	 * @param {NERTCRenderMode} videoCanvasParam.remoteVideoCanvasConfig.renderMode 设置适应视频，视频尺寸等比缩放。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  
+		this.engine.changeVideoCanvas({
+			localVideoCanvasConfig: {
+				renderMode: 2, // 0表示使用视频，视频等比缩放，1表示适应区域，会裁剪，2：折中方案 //当前demo先使用数字，正式版本会是枚举
+				mirrorMode: 2, //1表示启用镜像，2表示不启用
+			},
+			remoteVideoCanvasConfig: {
+				renderMode: 1, // 0表示使用视频，视频等比缩放，1表示适应区域，会裁剪，2：折中方案 //当前demo先使用数字，用户可以使用枚举
+				mirrorMode: 1, //1表示启用镜像，2表示不启用
+				userID: this.remoteUserID,
+				userStringID: this.remoteUserID + ''
+			}
+		})
+	*/
+	changeVideoCanvas(videoCanvasParam) {
+		return NERtcEngineImpl.getInstance().changeVideoCanvas(videoCanvasParam);
+	}
+
+
+	/**
+	 * 开启视频预览。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现在加入房间前启动本地视频预览，支持预览本地摄像头或外部输入视频。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可当不在房间内时可调用。
+	 * 业务场景：适用于加入房间前检查设备状态是否可用、预览视频效果等场景。
+	 * 使用限制：
+	 * 	 1. 请在通过 [setupLocalVideoCanvas] 接口设置视频画布后调用该方法。
+	 * 注意事项：
+	 *   1. 在加入房间前预览视频效果时设置的美颜、虚拟背景等视频效果在房间内仍然生效；在房间内设置的视频效果在退出房间后预览视频时也可生效。
+	 * 
+	 * @param {NERtcVideoStreamType} videoStreamType 设置本地视频画布的参数
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  // MAIN: 主流, SUB: 辅流  
+	 *  this.engine.startPreview(NERtcVideoStreamType.MAIN)
+	*/
+	startPreview(videoStreamType) {
+		return NERtcEngineImpl.getInstance().startPreview(videoStreamType);
+	}
+
+	/**
+	 * 停止视频预览。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现在预览本地视频后关闭预览。
+	 * 调用时机：建议在通过 [startVideoPreview] 接口开启视频预览后调用该方法。
+	 * 
+	 * @param {NERtcVideoStreamType} videoStreamType 设置本地视频画布的参数
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  // MAIN: 主流, SUB: 辅流  
+	 *  this.engine.stopPreview(NERtcVideoStreamType.MAIN)
+	*/
+	stopPreview(videoStreamType) {
+		return NERtcEngineImpl.getInstance().stopPreview(videoStreamType);
+	}
+
+	/**
+	 * 开启屏幕共享。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过此接口开启屏幕共享后，屏幕共享内容以视频辅流的形式发送。
+	 * 调用时机：请在引擎初始化之后调用此接口，且该方法仅可在加入房间后调用。
+	 * 相关回调：
+	 *   1. 成功开启屏幕共享辅流后，远端会触发 onUserSubStreamVideoStart() 回调。
+	 * 
+	 * @param {Object} screenConfigParam 设置屏幕共享画布的参数
+	 * @param {NERtcVideoProfileType} videoConfigParam.maxProfile 设置的屏幕共享配置项。
+	 * @param {NERtcVideoFrameRate} videoConfigParam.frameRate 设置的屏幕共享帧率。
+	 * @param {NERtcVideoFrameRate} videoConfigParam.minFramerate  设置的屏幕共享最小帧率。
+	 * @param {Number} videoConfigParam.bitrate 设置的屏幕共享码率。
+	 * @param {Number} videoConfigParam.minBitrate 设置的屏幕共享最小码率。
+	 * @param {NERtcSubStreamContentPrefer} videoConfigParam.contentPrefer 屏幕共享功能的编码策略倾向。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  
+		let screenConfigParam = {
+			maxProfile: NERtcVideoProfileType.Standard, 
+			frameRate: NERtcVideoFrameRate.FRAME_RATE_FPS_24, //设置帧率24
+			minFrameRate: NERtcVideoFrameRate.FRAME_RATE_FPS_15, //设置最小帧率15
+			bitrate: 2500, //设置屏幕共享码率1500kbps
+			minBitrate: 1500, //设置屏幕共享码率最小为1000kbps
+			contentPrefer: NERtcSubStreamContentPrefer.CONTENT_PREFER_DETAILS, //屏幕共享功能的编码策略倾向
+		};
+		this.engine.startScreenCapture(screenConfigParam)
+	*/
+	startScreenCapture(screenConfigParam) {
+		return NERtcEngineImpl.getInstance().startScreenCapture(screenConfigParam);
+	}
+
+	/**
+	 * 关闭屏幕共享。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过此接口可以实现关闭屏幕共享辅流。
+	 * 相关回调：
+	 *   1. 成功调用此方法后，远端会触发 onUserSubStreamVideoStop() 回调。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 * 
+	 *  this.engine.stopScreenCapture()
+	*/
+	stopScreenCapture(){
+		return NERtcEngineImpl.getInstance().stopScreenCapture()
+	}
+	
+	/**
+	 * 是否开启音频共享。
+	 *
+	 * 支持版本：5.5.21 及以上。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * @param {Boolean} enable 是否开启
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.enableLoopbackRecording(true)
+	*/
+	enableLoopbackRecording(enable){
+		return NERtcEngineImpl.getInstance().enableLoopbackRecording(enable)
+	}
+	/**
+	 * 调整共享音频音量。
+	 *
+	 * 支持版本：5.5.21 及以上。
+	 * @param {Number} volume 播放音量。取值范围为 [0, 400]。其中：
+	 * - 0：静音。
+	 * - 100：（默认）原始音量。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.adjustLoopBackRecordingSignalVolume(100)
+	*/
+	adjustLoopBackRecordingSignalVolume(volume){
+		return NERtcEngineImpl.getInstance().adjustLoopBackRecordingSignalVolume(volume)
+	}
+	
+	/**
+	 * 调节本地播放的所有远端用户信号音量。
+	 *
+	 * 支持版本：5.5.21 及以上。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：
+	 * 1、建议设置本地播放音量时使用默认值（100）或小于该值，否则可能会导致音质问题。
+	 * @param {Number} volume 播放音量。取值范围为 [0, 400]。其中：
+	 * - 0：静音。
+	 * - 100：（默认）原始音量。
+	 * 400：最大可为原始音量的 4 倍（自带溢出保护）。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.adjustPlaybackSignalVolume(100)
+	*/
+	adjustPlaybackSignalVolume(volume){
+		return NERtcEngineImpl.getInstance().adjustPlaybackSignalVolume(volume)
+	}
+	
+
+	/**
+	 * 设置音频编码属性。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过此接口可以实现设置音频编码的采样率、码率、编码模式、声道数等，也可以设置音频属性的应用场景，包括聊天室场景、语音场景、音乐场景等。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：
+	 *   1. 音乐场景下，建议将 profile 设置为 HIGH_QUALITY。 若您通过 setChannelProfile() 接口设置房间场景为直播模式，即 LIVE_BROADCASTING，但未调用此方法设置音频编码属性，或仅设置 profile 为 DEFAULT，则 SDK 会自动设置 profile 为 HIGH_QUALITY，且设置 scenario 为 MUSIC。
+	 * @param {Object} audioProfileParam 设置本地音频的编码参数
+	 * @param {NERTCAudioProfile} audioProfileParam.profile 设置音频的编码模式。
+	 * @param {NERTCAudioScenario} audioProfileParam.scenario 音频场景场景
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.setAudioProfile({
+			profile: NERTCAudioProfile.STANDARD, //设置profile为标准模式
+			scenario: NERTCAudioScenario.SPEECH //scenario为语音场景
+		})
+	*/
+	setAudioProfile(audioProfileParam){
+		return NERtcEngineImpl.getInstance().setAudioProfile(audioProfileParam)
+	}
+
+	/**
+	 * 设置视频编码属性。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过此接口可以设置视频主流或辅流的编码分辨率、裁剪模式、码率、帧率、带宽受限时的视频编码降级偏好、编码的镜像模式、编码的方向模式参数。
+	 * 调用时机：请在初始化后调用该方法，且该方法在加入房间前后均可调用
+	 * 使用限制：无。
+	 * 注意事项：
+	 *   1. 每个属性对应一套视频参数，例如分辨率、帧率、码率等。所有设置的参数均为理想情况下的最大值。当视频引擎因网络环境等原因无法达到设置的分辨率、帧率或码率的最大值时，会取最接近最大值的那个值。
+	 *   2. 此接口为全量参数配置接口，重复调用此接口时，SDK 会刷新此前的所有参数配置，以最新的传参为准。所以每次修改配置时都需要设置所有参数，未设置的参数将取默认值
+	 *
+	 * @param {Object} videoConfigParam 设置视频画布的参数
+	 * @param {NERtcVideoStreamType} videoConfigParam.videoStreamType 设置的视频类型。
+	 * @param {NERtcVideoProfileType} videoConfigParam.maxProfile 设置的视频配置项。
+	 * @param {NERtcVideoFrameRate} videoConfigParam.frameRate 设置的视频帧率。
+	 * @param {NERtcVideoFrameRate} videoConfigParam.minFramerate  设置的视频最小帧率。
+	 * @param {Number} videoConfigParam.bitrate 设置的视频码率。
+	 * @param {Number} videoConfigParam.minBitrate 设置的视频最小码率。
+	 * @param {Number} videoConfigParam.width 设置视频帧在横轴上的像素，即自定义宽。
+	 * @param {Number} videoConfigParam.height 设置视频帧在纵轴上的像素，即自定义高。
+	 * @param {NERtcVideoCropMode} videoConfigParam.cropMode 设置视频视频裁剪模式。
+	 * @param {NERtcDegradationPreference} videoConfigParam.degradationPreference 设置带宽受限时的视频编码降级偏好。
+	 * @param {NERTCMirrorMode} videoConfigParam.mirrorMode 设置视频镜像模式。
+	 * @param {NERtcVideoOutputOrientationMode} videoConfigParam.orientationMode 设置适应视频，视频尺寸等比缩放。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  
+		let localVideoConfig = {
+			videoStreamType: NERtcVideoStreamType.MAIN, // 表示是对视频主流的配置
+			maxProfile: NERtcVideoProfileType.Standard, //不推荐使用了
+			frameRate: NERtcVideoFrameRate.FRAME_RATE_FPS_24, //设置帧率24
+			minFrameRate: NERtcVideoFrameRate.FRAME_RATE_FPS_15, //设置最小帧率15
+			bitrate: 1500, //设置视频码率1500kbps
+			minBitrate: 1000, //设置视频码率最小为1000kbps
+			width: 1280, //设置视频宽为1280
+			height: 720, //设置视频高为720
+			cropMode: NERtcVideoCropMode.CROP_16x9, //视频采集宽高比为16:9
+			degradationPreference: NERtcDegradationPreference.DEGRADATION_DEFAULT, //带宽受限时的视频编码降级偏好为默认
+			mirrorMode: mirrorMode: NERTCMirrorMode.AUTO, //AUTO表示使用默认值,由sdk控制
+			orientationMode: NERtcVideoOutputOrientationMode.VIDEO_OUTPUT_ORIENTATION_MODE_ADAPTATIVE //（默认）该模式下 SDK 输出的视频方向与采集到的视频方向一致。接收端会根据收到的视频旋转信息对视频进行旋转
+		};
+		this.engine.setLocalVideoConfig(localVideoConfig)
+	*/
+	setLocalVideoConfig(videoConfigParam){
+		return NERtcEngineImpl.getInstance().setLocalVideoConfig(videoConfigParam)
+	}
+
+
+	/**
+	 * 设置是否由扬声器播放声音。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现设置是否将语音路由到扬声器，即设备外放。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：
+	 *   1. 若设备连接了耳机或蓝牙，则无法开启外放
+	 * 
+	 * @param {Boolean} enable 是否将音频路由到扬声器：
+		- true：启用扬声器播放。
+		- false：关闭扬声器播放。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.setSpeakerphoneOn(true)
+	*/
+	setSpeakerphoneOn(enable){
+		if (NERtcEngineImpl.getInstance()) {
+		  return NERtcEngineImpl.getInstance().setSpeakerphoneOn(enable)
+		}
+	}
+
+	/**
+	 * 开启或关闭本地媒体流（主流）的发送。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：该方法用于开始或停止向网络发送本地音频或视频数据。 该方法不影响接收或播放远端媒体流，也不会影响本地音频或视频的采集状态。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：
+	 *   1. 该方法暂时仅支持控制音频流的发送。
+	 *   2. 停止发送媒体流的状态会在通话结束后被重置为允许发送。
+	 * 相关回调：
+	 *   1. 成功调用该方法切换本地用户的发流状态后，房间内其他用户会收到 onUserAudioStart()（开启发送音频）或 onUserAudioStop()（停止发送音频）的回调。
+	 * 相关接口：
+	 * 	 1. muteLocalAudio()：
+	 * 		- 在需要开启本地音频采集（监测本地用户音量）但不发送音频流的情况下，您也可以调用 muteLocalAudio(true) 方法。
+			- 两者的差异在于， muteLocalAudio(true) 仍然保持与服务器的音频通道连接，而 enableMediaPub(false) 表示断开此通道，因此若您的实际业务场景为多人并发的大房间，建议您调用 enableMediaPub 方法。
+	 * 
+	 * @param {Boolean} param 
+	 * @param {Boolean} param.enable 是否发布本地音频流
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  //静音设备
+	 *  this.engine.enableMediaPub(true);
+	*/
+	enableMediaPub(enable){
+		return NERtcEngineImpl.getInstance().enableMediaPub(enable)
+	}
+
+	/**
+	 * 设置是否静音音频采集设备。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 业务场景：
+	 *   1. 适用于麦克风采集和伴音同时开启时，只发送伴音音频的场景。
+	 * 
+	 * @param {Boolean} enable 是否静音音频采集设备
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  //静音设备
+	 *  this.engine.setRecordDeviceMute(true);
+	*/
+	setRecordDeviceMute(enable){
+		return NERtcEngineImpl.getInstance().setRecordDeviceMute(enable)
+	}
+
+	/**
+	 * 调节采集信号音量。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现设置录制声音的信号幅度，从而达到调节采集音量的目的。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：
+	 *   1. 该方法设置内部引擎为启用状态，在 leaveChannel() 后设置失效，将恢复至默认。
+	 *   2. 建议设置本地采集音量为默认值（100）或小于该值，否则可能会导致音质问题。
+	 *   3. 该方法仅设置应用程序中的采集信号音量，不修改设备音量，也不会影响伴音、音效等的音量；若您需要修改设备音量，请调用设备管理相关接口。
+	 * 
+	 * @param {Number} volume 采集信号音量，取值范围为 0 ~ 400。：
+		- 0：静音。
+		- 100（默认）：原始音量。
+		- 400：最大音量值（自带溢出保护）。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  //将采集音量设置为100
+	 *  this.engine.adjustRecordingSignalVolume(100);
+	*/
+	adjustRecordingSignalVolume(volume){
+		return NERtcEngineImpl.getInstance().adjustRecordingSignalVolume(volume)
+	}
+			
+	/**
+	 * 调节本地播放的指定远端用户的信号音量。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过此接口可以实现在通话过程中随时调节本地播放的指定远端用户的混音音量。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：
+	 *   1. 该方法设置内部引擎为启用状态，在 leaveChannel() 后设置失效，将恢复至默认。但在本次通话过程中有效，比如指定远端用户中途退出房间，则再次加入此房间时仍旧维持该设置。
+	 *   2. 该方法每次只能调整一位远端用户的播放音量，若需调整多位远端用户在本地播放的音量，则需多次调用该方法。
+	 * 
+	 * @param {Object} param
+	 * @param {Number} param.userID 远端用户 ID
+	 * @param {Number} param.userStringID 设置要展示的对端具体成员的字符串格式的userID，用户如果业务上要求userID需要超过number的范围时可以使用
+	 * @param {Number} param.volume 播放音量，取值范围为 [0,100]
+		- 0：静音。
+		- 100（默认）：原始音量。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *
+		//调整uid为12345的用户在本地的播放音量为50
+		this.engine.adjustUserPlaybackSignalVolume({
+			userID: 12345,
+			volume: 50
+		});
+		//调整uid为12345的用户在本地的播放音量为0，静音该用户。
+		this.engine.adjustUserPlaybackSignalVolume({
+			userID: 12345,
+			volume: 0
+		});
+	*/
+	adjustUserPlaybackSignalVolume(param){
+		return NERtcEngineImpl.getInstance().adjustUserPlaybackSignalVolume(param)
+	}
+			
+	/**
+	 * 调节本地播放的某个房间的所有用户的信号音量。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过此接口可以实现在通话过程中随时调节本地播放的某个房间的所有用户的混音音量。
+	 * 调用时机：请在引擎初始化之后调用此接口，该方法在加入房间前后均可调用。
+	 * 注意事项：
+	 *   1. 该方法设置内部引擎为启用状态，在 leaveChannel() 后失效，但在本次通话过程中有效。
+	 * 
+	 * @param {Number} volume 播放音量，取值范围为 [0,400]
+		- 0：静音。
+		- 100（默认）：原始音量。
+		- 400：最大可为原始音量的 4 倍（自带溢出保护）。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *
+		//调整本地播放的某个房间内所有用户的音量为50
+		this.engine.adjustChannelPlaybackSignalVolume(50);
+	*/
+	adjustChannelPlaybackSignalVolume(volume){
+		return NERtcEngineImpl.getInstance().adjustChannelPlaybackSignalVolume(volume)
+	}
+	
+	/**
+	 * 设置是否开启耳返功能。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：
+	 *   1. 加入房间后，耳返功能可以随时开启，但只有当插入耳机或耳麦时，耳返功能才会生效；当拔出耳机或耳麦时会自动暂停，再次插入耳机或耳麦自动恢复，且耳返功能可以实时关闭。
+	 * 
+	 * @param {Object} param 
+	 * @param {Boolean} param.enabled 是否开启耳返功能
+	 * @param {Number} param.volume 设置耳返音量。取值范围为 0 ~ 100，默认值为 100。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  //将采集音量设置为100
+	 *  this.engine.enableEarback({
+			enabled: true,
+			volume: 100
+		});
+	*/
+	enableEarback(param){
+		return NERtcEngineImpl.getInstance().enableEarback(param)
+	}
+			
+	/**
+	 * 设置耳返音量。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：调用 enableEarback 方法开启耳返功能之后，您可以调用 setEarbackVolume 方法设置耳返音量。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：
+	 *   1. 该方法设置内部引擎为启用状态，在 leaveChannel() 后设置失效，将恢复至默认。
+	 * 
+	 * @param {Number} volume 设置耳返音量，可设置为 0~100，默认为 100。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  //将采集音量设置为100
+	 *  this.engine.setEarbackVolume(100);
+	*/
+	setEarbackVolume(volume){
+		return NERtcEngineImpl.getInstance().setEarbackVolume(volume)
+	}
+	
+	
+	/**
+	 * 启用说话者音量提示。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过此接口可以实现允许 SDK 定期向 App 反馈房间内发音频流的用户和瞬时音量最高的远端用户（最多 3 位，包括本端）的音量相关信息，即当前谁在说话以及说话者的音量。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 业务场景: 适用于通过发言者的人声相关信息做出 UI 上的音量展示的场景，或根据发言者的音量大小进行视图布局的动态调整。
+	 * 注意事项：
+	 *   1. 该方法设置内部引擎为启用状态，在 leaveChannel() 后设置失效，将恢复至默认。
+	 * 相关回调:
+		 1. 启用该方法后，只要房间内有发流用户，无论是否有人说话，SDK 都会在加入房间后根据预设的时间间隔触发 onLocalAudioVolumeIndication()、onRemoteAudioVolumeIndication() 回调。
+	 * 
+	 * @param {Object} param
+	 * @param {Boolean} param.enable 是否启用说话者音量提示
+	 * @param {Number} param.interval 指定音量提示的时间间隔。单位为毫秒。必须设置为 100 毫秒的整数倍值，建议设置为 200 毫秒以上。
+	 * @param {Boolean} param.enableVad 是否启用本地采集人声监测
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *
+		//设置间隔为500ms的人声音量提示
+		this.engine.enableAudioVolumeIndication({
+			enable: true,
+			interval: 500,
+			enableVad: false
+		});
+	*/
+	enableAudioVolumeIndication(param){
+		return NERtcEngineImpl.getInstance().enableAudioVolumeIndication(param)
+	}
+			
+	/**
+	 * 开启或关闭本地视频的采集与发送。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现开启或关闭本地视频，不影响接收远端视频。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：
+	 *   1. 该方法设置内部引擎为开启或关闭状态, 在 [leaveChannel] 后仍然有效。
+	 *   2. 在您的应用切到后台或者其他应用占用摄像头时，可能会导致摄像头打开失败，需要注册 camera 动态权限。
+	 * 相关回调:
+	 *   1. 开启本地视频采集后，远端会收到 AbsNERtcCallbackEx#onUserVideoStart() 回调。
+	 *   2. 关闭本地视频采集后，远端会收到 AbsNERtcCallbackEx#onUserVideoStop() 回调。
+	 * @param {Object} param 启用本地video参数
+	 * @param {Boolean} param.enable 是否开启本地视频采集与发送：
+	 *	- true：启用本地视频采集。
+	 *	- false：关闭本地视频采集。
+	 * @param {NERtcVideoStreamType} param.videoStreamType 视频类型：
+	 *  - MAIN：视频主流（默认摄像头）
+	 *  - SUB：视频辅流（默认屏幕共享）
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  // MAIN: 主流, SUB: 辅流  
+	 *  this.engine.enableLocalVideo({
+			videoStreamType: NERtcVideoStreamType.MAIN,
+			enable: true
+		})
+	*/
+	enableLocalVideo(param){
+		return NERtcEngineImpl.getInstance().enableLocalVideo(param)
+	}
+			
+	/**
+	 * 开启或关闭本地音频的采集和发送。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：通过本接口可以实现开启或关闭本地语音功能，进行本地音频采集及处理。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：
+	 *   1. 该方法设置内部引擎为开启或关闭状态, 在 [leaveChannel] 后仍然有效。
+	 *   2. 开启或关闭本地音频采集的操作不会影响伴音/音效接口的使用, enableLocalAudio(false) 后仍可以调用 [startAudioMixing]方法播放音乐文件。
+	 *   3. 该方法会操作音频硬件设备，建议避免频繁开关，否则可能导致设备异常。
+	 * 相关回调:
+	 *   1. 开启音频采集后，远端会触发 NERtcCallback#onUserAudioStart() 回调。
+	 *   2. 关闭音频采集后，远端会触发 NERtcCallback#onUserAudioStop() 回调。
+	 * @param {Boolean} enable 是否开启本地音频采集与发送：
+	 *	- true：启用本地音频采集。
+	 *	- false：关闭本地音频采集。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  // 打开音频采集
+	 *  this.engine.enableLocalAudio(true)
+	*/
+	enableLocalAudio(enable){
+		if (NERtcEngineImpl.getInstance()) {
+		  return NERtcEngineImpl.getInstance().enableLocalAudio(enabel)
+		}
+		throw new Error(NERTC_ERROR.NO_INST)
+	}
+	
+	/**
+	 * 取消或恢复发布本地视频。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：调用该方法取消发布本地视频主流或辅流后，SDK 不再发送本地视频流。
+	 * 调用时机：
+	 *   1. 请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 *   2. 一般在通过 [enableLocalVideo] 接口开启本地视频采集并发送后调用该方法。
+	 * 注意事项：
+	 *   1. 该方法设置内部引擎为开启或关闭状态, 在 [leaveChannel] 后仍然有效。
+	 *   2. 调用该方法取消发布本地视频流时，设备仍然处于工作状态。
+	 *   3. 该方法仅适用于视频主流，若您希望取消或恢复发布视频辅流，请调用 [muteLocalVideo]方法。
+
+	 * 相关回调:
+	 *   1. 开启本地视频采集后，远端会收到 AbsNERtcCallbackEx#onUserVideoStart() 回调。
+	 *   2. 关闭本地视频采集后，远端会收到 AbsNERtcCallbackEx#onUserVideoStop() 回调。
+	 * @param {Object} param 启用本地video参数
+	 * @param {Boolean} param.mute 是否取消发布本地视频流：
+	 *	- true：取消发布本地视频流。
+	 *	- false：恢复发布本地视频流。
+	 * @param {NERtcVideoStreamType} param.videoStreamType 视频类型：
+	 *  - MAIN：视频主流（默认摄像头）
+	 *  - SUB：视频辅流（默认屏幕共享）
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  // MAIN: 主流, SUB: 辅流  
+	 *  this.engine.muteLocalVideo(true)
+	*/
+	muteLocalVideo(mute){
+		if (NERtcEngineImpl.getInstance()) {
+		  return NERtcEngineImpl.getInstance().muteLocalVideo(mute)
+		}
+	}
+			
+	/**
+	 * 开启或关闭本地音频主流的发送。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：该方法用于向网络发送或取消发送本地音频数据，不影响本地音频的采集状态，也不影响接收或播放远端音频流。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：
+	 *   1. 该方法设置内部引擎为开启或关闭状态, 在 [leaveChannel] 后仍然有效。
+	 * 相关接口: 
+	 *   1. enableMediaPub()：
+	 * 		- 在需要开启本地音频采集（监测本地用户音量）但不发送音频流的情况下，您也可以调用 enableMeidaPub(false) 方法。
+	 * 		- 两者的差异在于，muteLocalAudio(true) 仍然保持与服务器的音频通道连接，而 enableMediaPub(false) 表示断开此通道，因此若您的实际业务场景为多人并发的大房间，建议您调用 enableMediaPub 方法。
+	 * 相关回调:
+	 *   1. 若本地用户在说话，成功调用该方法后，房间内其他用户会收到 AbsNERtcCallbackEx#onUserAudioMute() 回调。
+	 * @param {Boolean} mute 是否关闭本地音频的发送：
+	 *	- true：不发送本地音频。
+	 *	- false：发送本地音频。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  // 打开音频采集
+	 *  this.engine.muteLocalAudio(true)
+	*/
+	muteLocalAudio(mute){
+		if (NERtcEngineImpl.getInstance()) {
+		  return NERtcEngineImpl.getInstance().muteLocalAudio(mute)
+		}
+	}
+	
+	/*************************************************** 伴音模块 start ************************************************************/
+	
+	/**
+	 * 开启伴音。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：通过本接口可以实现指定本地或在线音频文件和录音设备采集的音频流进行混音。
+	 * 调用时机：
+	 * 	 1. 请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 *   2. 发送伴音前必须前调用 enableLocalAudio 方法开启本地音频采集。
+	 * 注意事项：
+	 *   1. 支持的音乐文件类型包括 MP3、M4A、AAC、3GP、WMA 、WAV 和 FLAC 格式，支持本地文件或在线 URL。
+	 *   2. 若您在通话中途调用此接口播放音乐文件时，手动设置了伴音播放音量或发送音量，则当前通话中再次调用时默认沿用此设置。
+	 * @param {Object} audioMixingParam 创建伴音任务的配置选项，包括伴音任务类型、伴音文件的绝对路径或 URL 等
+	 * @param {String} audioMixingParam.path 待播放的音乐文件的绝对路径或 URL 地址，支持本地绝对路径或 URL 地址。
+	 *	- 需精确到文件名及后缀。
+	 *	- 支持的音效文件类型包括 MP3、M4A、AAC、3GP、WMA 和 WAV 格式。
+	 * @param {Number} audioMixingParam.loopCount 伴音循环播放的次数：
+	 *  -  1：（默认）播放一次。
+	 *  - ≤ 0：无限循环播放，直至调用 pauseAudioMixing 后暂停，或调用 stopAudioMixing 后停止。
+	 * @param {Boolean} audioMixingParam.sendEnabled 是否将伴音发送远端，默认为 true，即远端用户订阅本端音频流后可听到该伴音。
+	 * @param {Number} audioMixingParam.sendVolume 音乐文件的发送音量，取值范围为 0~200。默认为 100，表示使用文件的原始音量。
+	 * - 若您在通话中途修改了音量设置，则当前通话中再次调用时默认沿用此设置。
+	 * @param {Boolean} audioMixingParam.playbackEnabled 是否本地播放伴音。默认为 true，即本地用户可以听到该伴音。
+     * @param {Number} audioMixingParam.playbackVolume 音乐文件的播放音量，取值范围为 0~200。默认为 100，表示使用文件的原始音量。
+	 * - 若您在通话中途修改了音量设置，则当前通话中再次调用时默认沿用此设置。
+     * @param {Number} audioMixingParam.startTimeStamp 音乐文件开始播放的时间，UTC 时间戳，即从1970 年 1 月 1 日 0 点 0 分 0 秒开始到事件发生时的毫秒数。默认值为 0，表示立即播放。
+     * @param {Number} audioMixingParam.progressInterval 播放进度回调间隔，单位ms，取值范围为 100~10000, 默认1000ms
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  
+	 *  this.engine.startAudioMixing({
+			path: '', //伴音文件的绝对路径 or url
+			loopCount: 1, //循环一次
+			sendEnabled: true, //发送到远端
+			sendVolume: 100, //发送伴音文件的原始音量
+			playbackEnabled: true, //本端播放伴音文件
+			playbackVolume: 100, //本地播放使用伴音文件的原始音量
+			startTimeStamp: 0  //音乐文件开始播放的时间，UTC 时间戳
+		})
+	*/
+	startAudioMixing(audioMixingParam){
+		return NERtcEngineImpl.getInstance().startAudioMixing(audioMixingParam)
+	}
+	
+	/**
+	 * 停止伴音。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：通过本接口可以实现停止播放本地或在线音频文件，或者录音设备采集的混音音频流。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.stopAudioMixing()
+	*/
+	stopAudioMixing() {
+		return NERtcEngineImpl.getInstance().stopAudioMixing()
+	}  
+	
+	/**
+	 * 暂停伴音。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：通过此接口可以实现暂停播放伴音文件。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：请先调用 startAudioMixing() 开启伴音
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.pauseAudioMixing()
+	*/
+	pauseAudioMixing() {
+		return NERtcEngineImpl.getInstance().pauseAudioMixing()
+	}  
+	
+	/**
+	 * 恢复伴音。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：通过此接口可以实现恢复播放伴音文件。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.resumeAudioMixing()
+	*/
+	resumeAudioMixing() {
+		return NERtcEngineImpl.getInstance().resumeAudioMixing()
+	}  
+	
+	/**
+	 * 设置节伴奏播放音量。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：该方法调节混音里伴奏的播放音量大小。请在房间内调用该方法。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * @param {Number} volume 伴奏本地播放音量。取值范围为 0~200。默认 100，即原始文件音量。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.setAudioMixingPlaybackVolume(100)
+	*/
+	setAudioMixingPlaybackVolume(volume) {
+		return NERtcEngineImpl.getInstance().setAudioMixingPlaybackVolume(volume)
+	} 
+	
+	/**
+	 * 调节伴奏发送音量。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：该方法调节混音里伴奏的发送音量大小。请在房间内调用该方法。
+	 * 调用时机：请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * @param {Number} volume 伴奏发送音量。取值范围为 0~200。默认 100，即原始文件音量。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.setAudioMixingSendVolume(100)
+	*/
+	setAudioMixingSendVolume(volume) {
+		return NERtcEngineImpl.getInstance().setAudioMixingSendVolume(volume)
+	} 
+	  
+	/**
+	 * 获取伴奏本地播放音量。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：该方法获取混音里伴奏的本地播放音量大小。请在房间内调用该方法。
+	 * 返回：当前伴奏本地播放音量。
+	 * @memberof NERTC
+	 * @@return {Number}
+	 * 
+	 * @example
+	 * 
+	 * const volume = this.engine.getAudioMixingPlaybackVolume();
+	*/
+	getAudioMixingPlaybackVolume() {
+	    return NERtcEngineImpl.getInstance().getAudioMixingPlaybackVolume();
+	}
+	  
+	/**
+	 * 获取伴奏发送音量。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：该方法获取混音里伴奏的发送音量大小。请在房间内调用该方法。
+	 * 返回：当前伴奏发送音量。
+	 * @memberof NERTC
+	 * @@return {Number}
+	 * 
+	 * @example
+	 * 
+	 * const volume = this.engine.getAudioMixingSendVolume();
+	*/
+	getAudioMixingSendVolume() {
+	    return NERtcEngineImpl.getInstance().getAudioMixingSendVolume();
+	}  
+	  
+	/**
+	 * 获取伴奏时长。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：该方法获取伴奏时长，单位为毫秒。
+	 * 注意事项：
+	 * - 请在加入房间后调用该方法。
+	 * - 伴音相关方法为异步加载，刚开始伴音时，如果立即调用此方法，获取到的伴奏时长可能为错误码30001。如果遇到此类问题，等待伴音状态是开始之后再调用。
+	 * 返回：伴奏时长，单位为毫秒。
+	 * @memberof NERTC
+	 * @@return {Number}
+	 * 
+	 * @example
+	 * 
+	 * const duration = this.engine.getAudioMixingDuration();
+	*/
+	getAudioMixingDuration() {
+	    return NERtcEngineImpl.getInstance().getAudioMixingDuration();
+	}
+	
+	/**
+	 * 设置音乐文件的播放位置。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：该方法可以设置音频文件的播放位置，这样你可以根据实际情况播放文件，而非从头到尾播放整个文件。
+	 * @param {Number} position 音乐文件的播放位置，单位为毫秒
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 * 
+	 * this.engine.setAudioMixingPosition(3000);
+	*/
+	setAudioMixingPosition(position) {
+	    return NERtcEngineImpl.getInstance().setAudioMixingPosition(position);
+	}
+	
+	/**
+	 * 获取音乐文件的播放进度。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：该方法获取当前伴奏播放进度，单位为毫秒。请在房间内调用该方法。
+	 * 返回：音乐文件的播放位置，单位为毫秒。
+	 * @memberof NERTC
+	 * @@return {Number}
+	 * 
+	 * @example
+	 * 
+	 * const position = this.engine.getAudioMixingCurrentPosition();
+	*/
+	getAudioMixingCurrentPosition() {
+	    return NERtcEngineImpl.getInstance().getAudioMixingCurrentPosition();
+	}
+	
+	/**
+	 * 获取当前伴音文件的音调。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 返回：音乐文件的音调。
+	 * @memberof NERTC
+	 * @@return {Number}
+	 * 
+	 * @example
+	 * 
+	 * const pitch = this.engine.getAudioMixingPitch();
+	*/
+	getAudioMixingPitch() {
+	    return NERtcEngineImpl.getInstance().getAudioMixingPitch();
+	}  
+	  
+	/**
+	 * 设置当前伴音文件的音调。
+	 *
+	 * 支持版本：5.6.0 及以上。
+	 * 详情描述：通过此接口可以实现当本地人声和播放的音乐文件混音时，仅调节音乐文件的音调。
+	 * 调用时机：请先调用 startAudioMixing() 方法开启伴音
+	 * 业务场景：适用于 K 歌中为了匹配人声，调节背景音乐音高的场景。
+	 * 注意事项：当前伴音任务结束后，此接口的设置会恢复至默认。
+	 * @param {Number} pitch 当前伴音文件的音调。默认值为 0，即不调整音调，取值范围为 -12 ~ 12，按半音音阶调整。每相邻两个值的音高距离相差半音；取值的绝对值越大，音调升高或降低得越多。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 * 
+	 * this.engine.setAudioMixingPitch(3);
+	*/
+	setAudioMixingPitch(pitch) {
+	    return NERtcEngineImpl.getInstance().setAudioMixingPitch(pitch);
+	} 
+	
+	/*************************************************** 伴音模块 end ************************************************************/
+	
+	  
+	/**
+	 * 切换前置或后置摄像头。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：该方法用于向网络发送或取消发送本地音频数据，不影响本地音频的采集状态，也不影响接收或播放远端音频流。
+	 * 调用时机：请在调用 [startVideoPreview] 或 [joinChannel] 方法且开启摄像头之后调用此接口。
+	 * 注意事项：
+	 *   1. 该方法需要在相机启动后才可调用。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.switchCamera()
+	*/
+	switchCamera() {
+		if (NERtcEngineImpl.getInstance()) {
+		  return NERtcEngineImpl.getInstance().switchCamera()
+		}
+		throw new Error(NERTC_ERROR.NO_INST)
+	}  
+			  
+			
+	/**
+	 * 订阅或取消订阅指定远端用户的视频主流。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：加入房间后，默认不订阅所有远端用户的视频主流；若您希望看到指定远端用户的视频，可以在监听到对方加入房间或发布视频流之后，通过此方法订阅该用户的视频主流。
+	 * 调用时机：
+	 *   1. 请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 * 注意事项：
+	 *   1. 该方法设置内部引擎为开启或关闭状态, 在 [leaveChannel] 后仍然有效。
+	 *   2. 调用该方法取消发布本地视频流时，设备仍然处于工作状态。
+	 *   3. 该方法仅适用于视频主流，若您希望取消或恢复发布视频辅流，请调用 [muteLocalVideo]方法。
+	
+	 * 相关回调:
+	 *   1. 开启本地视频采集后，远端会收到 AbsNERtcCallbackEx#onUserVideoStart() 回调。
+	 *   2. 关闭本地视频采集后，远端会收到 AbsNERtcCallbackEx#onUserVideoStop() 回调。
+	 * @param {Object} subscribeParam 启用本地video参数
+	 * @param {Number} subscribeParam.userID 指定用户的 ID
+	 * @param {String} subscribeParam.userStringID 对端具体成员的字符串格式的userID，用户如果业务上要求userID需要超过number的范围时可以使用
+	 * @param {Boolean} subscribeParam.subscribe 是否订阅远端用户的视频流
+	 *	- true：订阅指定视频流。
+	 *	- false：不订阅指定视频流。
+	 * @param {NERtcRemoteVideoStreamType} subscribeParam.remoteVideoStreamType 视频类型：
+	 *  - HIGH：大流
+	 *  - LOW：小流
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.addEventListener("onUserVideoStart", (userID, maxProfile) => {
+			const message = `onUserVideoStart通知：对方开启视频，userID = ${userID}, maxProfile = ${maxProfile}`
+			//设置对端的视频画布
+			this.engine.setupRemoteVideoCanvas({
+				renderMode: NERTCRenderMode.Fit, // Fit表示应区域。视频尺寸等比缩放,保证所有区域被填满,视频超出部分会被裁剪
+				mirrorMode: NERTCMirrorMode.AUTO, //AUTO表示使用默认值,由sdk控制
+				isMediaOverlay: false, //表示小画布置于大画布上面
+				userID: userID //对方userID
+			})
+			//主动去订阅对端视频
+			this.engine.subscribeRemoteVideo({
+				userID: userID,
+				streamType: NERtcRemoteVideoStreamType.HIGH, //HIGH: 大流, LOW: 小流 
+				subscribe: true //true表示订阅，false表示取消订阅
+			})
+		});
+	*/
+	subscribeRemoteVideo(subscribeParam) {
+		return NERtcEngineImpl.getInstance().subscribeRemoteVideo(subscribeParam)
+	}
+	
+	/**
+	 * 订阅或取消订阅远端用户的视频辅流。
+	 *
+	 * 支持版本：5.3.7 及以上。
+	 * 详情描述：加入房间后，默认不订阅所有远端用户的视频辅流；若您希望看到指定远端用户的视频辅流，可以在监听到对方加入房间或发布视频辅流之后，通过此方法订阅该用户的视频辅流。
+	 * 调用时机：
+	 *   1. 请在初始化后调用该方法，且该方法仅可在加入房间后调用。
+	 *   2. 请先调用 [setupRemoteSubStreamVideoCanvas] 设置远端用户的视频辅流画布
+	 *   3. 建议在收到远端用户发布视频辅流的回调通知 onUserSubStreamVideoStart 事件后调用此接口
+	 * 相关回调:
+	 *   1. onUserSubStreamVideoStart：远端用户发布视频辅流的回调。
+	 *   2. onUserSubStreamVideoStop：远端用户停止发布视频辅流的回调。
+	 * @param {Object} subscribeParam 启用本地video参数
+	 * @param {Number} subscribeParam.userID 对端userID
+	 * @param {String} subscribeParam.userStringID 对端具体成员的字符串格式的userID，用户如果业务上要求userID需要超过number的范围时可以使用
+	 * @param {Boolean} subscribeParam.subscribe 是否取消发布本地视频流：
+	 *	- true：取消发布本地视频辅流。
+	 *	- false：恢复发布本地视频辅流。
+	 * @param {NERtcRemoteVideoStreamType} subscribeParam.remoteVideoStreamType 视频类型：
+	 *  - HIGH：大流
+	 *  - LOW：小流
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.addEventListener("onUserSubStreamVideoStart", (userID, maxProfile) => {
+			const message = `onUserVideoStart通知：对方开启视频，userID = ${userID}, maxProfile = ${maxProfile}`
+			//设置对端的视频辅流画布
+			this.engine.setupRemoteSubStreamVideoCanvas({
+				renderMode: NERTCRenderMode.Fit, // Fit表示应区域。视频尺寸等比缩放,保证所有区域被填满,视频超出部分会被裁剪
+				mirrorMode: NERTCMirrorMode.AUTO, //AUTO表示使用默认值,由sdk控制
+				isMediaOverlay: false, //表示小画布置于大画布上面
+				userID: userID //对方userID
+			})
+			//主动去订阅对端视频辅流
+			this.engine.subscribeRemoteSubStreamVideo({
+				userID: userID,
+				streamType:NERtcRemoteVideoStreamType.HIGH, //HIGH: 大流, LOW: 小流 
+				subscribe: true //true表示订阅，false表示取消订阅
+			})
+		});
+	*/
+	subscribeRemoteSubStreamVideo(subscribeParam){
+		return NERtcEngineImpl.getInstance().subscribeRemoteSubStreamVideo(subscribeParam)
+	}
+	
+	rePlayAudio(userID) {
+		return
+	}
+	
+	/*************************************************** 美颜模块 start ************************************************************/
+	/**
+	 * 开启美颜功能模块。
+	 *
+	 * 支持版本：5.5.32 及以上。
+	 * 使用前提：请先调用 [enableLocalVideo] 方法开启本地视频采集。
+	 * 调用时机：
+	 *   1. 请在引擎初始化之后调用此接口，且该方法在加入房间前后均可调用。
+	 * 注意：
+	 *	 1. 开启美颜功能模块后，默认无美颜效果，您需要通过 [setBeautyEffect] 或其他滤镜等相关接口设置美颜或滤镜效果。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.startBeauty() 开启美颜功能
+	*/
+	startBeauty() {
+		console.log('[NERTC-APP] startBeauty()')
+		return NERtcEngineImpl.getInstance().startBeauty()
+	}
+	
+	/**
+	 * 关闭美颜功能模块。
+	 * 如果后续不再需要使用美颜功能，可以调用 [stopBeauty] 结束美颜功能模块，SDK 会自动销毁美颜引擎并释放资源。
+	 * 支持版本：5.5.32 及以上。
+	 * @memberof NERTC
+	 * 
+	 * @example
+	 *  this.engine.stopBeauty() 关闭美颜功能
+	*/
+	stopBeauty() {
+		console.log('[NERTC-APP] stopBeauty()')
+		return NERtcEngineImpl.getInstance().stopBeauty()
+	}
+	
+	/**
+	 * 暂停或恢复美颜效果。
+	 * 暂停美颜效果后，包括全局美颜、滤镜、贴纸和美妆在内的所有美颜效果都会暂时关闭，直至重新恢复美颜效果。
+	 * 支持版本：H5端不支持。
+	 * @memberof NERTC
+	 * @param {Boolean} enable 是否恢复美颜效果
+	*/
+	enableBeauty(enable) {
+		console.log('[NERTC-Web] enableBeauty() enable: ', enable)
+		return NERtcEngineImpl.getInstance().enableBeauty(enable)
+	}
+	
+	/**
+	 * 设置美颜效果。 通过此接口可以实现设置磨皮、美白等多种美颜类型和对应的美颜强度。
+	 * 使用前提：请先调用 NERtcEx#startBeauty() 方法开启美颜。
+	 * 调用时机：请在引擎初始化之后调用此接口，且该方法在加入房间前后均可调用。
+	 * 支持版本：5.5.32 及以上。
+	 * @memberof NERTC
+	 * @param {NERtcBeautyEffectType} type 美颜类型
+	 * @param {Number} level 对应美颜类型的强度。取值范围为 [0, 1]，各种美颜效果的默认值不同。
+	 * @example
+	 *  this.engine.stopBeauty() 开启美颜功能
+	*/
+	setBeautyEffect(type, level) {
+		console.log('[NERTC-APP] setBeautyEffect() type: ', type, ', level: ', level)
+		return NERtcEngineImpl.getInstance().setBeautyEffect(type, level)
+	}
+	
+	/**
+	 * 添加滤镜效果。
+	 * 此接口用于加载滤镜资源，并添加对应的滤镜效果。需要更换滤镜时，重复调用此接口使用新的滤镜资源即可
+	 * 使用前提：请先调用 [startBeauty] 方法开启美颜。
+	 * 支持版本：5.5.32 及以上。
+	 * 注意事项：
+	 *   1. 使用滤镜、贴纸和美妆等自定义美颜效果之前，请联系网易云信商务经理获取美颜资源或模型。
+	 * 	 2. 滤镜效果可以和全局美颜、贴纸、美妆等效果互相叠加，但是不支持叠加多个滤镜。
+	 * @memberof NERTC
+	 * @param {String} path 滤镜资源或模型所在路径。支持 SD 卡上的绝对路径，或 asset 目录下的相对路径。
+	 * 	- SD 卡："/storage/emulated/0/Android/data/com.netease.lava.nertc.demo/files/filter_portrait/filter_style_FN1"。
+	 *  - asset: "2D/bunny"。
+	 * @example
+	 *  //设置滤镜参数并传递
+		this.engine.addBeautyFilter('2D/bunny');
+	*/
+	addBeautyFilter(path, fileName) {
+		console.log('[NERTC-APP] addBeautyFilter() type: ', path)
+		// 获取系统信息
+		const systemInfo = uni.getSystemInfoSync();
+		 
+		// 判断是否为安卓环境
+		if (systemInfo.platform === 'android') {
+		    console.log('当前环境是安卓环境');
+		    return NERtcEngineImpl.getInstance().addBeautyFilter(path)
+		} else if (systemInfo.platform === 'ios') {
+		    console.log('当前环境不是安卓环境');
+		    return NERtcEngineImpl.getInstance().addBeautyFilter(path, fileName)
+		}
+	}
+	
+	/**
+	 * 取消滤镜效果。
+	 * @memberof NERTC
+	 * @example
+	 *  //取消滤镜效果
+		this.engine.removeBeautyFilter();
+	*/
+	removeBeautyFilter() {
+		console.log('[NERTC-APP] removeBeautyFilter()')
+		return NERtcEngineImpl.getInstance().removeBeautyFilter()
+	}
+	
+	/**
+	 * 设置滤镜强度。
+	 * 取值越大，滤镜强度越大，您可以根据业务需求自定义设置滤镜强度
+	 * 使用前提：请先调用 [startBeauty] 方法开启美颜。
+	 * 支持版本：5.5.32 及以上。
+	 * 注意事项：
+	 *   1. 滤镜强度设置实时生效，更换滤镜后滤镜强度不变，如需调整，可以再次调用此接口重新设置滤镜强度。
+	 * @memberof NERTC
+	 * @param {Number} level	滤镜强度。取值范围为 [0 - 1]，默认值为 0.5。
+	 * @example
+	 *  //设置滤镜强度
+		this.engine.setBeautyFilterLevel(1);
+	*/
+	setBeautyFilterLevel(level) {
+		console.log('[NERTC-APP] setBeautyFilterLevel() level: ', level)
+		return NERtcEngineImpl.getInstance().setBeautyFilterLevel(level)
+	}
+	
+	/*************************************************** 美颜模块 end ************************************************************/
+	
+	/*************************************************** 截图模块 start ************************************************************/
+	/**
+	 * 本地视频画面截图。 
+	 * 调用 takeLocalSnapshot 截取本地主流或本地辅流的视频画面。
+	 * 支持版本：5.6.34 及以上。
+	 * 调用时机：
+	 *   1. 本地主流截图，需要在 startVideoPreview 或者 enableLocalVideo 并 joinChannel 成功之后调用。
+	 *   2. 本地辅流截图，需要在 joinChannel 并 startScreenCapture 之后调用。
+	 * @memberof NERTC
+	 * @param {NERtcVideoStreamType} videoStreamType 媒体类型，是视频主流，还是视频辅流
+	 * @example
+	 *  this.engine.takeLocalSnapshot(NERtcVideoStreamType.MAIN).then(result => {
+			if(result.image){
+				//截图成功,格式为base64
+			}
+		})
+	*/
+	takeLocalSnapshot(videoStreamType) {
+		console.log('[NERTC-Web] takeLocalSnapshot() videoStreamType: ', videoStreamType)
+		return NERtcEngineImpl.getInstance().takeLocalSnapshot(videoStreamType)
+	}
+	
+	/**
+	 * 远端视频画面截图。 
+	 * 调用 takeRemoteSnapshot 截取本地主流或本地辅流的视频画面。
+	 * 支持版本：5.6.34 及以上。
+	 * 调用时机：
+	 *   1. takeRemoteSnapshot 需要在收到 onUserVideoStart 与 onUserSubStreamVideoStart 回调之后调用。。
+	 * @memberof NERTC
+	 * @param {Object} options
+	 * @param {Number} options.userID 房间中远端的用户ID
+	 * @param {String} options.userStringID 房间中远端的用户字符串ID
+	 * @param {NERtcVideoStreamType} options.videoStreamType 媒体类型，是视频主流，还是视频辅流
+	*/
+	takeRemoteSnapshot(options) {
+		console.log('[NERTC-Web] takeRemoteSnapshot() userID: ', JSON.stringify(options, null, ' '))
+		return NERtcEngineImpl.getInstance().takeRemoteSnapshot(options)
+	}
+	/*************************************************** 截图模块 end ************************************************************/
+	
+	
+	/**
+	   * 添加事件回调
+	   * @param event 事件名
+	   * @param callback 回调方法
+	   * @memberof NERTC
+	   */
+	addEventListener(event, callback) {
+		if (event) {
+		  NERtcEngineImpl.getInstance().addEventListener(event, callback)
+		}
+	}
+	
+	  /**
+	   * 移除事件回调
+	   * @param event 事件名
+	   * @param callback 回调方法
+	   * @memberof NERTC
+	   */
+	removeEventListener(event, callback) {
+		if (event) {
+		  NERtcEngineImpl.getInstance().removeListener(event, callback)
+		}
+	}
+	
+	/**
+	   * 移除所有的注册的回调事件
+	   * @param event 事件名
+	   * @param callback 回调方法
+	   * @memberof NERTC
+	   */
+	removeAllEventListener() {
+		NERtcEngineImpl.getInstance().removeAllEventListener()
+	}
+			
+	/////////////////////////////////////////////////////////////////////////////////
+	//
+	//                      （一）事件回调
+	//
+	/////////////////////////////////////////////////////////////////////////////////
+	
+	/**
+	 * 错误回调，表示 SDK 不可恢复的错误，一定要监听并分情况给用户适当的界面提示<br>
+	 * @param {Number} code 错误码
+	 * @param {String} message 错误信息
+	 * @param {Object} extraInfo 扩展信息字段，个别错误码可能会带额外的信息帮助定位问题
+	 */
+	onError(code, message, extraInfo) { }
+	/**
+	 * 警告回调，用于告知您一些非严重性问题，例如出现卡顿或者可恢复的解码失败<br>
+	 * @event NERTCCallback#onWarning
+	 * @param {Number} code 警告码
+	 * @param {String} message 警告信息
+	 * @param {Object} extraInfo 扩展信息字段，个别警告码可能会带额外的信息帮助定位问题
+	 */
+	onWarning(code, message, extraInfo) { }
+	/**
+	 * 直播场景下用户角色已切换回调。
+	 * 用户加入房间后，通过 setClientRole(int role) 切换用户角色后会触发此回调。例如从主播切换为观众、从观众切换为主播。
+		注意：直播场景下，如果您在加入房间后调用该方法切换用户角色，调用成功后，会触发以下回调：
+			- 主播切观众，本端触发 onClientRoleChange 回调，远端触发 onUserLeave() 回调。
+			- 观众切主播，本端触发 onClientRoleChange 回调，远端触发 onUserJoined() 回调。
+	 * @param {NERTCUserRole} oldRole 切换前的角色
+	 * @param {NERTCUserRole} newRole 切换后的角色
+	 */
+	onClientRoleChange(oldRole, newRole) { }
+	/**
+	 * 与服务器连接中断，可能原因包括：网络连接失败、服务器关闭该房间、用户被踢出房间等。
+	 * 注意：SDK 在调用 joinChannel 加入房间成功后，如果和服务器失去连接，就会触发该回调。
+	 * @param {NERTCErrorCode} reason 与服务器连接中断，可能原因包括：网络连接失败、服务器关闭该房间、用户被踢出房间等，详细错误码请参考 NERTCErrorCode。
+	 */
+	onDisconnect(reason) { }
+	/**
+	 *加入房间回调，表示客户端已经登入服务器。
+	 * @param {Number} result	0 表示加入房间成功；其他值表示加入房间失败，详细错误码请参考 NERTCErrorCode
+	 * @param {Number} channelId	客户端加入的房间 ID。
+	 * @param {Number} elapsed	从 joinChannel 开始到发生此事件过去的时间，单位为毫秒。
+	 * @param {Number} userID	用户 ID。 如果在 joinChannel 方法中指定了 userID，此处会返回指定的 ID; 如果未指定 userID（joinChannel 时userID=0），此处将返回云信服务器自动分配的 ID。
+	 * @param {String} userStringID	用户字符串格式的 ID。
+	 */
+	onJoinChannel(result, channelId, elapsed, userID, userStringID) { }
+	/**
+	 * App 调用 leaveChannel 方法后，SDK 提示 App 退出房间是否成功。
+	 * @event NERTCCallback#onLeaveChannel
+	 * @param {Number} result	0 表示成功；其他值表示退出房间失败，详细错误码请参考 NERTCErrorCode。
+	 */
+	onLeaveChannel(result) { }
+	/**
+	 * 远端用户加入房间事件回调。 远端用户加入房间或断网重连后，SDK 会触发该回调，可以通过返回的用户 ID 订阅对应用户发布的音、视频流。
+	 * 注意：通信场景下，该回调通知有远端用户加入了房间，并返回新加入用户的 ID；若该用户加入之前，已有其他用户在房间中，该新加入的用户也会收到这些已有用户加入房间的回调。
+直播场景下，该回调通知有主播加入了房间，并返回该主播的用户 ID；若该用户加入之前，已经有主播在频道中了，新加入的用户也会收到已有主播加入房间的回调。
+	 * @param {Number} userID 	远端用户 ID
+	 * @param {Number} extraInfo 	该远端用户加入的额外信息。
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onUserJoined(userID, extraInfo, userStringID) { }
+	/**
+	 * 远端用户离开房间或掉线（在 40 ~ 50 秒内本端用户未收到远端用户的任何数据包）后，SDK 会触发该回调。
+	 * @param {Number} userID 	远端用户 ID
+	 * @param {Number} reason 	该远端用户离开的原因，详细错误码请参考 NERTCErrorCode
+	 * @param {Number} extraInfo 	该远端用户加入的额外信息。
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onUserLeave(userID, reason, extraInfo, userStringID) { }
+	/**
+	 * 远端用户开启音频回调。
+	 * 注意：该回调由远端用户调用 enableLocalAudio 方法开启音频采集和发送触发
+	 * @param {Number} userID 	远端用户 ID
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onUserAudioStart(userID, userStringID) { }
+	/**
+	 * 远端用户停止音频回调。
+	 * 注意：该回调由远端用户调用 enableLocalAudio 方法关闭音频采集和发送触发
+	 * @param {Number} userID 	远端用户 ID
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onUserAudioStop(userID, userStringID) { }
+	/**
+	 * 远端用户开启视频回调。。
+	 * @param {Number} userID 	远端用户 ID
+	 * @param {NERtcVideoProfileType} maxProfile 	视频编码配置，详细信息请参考
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onUserVideoStart(userID, maxProfile, userStringID) { }
+	/**
+	 * 远端用户停止视频回调。
+	 * @param {Number} userID 	远端用户 ID
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onUserVideoStop(userID, userStringID) { }
+	/**
+	 * 进房后的回调<br>
+	 * 远端用户开启屏幕共享辅流通道后，自己会收到 `onUserSubStreamVideoStart(userID, maxProfile)` 回调<br>
+	 * @param {Number} userID 本地或远程用户 ID
+	 * @param {NERtcVideoProfileType} maxProfile 视频流类型：摄像头或屏幕分享
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onUserSubStreamVideoStart(userID, maxProfile, userStringID) { }
+	/**
+	 * 进房后的回调<br>
+	 * 远端用户停止屏幕共享辅流通道，自己会收到 `onUserSubStreamVideoStop(userID)` 回调<br>
+	 * @param {Number} userID 远程用户 ID
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onUserSubStreamVideoStop(userID, userStringID) { }
+	/**
+	 * 进房后的回调<br>
+	 * 远端用户暂停或恢复发送音频流，自己会收到 `onUserAudioMute(userID, muted )` 回调<br>
+	 * @param {Number} userID 远程用户 ID
+	 * @param {Boolean} muted  是否停止发送音频流
+	 *   - true：该用户已暂停发送音频流。
+	 * 	 - false：该用户已恢复发送音频流。
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onUserAudioMute(userID, muted, userStringID) { }
+	/**
+	 * 进房后的回调<br>
+	 * 远端用户暂停或恢复发送视频流回调。 当远端用户调用 muteLocalVideo 取消或者恢复发布视频流时，SDK会触发该回调向本地用户报告远程用户的发流状况。<br>
+	 * @param {Number} userID 远程用户 ID
+	 * @param {Boolean} muted  是否停止发送视频流
+	 *   - true：该用户已暂停发送视频流。
+	 * 	 - false：该用户已恢复发送视频流。
+	 * @param {NERtcVideoStreamType} videoStreamType 视频类型：
+	 *  - MAIN：视频主流（默认摄像头）
+	 *  - SUB：视频辅流（默认屏幕共享）
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onUserVideoMute(userID, muted, videoStreamType, userStringID) { }
+	/**
+	 * 进房后的回调<br>
+	 * 已接收到远端音频首帧，自己会收到 `onFirstAudioDataReceived(userID)` 回调<br>
+	 * @param {Number} userID 远程用户 ID
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onFirstAudioDataReceived(userID, userStringID) { }
+	/**
+	 * 进房后的回调<br>
+	 * 已显示远端视频首帧的，自己会收到 `onFirstVideoDataReceived(userID, videoStreamType)` 回调<br>
+	 * @param {Number} userID 远程用户 ID
+	 * @param {NERtcVideoStreamType} videoStreamType 视频类型：
+	 *  - MAIN：视频主流（默认摄像头）
+	 *  - SUB：视频辅流（默认屏幕共享）
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onFirstVideoDataReceived(userID, videoStreamType, userStringID) { }
+	/**
+	 * 进房后的回调<br>
+	 * 已解码远端音频首帧，自己会收到 `onFirstAudioFrameDecoded()` 回调<br>
+	 * @param {Number} userID 远程用户 ID
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onFirstAudioFrameDecoded(userID, userStringID) { }
+	/**
+	 * 进房后的回调<br>
+	 * 已接收到远端视频首帧并完成解码的回调。 当 SDK 收到远端视频的第一帧并解码成功时，自己会收到 `onFirstVideoFrameDecoded(userID, videoStreamType)` 回调, 应用层可在该回调中设置此用户的视频画布。<br>
+	 * @param {Number} userID 远程用户 ID
+	 * @param {NERtcVideoStreamType} videoStreamType 视频类型：
+	 *  - MAIN：视频主流（默认摄像头）
+	 *  - SUB：视频辅流（默认屏幕共享）
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onFirstVideoFrameDecoded(userID, videoStreamType, userStringID) { }
+	/**
+	 * 进房后的回调<br>
+	 * 远端用户视频编码配置已更新，自己会收到 `onUserVideoProfileUpdate(userID, maxProfile)` 回调<br>
+	 * @param {Number} userID 本地或远程用户 ID
+	 * @param {NERtcVideoProfileType} maxProfile 视频流类型：摄像头或屏幕分享
+	 * @param {String} userStringID 	远端用户符串格式的 ID
+	 */
+	onUserVideoProfileUpdate(userID, maxProfile, userStringID) { }
+	/**
+	 * 语音播放设备已改变，自己会收到 `onAudioDeviceChanged(selected)` 回调<br>
+	 * @param {NERTCAudioDevice} selected 选择的设备
+	 * 	- SPEAKER_PHONE：扬声器
+	 * 	- WIRED_HEADSET：有线耳机
+	 * 	- EARPIECE：听筒
+	 *  - BLUETOOTH_HEADSET：蓝牙耳机 
+	 */
+	onAudioDeviceChanged(selected) { }
+	/**
+	 * 语音播放设备已改变，自己会收到 `onAudioDeviceStateChange(deviceType, deviceState)` 回调<br>
+	 * @param {NERTCAudioDeviceType} deviceType 设备类型
+	 * 	- RECORD：音频采集设备
+	 * 	- PLAYOUT：音频播放设备
+	 * @param {NERTCAudioDeviceState} deviceState 设备状态
+	 * 	- OPENED：打开成功
+	 * 	- CLOSED：已关闭
+	 *  - INIT_ERROR：初始化失败
+	 *  - START_ERROR：开启失败
+	 *  - UNKNOWN_ERROR：未知错误
+	 */
+	onAudioDeviceStateChange(deviceType, deviceState) { }
+	/**
+	 * 视频设备状态已改变，自己会收到 `onVideoDeviceStageChange(deviceState)` 回调， 该回调提示系统视频设备状态发生改变，比如被拔出或移除。如果设备已使用外接摄像头采集，外接摄像头被拔开后，视频会中断。<br>
+	 * @param {NERTCVideoDeviceState} deviceState 设备状态
+	 * 	- OPENED：打开成功
+	 * 	- CLOSED：已关闭
+	 *  - DISCONNECTED：相机断开，可能被其他应用抢占
+	 *  - FREEZED：相机冻结
+	 *  - UNKNOWN_ERROR：未知错误
+	 */
+	onVideoDeviceStageChange(deviceState) { }
+	/**
+	 * 本地网络类型已改变已改变，自己会收到 `onConnectionTypeChanged(newConnectionType)` 回调， 本地网络连接类型发生改变时，SDK 会触发该回调，并在回调中声明当前正在使用的网络连接类型。<br>
+	 * @param {NERTCConnectionType} newConnectionType 设备状态
+	 * 	- CONNECTION_UNKNOWN：未知类型
+	 * 	- CONNECTION_ETHERNET ：以太网数据连接
+	 *  - CONNECTION_WIFI ：相机断开，可能被其他应用抢占
+	 *  - CONNECTION_2G：2G 移动网络
+	 *  - CONNECTION_3G：3G 移动网络
+	 *  - .CONNECTION_4G：4G 移动网络
+	 * 	- CONNECTION_BLUETOOTH ：蓝牙连接
+	 *  - CONNECTION_5G ：5G 移动网络
+	 *  - CONNECTION_NONE：无网络
+	 */
+	onConnectionTypeChanged(newConnectionType) { }
+	/**
+	 * 客户端和服务器断开连接时，SDK 会进行重连，重连开始时，自己会收到 `onReconnectingStart()` 回调，重连结果请参考 onReJoinChannel、onDisconnect。<br>
+	 */
+	onReconnectingStart() { }
+	/**
+	 * 重新加入房间回调。 在弱网环境下，若客户端和服务器失去连接，SDK 会自动重连，自动重连成功后触发自己会收到 `onReJoinChannel(result, channelId)` 回调。<br>
+	 * @param {NERTCErrorCode} result 0表示成功，其他值表示重新加入失败，错误码请参考NERTCErrorCode。
+	 * @param {Number} channelId 	客户端加入的房间 ID
+	*/
+	onReJoinChannel(result, channelId) { }
+	/**
+	 * 暂时不接入
+	 */
+	onAudioMixingStateChanged() { }
+	/**
+	 * 暂时不接入
+	 */
+	onAudioMixingTimestampUpdate() { }
+	/**
+	 * 暂时不接入
+	 */
+	onAudioEffectTimestampUpdate() { }
+	/**
+	 * 暂时不接入
+	 */
+	onAudioEffectFinished() { }
+	/**
+	 * 提示房间内本地用户瞬时音量的回调。 该回调默认为关闭状态。可以通过 enableAudioVolumeIndication 方法开启。开启后，本地用户说话，SDK 会按 enableAudioVolumeIndication 方法中设置的时间间隔触发该回调
+	 * @param {Number} volume 混音后的音量，范围为 0~100。
+	 * @param {Boolean} vadFlag 混是否检测到人声。
+	*/
+	onLocalAudioVolumeIndication(volume, vadFlag ) { }
+	/**
+	 * 提示房间内谁正在说话及说话者瞬时音量的回调。 该回调默认为关闭状态。可以通过 enableAudioVolumeIndication 方法开启。开启后，无论房间内是否有人说话，SDK 都会按 enableAudioVolumeIndication 方法中设置的时间间隔触发该回调。 在返回的数组中：
+	 * 	- 如果有 uid 出现在上次返回的数组中，但不在本次返回的数组中，则默认该 uid 对应的远端用户没有说话。
+	 *  - 如果 volume 为 0，表示该用户没有说话。
+	 *  - 如果数组为空，则表示此时远端没有人说话。
+	 * @param {NERtcAudioVolumeInfo} volumeArray 混音后的音量，范围为 0~100。
+	 * @param {Number} totalVolume 混音后的总音量，取值范围为 0~100。
+	*/
+	onRemoteAudioVolumeIndication(volumeArray, totalVolume ) { }
+	/**
+	 * 暂时不接入
+	*/
+	onLiveStreamState(taskId, pushUrl, liveState) { }
+	
+	/**
+	 * 	- 通话中所有用户的网络状态回调。
+	 * @param {Array} statsArray 通话中所有用户的网络状态回调。
+	*/
+	onNetworkQuality(statsArray) { }
+	
+	/**
+	 * 	- 当前通话统计回调，SDK 定期向 App 报告当前通话的统计信息，每 2 秒触发一次。
+	 * @param {Object} statsArray 通话中所有用户的网络状态回调。
+	*/
+	onRtcStats(statsArray) { }
+	
+	/**
+	 * 	- 本地音频流统计信息回调。
+	 * @param {Array} statsArray 通话中音频媒体状态回调。
+	*/
+	onLocalAudioStats(statsArray) { }
+	
+	/**
+	 * 	- 远端音频流统计信息回调。
+	 * @param {Array} statsArray 通话中音频媒体状态回调。
+	*/
+	onRemoteAudioStats(statsArray) { }
+	
+	/**
+	 * 	- 本地视频流统计信息回调。
+	 * @param {Array} statsArray 通话中视频媒体状态回调。
+	*/
+	onLocalVideoStats(statsArray) { }
+	
+	/**
+	 * 	- 远端视频流统计信息回调。
+	 * @param {Array} statsArray 通话中视频媒体状态回调。
+	*/
+	onRemoteVideoStats(statsArray) { }
+	
+	onClientRolechange(ordRole,newRole){}
+	
+	/**
+	 * 本地用户的音乐文件播放状态改变回调。调用 startAudioMixing 播放混音音乐文件后，当音乐文件的播放状态发生改变时，会触发该回调。
+	 * @param {NERTCAudioMixingState} reason 伴音文件的状态码
+	*/
+	onAudioMixingStateChanged(reason ) { }
+	
+	/**
+	 * 本地用户的音乐文件播放进度回调。调用 startAudioMixing 播放混音音乐文件后，当音乐文件的播放进度改变时，会触发该回调。
+	 * @param {Number} timestampMs 音乐文件播放进度，单位为毫秒。
+	*/
+	onAudioMixingTimestampUpdate(timestampMs ) { }
+}

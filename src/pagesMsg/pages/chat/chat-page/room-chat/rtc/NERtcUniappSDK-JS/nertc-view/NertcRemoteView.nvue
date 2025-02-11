@@ -1,0 +1,31 @@
+<template>
+	<NERTCUniPluginSDK-NERTCRemoteViewComponent :mediaType="mediaType" :channel="channel" :userID="userID" :viewID="viewID"></NERTCUniPluginSDK-NERTCRemoteViewComponent>
+</template>
+
+<script>
+	export default {
+		name: 'NertcRemoteView',
+		props: {
+			mediaType: {
+				type: String,
+				default: 'video'
+			},
+			channel: {
+				type: String,
+				default: ""
+			},
+			userID: {
+				type: String,
+				default: ""
+			},
+			viewID: {
+				type: String,
+				default: ""
+			}
+		},
+	}
+</script>
+
+<style>
+
+</style>

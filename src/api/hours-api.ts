@@ -84,7 +84,7 @@ export const getHouseOrderListL = async (req: any) => {
 
 /* 家政订单详情 */
 export const getHouseOrderDetail = async (req: any) => {
-    return http.get(HOUSE_API.houseOrderDetail, req) as Promise<IOrderDetailData>
+    return http.get(HOUSE_API.houseOrderDetail, req) as Promise<any>
 }
 
 
@@ -103,17 +103,17 @@ export const houseOrderCancel = async (req: any) => {
 /* 订单支付 微信小程序/App */
 export const houseOrderPay = async (req: any) => {
     // #ifdef MP-WEIXIN
-    return http.post(HOUSE_API.houseOrderPay, req) as Promise<IHouseOrderPay>
+    return http.post(HOUSE_API.houseOrderPay, req) as Promise<any>
     // #endif
     // #ifdef APP-PLUS
-    return javaHttp.post(HOUSE_API.houseAppOrderPay, req) as Promise<IHouseOrderPay>
+    return javaHttp.post(HOUSE_API.houseAppOrderPay, req) as Promise<any>
     // #endif
 }
 
 
 /* 家政订单 支付结果 */
 export const housePayResult = async (req: any) => {
-    return http.post(HOUSE_API.housePayResult, req) as Promise<IHousePayResult>
+    return http.post(HOUSE_API.housePayResult, req) as Promise<any>
 }
 
 
@@ -126,7 +126,7 @@ interface CalculationReq {
 }
 /* 计算价格 */
 export const getCalculation = async (req: CalculationReq) => {
-    return http.post(HOUSE_API.houseCalculation, req) as Promise<IHouseCalculation>
+    return http.post(HOUSE_API.houseCalculation, req) as Promise<any>
 }
 
 
@@ -184,7 +184,7 @@ export const houseRecordList = async (req: any) => {
 
 /* 发布家政评论 */
 export const houseCommentSave = async (req: any) => {
-    return http.post(HOUSE_API.houseCommentSave, req) as Promise<IHouseCommentSave>
+    return http.post(HOUSE_API.houseCommentSave, req) as Promise<any>
 }
 
 
@@ -201,12 +201,12 @@ interface BC9OpenitReq {
 }
 /* 家政服务推荐规格列表 */
 export const getBc9OPtion = async (req: BC9OpenitReq) => {
-    return http.post(COMMON_API.recommendBc9Option, req) as Promise<IRecommendBc9Option>
+    return http.post(COMMON_API.recommendBc9Option, req) as Promise<any>
 }
 
 /** 获取医院列表 */
 export const getHospitalList = (params: any) => {
-    return http.post(HOUSE_API.hospitalList, params) as Promise<IHospital>
+    return http.post(HOUSE_API.hospitalList, params) as Promise<any>
 }
 
 

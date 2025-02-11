@@ -12,7 +12,7 @@
             :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
         >
         <template #top>
-                <PageTopbg :zIndex="-1"></PageTopbg>
+                <PageTopbg  :zIndex="-1" :bgstyle="'background: linear-gradient( 180deg, #DFF7EF 0%, #F2F3F5 100%);'" :addheight="400"></PageTopbg>
                 <bc-top-navbar>
                     <view class="top_box">
                         <!-- #ifdef MP-WEIXIN -->
@@ -37,14 +37,14 @@
                             </template>
                         </TnNavbar>
                         <!-- #endif -->
-
+                        
                         <view class="home_top_box">
                             <view class="change_city_box" @click="changecity">
                                 <view class="city_name">{{ data.nowCity }}</view>
                                 <TnIcon name="down" color="#646464" size="26" bold offset-top="4"></TnIcon>
                             </view>
                             <view class="inp_box" @click="tosearch">
-
+                                
                                 <TnIcon name="search" color="#999999" size="32" bold ></TnIcon>
                                 <view class="inp_left">
                                     <swiper
@@ -53,7 +53,7 @@
                                         :autoplay="true"
                                         :interval="5000"
                                         :duration="500"
-                                        :vertical="true"
+                                        :vertical="true" 
                                     >
                                         <swiper-item v-for="(item,index) in data.noticeData" :key="index">
                                             <view class="swiper_item_item">{{ item }}</view>
@@ -72,12 +72,12 @@
                         </view>
                     </view>
                 </bc-top-navbar>
-
+                
             </template>
 
             <view class="content_page">
                 <view class="topMenu_box" >
-                    <view class="Menu_itemList" :class="{ 'not_bootm': (index + 1) == data.topMenu.length }" v-for="(item,index) in data.topMenu" :key="index">
+                    <view class="Menu_itemList" :class="{ 'not_bootm' : (index + 1) == data.topMenu.length }" v-for="(item,index) in data.topMenu" :key="index">
                         <view class="topMenu_item" v-for="(sonItem,sonIndex) in item" :key="sonIndex" @click="changeTopMenu(sonItem,index)">
                             <!-- :src="getAssetsUrl(sonItem.icon)" -->
                             <image
@@ -91,30 +91,78 @@
                 </view>
 
                 <view class="activity_List">
-                    <view class="activity_item" v-for="item in data.activityList" :key="item.id"  @tap="clickActivityList(item)">
-                        <image
-                            class="top_img"
-                            :class="{ 'first_img': item.id == 1 }"
-                            :src="getAssetsUrl(item.topimg)"
-                            mode="scaleToFill"
-                        />
-                        <view class="item_text">{{ item.name }}</view>
+                    <view class="activity_item" @tap="clickActivityList(1)">
+                        <view class="top_text_box">
+                            <text class="red_text">老</text>
+                            <text>博会</text>
+                        </view>
+                        <view class="item_text">品牌馆/旗舰店</view>
                         <view class="activity_bottom">
                             <image
-                                class="right_img"
-                                :class="{ 'first_img': item.id == 1 }"
-                                :src="getAssetsUrl(item.rightIcon)"
+                                class="right_img first_img"
+                                :src="getAssetsUrl('/leyou/logo/leyou_logo.png')"
                                 mode="scaleToFill"
                             />
                         </view>
                     </view>
+
+                    <view class="activity_item" @tap="clickActivityList(2)">
+                        <view class="top_text_box">
+                            <text>直播</text>
+                            <text class="red_text">精选</text>
+                        </view>
+                        <view class="item_text">好逛</view>
+                        <view class="activity_bottom">
+                            <image
+                                class="right_img"
+                                :src="getAssetsUrl('/leyou/goods/liveicon.png')"
+                                mode="scaleToFill"
+                            />
+                        </view>
+                    </view>
+
+                    <view class="activity_item" @tap="clickActivityList(3)">
+                        <view class="top_text_box">
+                            <text>保椿</text>
+                            <text class="red_text">点</text>
+                            <text>评</text>
+                        </view>
+                        <view class="item_text">排行榜单</view>
+                        <view class="activity_bottom">
+                            <image
+                                class="right_img"
+                                :src="getAssetsUrl('/leyou/goods/goodshop-icon.svg')"
+                                mode="scaleToFill"
+                            />
+                        </view>
+                    </view>
+
+                    <view class="activity_item" @tap="clickActivityList(4)">
+                        <view class="top_text_box">
+                            <text>签到</text>
+                            <text class="red_text">红</text>
+                            <text>包</text>
+                        </view>
+                        <view class="item_text">新人福利</view>
+                        <view class="activity_bottom">
+                            <image
+                                class="right_img"
+                                :src="getAssetsUrl('/leyou/goods/Signin-icon.svg')"
+                                mode="scaleToFill"
+                            />
+                        </view>
+                    </view>
+                    
+
                 </view>
 
+                <!-- 新人福利 -->
+                <NewcomerWelfare></NewcomerWelfare>
 
                 <view class="fliex_box">
                     <view class="Nav_box">
                         <view class="Nav_scoll_box">
-                            <view class="Nav_item" :class="{ 'have_right': data.NavList.length == (index + 1) }" v-for="(item,index) in data.NavList" :key="index" @click="changeNav(item)">
+                            <view class="Nav_item" :class="{ 'have_right' : data.NavList.length == (index + 1) }" v-for="(item,index) in data.NavList" :key="index" @click="changeNav(item)">
                                 <view class="item_name">
                                     <view> {{ item.name }} </view>
                                     <view class="isSelect" v-if="data.NavId == item.id"></view>
@@ -126,10 +174,10 @@
                         <TnIcon name="down" size="32rpx" color="#333"></TnIcon>
                     </view>
                 </view>
+                
 
 
-
-                <view class="content_right_list" :class="{ 'not_height': data.dataList.length == 0 }">
+                <view class="content_right_list" :class="{ 'not_height' : data.dataList.length == 0 }">
                     <!-- :navid="data.NavId" -->
                     <WaterfallsFlow :wfList="data.dataList" :navid="data.NavId" @waterItem="clickwaterItem"></WaterfallsFlow>
                 </view>
@@ -157,6 +205,7 @@ import { getcategoryList, servicePageChannel, categoryShow } from '@/api/service
 import { productlist, getGoodsCartList, recommendList, goodsfavoriteList } from '@/api/goods-api'
 import BCNotify from '@/components/notify/index.vue'
 import WaterfallsFlow from './components/WaterfallsFlow.vue'
+import NewcomerWelfare from './components/newcomerWelfare.vue'
 import { gotoRegister, gotoShoppingCart } from '@/routes/goods-routes'
 import { GlobalEvents, addWEventsListener } from '@/events/event-registry'
 import { gotoCitychange, invitationDetail } from '@/routes/user-routes'
@@ -164,8 +213,8 @@ import { gotoServiceStore, toInnerPage, gotosearch, gotoShopDetail, gotoserviceL
 import { gotogoodsDetail, gotoGoodsPerferShop, gotoGoodsSort } from '@/routes/goods-routes'
 import { PlatformManage } from '@bc/sys'
 import { gotogoodsRanking } from '@/routes/goods-routes'
-import { escontentlist, followContentList } from "@/api/create-api"
-import { gotoarticledetails, gotovideoPreview } from '@/routes/create-routes'
+import { healthContentList, followContentList } from "@/api/create-api"
+// import { gotoarticledetails, gotovideoPreview, gotodiscussListPage } from '@/routes/create-routes'
 import { gotoLogin } from "@/routes/public-routes"
 
 interface Data {
@@ -189,75 +238,69 @@ interface Data {
 
 }
 const data = reactive<Data>({
-    dataList: [],
-    inputValue: '',
-    menuList: [],
-    menuIndex: 0,
-    menuId: '',
-    categoryList: [],
-    topMenu: [
+    dataList:[],
+    inputValue:'',
+    menuList:[],
+    menuIndex:0,
+    menuId:'',
+    categoryList:[],
+    topMenu:[
         [
-            { id: 86, name: '适品购物', icon: '/leyou/goods/goods.svg' },
-            { id: 80, name: '兴趣学习', icon: '/leyou/goods/study.svg' },
-            { id: 85, name: '休闲玩乐', icon: '/leyou/goods/play.svg' },
-            { id: 81, name: '康旅文旅', icon: '/leyou/goods/travel.svg' },
-            { id: 82, name: '医学美容', icon: '/leyou/goods/cosmetology.svg' }
+            {id:86,name:'适品购物',icon:'/leyou/goods/goods.svg'},
+            {id:80,name:'兴趣学习',icon:'/leyou/goods/study.svg'},
+            {id:85,name:'休闲玩乐',icon:'/leyou/goods/play.svg'},
+            {id:81,name:'康旅文旅',icon:'/leyou/goods/travel.svg'},
+            {id:82,name:'医学美容',icon:'/leyou/goods/cosmetology.svg'},
         ],
         [
             // {id:89,name:'生活',icon:'/leyou/goods/life.svg'},
-            { id: 90, name: '康养服务', icon: '/leyou/goods/life.svg' },
-            { id: 87, name: '健康服务', icon: '/leyou/goods/health.svg' },
+            {id:90,name:'康养服务',icon:'/leyou/goods/life.svg'},
+            {id:87,name:'健康服务',icon:'/leyou/goods/health.svg'},
             // {id:88,name:'照护',icon:'/leyou/goods/care.svg'},
-            { id: 91, name: '宠物服务', icon: '/leyou/goods/care.svg' },
-            { id: 83, name: '代办服务', icon: '/leyou/goods/handling.svg' },
-            { id: 84, name: '找工作', icon: '/leyou/goods/finjob.svg' }
-        ]
+            {id:91,name:'宠物服务',icon:'/leyou/goods/care.svg'},
+            {id:83,name:'代办服务',icon:'/leyou/goods/handling.svg'},
+            {id:84,name:'找工作',icon:'/leyou/goods/finjob.svg'},
+        ],
     ],
-    // activityList:[
-    //     {id:1,name:'红包等你来领',rightIcon:'/leyou/goods/Newcomer-icon.svg',topimg:"/leyou/goods/Newcomer.svg"},
-    //     {id:2,name:'质量商家',rightIcon:'/leyou/goods/goodshop-icon.svg',topimg:"/leyou/goods/goodshop.svg"},
-    //     {id:3,name:'排行榜单',rightIcon:'/leyou/goods/Comment-icon.png',topimg:"/leyou/goods/Comment.svg"},
-    //     {id:4,name:'超值福利',rightIcon:'/leyou/goods/Signin-icon.svg',topimg:"/leyou/goods/Signin.svg"},
-    // ],
-    activityList: [
-        { id: 1, name: '品牌馆/旗舰店', rightIcon: '/leyou/logo/leyou_logo.png', topimg: "/leyou/goods/laobo.svg" },
-        { id: 2, name: '好逛', rightIcon: '/leyou/goods/liveicon.png', topimg: "/leyou/goods/livetitle.svg" },
-        { id: 3, name: '排行榜单', rightIcon: '/leyou/goods/goodshop-icon.svg', topimg: "/leyou/goods/Comment.svg" },
-        { id: 4, name: '新人福利', rightIcon: '/leyou/goods/Signin-icon.svg', topimg: "/leyou/goods/Signin.svg" }
+    activityList:[
+        {id:1,name:'品牌馆/旗舰店',rightIcon:'/leyou/logo/leyou_logo.png',topimg:"/leyou/goods/laobo.svg"},
+        {id:2,name:'好逛',rightIcon:'/leyou/goods/liveicon.png',topimg:"/leyou/goods/livetitle.svg"},
+        {id:3,name:'排行榜单',rightIcon:'/leyou/goods/goodshop-icon.svg',topimg:"/leyou/goods/Comment.svg"},
+        {id:4,name:'新人福利',rightIcon:'/leyou/goods/Signin-icon.svg',topimg:"/leyou/goods/Signin.svg"},
     ],
-    NavList: [
-        { id: 11, name: '关注' },
-        { id: 22, name: '推荐' },
-        { id: 86, name: '购物' },
-        { id: 80, name: '学习' },
-        { id: 90, name: '康养' },
-        { id: 87, name: '健康' },
-        { id: 82, name: '美容' },
-        { id: 91, name: '宠物' },
-        { id: 85, name: '玩乐' },
-        { id: 81, name: '旅游' },
+    NavList:[
+        {id:11,name:'关注'},  
+        {id:22,name:'推荐'},
+        {id:86,name:'购物'},
+        {id:80,name:'学习'},
+        {id:90,name:'康养'},
+        {id:87,name:'健康'},
+        {id:82,name:'美容'},
+        {id:91,name:'宠物'},
+        {id:85,name:'玩乐'},
+        {id:81,name:'旅游'},
         // {id:89,name:'生活'},
         // {id:88,name:'照护'},
-        { id: 83, name: '代办' },
-        { id: 84, name: '找工作' }
+        {id:83,name:'代办'},
+        {id:84,name:'找工作'},
     ],
-    NavId: 22,
-    screenIndex: 1,
-    salesType: 0,
-    priceType: 0,
-    sortType: 1,
+    NavId:22,
+    screenIndex:1,
+    salesType:0,
+    priceType:0,
+    sortType:1,
     shopCartNum: 9,
-    nowCity: "广州",
-    noticeData: [
-        '休闲/玩乐'
-    ]
+    nowCity:"广州",
+    noticeData:[
+        '休闲/玩乐',
+    ],
 
 })
 
 
 interface Events {
     (e: 'showServiceMenu'): void,
-
+    
 }
 const emit = defineEmits<Events>()
 
@@ -271,13 +314,13 @@ const listen = () => {
 
 const goodsCartList = () => {
     getGoodsCartList().then((res: any) => {
-        data.shopCartNum = res.reduce((accumulator: number, currentValue: any) => {
-            return accumulator + currentValue?.productList.length
+        data.shopCartNum = res.reduce((accumulator: number, currentValue: any) => {  
+            return accumulator + currentValue?.productList.length  
         }, 0)
     })
 }
 
-onMounted(() => {
+onMounted(()=>{
     listen()
     goodsCartList()
     getCity()
@@ -285,53 +328,53 @@ onMounted(() => {
 })
 
 const getCity = () => {
-
-    PlatformManage.getToken().then((res:any) => {
-        console.log('获取城市', res.city)
+    
+    PlatformManage.getToken().then((res:any)=>{
+        console.log('获取城市', res.city);
 
         data.nowCity = res.city ? res.city : '广州'
     })
 }
 
-const getAssetsUrl = computed(() => (src:string) => {
+const getAssetsUrl = computed(()=>(src:string)=> {
     return getAssetsPic(src)
 })
 
 
 const paging = ref(null)
 
-const queryList = async (pageNumber:number, pageSize:number) => {
-    getList(pageNumber, pageSize)
+const queryList = async (pageNumber:number, pageSize:number)=>{
+    getList(pageNumber,pageSize)
 
 }
 
 
 // 顶部菜单切换
-const changeTopMenu = (item:any, index:number) => {
+const changeTopMenu = (item:any,index:number)=>{
 
-    console.log('item', item.categoryId)
+    console.log('item',item.categoryId);
     if (item.categoryId == 86) {
         gotoGoodsSort()
 
-        console.log('适品入口')
+        console.log('适品入口');
         return
     }
 
     if (item.categoryId == 90) {
-        gotoserviceLnnerPage({ id: 88 })
+        gotoserviceLnnerPage({id:88})
         return
     }
 
     // if (item.id == 91) {
-
+        
     //     return
     // }
 
-    toInnerPage({ id: item.categoryId, pageTitle: item.name })
+    toInnerPage({id:item.categoryId,pageTitle:item.name})
 }
 
 const clickActivityList = (item: any) => {
-    console.log(item)
+    console.log('item1111',item);
 
     // 邀请好友
     // item.id == 1 && invitationDetail()
@@ -339,10 +382,22 @@ const clickActivityList = (item: any) => {
     // item.id == 2 && gotoGoodsPerferShop()
 
 
-    item.id == 1 && gotoServiceExpo()
-    item.id == 2 && gotoLiveSelection()
-    item.id == 3 && gotogoodsRanking()
-    item.id == 4 && gotoRegister()
+    PlatformManage.isRequireLogin().then((isRequireLogin) => {
+        if (isRequireLogin) {
+            bcNotify.value.show('登录失效,请重新登录')
+            setTimeout(() => {
+                gotoLogin({})
+            }, 1000)
+            return
+        }
+        item == 1 && gotoServiceExpo();
+        item == 2 && gotoLiveSelection()
+        item == 3 && gotogoodsRanking()
+        item == 4 && gotoRegister()
+        item == 5 && gotodiscussListPage()
+    })
+
+    
 }
 
 // 列表内容
@@ -350,52 +405,52 @@ const getList = (pageNumber:number, pageSize:number) => {
 
     if (pageNumber == 1) {
         categoryShow({
-            id: 10
+            id: 3
         }).then((res:any) => {
-            console.log('类目', res)
+            console.log('类目',res);
             data.NavList = [
-                { id: 11, name: '关注' },
-                { id: 22, name: '推荐' },
+                {id:11,name:'关注'},  
+                {id:22,name:'推荐'},
                 ...res
             ]
         })
 
         servicePageChannel({}).then((res:any) => {
-            console.log('菜单类目', res)
-            const result = [] as any
+            console.log('菜单类目',res);
+            let result = [] as any
             for (let i = 0; i < res.length; i += 5) {
-                result.push(res.slice(i, i + 5))
+                result.push(res.slice(i, i + 5));
             }
             data.topMenu = result
 
 
-            console.log('data.topMenu', data.topMenu)
+            console.log('data.topMenu',data.topMenu);
+            
         })
     }
 
     if (data.NavId == 11) {
-        console.log('关注列表')
+        console.log('关注列表');
         followContentList({
             pageSize,
             pageNumber,
-            query: {
+            query:{
                 happyType: 97
             }
         }).then((res:any) => {
             (paging.value as any).complete(res.data)
         })
-
-    }
-    else {
+        
+    }else{
 
         PlatformManage.isRequireLogin().then((isRequireLogin) => {
-            escontentlist({
+            healthContentList({
                 pageSize,
                 pageNumber,
-                query: {
-                    categoryIds: data.NavId == 22 ? [] : [data.NavId]
+                query:{
+                    categoryIds: data.NavId == 22 ? [] : [data.NavId],
                 }
-            }, isRequireLogin).then((res:any) => {
+            },isRequireLogin).then((res:any) => {
                 (paging.value as any).complete(res.data)
             })
         })
@@ -412,7 +467,7 @@ const clickShoppingCart = () => {
 
 const changeNav = (item:any) => {
 
-    if (item.id == 11) {
+    if (item.id == 11 ) {
         // 检查登录状态
         PlatformManage.isRequireLogin().then((isRequireLogin) => {
             if (isRequireLogin) {
@@ -442,9 +497,9 @@ const tosearch = () => {
 }
 
 
-const clickwaterItem = (item:any) => {
+const clickwaterItem = (item:any) =>{
 
-    console.log('item', item)
+    console.log('item',item);
     // 检查登录状态
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
@@ -471,7 +526,7 @@ const clickwaterItem = (item:any) => {
 }
 
 defineExpose({
-    getCity
+    getCity,
 })
 
 </script>
@@ -592,9 +647,9 @@ defineExpose({
                         color: #A8A8A8;
                     }
                 }
-
+                
             }
-
+            
             .search_btn{
                 width: 84rpx;
                 height: 44rpx;
@@ -607,7 +662,7 @@ defineExpose({
                 color: #FFFFFF;
             }
         }
-
+        
     }
 }
 .topMenu_box{
@@ -631,14 +686,15 @@ defineExpose({
             width: 100rpx;
 
             .item_img{
-                width: 64rpx;
-                height: 64rpx;
+                width: 70rpx;
+                height: 70rpx;
                 margin-bottom: 8rpx;
             }
             .item_text{
-                font-size: 24rpx;
+                font-size: 28rpx;
                 color: #333333;
                 font-weight: 400;
+                white-space: nowrap;
             }
         }
     }
@@ -656,7 +712,7 @@ defineExpose({
         box-sizing: border-box;
         border-radius: 16rpx;
         background: #fff;
-
+        
         .top_img{
             width: 110rpx;
             height: 34rpx;
@@ -683,7 +739,18 @@ defineExpose({
                 }
             }
         }
-
+        .top_text_box{
+            font-size: 30rpx;
+            color: #333333;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            margin-bottom: 4rpx;
+            .red_text{
+                color: #EA3E1A;
+            }
+        }
+        
     }
 }
 
@@ -724,10 +791,10 @@ defineExpose({
                         border-radius: 6rpx;
                     }
                 }
-
+                
             }
         }
-
+        
     }
     .more_icon{
         position: absolute;

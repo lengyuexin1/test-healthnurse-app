@@ -9,11 +9,7 @@
             />
             <view class="live_box" v-if="item.type == 99">
                 <view class="live_left_box">
-                    <image
-                        class="live_img"
-                        :src="getAssetsUrl('/leyou/icon/live.png')"
-                        mode="scaleToFill"
-                    />
+                    <BarPlaying></BarPlaying>
                     <view>直播中</view>
                 </view>
                 <view class="live_number_box">
@@ -45,7 +41,7 @@
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
-
+import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 
 interface Props {
     item: any,

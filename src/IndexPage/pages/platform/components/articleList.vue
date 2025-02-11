@@ -33,17 +33,13 @@
                         <image
                             class="live_swiper_img"
                             :src="item.cover"
-                            mode="scaleToFill"
+                            mode="aspectFill"
                             @click="liveList(item)"
 
                         />
                         <view class="live_box" v-if="( (item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon) )">
                             <view class="live_left_box">
-                                <image
-                                    class="live_img"
-                                    :src="getAssetsUrl('/leyou/icon/live.png')"
-                                    mode="scaleToFill"
-                                />
+                                <BarPlaying bgColor="#FFFFFF"></BarPlaying>
                                 <view>直播中</view>
                             </view>
                             <view class="live_number_box" v-if="false">
@@ -56,6 +52,19 @@
                     <view class="sign_item" :class="{ 'is_sign': signIndex == data.swiperIndex }" v-for="(signItem, signIndex) in data.swiperList.length" :key="signIndex"></view>
                 </view>
             </view>
+
+            <!-- icon类目菜单 -->
+            <view class="icon_menu">
+                <view class="icon_menuItem" v-for="(item,index) in data.menuiconList" :key="item.id" @click="clickMenuItem(item)">
+                    <image
+                        class="menu_img"
+                        :src="getAssetsUrl( (index + 1) == data.menuiconList.length ? '/leyou/newpagemenu/allclass.svg' : '/leyou/newpagemenu/ys_icon.png')"
+                        mode="scaleToFill"
+                    />
+                    <view class="menu_text">{{ item.name }}</view>
+                </view>
+            </view>
+
             <view class="tabs_box" >
                 <view class="tabs_conten">
                     <view class="Tabs_list">
@@ -98,9 +107,8 @@
 import { ref, reactive, computed, onMounted, defineExpose } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { PlatformManage } from "@bc/sys"
-
+import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import WaterfallsFlow from './WaterfallsFlow.vue'
-
 import BCNotify from '@/components/notify/index.vue'
 import followListVue from './followList.vue'
 import { gotoLogin } from "@/routes/public-routes"
@@ -132,6 +140,7 @@ interface Data{
     swiperList: any,
     swiperIndex: number,
 
+    menuiconList: any,
 }
 const data = reactive<Data>({
     swiperData: [
@@ -160,8 +169,9 @@ const data = reactive<Data>({
     showNav: true,
     lodIndex: 1,
     swiperList: [],
-    swiperIndex: 0
+    swiperIndex: 0,
 
+    menuiconList: []
 })
 
 
@@ -181,6 +191,7 @@ interface Events {
     (e: 'hideNav', val:boolean): void,
     (e: 'changeNav', index:number): void,
     (e: 'gethidNavList', list:any): void,
+    (e: 'changeTabbarTop',val:boolean): void,
 
 }
 const emit = defineEmits<Events>()
@@ -234,10 +245,21 @@ const getcategory = () => {
         data.topNavList = res
         console.log('Allres', res[props.hidNavIndex]);
 
+        // data.sontabsData = [
+        //     { id: 1, name: '关注' },
+        //     { id: 99, name: '推荐' },
+        //     ...data.topNavList[props.hidNavIndex].sonCategoryShows,
+        // ]
+
         data.sontabsData = [
             { id: 1, name: '关注' },
             { id: 99, name: '推荐' },
-            ...data.topNavList[props.hidNavIndex].sonCategoryShows,
+            ...data.topNavList,
+        ]
+
+        data.menuiconList = [
+            ...data.topNavList,
+            { id: 988, name: '分类' },
         ]
 
         emit('gethidNavList', data.topNavList);
@@ -449,13 +471,16 @@ const liveswiperChange = (e:any) => {
 const scrollPage = (e:any) => {
 
 
-    emit('hideNav', true)
-    return
+    // emit('hideNav', true)
+    // return
     if (e.detail.scrollTop > 160) {
-        emit('hideNav', false)
+        emit('hideNav', true)
+        emit('changeTabbarTop',false)
     }
     else {
-        emit('hideNav', true)
+        emit('hideNav', false)
+        emit('changeTabbarTop',true)
+
     }
 
     // if (e.detail.scrollTop > 200) {
@@ -500,22 +525,22 @@ defineExpose({
 
 <style lang="scss" scoped>
 .top_bg_box{
-    background: #fff;
+    background: transparent;
     box-sizing: border-box;
-
+    margin-top: 12rpx;
     .live_swiper{
         position: relative;
         border-radius: 12rpx;
         overflow: hidden;
-        width: 730rpx;
-        height: 280rpx;
+        width: 718rpx;
+        // height: 280rpx;
         margin: auto;
         padding-top: 10rpx;
         box-sizing: border-box;
-        margin-bottom: 26rpx;
+        margin-bottom: 20rpx;
         .swiper{
             width: 100%;
-            height: 100%;
+            height: 144rpx;
             .swiper_item{
                 width: 100%;
                 height: 100%;
@@ -581,12 +606,43 @@ defineExpose({
         }
 
     }
+
+    .icon_menu{
+        width: 718rpx;
+        padding: 30rpx 10rpx;
+        box-sizing: border-box;
+        background: #fff;
+        display: grid;
+        grid-gap: 24rpx;
+        grid-template-columns: auto auto auto auto auto;
+        border-radius: 24rpx;
+        margin: auto;
+        margin-bottom: 12rpx;
+        .icon_menuItem{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            .menu_img{
+                width: 80rpx;
+                height: 80rpx;
+                margin-bottom: 12rpx;
+            }
+            .menu_text{
+                font-size: 28rpx;
+                color: #2A2A2A;
+                text-align: center;
+                font-weight: 400;
+            }
+
+        }
+    }
+
     .tabs_box{
         height: 80rpx;
         display: flex;
         align-items: center;
         padding: 0rpx 20rpx;
-        padding-right: 0rpx;
         box-sizing: border-box;
         .tabs_conten{
             flex: 1;
@@ -691,55 +747,6 @@ defineExpose({
 .WaterFall_box{
     padding: 0rpx 10rpx;
     box-sizing: border-box;
-    .course_type{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        padding: 0rpx 10rpx;
-        box-sizing: border-box;
-        position:fixed;
-        z-index:100;
-        background:#fff;
-        .course_item{
-            width: 236rpx;
-            height: 68rpx;
-            position: relative;
-            color: #666666;
-            background: #fff;
-            border-radius: 6rpx;
-            .item_text{
-                text-align: center;
-                line-height: 68rpx;
-                font-size: 30rpx;
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
-                z-index: 10;
-            }
-            .is_course{
-                position: absolute;
-                bottom: 15rpx;
-                left: 50%;
-                transform: translate(-50%, 0rpx);
-                width: 64rpx;
-                height: 14rpx;
-                background: linear-gradient(90deg, #EA3E1A 0%, #FFCFCF 100%);
-                // z-index: -10;
-            }
-            &.is_course{
-                color: #333333;
-                font-size: 30rpx;
-                font-weight: 600;
-            }
-        }
-    }
-    .fixed_space{
-        height: 74rpx;
-        width:100%;
-
-    }
 }
 
 

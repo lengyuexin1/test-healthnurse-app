@@ -157,7 +157,7 @@ export const getSleepReportList = (deviceId: string, date?: string) => {
 }
 
 /*  康护知识分类列表 */
-export const channelClsList = (id: 11) => {
+export const channelClsList = (id: 10) => {
     return http.get(SMART_API.channelClsList, { id })
 }
 

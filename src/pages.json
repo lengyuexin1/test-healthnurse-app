@@ -102,6 +102,14 @@
           }
         },
         {
+					"path": "pages/service/serviceIndexPage",
+					"style": {
+						"navigationBarTitleText": "适品囤内页",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+        {
           "path": "pages/my/update",
           "style": {
             "navigationStyle": "custom",
