@@ -131,7 +131,7 @@
             <!-- 长图片详情 -->
             <view id="toView3">
                 <block v-for="(item, index) in orderObj.noticeMultimedia" :key="index">
-                    <image @click="preImage(index, orderObj.noticeMultimedia)" :src="item" width="750rpx" height="auto"
+                    <image @click="preImage(index, orderObj.noticeMultimedia)" :src="item" style="width:750rpx ;height: auto;"
                         mode="widthFix"></image>
                 </block>
             </view>
@@ -209,7 +209,7 @@ import commentView from "./components/discuss-view/commentView.vue"
 import shopView from "./components/shopView/shopView.vue"
 import BCNotify from '@/components/notify/index.vue'
 import { gotoShoppingCart, gotogoodsDetail } from '@/routes/goods-routes'
-import { gotoShopDetail } from "@/routes/service-routes"
+import { gotoServiceStore, gotoShopDetail } from "@/routes/service-routes"
 import { gotoIndex, gotoLogin } from "@/routes/public-routes"
 import { drawBGIMG } from '@/libs/canvas-tools'
 import { getQrcode } from "@/api/user-api"
@@ -492,7 +492,10 @@ const setOption = (str: string) => {
 
 // 店铺详情
 const linkAttendShop = () => {
-    gotoShopDetail(baseId.value)
+    let id = baseId.value
+    // console.log(shareData.baseInfo)
+    // return
+    gotoServiceStore({ id: shareData.baseInfo.id })
 }
 const getBaseInfo = (data: any) => {
     if (data.message || !data.id) {

@@ -66,8 +66,6 @@ const navShopDetail = () => {
     }
 
     const applyId = getApplyId(props.info.businessType)
-    console.log(props.info.businessType)
-    console.log(applyId)
     // return
 
     gotoAttendShop(props.info.id, applyId)

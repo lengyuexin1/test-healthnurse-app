@@ -1,5 +1,5 @@
 import { pageController } from '@bc/uni-tools'
-import { gotoserviceDetail, gotoServiceStore } from '@/routes/service-routes'
+import { gotoserviceDetail, gotoServiceStore, gotoShopDetail } from '@/routes/service-routes'
 
 
 interface ICommentListQuery {
@@ -94,7 +94,8 @@ export const gotoServicePersonal = (query: ISerDetaQuery) => {
  **/
 export const gotoServeDetail = (query: ISerDetaQuery) => {
     const route = {
-        path: '/Mall/pages/service/serviceProject',
+        // path: '/pagesMall/pages/service/serviceProject',
+        path: '/pagesService/pages/serviceDetail/serviceDetail',
         query
     } as any
     return pageController.push(route)
@@ -314,11 +315,23 @@ export const gotoNurseDetail = (query: INurseDetailQuery) => {
 }
 
 
-// /* 店铺类型 2：服务 3：商品 12：机构 13：康养 */
+/** 店铺类型
+ 2：服务
+ 3：商品
+ 12：机构
+ 13：康养 */
 type TShopApply = 2 | 3 | 12 | 13
 
 /** 跳转到 店铺详情 */
 export const gotoAttendShop = (id: string, applyId?: TShopApply) => {
+    console.log('applyId', applyId)
+    // return
+    // if (applyId === 2) {
+    //     return gotoserviceDetail(id)
+    // }
+    // if (applyId === 3) {
+    //     return gotoShopDetail(id)
+    // }
     if (applyId === 12) {
         return gotoServiceStore({ id })
     }
@@ -326,7 +339,7 @@ export const gotoAttendShop = (id: string, applyId?: TShopApply) => {
         return gotoserviceDetail(id)
     }
     const route = {
-        path: '/Mall/pages/attendShop/attendShop',
+        path: '/pagesMall/pages/shop/shopDetail',
         query: { id }
     }
     return pageController.push(route)

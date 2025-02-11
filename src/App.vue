@@ -5,7 +5,7 @@ import { gotoLogin, gotoUpdate } from "@/routes/public-routes"
 
 import { WEB_ENV } from "./sys/constant"
 import { SessionSDK } from '@bc/msg'
-import { appUpdater } from '@/libs/update/check-updater'
+// import { appUpdater } from '@/libs/update/check-updater'
 
 onLaunch(() => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
@@ -16,7 +16,7 @@ onLaunch(() => {
             // #endif
             return
         }
-        
+
         // #ifdef APP-PLUS
         plus.navigator.closeSplashscreen()
         // #endif
@@ -76,16 +76,16 @@ onLaunch(() => {
 
 onShow(() => {
     WEB_ENV
-    console.log("App Show")
+    // console.log("App Show")
 })
 
 onHide(() => {
-    console.log("App Hide")
+    // console.log("App Hide")
 })
 
 onSysEvent('SYS_LOGIN_SUCCESS', () => {
     console.log('初始化连接im');
-    
+
     /** 连接云信IM */
     SessionSDK.connect()
 })

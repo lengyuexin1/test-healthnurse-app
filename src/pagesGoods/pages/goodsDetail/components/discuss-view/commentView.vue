@@ -34,10 +34,9 @@
 import discussView from "./discuss-view.vue"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import { commentScore, godsCommList } from "@/api/service-api"
-import { getAssetsPic } from "@/common/setPicture"
 import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 // import { gotoCommentList } from "@/route/care-routes"
-import { computed, ref } from "vue"
+import { ref } from "vue"
 import { gotogoodsComment } from '@/routes/goods-routes'
 
 const commlist = ref([])
@@ -58,16 +57,20 @@ const props = withDefaults(defineProps<{
 const gitCommentScore = () => {
     /* 商城 shopId 服务itemId */
     commentScore({
-        itemId:props.itemId
+        itemId: props.itemId
     }).then((res) => {
-            if (!res.length) { return }
-            const arr: any = []
-            score.value = {
-                total: res[0],
-                list: arr
-            }
-        })
+        if (!res.length) {
+            return
+        }
+        console.log(res)
+        const arr: any = []
+        score.value = {
+            total: res[0],
+            list: arr
+        }
+    })
         .catch((err) => {
+            console.log(err)
             // this.$refs.uToast.error(err.message)
         })
 }
@@ -83,9 +86,11 @@ const gitCommentList = () => {
         }
     }
     godsCommList(data).then((res: any) => {
+        console.log(res)
         commlist.value = res.data
     })
         .catch((err) => {
+            console.log(err)
             // this.$refs.uToast.error(err.message)
         })
 }

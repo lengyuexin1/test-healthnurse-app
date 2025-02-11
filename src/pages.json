@@ -129,6 +129,14 @@
       "root": "pagesService",
       "pages": [
         {
+          "path": "pages/serviceComment/serviceComment",
+          "style": {
+            "navigationBarTitleText": "评论列表",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
           "path": "pages/serviceDetail/serviceDetail",
           "style": {
             "navigationBarTitleText": "搜索",
@@ -139,7 +147,7 @@
         {
           "path": "pages/Servicestore/ServicestoreDetail",
           "style": {
-            "navigationBarTitleText": "机构详情",
+            "navigationBarTitleText": "机构详情"
             "navigationStyle": "custom",
             "enablePullDownRefresh": false
           }
@@ -205,6 +213,12 @@
     {
       "root": "pagesGoods",
       "pages": [
+        {
+          "path": "pages/shop/shopDetail",
+          "style": {
+            "navigationBarTitleText": "店铺详情"
+          }
+        },
         {
           "path": "pages/goodsDetail/goodsDetail",
           "style": {
@@ -1602,13 +1616,6 @@
             "navigationStyle": "custom"
           }
         }
-        // {
-        //   "path": "pages/service/serviceTab",
-        //   "style": {
-        //     "navigationBarTitleText": "照护服务",
-        //     "navigationStyle": "custom"
-        //   }
-        // }
       ]
     }
   ],
