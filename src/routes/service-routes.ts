@@ -10,7 +10,7 @@ import { pageController } from '@bc/uni-tools'
 export const gotoserviceDetail = (itemId: string) => {
     console.log('没有服务详情界面')
     const route = {
-        path: '/pagesService/pages/serviceDetail/serviceDetail',
+        path: '/pagesService/pages/Servicestore/ServicestoreDetail',
         // path: '/pagesService/pages/Servicestore/healthproductDetails',
         query: { itemId }
     } as any
@@ -19,8 +19,8 @@ export const gotoserviceDetail = (itemId: string) => {
 
 export const gotoShopDetail = (shopId: string) => {
     const route = {
-        path: '/pagesMall/pages/shop/shopDetail',
-        query: { shopId }
+        path: '/pagesGoods/pages/shop/shopDetail',
+        query: { id: shopId }
     } as any
     return pageController.push(route)
 }
@@ -35,7 +35,7 @@ export const gotoShopDetail = (shopId: string) => {
 // 乐悠机构详情
 export const gotoServiceStore = (query:any) => {
     const route = {
-        path: '/pagesService/pages/Servicestore/ServicestoreDetail',
+        path: '/pagesService/pages/serviceDetail/serviceDetail',
         query
     } as any
     return pageController.push(route)

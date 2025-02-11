@@ -61,10 +61,12 @@
 
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue'
+import { ref, reactive, computed, onMounted, defineExpose } from 'vue'
 
 import { getAssetsPic } from '@/common/setPicture'
 import { agoTime } from '@/common/formatTime'
+import { TempStorage } from "@bc/base"
+import { PlatformManage } from "@bc/sys"
 import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
@@ -108,8 +110,7 @@ const queryList = (pageNumber:number, pageSize:number)=>{
         pageSize,
         query: {
             itemId:  props.id,
-            shopId: props.shopId,
-            hasImage: 1
+            shopId:  props.shopId
         }
     }).then((res:any)=>{
         console.log('res',res);

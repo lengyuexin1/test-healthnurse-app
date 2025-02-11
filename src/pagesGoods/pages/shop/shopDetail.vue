@@ -1,9 +1,8 @@
 <template>
     <view class="contraner">
-        <z-paging ref="paging" v-model="data.dataList" @query="queryList" :auto="false" :fixed="true"
-                  :defaultPageSize="10"
-                  :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="还没有数据哦~"
-                  :empty-view-img-style="{ width: '320rpx',height: '320rpx' }"
+        <z-paging  ref="paging" v-model="data.dataList" @query="queryList" :auto="false" :fixed="true" :defaultPageSize="10"
+                   :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="还没有数据哦~"
+                   :empty-view-img-style="{ width: '320rpx',height: '320rpx' }"
         >
         <template #top>
             <view class="shop_box">
@@ -68,14 +67,14 @@ import { onLoad } from "@dcloudio/uni-app"
 import { getAssetsPic } from '@/common/setPicture'
 import { addShopBrowerHistory, getBaseInfo } from "@/api/service-api"
 import { addShop, unHealthShop } from "@/api/user-api"
-import { servicelist } from "@/api/goods-api"
+import { productlist } from "@/api/goods-api"
 import BCNotify from '@/components/notify/index.vue'
 import WaterfallsFlow from './components/WaterfallsFlow.vue'
 import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import { pageController } from "@bc/uni-tools"
 import { gotoServiceStore } from "@/routes/service-routes"
-import { gotogoodsDetail, gotoserviceDetail } from "@/routes/goods-routes"
+import { gotogoodsDetail } from "@/routes/goods-routes"
 import { PlatformManage } from "@bc/sys"
 import { gotoLogin } from "@/routes/public-routes"
 
@@ -110,7 +109,7 @@ const getAssetsUrl = computed(() => (src:string) => {
 })
 
 const queryList = (pageNumber: number, pageSize: number) => {
-    servicelist({
+    productlist({
         pageNumber,
         pageSize,
         query: {
@@ -164,12 +163,7 @@ const changetext = () => {
 // }
 
 const clickwaterItem = (item:any) => {
-    if (data.shopDetail.applyCodeId === 3) {
-        gotogoodsDetail(item.id)
-    }
-    else if (data.shopDetail.applyCodeId === 2) {
-        gotoserviceDetail(item.id)
-    }
+    gotogoodsDetail(item.id)
 }
 
 const clickShopDetail = () => {
@@ -190,7 +184,6 @@ const setColl = () => {
 
 const getShopInfo = (shopId: any) => {
     getBaseInfo({ id: shopId }).then((res: any) => {
-        console.log('店铺信息', res)
         data.shopDetail = res
         data.isColl = !!res.isFavorite
         changetext()

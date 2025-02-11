@@ -465,16 +465,16 @@ interface Events {
 const emit = defineEmits<Events>()
 
 onMounted(() => {
-    // uni.getSystemInfo({
-    //     success: (res: any) => {
-    //         data.safeBotomHeight = res.safeAreaInsets.bottom
-    //     }
-    // })
+    uni.getSystemInfo({
+        success: (res: any) => {
+            data.safeBotomHeight = res.safeAreaInsets.bottom
+        }
+    })
 
-    // getuserInfo()
-    // PlatformManage.isRequireLogin().then((isRequireLogin) => {
-    //     data.isRequireLogin = isRequireLogin
-    // })
+    getuserInfo()
+    PlatformManage.isRequireLogin().then((isRequireLogin) => {
+        data.isRequireLogin = isRequireLogin
+    })
 })
 
 const toCreation = () => {

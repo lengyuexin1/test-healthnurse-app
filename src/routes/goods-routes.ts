@@ -13,6 +13,13 @@ export const gotogoodsDetail = (itemId: string, livePlayId?: string) => {
     } as any
     return pageController.push(route)
 }
+export const gotoserviceDetail = (itemId: string, livePlayId?: string) => {
+    const route = {
+        path: '/pagesService/pages/serviceDetail/serviceDetail',
+        query: { itemId, livePlayId }
+    } as any
+    return pageController.push(route)
+}
 
 // 跳转到 购物车
 export const gotoShoppingCart = () => {
@@ -52,6 +59,14 @@ export const gotoGoodsPerferShop = () => {
 export const gotoSalePutlogis = (query: any) => {
     const route = {
         path: '/pagesGoods/pages/logistics/logistics',
+        query
+    } as any
+    return pageController.push(route)
+}
+// 服务评论列表
+export const gotoserviceComment = (query: any) => {
+    const route = {
+        path: '/pagesService/pages/serviceComment/serviceComment',
         query
     } as any
     return pageController.push(route)
