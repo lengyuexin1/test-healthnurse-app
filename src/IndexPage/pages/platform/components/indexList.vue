@@ -57,7 +57,7 @@
 
         <!-- 新人福利 -->
         <view class="newPople">
-            <NewcomerWelfare></NewcomerWelfare>
+            <NewcomerWelfare :dataObj="dataObj"></NewcomerWelfare>
         </view>
         <view class="fliex_box">
             <view class="Nav_box">
@@ -106,7 +106,7 @@ import imageText from './imageText.vue'
 import channelItem from './channelItem.vue'
 import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { gotoLogin } from "@/routes/public-routes"
-import { channelClsList } from "@/api/smart-api"
+import { channelClsList, getEsContentList } from "@/api/smart-api"
 import { getescourselist, escontentlist, followContentList, getranklist, getappcontentList, getcoursefollowList } from "@/api/create-api"
 import { nearbyList } from "@/api/user-api"
 
@@ -127,7 +127,6 @@ interface Data {
     followId: string,
 
     sonTabIndex: number,
-    hidecontenNav: boolean,
     firstgetaddress: boolean,
     lat: number,
     lng: number,
@@ -142,9 +141,7 @@ const data = reactive<Data>({
     followList: [],
     query: {},
     followId: '',
-
     sonTabIndex: 1,
-    hidecontenNav: false,
     firstgetaddress: true,
     lat: 0,
     lng: 0,
@@ -156,6 +153,7 @@ const data = reactive<Data>({
 const swiperList: any = ref([])
 const NavList: any = ref([])
 const NavId = ref(1)
+const dataObj: any = ref({})
 const tabsData: any = ref([
     { id: '10', url: getAssetsPic('/fare/v2/home_icon_jujia.png'), title: '居家照护', typeId: 11, colnum: 3, hotTag: null, activity_id: 3, templateCode: 65793 },
     { id: '16', url: getAssetsPic('/fare/v2/home_icon_zhuyuan.png'), title: '住院陪护', typeId: 13, colnum: 5, hotTag: null, activity_id: 5, templateCode: 65800 },
@@ -188,7 +186,7 @@ interface Events {
     (e: 'hideNav', val: boolean): void,
     (e: 'changeNav', index: number): void,
     (e: 'gethidNavList', list: any): void,
-
+    (e: 'changeTabbarTop', val: boolean): void,
 }
 const emit = defineEmits<Events>()
 
@@ -200,7 +198,7 @@ onMounted(() => {
 const getChannelClsList = () => {
     channelClsList(10).then(res => {
         NavList.value = [
-            { id: 999, name: '推荐' },
+            { id: 1, name: '推荐' },
             ...res
         ]
     })
@@ -217,11 +215,33 @@ const queryList = (pageNumber: number, pageSize: number) => {
             conGiveData(pageNumber)
         }
         // 关注
-        else if (NavId.value == 0) {
-
+        else {
+            contentist(pageNumber)
         }
     })
 }
+
+const contentist = (pageNumber) => {
+    const data = {
+        pageNumber,
+        pageSize: 10,
+        query: {
+            categoryIds: [NavId.value]
+        }
+    }
+    getEsContentList(data).then((res) => {
+        const dataMapFlag = res.data.map((item) => {
+            const its = {
+                ...item,
+                sourceType: 4
+            }
+            return its
+        })
+
+        paging.value.complete(dataMapFlag)
+    })
+}
+
 const conGiveData = (pageNumber) => {
     const data = {
         pageNumber,
@@ -229,7 +249,7 @@ const conGiveData = (pageNumber) => {
         query: {
         }
     }
-    searListFlag(data).then((res:any) => {
+    searListFlag(data).then((res: any) => {
         paging.value.complete(res.data)
     })
 }
@@ -254,17 +274,21 @@ const changeNav = (item: any) => {
 const allInList: any = ref([])
 const getSetIds = (num: number) => {
     setPageBank(num).then(res => {
-        allInList.value = res.recordList.filter((item: any) => item.moduleId == 7)
-        console.log(allInList.value, '等于7');
-        if (allInList.value.length > 0) {
-            allInList.value.forEach((element: any) => {
-                console.log(element);
-                // 业务模块专区
-                // channeCatelList(element, element.categoryIds)
-            })
+        // allInList.value = res.recordList.filter((item: any) => item.moduleId == 7)
+        // console.log(allInList.value, '等于7');
+        // if (allInList.value.length > 0) {
+        //     allInList.value.forEach((element: any) => {
+        //         console.log(element);
+        //         // 业务模块专区
+        //         // channeCatelList(element, element.categoryIds)
+        //     })
+        // }
+        if (!res.recordList) {
+            return
         }
-        healthMyData(res.recordList)
         console.log(res.recordList, '所有的数组')
+        healthMyData(res.recordList)
+
     })
 }
 
@@ -283,13 +307,14 @@ const healthMyData = (list: any) => {
         if (element.moduleId == 2) {
             // getTabbar(element.dataIds)
         }
-        // // 新人活动
-        // if (element.moduleId == 3) {
-        //     activeDetail(element.dataIds[0]).then(res => {
-        //         console.log('活动想去', res)
-        //         newPeoList.value = res
-        //     })
-        // }
+        // 新人活动
+        if (element.moduleId == 3) {
+            activeDetail(element.dataIds[0]).then(res => {
+                console.log('活动想去', res)
+                dataObj.value = res
+                console.log(dataObj.value, '活动想去', res)
+            })
+        }
         // // 产品推荐
         // if (element.moduleId == 4) {
         //     channelList(element.dataIds, 4)
@@ -305,19 +330,6 @@ const healthMyData = (list: any) => {
     })
 }
 
-const getTabbar = (data: any) => {
-    const dares = {
-        ids: data
-    }
-    columnList(dares).then(res => {
-        tabsData.value = res
-        if (res.length > 0) {
-            columnDetail(res[0].id).then(res => {
-            })
-        }
-    })
-}
-
 const getBannerList = (data: any) => {
     const dares = {
         ids: data
@@ -328,105 +340,19 @@ const getBannerList = (data: any) => {
 }
 
 const scrollPage = (e: any) => {
-    // emit('hideNav', true)
-
-    // if (data.hidNav) {
-    //     data.hidNav = false
-    //     return
-    // }
-    if (data.hidecontenNav == true) {
-        return
-    }
-
     if (e.detail.scrollTop > 160) {
         data.hidNav = true
-        emit('hideNav', true)
+        // emit('hideNav', true)
+        emit('changeTabbarTop', false)
     }
     else {
         data.hidNav = false
-        emit('hideNav', false)
+        // emit('hideNav', false)
+        emit('changeTabbarTop', true)
     }
 
 }
 
-
-// 登录与未登录区分获取列表
-const logingetList = (pageNumber: number, pageSize: number) => {
-
-    const req = {
-        pageSize,
-        pageNumber,
-        query: {
-            categoryIds: (props.channelId != 2 && props.channelId != 3 && props.channelId != 999) ? [props.channelId] : [9],
-            type: (props.channelId == 2 || props.channelId == 3) ? props.channelId : null,
-            sortType: (props.channelId == 999 && pageNumber == 1) ? 7 : null
-
-        }
-    }
-
-    PlatformManage.isRequireLogin().then((isRequireLogin) => {
-        if (isRequireLogin) {
-            console.log('未登录不需要处理数组')
-            escontentlist(req, isRequireLogin).then((res: any) => {
-                (paging.value as any).complete(res.data)
-            })
-        }
-        else {
-            escontentlist(req, isRequireLogin).then((res: any) => {
-                (paging.value as any).complete(res.data)
-                console.log('data.dataList33', data.dataList)
-
-            })
-        }
-    })
-}
-
-// 康养百科列表
-const getChannelList = (pageNumber: number, pageSize: number) => {
-    console.log('百科列表')
-    console.log('props.channelId', props.channelId)
-
-    let isFans
-    if (props.channelId == 1) {
-        isFans = 1
-    }
-    else {
-        isFans = null
-    }
-
-    (props.channelId == 1 && pageNumber == 1) && getcontentAccountList()
-    props.channelId == 1 && getappcontentList({
-        query: {
-            isFans,
-            categoryId: null,
-            status: 3,
-            isRecommended: null,
-            accountId: null,
-            happyType: 1
-        },
-        pageNumber,
-        pageSize
-    }).then((res: any) => {
-        (paging.value as any).complete(res.data)
-        console.log('data.dataList11', data.dataList)
-
-    });
-
-    (props.channelId != 1 && props.channelId != 998) && logingetList(pageNumber, pageSize)
-
-    props.channelId == 998 && getranklist({
-        pageSize,
-        pageNumber,
-        query: {
-            rankType: props.rankType,
-            categoryIds: [9]
-        }
-    }).then((res: any) => {
-        (paging.value as any).complete(res.data)
-        console.log('data.dataList22', data.dataList)
-
-    })
-}
 
 // 关注作者
 const getcontentAccountList = () => {
@@ -445,49 +371,7 @@ const getcontentAccountList = () => {
     })
 }
 
-// 附近列表
-const getnearbyList = (pageNumber: number, pageSize: number, haveAddress: boolean = false) => {
-
-
-    PlatformManage.isRequireLogin().then((isRequireLogin) => {
-        console.log('isRequireLogin', isRequireLogin);
-        nearbyList({
-            pageNumber,
-            pageSize,
-            query: haveAddress ? {
-                lat: data.lat,
-                lng: data.lng,
-                // type: 2
-
-            } : {
-                // type: 2
-            }
-        }, isRequireLogin).then((res: any) => {
-
-            console.log('获取到数据111', res.data);
-
-
-            (paging.value as any).complete(res.data)
-        })
-    })
-
-
-}
-
-// 我关注的内容
-const getfollowContentList = (pageNumber: number, pageSize: number) => {
-    followContentList({
-        pageNumber,
-        pageSize,
-        query: {}
-    }).then((res: any) => {
-        (paging.value as any).complete(res.data)
-    })
-}
-
-
 const bcNotify = ref()
-
 
 // 页面刷新
 const pagingReload = (val: boolean = false) => {
@@ -500,21 +384,6 @@ const pagingReload = (val: boolean = false) => {
         // (paging.value as any).reload(true)
     }
 
-}
-
-const filterArrayAfterId = (array: any, id: string) => {
-    let found = false
-    // 遍历数组，找到匹配的id，并返回匹配id之后的所有元素id组成的新数组
-    return array.reduce((result: any, item: any) => {
-        if (found) {
-            result.push(item.id)
-        }
-        else if (item.id === id) {
-            found = true
-            result.push(item.id)
-        }
-        return result
-    }, [])
 }
 
 const allwaterItem = (item: any) => {
@@ -856,5 +725,9 @@ defineExpose({
         align-items: center;
         justify-content: center;
     }
+}
+
+.content_right_list {
+    padding: 0 10rpx;
 }
 </style>

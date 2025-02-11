@@ -170,3 +170,15 @@ export const gotoLiveSelection = () => {
     } as any
     return pageController.push(route)
 }
+
+/**  
+ * 
+ * 康养屯内页
+ */
+export const gotoserviceIndexPage = () => {
+    const route = {
+        path: '/IndexPage/pages/service/serviceIndexPage',
+        query: {}
+    } as any
+    return pageController.push(route)
+}

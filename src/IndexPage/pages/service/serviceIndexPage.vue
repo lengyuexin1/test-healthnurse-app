@@ -142,10 +142,10 @@
                 <view class="activity_List">
                     <view class="activity_item" @tap="clickActivityList(1)">
                         <view class="top_text_box">
-                            <text class="red_text">老</text>
-                            <text>博会</text>
+                            <text class="red_text">适品</text>
+                            <text>老博会</text>
                         </view>
-                        <view class="item_text">品牌馆/旗舰店</view>
+                        <view class="item_text">好物好逛</view>
                         <view class="activity_bottom">
                             <image
                                 class="right_img first_img"
@@ -160,7 +160,7 @@
                             <text>直播</text>
                             <text class="red_text">精选</text>
                         </view>
-                        <view class="item_text">好逛</view>
+                        <view class="item_text">天天有折</view>
                         <view class="activity_bottom">
                             <image
                                 class="right_img"
@@ -170,7 +170,7 @@
                         </view>
                     </view>
 
-                    <view class="activity_item" @tap="clickActivityList(3)">
+                    <!-- <view class="activity_item" @tap="clickActivityList(3)">
                         <view class="top_text_box">
                             <text>保椿</text>
                             <text class="red_text">点</text>
@@ -184,7 +184,7 @@
                                 mode="scaleToFill"
                             />
                         </view>
-                    </view>
+                    </view> -->
 
                     <view class="activity_item" @tap="clickActivityList(5)">
                         <view class="top_text_box">
@@ -871,12 +871,12 @@ defineExpose({
     align-items: center;
     justify-content: space-between;
     margin-bottom: 20rpx;
-    background: linear-gradient( 180deg, #FFDEDE 0%, #FFC4C4 100%);
+    background: linear-gradient( 180deg, #D4F1D4 0%, #C2E2C2 100%);
     border-radius: 24rpx;
     padding: 20rpx;
     box-sizing: border-box;
     .activity_item{
-        width: 156rpx;
+        width: 210rpx;
         // height: 120rpx;
         padding: 16rpx;
         padding-bottom: 8rpx;
@@ -908,6 +908,7 @@ defineExpose({
             color: #333333;
             font-weight: 600;
             display: flex;
+            flex-wrap: nowrap;
             align-items: center;
             .red_text{
                 color: #EA3E1A;

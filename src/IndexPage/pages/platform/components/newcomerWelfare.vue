@@ -11,22 +11,14 @@
                 <image class="coupon-bg" :src="getAssetsUrl('/leyou/icon/coupon-bg.png')" mode="scaleToFill" />
                 <view class="content">
                     <view class="price tn-text-bold"><text class="unit">￥</text>8</view>
-                    <view class="time"><TnCountDown :time="300" text-color="#F46603" separator-color="#F46603" /></view>
+                    <view class="time"><TnCountDown show-day :time="dataObj.utcEnd - dataObj.utcStart" text-color="#F46603" separator-color="#F46603" /></view>
                     <view class="txt">后失效</view>
                     <view class="btn tn-text-bold">去使用</view>
                 </view>
             </view>
-            <view class="wrap tn-flex-column">
-                <image class="img" src="@/static/live/addCart.png" mode="scaleToFill" />
-                <text class="txt">2323</text>
-            </view>
-            <view class="wrap tn-flex-column">
-                <image class="img" src="@/static/live/addCart.png" mode="scaleToFill" />
-                <text class="txt">2323</text>
-            </view>
-            <view class="wrap tn-flex-column">
-                <image class="img" src="@/static/live/addCart.png" mode="scaleToFill" />
-                <text class="txt">2323</text>
+            <view class="wrap tn-flex-column" v-for="(item, index) in dataObj.itemList" :key="index">
+                <image class="img" :src="item.thumb" mode="scaleToFill" />
+                <text class="txt">劵后￥{{ moneyFilter(item.fakePrice) }}元</text>
             </view>
         </view>
     </view>
@@ -37,10 +29,11 @@ import { ref, reactive, computed } from 'vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/count-down.vue'
 import { getAssetsPic } from '@/common/setPicture'
+import { moneyFilter } from "@/common/filters"
 // import { gotoNewcomerWelfare } from '@/routes/goods-routes'
 
 interface Props {
-
+    dataObj: any
 }
 
 const props = defineProps<Props>()

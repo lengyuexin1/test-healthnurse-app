@@ -11,7 +11,7 @@
         <my ref="myref" v-if="data.tabbarId == 5" @showLifeMenu="showMenu"></my>
 
 
-        <customTabbar v-if="data.tabbarId == 1" ref="tabbarRef" :tabbarData="data.tablist" @changeTabbar="changeTabbar" @showLifeMenu="showMenu">
+        <customTabbar ref="tabbarRef" :tabbarData="data.tablist" @changeTabbar="changeTabbar" @showLifeMenu="showMenu">
         </customTabbar>
 
         <!-- 左侧菜单 -->
@@ -66,6 +66,7 @@
 </template>
 
 <script setup lang="ts">
+import { gotoserviceIndexPage } from '@/routes/service-routes'
 import { ref, reactive, watch, computed, getCurrentInstance } from 'vue'
 import { onLoad, onShow, onReady, onHide } from '@dcloudio/uni-app'
 import { useCustomerSessions } from '@bc/msg'
@@ -261,6 +262,10 @@ const changeTabbar = (id: number, showrecommend: boolean) => {
             }
         }, 600)
     }
+    if (id == 2) {
+        gotoserviceIndexPage()
+        return
+    }
     if (id == 3) {
         // 底部创作入口
         gotoUpcontent()
@@ -274,7 +279,7 @@ const changeTabbar = (id: number, showrecommend: boolean) => {
     data.showrecommend = true
 }
 const tabbarRef = ref()
-const hidetabbarTop = (val:boolean) => {
+const hidetabbarTop = (val: boolean) => {
     console.log('val11', val);
 
     (tabbarRef.value as any).hideTop(val);
@@ -746,4 +751,5 @@ const typePreviewReport = (type: string) => {
         }
     }
 
-}</style>
+}
+</style>

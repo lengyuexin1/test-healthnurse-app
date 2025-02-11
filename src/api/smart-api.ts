@@ -215,3 +215,8 @@ export const productshowList = (req: any) => {
 export const productshowDetail = (id: string) => {
     return openHttp.get(SMART_API.productshowDetail, { id })
 }
+
+// es获取内容分类列表
+export const getEsContentList = async (req:any) => {
+    return http.post('api/search/v1/bc/public/es/content/list', req)
+}

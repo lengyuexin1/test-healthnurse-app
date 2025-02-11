@@ -111,7 +111,8 @@
                 <!-- 首页 -->
                 <indexList ref="indexListRef" :hidNavIndex="data.hidNavIndex" :channelId="data.channelId"
                     :rankType="data.rankType" :liveType="data.liveType" @hideNav="hideNav" @showLifeMenu="showMenu"
-                    @changeNav="indexListchangeNav" @gethidNavList="gethidNavList"></indexList>
+                    @changeNav="indexListchangeNav" @changeTabbarTop="changeTabbarTop" @gethidNavList="gethidNavList">
+                </indexList>
             </view>
 
 
@@ -288,17 +289,10 @@ const emit = defineEmits<Events>()
 
 
 const articleListRef = ref()
-watch(() => props.showrecommend, (newvalue, oldvalue) => {
-    // if (!newvalue) {
-    //     (articleListRef.value as any).pagingReload()
-    // }
-})
+watch(() => props.showrecommend, (newvalue, oldvalue) => { })
 
 onMounted(async () => {
-
     data.topNavList.push({ id: 99, text: '文娱' })
-
-
     // #ifdef MP-WEIXIN
     // 获取胶囊按钮位置信息
     const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
@@ -466,36 +460,6 @@ const getAssetsUrl = computed(() => (src: string) => {
 
 const bcNotify = ref()
 
-const changeTabs = (item: any, index: number) => {
-    PlatformManage.isRequireLogin().then((isRequireLogin) => {
-        if (isRequireLogin) {
-            bcNotify.value.show('登录失效,请重新登录')
-            setTimeout(() => {
-                gotoLogin({})
-            }, 1000)
-            return
-        }
-
-
-
-        data.currentTabIndex = index
-        // 初始化每个模块类目index,
-
-        data.hidNavIndex = 0
-        console.log('data.hidNavIndex', data.hidNavIndex);
-        console.log('item', item);
-
-        // data.showNav = true
-        data.showNav = false
-
-        item.id == 1 && typePreviewReport('course')
-        item.id == 3 && typePreviewReport('salon')
-        item.id == 7 && typePreviewReport('chat')
-        item.id == 99 && typePreviewReport('createVideo')
-    })
-
-}
-
 const imgInitIndex = () => {
     // data.currentTabIndex = 999
     data.currentTabIndex = 0
@@ -607,38 +571,7 @@ const hideNav = (val: boolean) => {
 
 
 const indexListRef = ref()
-const backInitIndex = () => {
-    data.showNav = false
-    // imgInitIndex()
-    // return
-    data.currentTabIndex == 999 && (indexListRef.value as any).backToTopClick()
-    data.currentTabIndex == 0 && (articleListRef.value as any).backToTopClick()
-    data.currentTabIndex == 1 && (salonPage.value as any).backToTopClick()
-}
 
-
-// 滚动显示顶部栏
-const changeHidNav = (item: any, index: number) => {
-
-    if (data.currentTabIndex == 3) {
-        console.log('文娱切换顶部栏');
-        if (index == 1 || index == 2) {
-            bcNotify.value.show('敬请期待')
-            return
-        }
-    }
-
-    data.hidNavIndex = index
-
-
-    data.currentTabIndex == 999 && (indexListRef.value as any).changesonNav(item, index, true)
-    // data.currentTabIndex == 0 && (articleListRef.value as any).changesontabs(item, index, true)
-    data.currentTabIndex == 0 && (articleListRef.value as any).changetopNav(item, index)
-    data.currentTabIndex == 1 && (salonPage.value as any).changesontabs(item, index)
-    data.currentTabIndex == 2 && (likePage.value as any).iscourse(item, index)
-    // data.currentTabIndex == 3 && (entertainmentListRef.value as any).changesontabs(item, index)
-
-}
 
 const gethidNavList = (list: any) => {
     data.hidNavList = list
@@ -684,15 +617,7 @@ const initLive = (type: number) => {
     })
 }
 
-const typePreviewReport = (type: string) => {
-    Debounce(() => {
-        // createCollectAndReport.prototype(type)
-        createCollectAndReport().previewReport(type)
-    }, 300)
-}
-
 const openAisearch = () => {
-
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
             bcNotify.value.show('登录失效,请重新登录')
@@ -1520,4 +1445,5 @@ defineExpose({
     }
 
 
-}</style>
+}
+</style>

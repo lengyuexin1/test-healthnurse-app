@@ -94,7 +94,7 @@ const todetail = (item:any) =>{
     align-items: center;
     width: 100%;
     // padding: 10rpx;
-    padding-bottom: 10rpx;
+    padding-bottom: 16rpx;
     box-sizing: border-box;
     border-radius: 16rpx;
     overflow: hidden;
