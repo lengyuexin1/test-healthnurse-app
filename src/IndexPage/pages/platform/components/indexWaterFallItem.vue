@@ -9,12 +9,8 @@
             />
             <view class="live_box" v-if="item.type == 99">
                 <view class="live_left_box">
-                    <image
-                        class="live_img"
-                        :src="getAssetsUrl('/leyou/icon/live.png')"
-                        mode="scaleToFill"
-                    />
-                    <view>直播中</view>
+                    <BarPlaying></BarPlaying>
+                    <view class="tn-ml-xs">直播中</view>
                 </view>
                 <view class="live_number_box">
                    {{ item.cntUser }} 人观看
@@ -53,7 +49,7 @@
 <script setup lang="ts">
 import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 import { ref, computed, reactive, onMounted } from 'vue'
-
+import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { getAssetsPic } from '@/common/setPicture'
 
 

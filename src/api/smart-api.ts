@@ -157,7 +157,7 @@ export const getSleepReportList = (deviceId: string, date?: string) => {
 }
 
 /*  康护知识分类列表 */
-export const channelClsList = (id: 11) => {
+export const channelClsList = (id: 10) => {
     return http.get(SMART_API.channelClsList, { id })
 }
 
@@ -214,4 +214,9 @@ export const productshowList = (req: any) => {
 /* 康品百科详情 */
 export const productshowDetail = (id: string) => {
     return openHttp.get(SMART_API.productshowDetail, { id })
+}
+
+// es获取内容分类列表
+export const getEsContentList = async (req:any) => {
+    return http.post('api/search/v1/bc/public/es/content/list', req)
 }

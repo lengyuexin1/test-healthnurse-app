@@ -38,6 +38,7 @@
 <script lang="ts" setup>
 import { gotoServeDetail } from '@/routes/care-routes'
 import { gotogoodsDetail } from '@/routes/goods-routes'
+import { gotoShopDetail } from '@/routes/service-routes'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import { reactive, computed } from 'vue'
 import TnTag from '@tuniao/tnui-vue3-uniapp/components/tag/src/tag.vue'
@@ -75,6 +76,7 @@ const navServe = () => {
         return false
     }
     gotoServeDetail({ itemId: props.info.id })
+    // gotoShopDetail({ id: props.info.id })
 }
 </script>
 

@@ -123,7 +123,7 @@ const arrList = ref([
     .difMoney {
         display: flex;
         align-items: center;
-        margin-bottom: 16rpx;
+        margin: 10rpx 0;
     }
 
     .realMoney {
@@ -152,6 +152,8 @@ const arrList = ref([
 }
 .sel-tit {
     font-size: 24rpx;
+    padding-left: 10rpx;
+    color: #999999;
 }
 </style>
 

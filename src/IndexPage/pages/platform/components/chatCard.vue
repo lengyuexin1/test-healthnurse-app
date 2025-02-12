@@ -4,7 +4,7 @@
             <view>
                 <view class="top tn-flex-center-between">
                     <view class="tag tn-flex-row">
-                        <image :src="getAssetsUrl('/leyou/assets/stat.svg')" mode="scaleToFill" />
+                        <BarPlaying></BarPlaying>
                         {{ item.categoryName || '--' }}
                     </view>
                 </view>
@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import { onMounted, computed } from 'vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
+import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { gotoChatPage } from '@/routes/nim-routes'
 import { joinGroupChat } from '@/api/user-api'

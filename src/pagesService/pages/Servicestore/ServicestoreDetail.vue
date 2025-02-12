@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import ServicestoreDetailPage from './components/ServicestoreDetailPage.vue'
 
 import { onLoad, onShareAppMessage } from '@dcloudio/uni-app'
@@ -27,9 +27,11 @@ onMounted(() => {
 
 })
 
+
 onLoad((option:any) => {
+    console.log(option)
     data.isAd = Number(option.isAd)
-    data.shopId = option.shopId
+    data.shopId = option.itemId
 })
 
 

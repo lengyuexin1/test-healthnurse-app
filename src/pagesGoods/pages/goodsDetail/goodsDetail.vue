@@ -178,8 +178,7 @@
                     <image
                     @click="preImage(index,orderObj.productExt.detailImage)"
                     :src="item"
-                    width="750rpx"
-                    height="auto"
+                    style="width:750rpx ;height: auto;"
                     mode="widthFix"></image>
                 </block>
             </view>
@@ -242,10 +241,10 @@ import TnTabs from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue'
 import TnTabsItem from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue'
 
 import { goodsDetail, recommendList } from '@/api/goods-api'
-import { collectService, cancelCollect, itemCouponList, addItemBrowerHistory } from "@/api/service-api"
-import { isFavoriteItem } from '@/api/user-api'
+import { addItemBrowerHistory, cancelCollect, collectService, itemCouponList } from "@/api/service-api"
+import { getQrcode, isFavoriteItem } from '@/api/user-api'
 import { moneyFilter } from "@/common/filters"
-import { ref, reactive, toRefs, computed, getCurrentInstance, onMounted } from 'vue'
+import { computed, getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue'
 import { PlatformManage } from "@bc/sys"
 import { getAssetsPic } from "@/common/setPicture"
 import { pageController } from '@bc/uni-tools'
@@ -257,11 +256,10 @@ import optionSelect from './components/optionSelect/optionSelect.vue'
 import commentView from "./components/discuss-view/commentView.vue"
 import shopView from "./components/shopView/shopView.vue"
 import BCNotify from '@/components/notify/index.vue'
-import { gotoShoppingCart, gotogoodsDetail } from '@/routes/goods-routes'
+import { gotogoodsDetail, gotoShoppingCart } from '@/routes/goods-routes'
 import { gotoShopDetail } from "@/routes/service-routes"
 import { gotoIndex, gotoLogin } from "@/routes/public-routes"
 import { drawBGIMG } from '@/libs/canvas-tools'
-import { getQrcode } from "@/api/user-api"
 import WaterfallsFlow from './components/WaterfallsFlow.vue'
 import { createTeam } from "@/api/nim-api"
 import { gotoChatPage } from "@/routes/nim-routes"

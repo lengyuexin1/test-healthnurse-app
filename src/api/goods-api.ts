@@ -68,6 +68,10 @@ export const cartPurchase = (req: _v1_product_app_cart_purchase_view_get_req) =>
 export const productlist = (req: any) => {
     return http.post('api/search/v1/bc/public/es/product/list', req)
 }
+/** 服务列表*/
+export const servicelist = (req: any) => {
+    return http.post('api/search/v1/bc/public/es/item/list', req)
+}
 
 /* 商品列表(猜你喜欢) */
 export const getGoodsList = (req: _v1_bc_app_product_list_post_req) => {

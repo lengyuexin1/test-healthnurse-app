@@ -4,7 +4,7 @@
             <view class="evaluate-header">
                 <view class="evaluate-header-title">用户点评</view>
                 <!-- @tap="readMore" -->
-                <view class="evaluate-header-more" @click="togoodsComment">
+                <view class="evaluate-header-more" @click="toserviceComment">
                     <text>查看全部评价</text>
                     <TnIcon name="right" color="#CCCCCC" size="34rpx"></TnIcon>
                 </view>
@@ -38,7 +38,7 @@ import { getAssetsPic } from "@/common/setPicture"
 import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 // import { gotoCommentList } from "@/route/care-routes"
 import { computed, ref } from "vue"
-import { gotogoodsComment } from '@/routes/goods-routes'
+import { gotoserviceComment } from '@/routes/goods-routes'
 
 const commlist = ref([])
 const score:any = ref({})
@@ -92,8 +92,8 @@ const gitCommentList = () => {
 gitCommentList()
 
 
-const togoodsComment = () => {
-    gotogoodsComment({
+const toserviceComment = () => {
+    gotoserviceComment({
         id:props.itemId,
         shopId:props.shopId,
     })

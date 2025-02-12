@@ -1,16 +1,18 @@
 <template>
     <view class="container" @touchstart="myTouchStart" @touchend="myTouchEnd">
 
-        <platform ref="platformRef" v-if="data.tabbarId == 1" :showrecommend="data.showrecommend" @showLifeMenu="showMenu" @showRightMenu="showRightMenu"></platform>
+        <platform ref="platformRef" v-if="data.tabbarId == 1" :showrecommend="data.showrecommend" @showLifeMenu="showMenu"
+            @showRightMenu="showRightMenu" @changeTabbarTop="hidetabbarTop"></platform>
 
-        <goodsCategory ref="serviceRef" v-if="data.tabbarId == 2" @showServiceMenu="showServiceMenu"></goodsCategory>
+        <service ref="serviceRef" v-if="data.tabbarId == 2" @showServiceMenu="showServiceMenu"></service>
 
         <news v-if="data.tabbarId == 4"></news>
 
         <my ref="myref" v-if="data.tabbarId == 5" @showLifeMenu="showMenu"></my>
 
 
-        <customTabbar :tabbarData="data.tablist" @changeTabbar="changeTabbar"></customTabbar>
+        <customTabbar ref="tabbarRef" :tabbarData="data.tablist" @changeTabbar="changeTabbar" @showLifeMenu="showMenu">
+        </customTabbar>
 
         <!-- 左侧菜单 -->
         <leftMenu v-model="data.showLeftMenu"></leftMenu>
@@ -44,13 +46,11 @@
                     </view>
                 </view>
                 <view class="sMenu_list_box">
-                    <view class="sMenu_list" :class="{ 'not_bottom': index == 1 }" v-for="(item,index) in data.sMenuList" :key="index">
-                        <view class="sMenu_item" @click="sMenuItemFun(sMenuItem)" v-for="sMenuItem in item" :key="sMenuItem.id">
-                            <image
-                                class="sMenu_img"
-                                :src="getAssetsUrl(sMenuItem.icon)"
-                                mode="scaleToFill"
-                            />
+                    <view class="sMenu_list" :class="{ 'not_bottom': index == 1 }" v-for="(item, index) in data.sMenuList"
+                        :key="index">
+                        <view class="sMenu_item" @click="sMenuItemFun(sMenuItem)" v-for="sMenuItem in item"
+                            :key="sMenuItem.id">
+                            <image class="sMenu_img" :src="getAssetsUrl(sMenuItem.icon)" mode="scaleToFill" />
                             <view class="sMenu_text">{{ sMenuItem.name }}</view>
                         </view>
                     </view>
@@ -66,14 +66,16 @@
 </template>
 
 <script setup lang="ts">
+import { gotoserviceIndexPage } from '@/routes/service-routes'
 import { ref, reactive, watch, computed, getCurrentInstance } from 'vue'
 import { onLoad, onShow, onReady, onHide } from '@dcloudio/uni-app'
 import { useCustomerSessions } from '@bc/msg'
 import platform from '../platform/platform.vue'
 import goodsCategory from "../sort/sort.vue"
 import news from '../news/news.vue'
+import service from '../service/service.vue'
 import my from '../my/my.vue'
-import customTabbar from '@/components/custom-tabbar/custom-tabbar.vue'
+import customTabbar from '@/components/cus-bar/custom-tabbar.vue'
 // import test from '@/components/custom-tabbar/custom-tabbar.vue'
 import indexRightMenu from '@/components/indexRightMenu/indexRightMenu.vue'
 import leftMenu from '@/components/leftMenu/leftMenu.vue'
@@ -91,10 +93,12 @@ import {
     upChatPage,
     gotoCreateLive,
     gotoNewUpcontentPage,
-    Upcontent } from '@/routes/create-routes'
+    Upcontent
+} from '@/routes/create-routes'
 import { getQRPage } from '@/api/open-api'
 import { gotoGoodsPerferShop } from '@/routes/goods-routes'
-import { gotoCollectLists, gotoWatchHistory, gotoCouponList, gotoAddressList, gotolicensePage
+import {
+    gotoCollectLists, gotoWatchHistory, gotoCouponList, gotoAddressList, gotolicensePage
 } from "@/routes/user-routes"
 import { gotoorderList } from "@/routes/order-routes"
 import { gotoShoppingCart } from '@/routes/goods-routes'
@@ -108,13 +112,13 @@ import TnOverlay from '@tuniao/tnui-vue3-uniapp/components/overlay/src/overlay.v
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 
 interface Data {
-    tablist:any,
-    tabbarId:number,
-    showrecommend:boolean,
-    showLeftMenu:boolean,
-    showrightMenu:boolean,
+    tablist: any,
+    tabbarId: number,
+    showrecommend: boolean,
+    showLeftMenu: boolean,
+    showrightMenu: boolean,
     serviceMenu: boolean,
-    bottomHeight:number,
+    bottomHeight: number,
     startY: number
     isSwipeDown: boolean,
     slipFlag: boolean
@@ -162,7 +166,7 @@ const data = reactive<Data>({
 
 const customer = useCustomerSessions()
 
-const getAssetsUrl = computed(() => (src:string) => {
+const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 
@@ -207,7 +211,7 @@ onLoad(({ hideId = null, tabids = null, option = null, scene = null } = {}) => {
     // }
 })
 
-const getpage = (scene:any) => {
+const getpage = (scene: any) => {
     getQRPage({ scene }).then((page) => {
         console.log('page', page)
         uni.navigateTo({
@@ -249,7 +253,7 @@ onHide(() => {
 onReady(() => {
     // platformRef.value.listonLoad()
 })
-const changeTabbar = (id:number, showrecommend:boolean) => {
+const changeTabbar = (id: number, showrecommend: boolean) => {
     if (id == 1) {
         setTimeout(() => {
             if (platformRef.value) {
@@ -257,6 +261,10 @@ const changeTabbar = (id:number, showrecommend:boolean) => {
                 (platformRef.value as any).imgInitIndex()
             }
         }, 600)
+    }
+    if (id == 2) {
+        gotoserviceIndexPage()
+        return
     }
     if (id == 3) {
         // 底部创作入口
@@ -269,6 +277,12 @@ const changeTabbar = (id:number, showrecommend:boolean) => {
 
     // data.showrecommend = showrecommend
     data.showrecommend = true
+}
+const tabbarRef = ref()
+const hidetabbarTop = (val: boolean) => {
+    console.log('val11', val);
+
+    (tabbarRef.value as any).hideTop(val);
 }
 
 const showMenu = () => {
@@ -294,7 +308,7 @@ const touchMove = (event: any) => {
     // 可以根据需要调整滑动的阈值
     const threshold = 2 // 滑动阈值
     const currentY = event.touches[0].pageY
-    const distance =  currentY - data.startY
+    const distance = currentY - data.startY
 
     if (distance > threshold) {
         data.isSwipeDown = true
@@ -302,7 +316,7 @@ const touchMove = (event: any) => {
 
 }
 
-const myTouchStart = (e:any) => {
+const myTouchStart = (e: any) => {
     if (data.tabbarId != 1) {
         return
     }
@@ -311,7 +325,7 @@ const myTouchStart = (e:any) => {
     data.startPoint = e.changedTouches[0]
 }
 
-const myTouchEnd = (e:any) => {
+const myTouchEnd = (e: any) => {
     if (data.tabbarId != 1) {
         return
     }
@@ -352,7 +366,7 @@ const gotoUpcontent = () => {
             return
         }
 
-        denounceCheck().then((res:any) => {
+        denounceCheck().then((res: any) => {
             console.log('res', res)
 
             // if (!res) {
@@ -367,7 +381,7 @@ const gotoUpcontent = () => {
             // #ifdef APP-PLUS || H5
             Upcontent({ isBackIndex: 1 })
             // #endif
-        }).catch((err:any) => {
+        }).catch((err: any) => {
             console.log('err', err.message)
             bcNotify.value.error(err.message)
 
@@ -385,7 +399,7 @@ const fromAlbumImg = () => {
     uni.chooseImage({
         count: 9,
         sourceType: ['album'],
-        success: function(res) {
+        success: function (res) {
             console.log('res.tempFilePath1', res.tempFilePaths)
             nextUp(res.tempFilePaths, 1)
         }
@@ -397,7 +411,7 @@ const fromCameraImg = () => {
     uni.chooseImage({
         sourceType: ['camera'],
         count: 1,
-        success: function(res) {
+        success: function (res) {
             console.log('res.tempFilePath2', res.tempFilePaths)
             nextUp(res.tempFilePaths, 1)
         }
@@ -409,7 +423,7 @@ const fromAlbumVideo = () => {
     uni.chooseVideo({
         count: 1,
         sourceType: ['album'],
-        success: function(res) {
+        success: function (res) {
             console.log('res.tempFilePath3', res.tempFilePath)
             nextUp([res.tempFilePath], 2)
 
@@ -422,14 +436,14 @@ const fromCameraVideo = () => {
     uni.chooseVideo({
         count: 1,
         sourceType: ['camera'],
-        success: function(res) {
+        success: function (res) {
             console.log('res.tempFilePath4', res.tempFilePath)
             nextUp([res.tempFilePath], 2)
         }
     })
 }
 
-const nextUp = (selectList:any, fileType:number) => {
+const nextUp = (selectList: any, fileType: number) => {
 
     uni.showLoading({
         title: '上传中...'
@@ -438,7 +452,7 @@ const nextUp = (selectList:any, fileType:number) => {
     console.log('data.selectList', selectList)
     const urlList = [] as any
 
-    const promises = selectList.map((item:any) => {
+    const promises = selectList.map((item: any) => {
         const url = item
         const name = dayjs().valueOf() + ''
         console.log('item', item)
@@ -446,14 +460,14 @@ const nextUp = (selectList:any, fileType:number) => {
         if (fileType == 2) {
             console.log('上传视频')
             return new Promise((resolve, reject) => {
-                uploadVideo(url).then((res:any) => {
+                uploadVideo(url).then((res: any) => {
                     urlList.push({
                         url: res.url,
                         isImg: false,
                         isVideo: true
                     })
                     resolve(true)
-                }).catch((err:any) => {
+                }).catch((err: any) => {
                     console.log('上传err', err)
                     reject(false)
                 })
@@ -462,14 +476,14 @@ const nextUp = (selectList:any, fileType:number) => {
 
         console.log('上传相片')
         return new Promise((resolve, reject) => {
-            uploadFileApi(url, name, 'merchant/license').then((res:any) => {
+            uploadFileApi(url, name, 'merchant/license').then((res: any) => {
                 urlList.push({
                     url: res.url,
                     isImg: true,
                     isVideo: false
                 })
                 resolve(true)
-            }).catch((err:any) => {
+            }).catch((err: any) => {
                 console.log('上传err', err)
                 reject(false)
             })
@@ -499,7 +513,7 @@ const nextUp = (selectList:any, fileType:number) => {
     })
 }
 
-const sMenuItemFun = (item:any) => {
+const sMenuItemFun = (item: any) => {
 
 
     if (item.id == 4) {
@@ -548,17 +562,20 @@ const typePreviewReport = (type: string) => {
 
 
 <style lang="scss" scoped>
-.container{
+.container {
     padding-bottom: 120rpx;
     box-sizing: border-box;
 }
+
 .tranisitonHeight {
     height: 540rpx;
 }
+
 .tranisitonNoHeight {
     height: 0;
 }
-.up_box{
+
+.up_box {
     width: 100%;
     border-radius: 40rpx 40rpx 0rpx 0rpx;
     overflow: hidden;
@@ -569,7 +586,8 @@ const typePreviewReport = (type: string) => {
     left: 0;
     height: 600rpx;
     background: #FFFFFF;
-    .top_box{
+
+    .top_box {
         width: 80rpx;
         height: 10rpx;
         background: #E4E4E4;
@@ -577,10 +595,11 @@ const typePreviewReport = (type: string) => {
         position: absolute;
         top: 20rpx;
         left: 50%;
-        transform: translate(-50%,0);
+        transform: translate(-50%, 0);
         z-index: 10;
     }
-    .up_title{
+
+    .up_title {
         font-weight: 500;
         color: #252628;
         font-size: 52rpx;
@@ -589,31 +608,36 @@ const typePreviewReport = (type: string) => {
         padding-bottom: 40rpx;
         box-sizing: border-box;
         position: relative;
-        .close_icon{
+
+        .close_icon {
             position: absolute;
             top: 20rpx;
             right: 40rpx;
         }
 
     }
-    .up_list{
+
+    .up_list {
         width: 100%;
         display: grid;
         grid-gap: 30rpx;
         grid-template-columns: auto auto auto;
         padding: 0rpx 50rpx;
         box-sizing: border-box;
-        .up_item{
+
+        .up_item {
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            .up_img{
+
+            .up_img {
                 width: 112rpx;
                 height: 112rpx;
                 border-radius: 50%;
                 margin-bottom: 20rpx;
-                .up_text{
+
+                .up_text {
                     font-size: 32rpx;
                     color: #333333;
                     font-weight: 400;
@@ -621,7 +645,8 @@ const typePreviewReport = (type: string) => {
             }
         }
     }
-    .out_popup{
+
+    .out_popup {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -631,7 +656,8 @@ const typePreviewReport = (type: string) => {
 
     }
 }
-.upMenu_box{
+
+.upMenu_box {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -642,25 +668,27 @@ const typePreviewReport = (type: string) => {
     background: #FFFFFF;
     padding-bottom: 60rpx;
 
-    .bar{
+    .bar {
         width: 100%;
         height: 12rpx;
         background: #F2F2F2;
     }
-    .upMenu_item{
+
+    .upMenu_item {
         width: 100%;
         text-align: center;
         color: #333333;
         border-bottom: 2rpx solid #F2F2F2;
         padding: 26rpx 0rpx;
         font-size: 32rpx;
-        &.not_bottom{
+
+        &.not_bottom {
             border-bottom: none;
         }
     }
 }
 
-.serviceMenuBox{
+.serviceMenuBox {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -670,7 +698,8 @@ const typePreviewReport = (type: string) => {
     overflow: hidden;
     background: #FFFFFF;
     padding-bottom: 60rpx;
-    .sMenu_titleBox{
+
+    .sMenu_titleBox {
         width: 100%;
         display: flex;
         align-items: center;
@@ -678,7 +707,8 @@ const typePreviewReport = (type: string) => {
         padding: 36rpx 40rpx;
         box-sizing: border-box;
         position: relative;
-        .sMenu_title{
+
+        .sMenu_title {
             font-weight: 500;
             font-size: 36rpx;
             color: #333333;
@@ -687,28 +717,32 @@ const typePreviewReport = (type: string) => {
             transform: translate(-50%, 0rpx);
         }
     }
-    .sMenu_list_box{
+
+    .sMenu_list_box {
         padding: 0rpx 40rpx;
         box-sizing: border-box;
-        .sMenu_list{
+
+        .sMenu_list {
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 60rpx;
 
-            .sMenu_item{
+            .sMenu_item {
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 flex-direction: column;
                 width: 120rpx;
-                .sMenu_img{
+
+                .sMenu_img {
                     width: 80rpx;
                     height: 80rpx;
                     margin-bottom: 16rpx;
                 }
-                .sMenu_text{
+
+                .sMenu_text {
                     font-weight: 400;
                     font-size: 24rpx;
                     color: #333333;

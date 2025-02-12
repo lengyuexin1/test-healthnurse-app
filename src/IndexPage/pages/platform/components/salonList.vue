@@ -31,17 +31,13 @@
                         <image
                             class="live_swiper_img"
                             :src="item.cover"
-                            mode="scaleToFill"
+                            mode="aspectFill"
                             @click="liveList(item)"
 
                         />
                         <view class="live_box" v-if="( (item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon) )">
                             <view class="live_left_box">
-                                <image
-                                    class="live_img"
-                                    :src="getAssetsUrl('/leyou/icon/live.png')"
-                                    mode="scaleToFill"
-                                />
+                                <BarPlaying bgColor="#FFFFFF"></BarPlaying>
                                 <view>直播中</view>
                             </view>
                             <view class="live_number_box" v-if="false">
@@ -52,6 +48,19 @@
                 </swiper>
                 <view class="swiper_sign_box">
                     <view class="sign_item" :class="{ 'is_sign': signIndex == data.swiperIndex }" v-for="(signItem, signIndex) in data.swiperList.length" :key="signIndex"></view>
+                </view>
+            </view>
+
+            <!-- icon类目菜单 -->
+            <view class="icon_menu">
+                <view class="icon_menuItem" v-for="(item,index) in data.menuiconList" :key="item.id" @click="toClassPage(item)">
+                    <!-- :src="getAssetsUrl( (index + 1) == data.menuiconList.length ? '/leyou/newpagemenu/allclass.svg' : '/leyou/newpagemenu/ys_icon.png')" -->
+                    <image
+                        class="menu_img"
+                        :src="getAssetsUrl('/leyou/newpagemenu/ys_icon.png')"
+                        mode="scaleToFill"
+                    />
+                    <view class="menu_text">{{ item.name }}</view>
                 </view>
             </view>
 
@@ -113,6 +122,7 @@ import { ref, reactive, computed, onMounted, defineExpose } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { PlatformManage } from "@bc/sys"
 import BCNotify from '@/components/notify/index.vue'
+import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { gotoLogin } from "@/routes/public-routes"
 
 import { gotoSalonDetail, gotoUpsalonPostsPage } from '@/routes/create-routes'
@@ -140,6 +150,8 @@ interface Data{
     swiperList: any,
     swiperIndex: number,
     isshowAll: boolean,
+
+    menuiconList: any
 }
 const data = reactive<Data>({
     swiperData: [
@@ -160,7 +172,8 @@ const data = reactive<Data>({
 
     swiperList: [],
     swiperIndex: 0,
-    isshowAll: true
+    isshowAll: true,
+    menuiconList: [],
 })
 
 interface Props {
@@ -223,17 +236,26 @@ const queryList = async (pageNumber:number, pageSize:number) => {
         }).then((res:any) => {
             data.sontabsData = res[0].sonCategoryShows
 
+            // data.courseTypeList = [
+            //     { id: 1, name: '关注' },
+            //     { id: 999, name: '推荐' },
+            //     ...res[0].sonCategoryShows[data.soncurrentTabIndex].sonCategoryShows
+            // ]
+
             data.courseTypeList = [
                 { id: 1, name: '关注' },
                 { id: 999, name: '推荐' },
-                ...res[0].sonCategoryShows[data.soncurrentTabIndex].sonCategoryShows
+                ...res[0].sonCategoryShows
+            ]
+
+            data.menuiconList = [
+                ...res[0].sonCategoryShows,
             ]
 
             console.log('data.soncurrentTabIndex', data.soncurrentTabIndex)
             console.log('data.courseTypeList', data.courseTypeList)
 
 
-            // emit('gethidNavList',data.courseTypeList)
             emit('gethidNavList', data.sontabsData)
 
 
@@ -265,18 +287,10 @@ const queryList = async (pageNumber:number, pageSize:number) => {
 // 沙龙列表
 const getcrList = (pageNumber:number, pageSize:number) => {
 
-    let IdsList = data.courseTypeList.slice(2, data.courseTypeList.length)
-    IdsList = IdsList.map((item:any) => {
-        return item.id
-    })
+    // let cIds = data.sontabsData[data.soncurrentTabIndex].id
 
-    let cIds = data.sontabsData[data.soncurrentTabIndex].id
-
-    console.log('data.IdsList', IdsList)
-    console.log('cIds', cIds)
-
-
-    const categoryIds = data.courseTypeList[data.courseIndex].id == 999 ? [cIds] : [data.courseTypeList[data.courseIndex].id]
+    // const categoryIds = data.courseTypeList[data.courseIndex].id == 999 ? [cIds] : [data.courseTypeList[data.courseIndex].id]
+    const categoryIds = data.courseTypeList[data.courseIndex].id == 999 ? [] : [data.courseTypeList[data.courseIndex].id]
     console.log('categoryIds', categoryIds)
 
 
@@ -391,9 +405,9 @@ const liveswiperChange = (e:any) => {
 }
 
 const scrollPage = (e:any) => {
-    emit('hideNav', true)
-    return
-    if (e.detail.scrollTop > 180) {
+    // emit('hideNav', true)
+    // return
+    if (e.detail.scrollTop > 160) {
         emit('hideNav', true)
     }
     else {
@@ -452,22 +466,24 @@ defineExpose({
 
 <style lang="scss" scoped>
 .top_bg_box{
-    background: #fff;
+    background: transparent;
     box-sizing: border-box;
+    margin-top: 12rpx;
 
     .live_swiper{
         position: relative;
         border-radius: 12rpx;
         overflow: hidden;
-        width: 730rpx;
-        height: 280rpx;
+        width: 718rpx;
+        // height: 280rpx;
         margin: auto;
         padding-top: 10rpx;
-        margin-bottom: 10rpx;
         box-sizing: border-box;
+        margin-bottom: 20rpx;
+
         .swiper{
             width: 100%;
-            height: 100%;
+            height: 144rpx;
             .swiper_item{
                 width: 100%;
                 height: 100%;
@@ -533,12 +549,43 @@ defineExpose({
         }
 
     }
+
+    .icon_menu{
+        width: 718rpx;
+        padding: 30rpx 10rpx;
+        box-sizing: border-box;
+        background: #fff;
+        display: grid;
+        grid-gap: 24rpx;
+        grid-template-columns: auto auto auto auto auto;
+        border-radius: 24rpx;
+        margin: auto;
+        margin-bottom: 12rpx;
+        .icon_menuItem{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            .menu_img{
+                width: 80rpx;
+                height: 80rpx;
+                margin-bottom: 12rpx;
+            }
+            .menu_text{
+                font-size: 28rpx;
+                color: #2A2A2A;
+                text-align: center;
+                font-weight: 400;
+            }
+
+        }
+    }
+
     .tabs_box{
         height: 80rpx;
         display: flex;
         align-items: center;
         padding: 0rpx 20rpx;
-        padding-right: 0rpx;
         box-sizing: border-box;
         .tabs_conten{
             flex: 1;

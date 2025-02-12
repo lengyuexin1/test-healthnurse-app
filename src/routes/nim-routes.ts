@@ -29,3 +29,39 @@ export const gotoChatPage = (query: any) => {
     } as any
     return query.isReplace ? pageController.replace(route) : pageController.push(route)
 }
+
+/** 爱聊 */
+export const gotoLoveChatWrap = () => {
+    const route = {
+        path: '/IndexPage/pages/chat/love-chat/love-chat',
+        query: {}
+    } as any
+    return pageController.push(route)
+}
+
+/** AI问聊 */
+export const gotoAIChatWrap = () => {
+    const route = {
+        path: '/IndexPage/pages/chat/AI-chat/AI-chat',
+        query: {}
+    } as any
+    return pageController.push(route)
+}
+
+/** 群聊 */
+export const gotoGroupChatWrap = () => {
+    const route = {
+        path: '/IndexPage/pages/chat/group-chat/group-chat',
+        query: {}
+    } as any
+    return pageController.push(route)
+}
+
+/** 聊天号 */
+export const gotoNameChatWrap = () => {
+    const route = {
+        path: '/IndexPage/pages/chat/name-chat/name-chat',
+        query: {}
+    } as any
+    return pageController.push(route)
+}

@@ -234,8 +234,20 @@ const sendToSpark = async () => {
             },
             "payload": {
                 "message": {
-                    "text": data.isClearContext ? [data.historyTextList[data.historyTextList.length - 1]] : data.historyTextList
+                    "text": [
+                        {
+                            "role": "system",
+                            "content": "你是由保椿构建的认知智能模型,你必须以保椿生活小助理身份来对接下来的问题进行回答"
+                        },
+                        {
+                            "role": "user",
+                            "content": data.TEXT
+                        }
+                    ]
                 }
+                // "message": {
+                //     "text": data.isClearContext ? [data.historyTextList[data.historyTextList.length - 1]] : data.historyTextList
+                // }
             }
         };
         console.log("请求的params：" + JSON.stringify(params))

@@ -22,7 +22,7 @@ export const SMART_API = {
     reportList: `${apiPrefix.smart}/app/sleep/report/getList`, //睡眠监测报告列表
     getBloodData: `${apiPrefix.smart}/app/device/getBloodPressureDataList`, //血压计数据列表
 
-    channelClsList: `${apiPrefix.content}/app/article/categoryShow/list`, ///频道分类列表 -康护知识
+    channelClsList: `api/content/v1/bc/app/article/categoryShow/list`, ///频道分类列表 -康护知识
 
     getPayList: `${apiPrefix.smart}/app/notify/getPayList`, //充值记录
     getConfig: `${apiPrefix.smart}/app/notify/getConfig`, //通知配置

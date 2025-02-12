@@ -38,7 +38,7 @@ class PageController {
     }
 
     push(route: IRoute) {
-        console.log('pushpushpush', route)
+        // console.log('pushpushpush', route)
         const url = UrlTools.buildUrlByParams(route.path, route.query)
         return new Promise<void>((reslove, reject) => {
             uni.navigateTo({
