@@ -19,15 +19,14 @@
                     <!-- v-if="consumerTime && isOrderPackage != 1" -->
                     <div class="conli" @click="clickSelectTime">
                         <div class="conltit">服务时间</div>
-                        <TnDateTimePicker mode="datetime" v-model="datetime" v-model:open="openDateTimePicker" />
-                        <!-- <orderDatetimeSelect :serviceRules="serviceRules" :optionUnit="optionUnit" @setTiem="getSerTime" ref="dataTime">
-                            <div class="conadrs row j-between">
-                                <div class="contip">{{parameter.utcVisitStart * 1000 | date('yyyy-mm-dd hh:MM')}}</div>
+                        <div class="conadrs row j-between">
+                                <div class="contip">{{parameter.utcVisitStart}}</div>
                                 <div class="conbtn">
                                     <TnButton @click="showTime" plain size="mini" text="修改" shape="circle" color="#F2F2F2" :customStyle="btnStyle"></TnButton>
                                 </div>
                             </div>
-                        </orderDatetimeSelect> -->
+                        <TnDateTimePicker mode="datetime" v-model="parameter.utcVisitStart" v-model:open="openDateTimePicker" />
+
                     </div>
 
                     <div class="conli" v-if="informationVisi">
@@ -149,11 +148,10 @@ const optionMation = reactive({
 const timeUnit = ref('')
 const serviceRules = ref('')
 const optionUnit = ref('')
-const deliveryList = [[{ label: '同城', id: 1 }, { label: '邮寄', id: 2 }]]
+const deliveryList = [{ label: '同城', value: 1 }, { label: '邮寄', value: 2 }]
 const consumerAdrs = ref(null)
 const deliveryVisi = ref(false)
 const informationVisi = ref(false)
-const hospitalVisi = ref(false)
 const methodVisi = ref(false)
 const certificateVisi = ref(false)
 const contactVisi = ref(false)
@@ -254,8 +252,8 @@ const showTime = () => {
 const setDelivery = (e) => {
     console.log(e)
     deliveryShow.value = false
-    parameter.deliveryMethodId = e.value[0].id
-    parameter.deliveryMethodName = e.value[0].label
+    parameter.deliveryMethodId = e
+    parameter.deliveryMethodName = deliveryList.find(item => item.value == e)?.label
 }
 
 

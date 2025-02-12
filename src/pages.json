@@ -137,6 +137,14 @@
           }
         },
         {
+          "path": "pages/Servicestore/ServicestoreDetail",
+          "style": {
+            "navigationBarTitleText": "详情",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
           "path": "pages/Servicestore/voucherDetails",
           "style": {
             "navigationBarTitleText": "乐悠超值券详情",
