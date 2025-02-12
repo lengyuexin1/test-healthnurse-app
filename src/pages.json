@@ -102,14 +102,6 @@
           }
         },
         {
-					"path": "pages/service/serviceIndexPage",
-					"style": {
-						"navigationBarTitleText": "适品囤内页",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
-        {
           "path": "pages/my/update",
           "style": {
             "navigationStyle": "custom",
@@ -129,14 +121,6 @@
       "root": "pagesService",
       "pages": [
         {
-          "path": "pages/serviceComment/serviceComment",
-          "style": {
-            "navigationBarTitleText": "评论列表",
-            "navigationStyle": "custom",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
           "path": "pages/serviceDetail/serviceDetail",
           "style": {
             "navigationBarTitleText": "搜索",
@@ -145,9 +129,9 @@
           }
         },
         {
-          "path": "pages/Servicestore/ServicestoreDetail",
+          "path": "pages/Servicestore/choiceDetails",
           "style": {
-            "navigationBarTitleText": "机构详情"
+            "navigationBarTitleText": "机构详情",
             "navigationStyle": "custom",
             "enablePullDownRefresh": false
           }
@@ -221,12 +205,6 @@
     {
       "root": "pagesGoods",
       "pages": [
-        {
-          "path": "pages/shop/shopDetail",
-          "style": {
-            "navigationBarTitleText": "店铺详情"
-          }
-        },
         {
           "path": "pages/goodsDetail/goodsDetail",
           "style": {
@@ -1624,6 +1602,13 @@
             "navigationStyle": "custom"
           }
         }
+        // {
+        //   "path": "pages/service/serviceTab",
+        //   "style": {
+        //     "navigationBarTitleText": "照护服务",
+        //     "navigationStyle": "custom"
+        //   }
+        // }
       ]
     }
   ],
