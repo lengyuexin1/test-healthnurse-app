@@ -1,6 +1,6 @@
 <template>
     <view class="container">
-        <z-paging ref="paging" v-model="data.dataList" :auto="true" :fixed="true" @query="queryList" :defaultPageSize="10"
+        <z-paging ref="paging" v-model="data.dataList" :auto="true" :fixed="true" @query="queryList" :defaultPageSize="6"
             :auto-show-system-loading="true" :auto-scroll-to-top-when-reload="false" :hide-empty-view="true">
             <template #top>
                 <PageTopbg></PageTopbg>
@@ -47,7 +47,7 @@
                 <view class="foryou">
                     <view class="newTitle">猜你喜欢</view>
                     <view class="foryouUl">
-                        <ListItem :wfList="data.moreGoodList"> </ListItem>
+                        <ListItem :wfList="data.dataList"> </ListItem>
                     </view>
                 </view>
             </view>
@@ -76,7 +76,6 @@ import { IMWEB_ENV } from '@/utils/handleEnv'
 import { recomLikeList } from "@/api/goods-api"
 
 interface Data {
-    moreGoodList: any
     isRequireLogin: boolean,
     dataList: any,
     /** 已读动画 */
@@ -89,7 +88,6 @@ interface Data {
 }
 
 const data = reactive<Data>({
-    moreGoodList: [],
     isRequireLogin: false,
     dataList: [],
     clearAnimate: false,
@@ -141,8 +139,15 @@ watch(noticeSession, () => {
     getUnreadBadge()
 }, { deep: true })
 
-const queryList = () => {
-    paging.value.complete([])
+const queryList = (pageNumber: number, pageSize: number) => {
+    recomLikeList({
+        pageSize,
+        pageNumber,
+        query: {}
+    }).then((res: any) => {
+        paging.value.complete(res.data)
+        console.log('data.moreGoodList', data.dataList);
+    })
 }
 
 // 全部已读
@@ -221,17 +226,6 @@ onMounted(() => {
         success: (res: any) => {
             data.safeBotomHeight = res.safeAreaInsets.bottom
         }
-    })
-
-    recomLikeList({
-        pageSize: 10,
-        pageNumber: 1,
-        query: {}
-    }).then((res: any) => {
-        data.moreGoodList = res.data
-        console.log('data.moreGoodList', data.moreGoodList);
-
-
     })
 })
 

@@ -49,7 +49,7 @@
         </view>
         <!-- 首页列表 -->
         <view class="deCionBox">
-            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index" @click="gotoColmDetail(item)">
+            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index" @click="gotoColmDetail(index,item)">
                 <image class="left_menu_img" :src="item.url" mode="scaleToFill" />
                 <view class="iconText">{{ item.title }}</view>
             </view>
@@ -109,7 +109,6 @@ import { gotoLogin } from "@/routes/public-routes"
 import { channelClsList, getEsContentList } from "@/api/smart-api"
 import { getescourselist, escontentlist, followContentList, getranklist, getappcontentList, getcoursefollowList } from "@/api/create-api"
 import { nearbyList } from "@/api/user-api"
-
 import { gotoChannelFollow, gotoarticledetails, gotoLiveShow, gotowxLive, gotovideoPreview, gotocourseVideo, gotosalonPostsDetailPage, gotoChannel } from '@/routes/create-routes'
 import { gotoLiveList } from '@/routes/user-routes'
 import { TempStorage } from "@bc/base"
@@ -176,6 +175,12 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const gotoColmDetail = (index:any, item:any) => {
+    console.log(index, item)
+    if(index == 5) {
+        return gotoWisdom()
+    }
+}
 
 const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)

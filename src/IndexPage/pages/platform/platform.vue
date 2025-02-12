@@ -13,7 +13,7 @@
                         <!-- 模块导航栏(包括logo icon) -->
                         <template class="topKf" v-if="!data.showNav">
                             <image class="top_logo_img" src="/static/home_logo.svg" mode="scaleToFill" />
-                            <view class="rightMes">
+                            <view class="rightMes" @click="gotoChat">
                                 <image class="pinkBox" :src="getAssetsUrl('/app/kfinx.png')" mode="scaleToFill" />
                                 <view class="kfTitel">客服</view>
                             </view>
@@ -440,6 +440,27 @@ const getSortList = () => {
             res[3]
         ]
 
+    })
+}
+
+const gotoChat = () => {
+    PlatformManage.getToken().then((token) => {
+        createTeam({
+            userId: token?.id,
+            userName: token?.nickname,
+            userThumb: token?.avatar,
+            flag: 1, //1小程序用户，2服务人员
+            shopId: token?.shopId ?? 0,
+            type: 1 // 1平台，2店铺
+        }).then((res) => {
+            gotoChatPage({
+                to: res.tid,
+                scene: 'customer',
+                originPage: 'IndexPage/pages/index/index'
+            })
+        }).catch((err) => {
+            bcNotify.value.show(err.message)
+        })
     })
 }
 
