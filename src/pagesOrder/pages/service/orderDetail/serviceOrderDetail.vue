@@ -37,8 +37,6 @@ onLoad((option:any) => {
         data.orderId = payJSON.itemId
         data.isAppOpen = payJSON.isAppOpen
 
-
-
         console.log('payJSON', payJSON)
         console.log('data.isAppOpen', data.isAppOpen)
 

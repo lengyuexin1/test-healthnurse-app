@@ -343,16 +343,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue'
+import { ref, computed, reactive, onMounted, getCurrentInstance } from 'vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { businessTime } from '@/utils/businessTime'
 import { getDistances } from '@/utils/distance'
 import { formattime } from '@/common/formatTime'
 
-import { addShopBrowerHistory, godsCommList, healthlist, organizationDetail } from '@/api/service-api'
-import { gotohealthproductDetails, serviceComment, toimgInstitution, voucherDetails } from '@/routes/service-routes'
-import { addHealthShop, addShop, getQrcode, unHealthShop } from '@/api/user-api'
+import { organizationDetail, healthlist, godsCommList, addShopBrowerHistory } from '@/api/service-api'
+import { voucherDetails, gotohealthproductDetails, serviceComment, toimgInstitution } from '@/routes/service-routes'
+import { unHealthShop, addHealthShop } from '@/api/user-api'
 
 import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -360,9 +360,11 @@ import BCNotify from '@/components/notify/index.vue'
 
 import shareView from '@/pagesService/components/shareView/shareView.vue'
 
-import { gotoIndex, gotoLogin } from "@/routes/public-routes"
+import { gotoIndex } from "@/routes/public-routes"
 import { drawBGIMG } from '@/libs/canvas-tools'
+import { getQrcode } from "@/api/user-api"
 import { PlatformManage } from "@bc/sys"
+import { gotoLogin } from "@/routes/public-routes"
 
 import { createTeam } from "@/api/nim-api"
 import { gotoChatPage } from "@/routes/nim-routes"
@@ -546,7 +548,7 @@ const timeformat = computed(() => (time:number) => {
 
 
 onMounted(() => {
-    console.log(props.shopId)
+
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
             getorganizationDetail(props.shopId)
@@ -562,7 +564,7 @@ onMounted(() => {
     getgodsCommList(props.shopId)
 })
 
-const getorganizationDetail = (shopId: number, userId: string = '') => {
+const getorganizationDetail = (shopId:string, userId:string = '') => {
 
     organizationDetail({
         shopId,
@@ -630,28 +632,19 @@ const bcNotify = ref()
 // 收藏/取消收藏 机构
 const setColl = () => {
 
-    // setTimeout(() => {
-    if (data.isColl) {
-        unHealthShop({
+    setTimeout(() => {
+        data.isColl ? unHealthShop({
             shopIds: [data.detailObj.shopId]
         }).then(() => {
             data.isColl = false
             bcNotify.value.show('取消收藏')
-        })
-    }
-    else {
-        console.log(data.isColl)
-        addHealthShop({
-            shopId: Number(data.detailObj.shopId)
+        }) : addHealthShop({
+            shopId: data.detailObj.shopId
         }).then(() => {
-            console.log('res')
             data.isColl = true
             bcNotify.value.show('收藏成功')
-        }).catch((err: any) => {
-            console.log(err)
         })
-    }
-    // }, 300)
+    }, 300)
     // getorganizationDetail(props.shopId)
 }
 

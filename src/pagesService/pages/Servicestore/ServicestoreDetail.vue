@@ -17,10 +17,10 @@ interface Data {
     shareId:string,
 }
 const data = reactive<Data>({
-    shopId:'',
-    isAd:0,
-    shareObj:{},
-    shareId:''
+    shopId: '',
+    isAd: 0,
+    shareObj: {},
+    shareId: ''
 })
 
 onMounted(() => {
@@ -28,9 +28,9 @@ onMounted(() => {
 })
 
 
-onLoad((option:any)=>{
+onLoad((option:any) => {
     console.log(option)
-    data.isAd = Number(option.isAd);
+    data.isAd = Number(option.isAd)
     data.shopId = option.itemId
 })
 
@@ -39,8 +39,8 @@ onLoad((option:any)=>{
 const saveShareObj = (item:any) => {
     data.shareObj = {
         title: item.title,
-        imageUrl : item.imageUrl,
-        desc : item.desc,
+        imageUrl: item.imageUrl,
+        desc: item.desc
     }
     data.shareId = item.id
 
@@ -49,11 +49,11 @@ const saveShareObj = (item:any) => {
 const ServicetoreRef = ref()
 // 微信小程序分享
 //#ifdef MP-WEIXIN
-onShareAppMessage((res:any)=>{
+onShareAppMessage((res:any) => {
     (ServicetoreRef.value as any).closeShare()
     return {
         ...data.shareObj,
-        path: `/pagesService/pages/Servicestore/ServicestoreDetail?shopId=${data.shareId}`,
+        path: `/pagesService/pages/Servicestore/ServicestoreDetail?shopId=${data.shareId}`
     }
 })
 //#endif
