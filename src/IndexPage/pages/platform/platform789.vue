@@ -189,47 +189,6 @@
                     @changeNav="indexListchangeNav"
                     @gethidNavList="gethidNavList"
                 ></indexList>
-
-                <!-- 云课堂 -->
-                <articleList
-                    ref="articleListRef"
-                    v-if="data.currentTabIndex == 0"
-                    :hidNavIndex="data.hidNavIndex"
-                    :liveType="data.liveType"
-                    @hideNav="hideNav"
-                    @changeNav="indexListchangeNav"
-                    @gethidNavList="gethidNavList"
-                    ></articleList>
-
-                <!-- 沙龙 -->
-                <salonList
-                    ref="salonPage"
-                    v-if="data.currentTabIndex == 1"
-                    :hidNavIndex="data.hidNavIndex"
-                    :liveType="data.liveType"
-                    @hideNav="hideNav"
-                    @changeNav="indexListchangeNav"
-                    @gethidNavList="gethidNavList"
-                    ></salonList>
-
-                <!-- 爱聊 -->
-                <view v-if="data.currentTabIndex == 2" :style="{ height: data.parentHeight + 'px' }">
-                    <likechatPage
-                        ref="likePage"
-                        :liveType="data.liveType"
-                        @gethidNavList="gethidNavList"
-                        :parentHeight="data.parentHeight"
-                        :topViewHeight="data.topViewHeight"
-                    ></likechatPage>
-                </view>
-
-                <!-- 文娱 -->
-                <entertainmentList
-                    v-if="data.currentTabIndex == 3"
-                    ref="entertainmentListRef"
-                    @gethidNavList="gethidNavList"
-                ></entertainmentList>
-
                 <BCNotify ref="bcNotify"></BCNotify>
 
             </view>
@@ -292,7 +251,6 @@ import indexList from './components/indexList.vue'
 import articleList from './components/articleList.vue'
 import likechatPage from './components/likechatPage.vue'
 import salonList from './components/salonList.vue'
-import entertainmentList from './components/entertainmentList.vue'
 
 import { gotoRegister } from '@/routes/goods-routes'
 import { ref, reactive, computed, watch, onMounted, getCurrentInstance, nextTick } from 'vue'
@@ -717,7 +675,6 @@ const scanCode = () => {
 
 const likePage = ref()
 const salonPage = ref()
-const entertainmentListRef = ref()
 const reloadPage = () => {
     if (data.currentTabIndex == 0) {
         (articleListRef.value as any).pagingReload()
@@ -762,7 +719,6 @@ const changeHidNav = (item:any, index:number) => {
     data.currentTabIndex == 0 && (articleListRef.value as any).changetopNav(item, index)
     data.currentTabIndex == 1 && (salonPage.value as any).changesontabs(item, index)
     data.currentTabIndex == 2 && (likePage.value as any).iscourse(item, index)
-    // data.currentTabIndex == 3 && (entertainmentListRef.value as any).changesontabs(item, index)
 
 }
 

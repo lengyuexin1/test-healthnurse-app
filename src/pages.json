@@ -102,6 +102,39 @@
           }
         },
         {
+					"path": "pages/service/serviceIndexPage",
+					"style": {
+						"navigationBarTitleText": "适品囤内页",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+        {
+					"path": "pages/platform/onlyZone",
+					"style": {
+						"navigationBarTitleText": "适品专区",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+        {
+					"path": "pages/platform/catesList",
+					"style": {
+						"navigationBarTitleText": "",
+						"navigationStyle": "default",
+						"enablePullDownRefresh": false,
+						"navigationBarBackgroundColor": "#FFFFFF"
+					}
+				},
+        {
+					"path": "pages/platform/centerChanges",
+					"style": {
+						"navigationBarTitleText": "''",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+        {
           "path": "pages/my/update",
           "style": {
             "navigationStyle": "custom",

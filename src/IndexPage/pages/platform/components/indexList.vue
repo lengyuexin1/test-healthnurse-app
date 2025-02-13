@@ -49,16 +49,83 @@
         </view>
         <!-- 首页列表 -->
         <view class="deCionBox">
-            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index" @click="gotoColmDetail(index,item)">
+            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index" @click="gotoColmDetail(index, item)">
                 <image class="left_menu_img" :src="item.url" mode="scaleToFill" />
                 <view class="iconText">{{ item.title }}</view>
             </view>
         </view>
-
-        <!-- 新人福利 -->
-        <view class="newPople">
-            <NewcomerWelfare :dataObj="dataObj"></NewcomerWelfare>
+        <!-- 甄选推荐 -->
+        <view v-if="showBk.includes(4)">
+            <NewZhen :newZhen="zhenList"></NewZhen>
         </view>
+
+        <!-- 专区 -->
+        <view v-if="showBk.includes(7)">
+            <view class="newHanle threeGoods" v-for="(its, ins) in allInList" :key="ins">
+                <view class="getQuan">
+                    <view class="quanTitle">{{ its.name }}</view>
+                    <view class="seeMone" @click="seeGoods(its.dataIds, its)">
+                        <view class="left_jin">查看更多</view>
+                        <TnIcon name="right" />
+                    </view>
+                </view>
+                <view class="goodUl">
+                    <view class="goodsArea" v-for="(item, index) in its.dataList" :key="index" @click="gotoDetail(item)">
+                        <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
+                        <!-- <TnLazyLoad :src="item.thumb" class="towPro_img" /> -->
+                        <view class="goodsName">{{ item.name }}</view>
+                        <view class="difMoney">
+                            <view class="realMoney">￥{{ moneyFilter(item.price) }}</view>
+                            <view class="ageMoney">￥{{ item.fakePrice }}</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <!-- <view class="mapBt"></view> -->
+        </view>
+
+        <!-- 新品 -->
+        <view class="neds" v-if="showBk.includes(5)">
+            <view class="newTitle">新品上市</view>
+            <view class="newUp">
+                <view class="everyItem" v-for="(item, index) in newGoodList" :key="index">
+                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
+                    <view class="img_right">
+                        <view>
+                            <view class="text_tit">{{ item.name }}</view>
+                            <view class="text_small">{{ item.desc }}</view>
+                        </view>
+                        <view class="price_text">
+                            <view class="realPrice">￥{{ moneyFilter(item.price) }} <span class="piz">起</span>
+                            </view>
+                            <view class="nowBuy" @click="gotoDetail(item)">立即购买</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+
+        <!-- 爆品精选 -->
+        <view class="crazy" v-if="showBk.includes(6)">
+            <view class="newTitle">爆品精选</view>
+            <view class="crezy_ul">
+                <view class="crezy_li" v-for="(item, index) in orgSelect" :key="index" @click="gotoDetail(item)">
+                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
+                    <!-- <TnLazyLoad :src="item.thumb" class="towPro_img" /> -->
+                    <view class="crazy_bottom">
+                        <view>
+                            <view class="product_name">{{ item.name }}</view>
+                            <view class="product_smal">{{ item.desc }}</view>
+                        </view>
+                        <view class="difMoney">
+                            <view class="realMoney">￥{{ moneyFilter(item.price) }}</view>
+                            <!-- <view class="ageMoney">￥{{ item.realPri }}</view> -->
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+
         <view class="fliex_box">
             <view class="Nav_box">
                 <view class="Nav_scoll_box">
@@ -76,6 +143,16 @@
             </view>
         </view>
 
+        <!-- 新人福利 -->
+        <view class="newPople">
+            <!-- 活动1 -->
+            <NewcomerWelfare :dataObj="dataObj"></NewcomerWelfare>
+            <!-- 活动2 -->
+            <NewcomerTwo :dataObjTwo="dataObjTwo"></NewcomerTwo>
+            <!-- 活动三 -->
+            <NewcomerTre :dataObjTre="dataObjTre"></NewcomerTre>
+        </view>
+        <!-- 瀑布列表 -->
         <view class="content_right_list" :class="{ 'not_height': data.dataList.length == 0 }">
             <WaterfallsFlow :wfList="data.dataList" :navid="NavId" @waterItem="clickwaterItem"></WaterfallsFlow>
         </view>
@@ -92,18 +169,18 @@
 </template>
 
 <script setup lang="ts">
+import { servicelist } from "@/api/goods-api"
+import { moneyFilter } from "@/common/filters"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import { ref, reactive, computed, onMounted, defineExpose, nextTick, watch } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { PlatformManage } from "@bc/sys"
+import NewZhen from './NewZhen.vue'
 import NewcomerWelfare from './newcomerWelfare.vue'
+import NewcomerTwo from './NewcomerTwo.vue'
+import NewcomerTre from './NewcomerTre.vue'
 import BCNotify from '@/components/notify/index.vue'
 import WaterfallsFlow from './WaterfallsFlow.vue'
-import indexWaterFall from './indexWaterFall.vue'
-import indexfollowList from './indexfollowList.vue'
-import rankingList from './rankingList.vue'
-import imageText from './imageText.vue'
-import channelItem from './channelItem.vue'
 import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { gotoLogin } from "@/routes/public-routes"
 import { channelClsList, getEsContentList } from "@/api/smart-api"
@@ -116,6 +193,8 @@ import { searListFlag } from "@/api/open-api"
 import createCollectAndReport from "@/utils/collection"
 import { Debounce } from '@/libs/antivibthrot'
 import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
+import { gotoServiceStore } from '@/routes/service-routes'
+import { gotoCenterChanges } from '@/routes/active-routes'
 
 interface Data {
     dataList: any,
@@ -124,14 +203,12 @@ interface Data {
     followList: any,
     query: any,
     followId: string,
-
     sonTabIndex: number,
     firstgetaddress: boolean,
     lat: number,
     lng: number,
     swiperIndex: number,
-    attentionList: any,
-    hidNav: boolean
+    attentionList: any
 }
 const data = reactive<Data>({
     dataList: [],
@@ -146,13 +223,70 @@ const data = reactive<Data>({
     lng: 0,
     swiperIndex: 0,
     attentionList: [],
-    hidNav: false
 })
 
+const dataObjTre = ref(
+    {
+        id: "1874725877488230401",
+        type: 3,
+        specificLocation: 3,
+        name: "优选好店",
+        title: "品质服务的首选",
+        desc: "优选好店推荐",
+        thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_test/life/care/service/thumb/202512391530824.png",
+        subsetList: [
+            {
+                id: "1730477844675891201",
+                name: "晓椿照护",
+                desc: "",
+                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
+                price: null,
+                minPrice: 0,
+                categoriesName: "居家照护",
+                categoriesId: "1"
+            },
+            {
+                id: "1730477844675891201",
+                name: "晓椿照护",
+                desc: "",
+                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
+                price: null,
+                minPrice: 0,
+                categoriesName: "居家照护",
+                categoriesId: "1"
+            },
+            {
+                id: "1730477844675891201",
+                name: "晓椿照护",
+                desc: "",
+                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
+                price: null,
+                minPrice: 0,
+                categoriesName: "居家照护",
+                categoriesId: "1"
+            },  {
+                id: "1730477844675891201",
+                name: "晓椿照护",
+                desc: "",
+                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
+                price: null,
+                minPrice: 0,
+                categoriesName: "居家照护",
+                categoriesId: "1"
+            },
+        
+        ]
+    }
+)
+const orgSelect: any = ref([])
+const newGoodList: any = ref([])
+const showBk: any = ref([])
+const zhenList: any = ref([])
 const swiperList: any = ref([])
 const NavList: any = ref([])
 const NavId = ref(1)
 const dataObj: any = ref({})
+const dataObjTwo: any = ref({})
 const tabsData: any = ref([
     { id: '10', url: getAssetsPic('/fare/v2/home_icon_jujia.png'), title: '居家照护', typeId: 11, colnum: 3, hotTag: null, activity_id: 3, templateCode: 65793 },
     { id: '16', url: getAssetsPic('/fare/v2/home_icon_zhuyuan.png'), title: '住院陪护', typeId: 13, colnum: 5, hotTag: null, activity_id: 5, templateCode: 65800 },
@@ -175,11 +309,30 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const gotoColmDetail = (index:any, item:any) => {
+const gotoColmDetail = (index: any, item: any) => {
     console.log(index, item)
-    if(index == 5) {
+    if (index == 5) {
         return gotoWisdom()
     }
+}
+
+const seeGoods = (id: any, its: any) => {
+    gotoCenterChanges(id[0], its.name)
+}
+
+const gotoDetail = (item: any) => {
+    PlatformManage.isRequireLogin().then((isRequireLogin) => {
+        if (isRequireLogin) {
+            uni.showToast({
+                title: '登录失效,请重新登录！', icon: 'none'
+            })
+            setTimeout(() => {
+                gotoLogin({})
+            }, 1000)
+            return
+        }
+        gotoServiceStore({ itemId: item.id })
+    })
 }
 
 const getAssetsUrl = computed(() => (src: string) => {
@@ -190,7 +343,6 @@ interface Events {
     (e: 'showLifeMenu'): void,
     (e: 'hideNav', val: boolean): void,
     (e: 'changeNav', index: number): void,
-    (e: 'gethidNavList', list: any): void,
     (e: 'changeTabbarTop', val: boolean): void,
 }
 const emit = defineEmits<Events>()
@@ -242,7 +394,6 @@ const contentist = (pageNumber) => {
             }
             return its
         })
-
         paging.value.complete(dataMapFlag)
     })
 }
@@ -279,15 +430,15 @@ const changeNav = (item: any) => {
 const allInList: any = ref([])
 const getSetIds = (num: number) => {
     setPageBank(num).then(res => {
-        // allInList.value = res.recordList.filter((item: any) => item.moduleId == 7)
-        // console.log(allInList.value, '等于7');
-        // if (allInList.value.length > 0) {
-        //     allInList.value.forEach((element: any) => {
-        //         console.log(element);
-        //         // 业务模块专区
-        //         // channeCatelList(element, element.categoryIds)
-        //     })
-        // }
+        allInList.value = res.recordList.filter((item: any) => item.moduleId == 7)
+        console.log(allInList.value, '等于7');
+        if (allInList.value.length > 0) {
+            allInList.value.forEach((element: any) => {
+                console.log(element);
+                // 业务模块专区
+                channeCatelList(element, element.categoryIds)
+            })
+        }
         if (!res.recordList) {
             return
         }
@@ -298,12 +449,12 @@ const getSetIds = (num: number) => {
 }
 
 const healthMyData = (list: any) => {
-    // showBk.value = []
+    showBk.value = []
     if (list.length < 1) {
         return
     }
     list.forEach((element: any) => {
-        // showBk.value.push(element.moduleId)
+        showBk.value.push(element.moduleId)
         // banner图
         if (element.moduleId == 1) {
             getBannerList(element.dataIds)
@@ -320,18 +471,71 @@ const healthMyData = (list: any) => {
                 console.log(dataObj.value, '活动想去', res)
             })
         }
-        // // 产品推荐
-        // if (element.moduleId == 4) {
-        //     channelList(element.dataIds, 4)
-        // }
-        // // 新品上市
-        // if (element.moduleId == 5) {
-        //     channelList(element.dataIds, 5)
-        // }
-        // // 爆品精选
-        // if (element.moduleId == 6) {
-        //     channelList(element.dataIds, 6)
-        // }
+        // 产品推荐
+        if (element.moduleId == 4) {
+            channelList(element.dataIds, 4)
+        }
+        // 新品上市
+        if (element.moduleId == 5) {
+            channelList(element.dataIds, 5)
+        }
+        // 爆品精选
+        if (element.moduleId == 6) {
+            channelList(element.dataIds, 6)
+        }
+        // 文字导航
+        if (element.moduleId == 8) {
+            getTextList(element.dataIds)
+        }
+    })
+}
+
+const channelList = (id: any, num: number) => {
+    const sendda = {
+        pageNumber: 1,
+        pageSize: 10,
+        query: {
+            ids: id
+        }
+    }
+    servicelist(sendda).then(res => {
+        if (num == 4) {
+            zhenList.value = res.data
+        }
+        if (num == 5) {
+            newGoodList.value = res.data
+        }
+        if (num == 6) {
+            orgSelect.value = res.data
+        }
+    })
+}
+
+const channeCatelList = (item: any, id: any) => {
+    const sendda = {
+        pageNumber: 1,
+        pageSize: 10,
+        query: {
+            categoryIds: ['1722865966613078018'] || id
+        }
+    }
+    servicelist(sendda).then(res => {
+        console.log('专区', res)
+        item.dataList = res.data.length > 0 ? res.data.slice(0, 2) : res.data
+        console.log(allInList.value)
+    })
+}
+
+const getTextList = (list: any) => {
+    const sendda = {
+        pageNumber: 1,
+        pageSize: 10,
+        query: {
+            categoryIds: list
+        }
+    }
+    servicelist(sendda).then(res => {
+        console.log(res, '文字导航')
     })
 }
 
@@ -346,34 +550,12 @@ const getBannerList = (data: any) => {
 
 const scrollPage = (e: any) => {
     if (e.detail.scrollTop > 160) {
-        data.hidNav = true
-        // emit('hideNav', true)
         emit('changeTabbarTop', false)
     }
     else {
-        data.hidNav = false
-        // emit('hideNav', false)
         emit('changeTabbarTop', true)
     }
 
-}
-
-
-// 关注作者
-const getcontentAccountList = () => {
-    getcoursefollowList({
-        query: {
-            isFans: 0,
-            happyType: 1
-        },
-        pageNumber: 1,
-        pageSize: 100
-    }).then((res: any) => {
-        data.attentionList = [
-            // { accountId: 999, followName: '发现', followImage: '/channel/find_icon.png' },
-            ...res.data
-        ]
-    })
 }
 
 const bcNotify = ref()
@@ -389,34 +571,6 @@ const pagingReload = (val: boolean = false) => {
         // (paging.value as any).reload(true)
     }
 
-}
-
-const allwaterItem = (item: any) => {
-    // 关注的云课堂内容
-    if (item.moduleType == 2) {
-        const listId = TempStorage.savewx({
-            videoIdlist: [item.id]
-        })
-        gotocourseVideo(listId)
-    }
-    // 关注的沙龙内容
-    if (item.moduleType == 3) {
-        gotosalonPostsDetailPage({
-            id: item.id
-        })
-    }
-    // 其他板块内容
-    if (item.moduleType == 98 || item.moduleType == 1 || item.moduleType == 4 || item.moduleType == 5 || item.moduleType == 6) {
-        item.type == 3 && gotoarticledetails({
-            id: item.id
-        })
-        item.type == 2 && gotovideoPreview({ videoId: item.id, videoPagetype: 2 })
-
-        item.type == 1 && gotoarticledetails({ id: item.id })
-    }
-
-    console.log('item', item)
-    return
 }
 
 const clickwaterItem = (item: any) => {
@@ -442,13 +596,9 @@ const liveswiperChange = (e: any) => {
     data.swiperIndex = e.detail.current
     // console.log('swiper e',e);
 }
-const showMenu = () => {
-    emit('showLifeMenu')
-}
 
 const liveList = (item: any) => {
     console.log('item', item);
-
     if ([1, 2, 3].includes(item.moduleType)) {
         if (item.moduleType == 1 && props.liveType.channel) {
             gotoLiveList({ type: 1 })
@@ -462,18 +612,8 @@ const liveList = (item: any) => {
     }
 }
 
-const shownotify = (text: string) => {
-    bcNotify.value.show(text)
-}
-
 const clickauthor = (item: any) => {
     gotoChannelFollow()
-}
-
-const typePreviewReport = (type: string) => {
-    Debounce(() => {
-        createCollectAndReport().previewReport(type)
-    }, 300)
 }
 
 defineExpose({
@@ -664,15 +804,11 @@ defineExpose({
             color: #333333;
         }
     }
-
-    .zors {
-        width: 25%;
-    }
 }
 
 .fliex_box {
     position: relative;
-    padding: 20rpx;
+    padding: 20rpx 20rpx 10rpx 20rpx;
 
     .Nav_box {
         box-sizing: border-box;
@@ -707,7 +843,7 @@ defineExpose({
                         bottom: -12rpx;
                         left: 50%;
                         transform: translate(-50%, 0);
-                        background: #EA3E1A;
+                        background: #29C86F;
                         height: 6rpx;
                         width: 36rpx;
                         border-radius: 6rpx;
@@ -730,6 +866,243 @@ defineExpose({
         align-items: center;
         justify-content: center;
     }
+}
+
+.newHanle {
+    height: 368rpx;
+    background: #fff;
+    border-radius: 24rpx 24rpx 24rpx 24rpx;
+    margin: 0 20rpx 20rpx 20rpx;
+    padding: 24rpx;
+    overflow: hidden;
+
+    .getQuan {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+
+        .quanTitle {
+            font-size: 36rpx;
+            color: #020202;
+            font-weight: 600;
+        }
+    }
+
+    .towPro_img {
+        width: 100%;
+        height: 360rpx;
+    }
+}
+
+.towPro {
+    height: 676rpx;
+}
+
+.threeGoods {
+    height: 484rpx;
+
+    // margin-top: 40rpx;
+    .goodUl {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 28rpx;
+    }
+
+    .seeMone {
+        display: flex;
+        font-size: 28rpx;
+        color: #999999;
+        min-width: 86rpx;
+    }
+
+    .left_jin {
+        margin-right: 10rpx;
+    }
+
+    .goodsArea {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .towPro_img {
+            width: 240rpx;
+            height: 240rpx;
+        }
+
+        .goodsName {
+            margin-top: 20rpx;
+            font-weight: 600;
+            font-size: 28rpx;
+            color: #020202;
+        }
+
+        .difMoney {
+            display: flex;
+            align-items: center;
+            margin-top: 20rpx;
+        }
+
+        .realMoney {
+            font-weight: 600;
+            font-size: 28rpx;
+            color: #000000;
+            padding-right: 10rpx;
+        }
+
+        .ageMoney {
+            font-size: 20rpx;
+            color: #999999;
+            text-decoration: line-through;
+        }
+    }
+}
+
+.neds {
+    margin-top: 30rpx;
+}
+
+.newTitle {
+    text-align: center;
+    font-weight: 600;
+    font-size: 32rpx;
+    color: #020202;
+}
+
+.newUp {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 30rpx 20rpx 0 20rpx;
+
+    .everyItem {
+        display: flex;
+        flex: 1;
+        background: #fff;
+        padding: 20rpx;
+        margin-bottom: 20rpx;
+        height: 240rpx;
+        border-radius: 24rpx;
+    }
+
+    .towPro_img {
+        width: 200rpx;
+        height: 200rpx;
+    }
+
+    .img_right {
+        flex: 1;
+        margin-left: 30rpx;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .text_tit {
+            font-weight: 600;
+            font-size: 28rpx;
+            color: #020202;
+        }
+
+        .text_small {
+            margin-top: 12rpx;
+            font-weight: 400;
+            font-size: 24rpx;
+            color: #666666;
+        }
+
+        .price_text {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20rpx;
+            padding-top: 10rpx;
+
+            .realPrice {
+                font-weight: 600;
+                font-size: 32rpx;
+                color: #000000;
+
+                .piz {
+                    margin-left: 2rpx;
+                    font-size: 22rpx;
+                    color: #000000;
+                }
+            }
+
+            .nowBuy {
+                border: 1rpx solid #8F8F8F;
+                border-radius: 36rpx;
+                font-size: 24rpx;
+                color: #000000;
+                padding: 8rpx 18rpx;
+                margin-right: 20rpx;
+            }
+        }
+    }
+}
+
+.crazy {
+    margin: 40rpx 20rpx 20rpx 20rpx;
+
+    .crezy_ul {
+        margin-top: 30rpx;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 16rpx;
+
+        .crezy_li {
+            background-color: #fff;
+            height: 430rpx;
+            border-radius: 24rpx;
+
+            .towPro_img {
+                width: 226rpx;
+                height: 226rpx;
+                padding: 20rpx;
+            }
+
+            .crazy_bottom {
+                margin-top: 8rpx;
+                margin-left: 16rpx
+            }
+
+            .product_name {
+                font-weight: 600;
+                font-size: 24rpx;
+                color: #020202;
+            }
+
+            .product_smal {
+                margin-top: 8rpx;
+                font-weight: 400;
+                font-size: 20rpx;
+                color: #666666;
+            }
+
+            .difMoney {
+                display: flex;
+                align-items: center;
+                margin-top: 60rpx;
+            }
+
+            .realMoney {
+                font-weight: 600;
+                font-size: 28rpx;
+                color: #000000;
+                padding-right: 10rpx;
+            }
+
+            .ageMoney {
+                font-size: 20rpx;
+                color: #999999;
+                text-decoration: line-through;
+            }
+        }
+    }
+}
+
+.foryou {
+    margin: 40rpx 20rpx 20rpx 20rpx;
+    margin-bottom: 80rpx;
 }
 
 .content_right_list {

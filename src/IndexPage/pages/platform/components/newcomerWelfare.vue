@@ -52,7 +52,7 @@ const clickMore = () => {
 <style lang="scss" scoped>
 .newcomer_wrap {
     position: relative;
-    margin-bottom: 30rpx;
+    margin-bottom: 20rpx;
 
     .icon-bg {
         width: 100%;
