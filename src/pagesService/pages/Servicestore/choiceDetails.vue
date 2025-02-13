@@ -188,8 +188,8 @@
                     <div class="show_more_room" @click="showroom" v-if="productList.length > 2">
                         <!-- {{productList.length}}个 -->
                         <div class="show_more_room_text">查看其他房型</div>
-                        <u-icon name="arrow-down" v-if="!showmoreroom"></u-icon>
-                        <u-icon name="arrow-up" v-else></u-icon>
+                        <!-- <u-icon name="arrow-down" v-if="!showmoreroom"></u-icon>
+                        <u-icon name="arrow-up" v-else></u-icon> -->
                     </div>
                     <div class="show_more_room" v-else>
                         <div class="show_more_not_room_text">暂无更多房型</div>
@@ -234,408 +234,313 @@
 </view>
 </template>
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
-import { useStore } from 'vuex';
-import { getAssetsPic } from "@/common/setPicture.js";
-import {
-    gotoproductDetails,
-    gototextInstitution,
-    gotoimgdetails,
-    gotochoiceDetails
-} from "@/route/plateform-routes";
-import shareView from "@/Channel/components/shareView/shareView.vue";
-import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue";
-import {
-    agencylist,
-    getorganizationDetail,
-    getOrganEsList,
-    prebookSave
-} from "@/api/agency-api";
-import { gotoIMSessionChat } from "@/route/message-routes";
-import { shopAdd, shopCancel } from "@/api/care-api";
-import PlatformManage from "@/sys/platform";
-import {
-    getLoginCode,
-    sendMobileCode
-} from '@/api/open-api';
-import recommend from "@/libs/recommend";
-import { appear } from "@/api/user-api";
-import agencyItem from "@/components/agencyItem/agencyItem.vue";
 
-// 响应式状态
-const makeType = ref(1);
-const itemId = ref("");
-const swiperIndex = ref(0);
-const count = ref(3);
-const phoneText = ref('');
-const isEmptyPhone = ref(false);
-const tips = ref('获取验证码');
-const popupShow = ref(false);
-const tagList = ref([
-    { id: 1, name: "自理" },
-    { id: 2, name: "半自理" },
-    { id: 3, name: "全护理" },
-    { id: 4, name: "特护" },
-    { id: 5, name: "临终关怀" }
-]);
-const showmoreroom = ref(false);
-const detailObj = reactive({});
-const productList = ref([]);
-const shareObj = reactive({});
-const path = ref("");
-const isColl = ref(false);
-const backChannellist = ref(false);
-const needlogin = ref(false);
-const positioning = ref(false);
-const coordinate = reactive({});
-const dataList = ref([]);
-const isAd = ref(0);
-const shaView = ref(null);
-const authpup = ref(null);
-const uToastRef = ref(null);
-const uCode = ref(null);
-const store = useStore();
+// import { getAssetsPic } from "@/common/setPicture.js"
+// import {
+//     gotoproductDetails,
+//     gototextInstitution,
+//     gotoimgdetails,
+//     gotochoiceDetails
+// } from "@/route/plateform-routes"
+// import shareView from "@/Channel/components/shareView/shareView.vue"
+// import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
+// import {
+//     agencylist,
+//     getorganizationDetail,
+//     getOrganEsList,
+//     prebookSave
+// } from "@/api/agency-api"
+// import { gotoIMSessionChat } from "@/route/message-routes"
+// import { shopAdd, shopCancel } from "@/api/care-api"
+import { PlatformManage } from '@bc/sys'
+// import {
+//     getLoginCode,
+//     sendMobileCode
+// } from '@/api/open-api'
+// import recommend from "@/libs/recommend"
+// import { appear } from "@/api/user-api"
+// import agencyItem from "@/components/agencyItem/agencyItem.vue"
+import { ref, reactive, computed, onMounted } from 'vue'
+import ykAuthpup from './components/ykAuthpup.vue'
+import agencyItem from './components/agencyItem.vue'
 
-// 工具函数
-const getAssetsUrl = (str) => getAssetsPic(str);
-const timeFormat = (time) => uni.$u.timeFormat(time, "yyyy年");
-const area = (area) => (area / 10000).toFixed(1);
-const isForward = computed(() => recommend.get());
 
-// 计算属性
-const showprice = (min, max) => {
-    if (min && max) return min === max ? 1 : 2;
-    return !min && !max ? 3 : 1;
-};
+const typeTitle = ref < string > ('')
+const show = ref < boolean > (false)
+const showregion = ref < boolean > (false)
+const showcategory = ref < boolean > (false)
+const showpriceItem = ref < boolean > (false)
+const navbarTop = ref < number > (175)
+const rateValue = ref < number > (3)
+const areaList = ref([]) // Adjust the type according to the actual data structure
+const areaIndex = ref(null)
+const categoryList = ref([]) // Adjust the type according to the actual data structure
+const categoryIndex = ref(null)
+const dataList = ref([]) // Adjust the type according to the actual data structure
 
-const showswiper = (list) => list?.length > 5 ? list.slice(0, 5) : list;
-const notright = (list, index) => list.length === 1 || list.length === index + 1;
-const slogan = computed(() => {
-    const slogList = [
-        '我在保椿照护，找到一家超舒适的养老机构！',
-        '保椿照护上的养老机构，真的很专业！'
-    ];
-    return slogList[Math.floor(Math.random() * slogList.length)];
-});
+const parentId = ref < number > (0)
+const templateId = ref(null)
 
-// 方法
-const codeChange = (text) => tips.value = text;
-const getCode = async () => {
-    if (!uni.$u.trim(detailObj.phone)) {
-        isEmptyPhone.value = true;
-        phoneText.value = "请输入手机号码";
-        return;
+const positioning = ref < boolean > (false)
+const coordinate = reactive < Location > ({ lat: 0, lng: 0 })
+const longitude = ref < number > (0)
+const latitude = ref < number > (0)
+
+const categoryId = ref(null)
+const categoryIds = ref([])
+const districtId = ref(null)
+const districtIds = ref([])
+const sortType = ref < number > (0) // Price sorting: 1 ascending, 2 descending, 0 not selected
+
+const priceItemlist = [
+    { id: 1, maxPrice: 100000, minPrice: null },
+    { id: 2, maxPrice: 200000, minPrice: 100000 },
+    { id: 3, maxPrice: 300000, minPrice: 200000 },
+    { id: 4, maxPrice: 500000, minPrice: 300000 },
+    { id: 5, maxPrice: 1000000, minPrice: 500000 },
+    { id: 6, maxPrice: 1200000, minPrice: 1000000 },
+    { id: 7, maxPrice: null, minPrice: 1200000 }
+]
+const priceId = ref < number > (0)
+const priceIndex = ref(null)
+
+const getAssetsUrl = computed(() => (str) => getAssetsPic(str))
+const setShopPic = computed(() => (str) => setPriceVer(str))
+
+const baseGrade = computed(() => (type) => {
+    switch (type) {
+        case 4:
+            return false
+        default:
+            return getAssetsPic(`/shop/seller_level_${type}.png`)
     }
-    if (!uni.$u.test.mobile(detailObj.phone)) {
-        isEmptyPhone.value = true;
-        phoneText.value = "请输入正确的手机号码";
-        return;
+})
+
+const getdistance = computed(() => (lat, lng) => {
+    const distance = getDistances(latitude.value, longitude.value, lat, lng)
+    return distance
+})
+
+const showprice = computed(() => (min, max) => {
+    if (min && max) {
+        if (min === max) {
+            return 1
+        }
+        return 2
     }
-    if (uCode.value.canGetCode) {
-        uni.showLoading({ title: '正在获取验证码' });
-        try {
-            await sendMobileCode({ mobile: detailObj.phone });
-            isEmptyPhone.value = false;
-            uni.$u.toast('验证码已发送');
-            uCode.value.start();
-        } catch (err) {
-            uni.$u.toast(err.message);
-        } finally {
-            uni.hideLoading();
-        }
-    } else {
-        uni.$u.toast('倒计时结束后再发送');
+    else if (!min && !max) {
+        return 3
     }
-};
-
-const appointment = async () => {
-    if (makeType.value === 3) {
-        popupShow.value = false;
-        makeType.value = 1;
-        return;
+    else {
+        return 1
     }
-    if (makeType.value === 2 && !detailObj.phone) {
-        uToastRef.value.error('请输入正确手机号');
-        return;
+})
+
+const priceText = computed(() => (index) => {
+    if (index === 999) {
+        return "不限"
     }
-    if (makeType.value === 2 && !detailObj.code) {
-        uToastRef.value.error('请输入验证码');
-        return;
+    else if (index && maxPrice.value && minPrice.value) {
+        return `${minPrice.value / 100}-${maxPrice.value / 100}`
     }
-    try {
-        await prebookSave({ 
-            shopId: detailObj.shopId, 
-            phone: makeType.value !== 1 ? detailObj.phone : '', 
-            code: detailObj.code 
-        });
-        makeType.value = 3;
-        detailObj.phone = '';
-        detailObj.code = '';
-    } catch (error) {
-        uToastRef.value.error(error.message);
+    else if (index === 0 && maxPrice.value && !minPrice.value) {
+        return `${maxPrice.value / 100}以下`
     }
-};
-
-// 生命周期
-onLoad((options) => {
-    itemId.value = options.itemId;
-    isAd.value = options.isAd;
-    PlatformManage.isRequireLogin().then((status) => {
-        needlogin.value = status;
-        if (!status) queryList();
-    });
-    getagencylist(itemId.value);
-    getorganizationDetail(itemId.value, isAd.value);
-});
-
-onReady(() => {
-    getLocation();
-});
-
-onShow(() => {
-    const pages = getCurrentPages();
-    backChannellist.value = pages?.length === 1 || pages[1].route === pages[2]?.route;
-});
-
-// 微信分享
-// #ifdef MP-WEIXIN
-onShareAppMessage(() => ({
-    title: slogan.value,
-    path: `/Channel/pages/orderConfirm/choiceDetails?itemId=${detailObj.shopId}`,
-    imageUrl: detailObj.covers?.[0]
-}));
-// #endif
-
-// 其他方法
-const getLocation = async () => {
-    try {
-        const res = await getDistancesfun();
-        coordinate.lat = res.lat1;
-        coordinate.lng = res.lng1;
-        positioning.value = true;
-    } catch (err) {
-        positioning.value = false;
+    else if (index && !maxPrice.value && minPrice.value) {
+        return `${minPrice.value / 100}以上`
     }
-};
+    else {
+        return "价格"
+    }
+})
 
-const queryList = async () => {
-    const res = await getOrganEsList({
-        pageNumber: 1,
-        pageSize: 10,
-        query: { businessType: 4 }
-    });
-    dataList.value = res;
-};
+onMounted(() => {
+    console.log('Mounted', parentId.value)
+    parentId.value = templateId.value === 122 ? options.parentId : 440100
+    templateId.value = options.templateId
+    hasAreaList()
 
-const initgetorganizationDetail=(shopId, isAd) =>{
-            getorganizationDetail({
-                shopId,
-                isAd
-            }).then((res) => {
-                const userinfo = uni.getStorageSync("userinfo")
-                this.detailObj = res || {}
-                this.detailObj.mobile = userinfo.mobile
-                this.isColl = res.isFavorite
-                appear({ shopId })
-            })
-        }
-        // 机构产品
-       const getagencylist=(organizationId)=> {
-            agencylist({
-                pageSize: 10,
-                pageNumber: 1,
-                query: {
-                    organizationId
-                }
-            }).then((res) => {
-                this.productList = res || []
-            })
-        }
+    if (templateId.value === 122) {
+        typeTitle.value = "找机构"
+        getStairCategory(12)
+    }
+    else {
+        typeTitle.value = "找康养"
+        getStairCategory(13)
+    }
 
-       const swiperchang=(item)=> {
-            this.swiperIndex = item.detail.current
+    getnavbarTop()
+    if (uni.getPlatform() === 'APP-PLUS') {
+        $refs.authpup.open()
+    }
+    else {
+        getLocation()
+    }
+})
+
+function getLocation() {
+    getDistancesfun().then((res) => {
+        coordinate.lat = res.lat1
+        coordinate.lng = res.lng1
+    })
+}
+
+function queryList(pageNumber, pageSize) {
+    getOrganEsList({
+        pageNumber,
+        pageSize,
+        query: {
+            categoryIds: categoryIds.value,
+            districtIds: districtIds.value,
+            businessType: templateId.value === 122 ? 4 : 3,
+            maxPrice: priceIndex.value === 999 ? null : maxPrice.value || null,
+            minPrice: priceIndex.value === 999 ? null : minPrice.value || null
         }
-       const showroom=()=> {
-            this.showmoreroom = !this.showmoreroom
-        }
-       const tuproduct=(itemId)=> {
-            if (this.needlogin) {
-                this.tochoiceDetails(this.detailObj.shopId, 0, true)
-                return
+    }).then((res) => {
+        res.forEach((item) => {
+            appear({ shopId: item.id, eventId: 1 })
+        })
+        $refs.paging.complete(res)
+    })
+}
+
+function getStairCategory(type) {
+    const action = type === 13
+        ? getCategoryShowList({ id: 18, appType: 1 })
+        : getCategoryShowList({ id: 17, appType: 1 })
+
+    action.then((res) => {
+        categoryList.value = res
+    })
+}
+
+function hasAreaList() {
+    getAreaList(parentId.value).then((res) => {
+        areaList.value = res
+        $refs.paging.reload()
+    })
+}
+
+function getnavbarTop() {
+    $u.getRect("#navbarTop").then((res) => {
+        navbarTop.value = res.height
+    })
+}
+
+function getDistancesfun() {
+    return new Promise() < { lat1: number, lng1: number } > ((resolve, reject) => {
+        uni.getLocation({
+            type: "gcj02",
+            isHighAccuracy: true,
+            success: (res) => {
+                positioning.value = true
+                console.log("定位成功")
+                resolve({ lat1: res.latitude, lng1: res.longitude })
+            },
+            fail: (err) => {
+                positioning.value = false
+                console.log("定位失败")
+                reject(err)
             }
-            // 产品详情
-            gotoproductDetails(
-                itemId,
-                this.detailObj.shopId,
-                this.detailObj.shopName
-            )
-        }
-       const totextInstitution=(itemId) =>{
-            if (this.needlogin) {
-                this.tochoiceDetails(this.detailObj.shopId, 0, true)
-                return
-            }
-            gototextInstitution(itemId)
-        }
-       const toimgdetails=(itemId) =>{
-            if (this.needlogin) {
-                this.tochoiceDetails(this.detailObj.shopId, 0, true)
-                return
-            }
-            gotoimgdetails(itemId)
-        }
-       const address=() =>{
-            uni.openLocation({
-                latitude: this.detailObj.lat, //纬度
-                longitude: this.detailObj.lng, //经度
-                success: function () {
+        })
+    })
+}
 
-                }
-            })
-        }
-        //这个是自己的方法名
-       const openAuth=()=> {
-            // #ifdef APP-PLUS
-            this.$refs.authpup.open() //调起自定义权限目的弹框,具体可看示例里面很详细
-            // #endif
+function showRegion() {
+    showcategory.value = false
+    showpriceItem.value = false
+    showregion.value = !showregion.value
+    show.value = showregion.value
+}
 
-            // #ifndef APP-PLUS
-            this.callfun()
-            // #endif
-        }
-        const callfun=()=> {
-            uni.makePhoneCall({
-                phoneNumber: this.detailObj.telephones
-            })
-        }
-        const share=()=> {
-            if (this.needlogin) {
-                this.tochoiceDetails(this.detailObj.shopId, 0, true)
+function showCategory() {
+    showregion.value = false
+    showpriceItem.value = false
+    showcategory.value = !showcategory.value
+    show.value = showcategory.value
+}
 
-                return
-            }
+function changePrice() {
+    showcategory.value = false
+    showregion.value = false
+    showpriceItem.value = !showpriceItem.value
+    show.value = showpriceItem.value
+}
 
-            this.shareObj = {
-                id: this.detailObj.shopId,
-                title: this.detailObj.company,
-                accountName: this.slogan, //this.detailObj.shopName,
-                // mainPics
-                accountThumb: this.detailObj.thumb, //头像
-                cover: this.detailObj.covers && this.detailObj.covers[0], //背景
-                // 自定义副标题
-                Customsubtitle: false,
-                price: this.detailObj.price
-            }
-            this.path = `/Channel/pages/orderConfirm/choiceDetails?itemId=${this.detailObj.shopId}`
+function clickarea(item) {
+    if (districtIds.value.includes(item.id)) {
+        const districtIndex = districtIds.value.indexOf(item.id)
+        if (districtIndex !== -1) {
+            districtIds.value.splice(districtIndex, 1)
+        }
+        return
+    }
+    districtIds.value.push(item.id)
+}
 
-            setTimeout(() => {
-                this.$refs.shaView.open()
-            }, 500)
+function clickcategory(item) {
+    if (categoryIds.value.includes(item.id)) {
+        const categoryIndex = categoryIds.value.indexOf(item.id)
+        if (categoryIndex !== -1) {
+            categoryIds.value.splice(categoryIndex, 1)
         }
-        // toColl(){
-        // 	if (this.isColl) {
-        // 		// 取消
-        // 		this.isColl = false
-        // 	}else{
-        // 		// 收藏
+        return
+    }
+    categoryIds.value.push(item.id)
+}
 
-        // 		this.isColl = true
-        // 	}
-        // },
-        // app分享参数
-        // #ifndef MP-WEIXIN
-        const sharePage=()=> {
-            uni.share({
-                provider: "weixin",
-                scene: "WXSceneSession",
-                type: 5,
-                imageUrl: this.detailObj.albums && this.detailObj.albums[0],
-                title: this.slogan, //this.detailObj.shopName,
-                miniProgram: {
-                    id: this.$store.getters.originalID, //微信小程序原始id
-                    path: `/Channel/pages/orderConfirm/choiceDetails?itemId=${this.detailObj.shopId}`, //点击链接进入的页面
-                    type: this.$store.getters.shareVersion, //0-正式版； 1-测试版； 2-体验版。 默认值为0
-                    webUrl: "http://www.baochuncare.com" //兼容低版本的网页链接
-                }
-            })
-        }
-        // #endif
-       const gotoIMSessionChat=()=> {
-            if (this.needlogin) {
-                this.tochoiceDetails(this.detailObj.shopId, 0, true)
+function clickpriceItem(item, index) {
+    if (priceIndex.value === index) {
+        priceIndex.value = null
+        maxPrice.value = null
+        minPrice.value = null
+        return
+    }
+    priceIndex.value = index
+    maxPrice.value = item.maxPrice
+    minPrice.value = item.minPrice
+}
 
-                return
-            }
+function selected() {
+    allClose()
+    $refs.paging.reload()
+}
 
-            uni.$u.throttle(() => {
-                gotoIMSessionChat({
-                    type: 2,
-                    shopId: this.detailObj.shopId,
-                    title: this.detailObj.shopName
-                })
-            }, 1000)
-            return
-        }
-        // 收藏/取消收藏 机构
-       const setColl=() =>{
-            if (this.needlogin) {
-                this.tochoiceDetails(this.detailObj.shopId, 0, true)
-                return
-            }
+function allClose() {
+    show.value = false
+    showregion.value = false
+    showcategory.value = false
+    showpriceItem.value = false
+}
 
-            setTimeout(() => {
-                this.isColl ? shopCancel({
-                    shopIds: [this.detailObj.shopId]
-                }).then(() => {
-                    this.isColl = false
-                    this.$refs.uToastRef.success("取消收藏")
-                }) : shopAdd(this.detailObj.shopId).then(() => {
-                    this.isColl = true
-                    this.$refs.uToastRef.success("收藏成功")
-                })
-            }, 300)
-            this.$refs.paging.reload()
-        }
-       const tochoiceDetails=(itemId, tologin = false)=> {
-            gotochoiceDetails(itemId, tologin)
-        }
-        const goback=()=> {
-            if (!this.backChannellist) {
-                uni.navigateBack({ delta: 1 })
-            }
-            else {
-                this.$store.commit("GOHOMEPAGE")
-            }
-        }
-        // 图片预览
-       const preImage=(current, urls)=> {
-            uni.previewImage({
-                current,
-                urls
-            })
-        }
+function resetting() {
+    if (showregion.value) {
+        districtIds.value = []
+    }
+    if (showcategory.value) {
+        categoryIds.value = []
+    }
+    if (showpriceItem.value) {
+        priceIndex.value = null
+        maxPrice.value = null
+        minPrice.value = null
+    }
+}
 
-       const getDistancesfun=()=> {
-            return new Promise((resolve, reject) => {
-                uni.getLocation({
-                    type: "gcj02",
-                    isHighAccuracy: true,
-                    success: (res) => {
-                        this.positioning = true
-                        resolve({
-                            lat1: res.latitude,
-                            lng1: res.longitude
-                        })
-                    },
-                    fail: (err) => {
-                        this.positioning = false
-                        reject(err)
-                    }
-                })
-            })
-        }
+function searKey() {
+    gotoSearch()
+}
 
+function tochoiceDetails(item) {
+    if (templateId.value === 122) {
+        gotochoiceDetails(item.id, item.isAd)
+    }
+    else {
+        gotohealthDetails(item.id, item.isAd)
+    }
+}
 </script>
+
 
 <style lang="scss" scoped>
 .successful {

@@ -171,8 +171,8 @@ export const gotoLiveSelection = () => {
     return pageController.push(route)
 }
 
-/**  
- * 
+/**
+ *
  * 康养屯内页
  */
 export const gotoserviceIndexPage = () => {
