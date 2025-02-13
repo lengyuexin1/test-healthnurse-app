@@ -158,13 +158,7 @@ import TnTabsItem from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.v
 import { rewardExist, speechText } from '@/api/user-api'
 import pageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { onShow } from "@dcloudio/uni-app"
-
 import indexList from './components/indexList.vue'
-import articleList from './components/articleList.vue'
-import likechatPage from './components/likechatPage.vue'
-import salonList from './components/salonList.vue'
-import entertainmentList from './components/entertainmentList.vue'
-
 import { gotoRegister } from '@/routes/goods-routes'
 import { ref, reactive, computed, watch, onMounted, getCurrentInstance, nextTick } from 'vue'
 import { gotosearch, gotoScanCode } from "@/routes/service-routes"
@@ -288,7 +282,6 @@ interface Events {
 const emit = defineEmits<Events>()
 
 
-const articleListRef = ref()
 watch(() => props.showrecommend, (newvalue, oldvalue) => { })
 
 onMounted(async () => {
@@ -355,8 +348,6 @@ onMounted(async () => {
         console.log('res', res)
 
     })
-    // 获取百科类目
-    getSortList()
 
     const query = await uni.createSelectorQuery().in(appInstance)
     query.select('.listRef').boundingClientRect((res: any) => {
@@ -392,13 +383,6 @@ onMounted(async () => {
     }).exec()
     console.log('7891011,data.titleRight', data.titleRight)
 
-
-    // 百科 云课堂 沙龙
-    const liveArr = [5, 6, 8]
-    liveArr.forEach((item: any) => {
-        initLive(item)
-    })
-
     query.select('#topView').boundingClientRect((res: any) => {
         if (res) {
             data.topViewHeight = (res.height + 6)
@@ -421,27 +405,6 @@ onMounted(async () => {
     })
 
 })
-
-// 类目
-const getSortList = () => {
-
-    categoryShow({
-        id: 9
-    }).then((res: any) => {
-        data.channelNavList = [
-            { id: 1, name: '关注' },
-            { id: 999, name: '推荐' },
-            res[0],
-            res[1],
-            { id: 2, name: '视频' },
-            { id: 3, name: '图片' },
-            { id: 998, name: '热榜' },
-            res[2],
-            res[3]
-        ]
-
-    })
-}
 
 const gotoChat = () => {
     PlatformManage.getToken().then((token) => {
@@ -576,7 +539,6 @@ const scanCode = () => {
 
 const likePage = ref()
 const salonPage = ref()
-const entertainmentListRef = ref()
 const reloadPage = () => {
     if (data.currentTabIndex == 0) {
         // (articleListRef.value as any).pagingReload()
