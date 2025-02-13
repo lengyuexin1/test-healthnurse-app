@@ -255,26 +255,6 @@ const dataObjTre = ref(
                 categoriesName: "居家照护",
                 categoriesId: "1"
             },
-            {
-                id: "1730477844675891201",
-                name: "晓椿照护",
-                desc: "",
-                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
-                price: null,
-                minPrice: 0,
-                categoriesName: "居家照护",
-                categoriesId: "1"
-            },  {
-                id: "1730477844675891201",
-                name: "晓椿照护",
-                desc: "",
-                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
-                price: null,
-                minPrice: 0,
-                categoriesName: "居家照护",
-                categoriesId: "1"
-            },
-        
         ]
     }
 )
