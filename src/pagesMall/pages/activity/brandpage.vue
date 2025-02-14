@@ -3,7 +3,7 @@
         <!-- 品牌馆 -->
         <TnNavbar bgColor="transparent" :bottom-shadow="false" home-icon="" placeholder>
             <template #back>
-                <TnIcon color="#fff" name="left" size="40"></TnIcon>
+                <TnIcon color="#fff" @click="gotoBack" name="left" size="40"></TnIcon>
             </template>
             <view class=titleCs>{{ activityTitle }}</view>
         </TnNavbar>
@@ -135,6 +135,10 @@ const toactivity = (shopitem, item) => {
         }
         gotoChanpinInfo(shopitem, item)
     })
+}
+
+const gotoBack = () => {
+    uni.navigateBack()
 }
 
 const gotoChanpinInfo = (shopitem, item) => {
@@ -333,5 +337,8 @@ const tostore = (id) => {
 :deep(.tn-navbar-back ) {
     display: flex;
     align-items: center;
+}
+:deep(.tn-navbar__content) {
+    padding: 0 !important;
 }
 </style>

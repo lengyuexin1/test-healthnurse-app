@@ -2,7 +2,7 @@
     <view class="page_tabbar">
         <!-- <TnTabbar fixed :frosted="false" :placeholder="false" safe-area-inset-bottom height="242rpx"> -->
             <!-- <template #default> -->
-                <view class="tabbar_menu" v-if="data.showMenu">
+                <!-- <view class="tabbar_menu" v-if="data.showMenu">
                     <view class="tabbar_menuItem" @click="tabbatMenu(item)" :class="{ 'is_first' : index == 0 }" v-for="(item,index) in data.menuList" :key="item.id">
                         <image
                             class="menuImg"
@@ -11,7 +11,7 @@
                         />
                         <view class="menu_name" v-if="item.name" >{{ item.name }}</view>
                     </view>
-                </view>
+                </view> -->
                 <view class="tabbar_box">
                     <view class="tabbar_item" v-for="(item,index) in props.tabbarData" :key="item.id" @tap="clickTabbar(item,index)">
                         <!-- <image class="recommend_icon" :src="data.showrecommend ?  item.activeIcon : item.icon" v-if="index == 0" /> -->

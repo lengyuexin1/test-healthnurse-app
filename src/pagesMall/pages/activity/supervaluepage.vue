@@ -3,7 +3,7 @@
         <!-- 品牌馆 -->
         <TnNavbar bgColor="transparent" :bottom-shadow="false" home-icon="" placeholder>
             <template #back>
-                <TnIcon color="#fff" name="left" size="40"></TnIcon>
+                <TnIcon @click="gotoBack" color="#fff" name="left" size="40"></TnIcon>
             </template>
             <view class=titleCs>{{ activityTitle }}</view>
         </TnNavbar>
@@ -118,7 +118,7 @@ const dataList: any = ref([
     }
 ])
 const id = ref('')
-const activityTitle = ref('优选好店')
+const activityTitle = ref('服务类新人立减')
 const activityBG = ref('https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/marketing/customerAcquisition/2024712145730181.png')
 const allList = ref([])
 const slicingList = ref([])
@@ -196,6 +196,10 @@ const toactivity = (shopitem, item) => {
         }
         gotoChanpinInfo(shopitem, item)
     })
+}
+
+const gotoBack = () => {
+    uni.navigateBack()
 }
 
 const gotoChanpinInfo = (shopitem, item) => {
@@ -470,4 +474,8 @@ const tostore = (id) => {
 :deep(.tn-navbar-back) {
     display: flex;
     align-items: center;
-}</style>
+}
+:deep(.tn-navbar__content) {
+    padding: 0 !important;
+}
+</style>

@@ -1,13 +1,12 @@
 <template>
     <view class="activityCed row i-center j-between">
-        <view class="activili">
+        <view class="activili" @click.stop="gotoSettled">
             <view class="activiname">
                 <view>品牌馆</view>
                 <text class="activitit">为您精选店铺推荐</text>
             </view>
             <scroll-view class="sett-seler" scroll-x>
-                <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.subsetList" :key="item.id"
-                    @click.stop="gotoSettled(item)">
+                <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.subsetList" :key="item.id">
                     <view class="sett-seli-img">
                         <image class="imgsel" :src="item.thumb"></image>
                     </view>
@@ -24,7 +23,7 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/count-down.vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { gotoShopDetail } from "@/routes/service-routes"
-// import { gotoNewcomerWelfare } from '@/routes/goods-routes'
+import { gotoPingP } from '@/routes/active-routes'
 
 interface Props {
     dataObjTre: any
@@ -37,9 +36,8 @@ const getAssetsUrl = computed(() => (src: string) => {
 })
 
 // 更多
-const gotoSettled = (item: any) => {
-    console.log(item)
-    gotoShopDetail(item.id)
+const gotoSettled = () => {
+    gotoPingP()
 }
 
 </script>
@@ -93,11 +91,12 @@ const gotoSettled = (item: any) => {
     background: #fff;
     display: flex;
     align-items: center;
+
     .sett-seli {
         display: inline-flex;
         margin-right: 42rpx;
         margin-top: 10px;
-        
+
         .sett-seli-img {
             border: 4rpx solid pink;
             border-radius: 50%;

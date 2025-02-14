@@ -1,6 +1,7 @@
 <template>
     <view class="container">
-        <z-paging ref="paging" :auto="false" :refresher-enabled="false" @scroll="scrollPage">
+        <z-paging ref="paging" :defaultPageSize="6" v-model="moreGoodList" @query="queryList" :auto="false"
+            :refresher-enabled="false" @scroll="scrollPage">
             <template #top>
                 <view class="navbar_box" :style="{ paddingTop: titleTop + 'px', paddingRight: titleRight + 'px' }">
                     <view class="top_box" :style="{ height: sBarHeight + 'px' }">
@@ -77,6 +78,11 @@
                         <valGou :dataObjTre="dataObjTre"></valGou>
                     </view>
                 </view>
+                <view class="goodWu">
+                    <view class="goodText">精选好物</view>
+                    <!-- 列表 -->
+                    <ListItem :wfList="moreGoodList" @waterItem="clickwaterItem"></ListItem>
+                </view>
             </view>
         </z-paging>
     </view>
@@ -101,6 +107,9 @@ import { PlatformManage } from "@bc/sys"
 import { gotoLogin } from "@/routes/public-routes"
 import { gotogoodsDetail } from '@/routes/goods-routes'
 import { gotoCateArrList } from '@/routes/active-routes'
+import { recommendList } from "@/api/goods-api"
+import ListItem from "@/components/recommended/listItem.vue"
+const moreGoodList = ref([])
 const jiaCate = ref([
     { name: '脑部疾病', icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
     { name: '脑部疾病', icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
@@ -154,23 +163,17 @@ const dataObjTre = ref(
 const norList: any = ref([])
 const paging = ref()
 const swiperIndex = ref(0)
-const pageTitle = ref('产品')
 const titleTop = ref(0)
 const titleRight = ref(0)
 const sBarHeight = ref(0)
-const imgStyle = ref('opacity: 1')
-const closeImg = ref(true)
 const swiperList: any = ref([
     { icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
     { icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' }
 ])
-
-const isAdorn = ref(0)
 const detailData: any = ref({
     couponIds: {}
 })
 const detailId = ref('')
-const titleName = ref('')
 onLoad((option: any) => {
     detailId.value = option.id
     // columnDetail(option.id).then(res => {
@@ -288,6 +291,8 @@ onMounted(() => {
 
     titleRight.value = 8
     // #endif
+
+    queryList(1, 6)
 })
 
 const gotoDetail = (item: any) => {
@@ -305,6 +310,24 @@ const gotoDetail = (item: any) => {
         gotogoodsDetail(item.id)
     })
 }
+
+const queryList = (pageNumber, pageSize) => {
+    recommendList({
+        pageSize: pageSize,
+        pageNumber: pageNumber,
+        query: {
+            lat: null,
+            lng: null,
+            sortType: 7,
+            businessType: 2,
+            sourceType: 2
+        }
+    }).then((res: any) => {
+        paging.value.complete(res.data)
+        console.log('moreGoodList', moreGoodList.value);
+    })
+}
+
 
 const changeType = (item: any) => { }
 
@@ -600,6 +623,16 @@ const seeMonr = (item: any) => {
 
 .mainCent {
     margin: 0 20rpx;
+
+    .goodWu {
+        margin: 16rpx 0 20rpx 0;
+
+        .goodText {
+            font-weight: 600;
+            font-size: 32rpx;
+            color: #020202;
+        }
+    }
 }
 
 .live_swiper {
@@ -733,9 +766,11 @@ const seeMonr = (item: any) => {
     display: flex;
     width: 100%;
     justify-content: space-between;
+
     .activeConLeft {
         width: 48%;
     }
+
     .activeConRight {
         width: 48%;
     }

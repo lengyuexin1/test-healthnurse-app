@@ -126,6 +126,7 @@
             </view>
         </view>
 
+        <!-- tab -->
         <view class="fliex_box">
             <view class="Nav_box">
                 <view class="Nav_scoll_box">
@@ -138,7 +139,7 @@
                     </view>
                 </view>
             </view>
-            <view class="more_icon">
+            <view class="more_icon" @click="openBotMun">
                 <TnIcon name="down" size="32rpx" color="#333"></TnIcon>
             </view>
         </view>
@@ -157,6 +158,7 @@
             <WaterfallsFlow :wfList="data.dataList" :navid="NavId" @waterItem="clickwaterItem"></WaterfallsFlow>
         </view>
 
+        <BottomMenu @upCalik="upCalik" :NavList="NavList" :current="NavId" v-model="showBottomMenu"></BottomMenu>
 
         <BCNotify ref="bcNotify"></BCNotify>
 
@@ -169,6 +171,7 @@
 </template>
 
 <script setup lang="ts">
+import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import { servicelist } from "@/api/goods-api"
 import { moneyFilter } from "@/common/filters"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -194,8 +197,8 @@ import createCollectAndReport from "@/utils/collection"
 import { Debounce } from '@/libs/antivibthrot'
 import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
 import { gotoServiceStore } from '@/routes/service-routes'
-import { gotoCenterChanges } from '@/routes/active-routes'
-
+import { gotoCenterChanges, gotoZone } from '@/routes/active-routes'
+import BottomMenu from "./channelSheet.vue"
 interface Data {
     dataList: any,
     categoryId: string | number,
@@ -224,6 +227,8 @@ const data = reactive<Data>({
     swiperIndex: 0,
     attentionList: [],
 })
+
+const showBottomMenu = ref(false)
 
 const dataObjTre = ref(
     {
@@ -289,11 +294,21 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const upCalik = (item:any, index:number) => {
+    console.log(item, index)
+    NavId.value = item.id
+}
+
 const gotoColmDetail = (index: any, item: any) => {
     console.log(index, item)
+    gotoZone()
     if (index == 5) {
         return gotoWisdom()
     }
+}
+
+const openBotMun = () => {
+    showBottomMenu.value = !showBottomMenu.value
 }
 
 const seeGoods = (id: any, its: any) => {

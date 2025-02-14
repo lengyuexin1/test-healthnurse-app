@@ -4,23 +4,24 @@
             <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
             <view class="crazy_bottom">
                 <view>
-                    <view class="product_name">{{ item.name }}</view>
-                    <view class="product_smal">{{ item.desc }}</view>
+                    <view class="product_name textMany">{{ item.name }}</view>
+                    <view class="product_smal textMany">{{ item.desc }}</view>
                 </view>
                 <view class="difMoney">
                     <view class="realMoney">￥{{ moneyFilter(item.price) }}</view>
                     <text class="item-info-optionName">/起</text>
                     <view class="ageMoney" v-if="item.fakePrice">￥{{ linePrice(item) }}</view>
                 </view>
-                <view class="seller row i-center" @click="navShopDetail"  v-if="item.sourceType !== 4">
-					<image class="imgBox" v-if="item.shopThumb" :src="item.shopThumb || ''" mode="aspectFill"></image>
-					<view class="sel-tit u-line-1">{{item.shopName || ''}}</view>
-				</view>
-				<view class="seller row i-center" @click="navShopDetail"  v-if="item.sourceType == 4">
-					<image class="imgBox" v-if="item.accountAvatar" :src="item.accountAvatar || ''" mode="aspectFill"></image>
-					<image class="imgBox" v-if="item.accountThumb" :src="item.accountThumb || ''" mode="aspectFill"></image>
-					<view class="sel-tit u-line-1">{{item.accountName || ''}}</view>
-				</view>
+                <view class="seller row i-center" @click="navShopDetail" v-if="item.sourceType !== 4">
+                    <image class="imgBox" v-if="item.shopThumb" :src="item.shopThumb || ''" mode="aspectFill"></image>
+                    <view class="sel-tit u-line-1">{{ item.shopName || '' }}</view>
+                </view>
+                <view class="seller row i-center" @click="navShopDetail" v-if="item.sourceType == 4">
+                    <image class="imgBox" v-if="item.accountAvatar" :src="item.accountAvatar || ''" mode="aspectFill">
+                    </image>
+                    <image class="imgBox" v-if="item.accountThumb" :src="item.accountThumb || ''" mode="aspectFill"></image>
+                    <view class="sel-tit u-line-1">{{ item.accountName || '' }}</view>
+                </view>
             </view>
         </view>
     </view>
@@ -38,7 +39,7 @@ import { moneyFilter } from "@/common/filters"
 const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
-const linePrice = computed(() => (item:any) => {
+const linePrice = computed(() => (item: any) => {
     return moneyFilter(item.fakePrice / item.quantity)
 })
 
@@ -114,6 +115,15 @@ const arrList = ref([
         color: #020202;
     }
 
+    .textMany {
+        display: -webkit-box !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical !important
+    }
+
     .product_smal {
         margin-top: 8rpx;
         font-size: 20rpx;
@@ -145,15 +155,16 @@ const arrList = ref([
     font-size: 22rpx;
     color: #1A1A1A;
 }
-.imgBox{
-    width:30rpx;
+
+.imgBox {
+    width: 30rpx;
     height: 30rpx;
     border-radius: 20rpx;
 }
+
 .sel-tit {
     font-size: 24rpx;
     padding-left: 10rpx;
     color: #999999;
-}
-</style>
+}</style>
 

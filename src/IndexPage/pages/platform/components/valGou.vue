@@ -1,13 +1,12 @@
 <template>
     <view class="activityCed row i-center j-between">
-        <view class="activili">
+        <view class="activili" @click="gotoMark">
             <view class="activiname">
                 <view>超值购</view>
                 <text class="activitit">优惠抢购，机不可失</text>
             </view>
             <scroll-view class="sett-seler" scroll-x>
-                <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.subsetList" :key="item.id"
-                    @click.stop="gotoSettled(item)">
+                <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.subsetList" :key="item.id">
                     <view class="sett-seli-img">
                         <image class="imgsel" :src="item.thumb"></image>
                     </view>
@@ -26,6 +25,7 @@ import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/coun
 import { getAssetsPic } from '@/common/setPicture'
 import { gotoShopDetail } from "@/routes/service-routes"
 // import { gotoNewcomerWelfare } from '@/routes/goods-routes'
+import { gotoPiMark } from '@/routes/active-routes'
 
 interface Props {
     dataObjTre: any
@@ -36,6 +36,10 @@ const props = defineProps<Props>()
 const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
+
+const gotoMark = () => {
+    gotoPiMark()
+}
 
 // 更多
 const gotoSettled = (item: any) => {
