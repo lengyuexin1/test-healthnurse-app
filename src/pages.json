@@ -60,12 +60,12 @@
     {
       "path": "pages/agency/agency",
       "style": {
-          "navigationBarTitleText": "找机构",
-          "navigationStyle": "custom",
-          "enablePullDownRefresh": false,
-          "backgroundColor": "#F8F9F9"
+        "navigationBarTitleText": "找机构",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false,
+        "backgroundColor": "#F8F9F9"
       }
-  }
+    }
   ],
   "subPackages": [
     {
@@ -111,38 +111,38 @@
           }
         },
         {
-					"path": "pages/service/serviceIndexPage",
-					"style": {
-						"navigationBarTitleText": "适品囤内页",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
+          "path": "pages/service/serviceIndexPage",
+          "style": {
+            "navigationBarTitleText": "适品囤内页",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
         {
-					"path": "pages/platform/onlyZone",
-					"style": {
-						"navigationBarTitleText": "适品专区",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
+          "path": "pages/platform/onlyZone",
+          "style": {
+            "navigationBarTitleText": "适品专区",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
         {
-					"path": "pages/platform/catesList",
-					"style": {
-						"navigationBarTitleText": "",
-						"navigationStyle": "default",
-						"enablePullDownRefresh": false,
-						"navigationBarBackgroundColor": "#FFFFFF"
-					}
-				},
+          "path": "pages/platform/catesList",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle": "default",
+            "enablePullDownRefresh": false,
+            "navigationBarBackgroundColor": "#FFFFFF"
+          }
+        },
         {
-					"path": "pages/platform/centerChanges",
-					"style": {
-						"navigationBarTitleText": "''",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
+          "path": "pages/platform/centerChanges",
+          "style": {
+            "navigationBarTitleText": "''",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
         {
           "path": "pages/my/update",
           "style": {
@@ -1647,10 +1647,17 @@
         {
           "path": "pages/activity/brandpage",
           "style": {
-              "navigationBarTitleText": "活动页面",
-              "navigationStyle": "custom"
+            "navigationBarTitleText": "活动页面",
+            "navigationStyle": "custom"
           }
-      },
+        },
+        {
+          "path": "pages/activity/supervaluepage",
+          "style": {
+            "navigationBarTitleText": "活动页面",
+            "navigationStyle": "custom"
+          }
+        },
         // {
         //   "path": "pages/service/serviceTab",
         //   "style": {
