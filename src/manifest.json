@@ -380,6 +380,15 @@
         "devServer" : {},
         "uniStatistics" : {
             "enable" : false
+        },
+        "sdkConfigs" : {
+            "maps" : {
+                "amap" : {
+                    "key" : "",
+                    "securityJsCode" : "",
+                    "serviceHost" : ""
+                }
+            }
         }
     },
     "mp-jd" : {

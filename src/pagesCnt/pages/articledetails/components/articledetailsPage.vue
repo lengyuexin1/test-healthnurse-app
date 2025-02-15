@@ -1,5 +1,5 @@
 <template>
-       <view class="container">
+    <view class="container">
         <z-paging
 		ref="paging"
 		:auto="false"
@@ -20,7 +20,6 @@
             </template>
             <view class="content">
                 <view class="rich_text" id="richBox">
-
                     <view class="author_box">
                         <view class="author_avatar_box" @click="tobloggerPage">
                             <image
@@ -93,12 +92,13 @@
                                 </view>
 
                             </view>
+
                         </view>
                     </view>
 
 
                     <!-- 富文本类型 -->
-                    <template v-if="data.articledetailsObj.type == 1">
+                    <!-- <template v-if="data.articledetailsObj.type == 1"> -->
                         <view class="article_title" v-if="data.articledetailsObj.type == 1 || data.articledetailsObj.type == 3">
                             {{ data.articledetailsObj.title }}
                         </view>
@@ -110,7 +110,7 @@
                             />
 
                         </view>
-                    </template>
+                    <!-- </template> -->
 
                     <!-- 图文类型 -->
                     <template v-if="data.articledetailsObj.type == 3">
@@ -161,10 +161,9 @@
                             </view>
                         </view>
                     </view>
-
-
                 </view>
-                <view class="comment_box" id="commentView">
+                <view class="acricle_desc">免责声明：本内容来自保椿照护平台创作者，不代表保椿照护的观点和立场。 </view>
+                <!-- <view class="comment_box" id="commentView">
                     <view class="comment_title_box">
                         <view
                         class="comment_title"
@@ -223,10 +222,9 @@
 
                     </template>
 
+                </view> -->
 
-                </view>
-
-                <view class="spag_box" :style="{ 'height': data.bottomBox + 'px' }"></view>
+                <!-- <view class="spag_box" :style="{ 'height': data.bottomBox + 'px' }"></view> -->
             </view>
 
             <template #bottom>
@@ -261,7 +259,7 @@
                 >
                 <!--  v-if="data.showtextbtn" -->
 
-                    <emojiItem @upEmojiItem="upEmojiItem"></emojiItem>
+                    <!-- <emojiItem @upEmojiItem="upEmojiItem"></emojiItem> -->
 
                     <view class="bottom_content_box">
 
@@ -305,10 +303,10 @@
                                 <view class="icon_item" @click="tocomment">
                                     <image
                                         class="icon_img"
-                                        :src="getAssetsUrl('/channel/comment.svg')"
+
                                         mode="scaleToFill"
                                     />
-                                    <view class="icon_text">评论</view>
+                                    <view class="icon_text"></view>
                                 </view>
                                 <view class="icon_item" @click="tocollect">
                                     <image
@@ -349,7 +347,6 @@
 
                 </view>
             </template>
-
 
 
             <TnPopup v-model="data.show" open-direction="bottom" :zIndex="10060">
@@ -474,11 +471,8 @@
                     </view>
 
                 </scroll-view>
-
 		        <BCNotify ref="sonbcNotify"></BCNotify>
-
             </view>
-
             </TnPopup>
 
             <TnPopup v-model="data.showTouch" open-direction="bottom" :zIndex="10066" radius="32" @close="cancelPopup">
@@ -503,11 +497,7 @@
                 <BCNotify ref="TouchbcNotify"></BCNotify>
 
             </TnPopup>
-
-
 		    <BCNotify ref="bcNotify"></BCNotify>
-
-
             <shareView
             ref="shareBox"
             @reportFun="reportFun"
@@ -541,11 +531,9 @@ import commentItem from './commentItem.vue'
 import {
     unCommentLike,
     commentLike,
-
     articleaddView,
     viewTime,
     retransmission,
-
     getnewContentDetail,
     getnewcommentList,
     getnewcommentRelyList,
@@ -558,7 +546,6 @@ import {
     unnewLike,
     unnewfollow,
     newfollow,
-
     getaudioList
 
 } from '@/api/create-api'
@@ -568,7 +555,7 @@ import { getAssetsPic } from '@/common/setPicture'
 import { gotoauthor, gotoarticledetailVoice, gotoReportPage } from '@/routes/create-routes'
 import { gotoIndex } from "@/routes/public-routes"
 
-// import shareView from '@/Create/components/shareView/shareView.vue'
+// import shareView from '@/pagesCnt/components/shareView/shareView.vue'
 import shareView from '@/pagesCnt/components/shareorreportView/shareorreportView.vue'
 
 import BCNotify from '@/components/notify/index.vue'
@@ -578,7 +565,7 @@ import { getQrcode } from "@/api/user-api"
 import createCollectAndReport from "@/utils/collection"
 import { Debounce } from '@/libs/antivibthrot'
 
-import mpHtml from '@/Create/uni_modules/mp-html/components/mp-html/mp-html.vue'
+import mpHtml from '@/pagesCnt/uni_modules/mp-html/components/mp-html/mp-html.vue'
 import { PlatformManage } from "@bc/sys"
 import { getVoiceFile, queryVoice } from '@/common/getvoiceToken'
 
@@ -586,7 +573,7 @@ import { addWEventsListener } from '@/events/event-registry'
 import { CareEvents } from '@/events/care-events'
 
 import shinnXEmoji from '@/uni_modules/shinn-xEmoji/components/shinn-xEmoji/shinn-xEmoji.vue'
-import emojiItem from '@/Create/components/emojiItem/emojiItem.vue'
+import emojiItem from '@/pagesCnt/components/emojiItem/emojiItem.vue'
 
 interface Props {
     contentId:string,
@@ -706,22 +693,6 @@ const formatTime = computed(() => (time:number) => {
 const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
-
-const getplatFrom = computed(() => {
-    return () => {
-        let platFrom = ''
-        // #ifdef MP-WEIXIN
-        platFrom = 'MP-WEIXIN'
-        // #endif
-
-        // #ifdef APP-PLUS
-        platFrom = 'APP-PLUS'
-        // #endif
-
-        return platFrom
-    }
-})
-
 const bcNotify = ref()
 const sonbcNotify = ref()
 
@@ -730,10 +701,7 @@ const emit = defineEmits(["saveShareObj"])
 
 onMounted(() => {
     data.articledId = props.contentId
-
     console.log('组件内', data.articledId)
-
-
     getDetails(props.contentId)
     commentList(props.contentId)
     getpageTop()
@@ -752,34 +720,6 @@ onMounted(() => {
 const innerAudioContext = uni.createInnerAudioContext()
 
 onShow(() => {
-
-
-
-    return
-
-    data.voiceObj = uni.getStorageSync('pageVoice')
-    console.log('data.pageVoice', data.voiceObj)
-
-    data.pageVoice = data.voiceObj.isShow
-
-    if (data.pageVoice) {
-        innerAudioContext.autoplay = true
-        innerAudioContext.src = data.voiceObj.voiceSrc
-
-        // innerAudioContext.startTime = data.voiceObj.currentTime;
-        // innerAudioContext.seek(data.voiceObj.currentTime);
-
-        innerAudioContext.play()
-        data.voiceIsPlay = true
-
-
-        // #ifdef MP-WEIXIN
-        // #endif
-
-        // #ifdef APP-PLUS
-        // #endif
-
-    }
 
 })
 
@@ -814,25 +754,6 @@ innerAudioContext.onPause(() => {
     console.log('播报暂停')
 })
 
-// 监听实时播报
-innerAudioContext.onTimeUpdate((e:any) => {
-
-    data.maxsliderValue = Math.floor(innerAudioContext.duration)
-
-    data.sliderValue = Math.floor(innerAudioContext.currentTime)
-
-
-    if (data.sliderValue >= data.maxsliderValue || (data.sliderValue - 1) >= data.maxsliderValue) {
-        console.log('自动停止播报111', data.sliderValue)
-
-        data.voiceIsPlay = false
-        data.sliderValue = data.maxsliderValue
-
-        innerAudioContext.pause()
-    }
-
-    console.log("播报实时监听", data.sliderValue)
-})
 
 // 切换播报状态
 const changePlay = () => {
@@ -878,23 +799,21 @@ const closeVoice = () => {
 
 
 const getDetails = (contentId:string) => {
-
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         getnewContentDetail({
             id: contentId
         }, isRequireLogin).then((res:any) => {
             console.log('Newres', res)
             data.articledetailsObj = res
+            // data.articledetailsObj.detail = data.articledetailsObj.detail.replace(/>&nbsp;</g, "><")
 
-            data.articledetailsObj.detail = data.articledetailsObj.detail.replace(/>&nbsp;</g, "><")
-
-            if (data.articledetailsObj.status == 4) {
-                bcNotify.value.error('文章已下架')
-                setTimeout(() => {
-                    goback()
-                }, 2000)
-                return
-            }
+            // if (data.articledetailsObj.status == 4) {
+            //     bcNotify.value.error('文章已下架')
+            //     setTimeout(() => {
+            //         goback()
+            //     }, 2000)
+            //     return
+            // }
 
             // data.commentTopList[0].number = data.articledetailsObj.cntComment
             // data.commentTopList[1].number = data.articledetailsObj.cntLike
@@ -919,27 +838,27 @@ const getDetails = (contentId:string) => {
 
 
             // .includes('1')
-            if (data.articledetailsObj.tagIds[0] == '1') {
-                console.log('百科内容')
-                typePreviewReport('channel')
-            }
-            if (data.articledetailsObj.tagIds[0] == '4') {
-                console.log('聊天内容')
-                typePreviewReport('chat')
+            // if (data.articledetailsObj.tagIds[0] == '1') {
+            //     console.log('百科内容')
+            //     typePreviewReport('channel')
+            // }
+            // if (data.articledetailsObj.tagIds[0] == '4') {
+            //     console.log('聊天内容')
+            //     typePreviewReport('chat')
 
-            }
-            if (data.articledetailsObj.tagIds[0] == '5') {
-                console.log('发现内容')
-                typePreviewReport('find')
+            // }
+            // if (data.articledetailsObj.tagIds[0] == '5') {
+            //     console.log('发现内容')
+            //     typePreviewReport('find')
 
-            }
-            if (data.articledetailsObj.tagIds[0] == '6') {
-                console.log('短片内容')
+            // }
+            // if (data.articledetailsObj.tagIds[0] == '6') {
+            //     console.log('短片内容')
 
-            }
-            if (data.articledetailsObj.tagIds[0] == '97') {
-                console.log('康养屯内容')
-            }
+            // }
+            // if (data.articledetailsObj.tagIds[0] == '97') {
+            //     console.log('康养屯内容')
+            // }
 
 
 
@@ -947,11 +866,11 @@ const getDetails = (contentId:string) => {
             console.log('errerrerr', err)
 
             data.articledetailsObj = {}
-            bcNotify.value.error('文章不存在')
+            // bcNotify.value.error('文章不存在')
 
-            setTimeout(() => {
-                goback()
-            }, 2000)
+            // setTimeout(() => {
+            //     goback()
+            // }, 2000)
 
         })
 
@@ -1654,7 +1573,7 @@ const sharePoster = async () => {
 
     const coverUrl = await drawBGIMG(data.articledetailsObj.cover)
     // 二维码链接图片
-    const qrimg =  await getQrcode(`/Create/pages/articledetails/articledetails?id=${data.articledetailsObj.id}`).then((img) => {
+    const qrimg =  await getQrcode(`/pagesCnt/pages/articledetails/articledetails?id=${data.articledetailsObj.id}`).then((img) => {
         return img
     })
     const qrimgUrl = await drawBGIMG(qrimg)
@@ -1773,8 +1692,8 @@ const sharePage = () => {
         imageUrl: data.articledetailsObj.cover,
         title: data.articledetailsObj.title,
         miniProgram: {
-            id: 'gh_fd20b530cb94', //微信小程序原始id
-            path: `/Create/pages/articledetails/articledetails?id=${data.articledetailsObj.id}`, //点击链接进入的页面
+            id: 'gh_c2469c570746', //微信小程序原始id
+            path: `/pagesCnt/pages/articledetails/articledetails?id=${data.articledetailsObj.id}`, //点击链接进入的页面
             type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
             webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接
         },
@@ -1939,9 +1858,12 @@ defineExpose({
 </script>
 
 
-
-
 <style lang="scss" scoped>
+.acricle_desc{
+    color: #666666;
+    font-size: 28rpx;
+    padding: 0 34rpx 20rpx 34rpx;
+}
 .content{
     width: 100%;
     position: relative;

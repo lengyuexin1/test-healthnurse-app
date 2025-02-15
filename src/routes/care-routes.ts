@@ -99,6 +99,7 @@ export const gotoServeDetail = (query: ISerDetaQuery) => {
         query
     } as any
     return pageController.push(route)
+
 }
 /**
  * 跳转到 签到红包提现
