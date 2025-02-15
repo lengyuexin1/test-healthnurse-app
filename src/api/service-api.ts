@@ -21,6 +21,11 @@ export const agencylist = (req:any) => {
 export const getOrganEsList = (req:any) => {
     return openHttp.post('api/search/v1/bc/public/es/shop/list', req)
 }
+/** 机构服务预约 */
+export const prebookSave = (req:any) => {
+    return http.order.post('/v1/bc/app/prebook/save', req)
+}
+
 /* 服务加入购物车 */
 export const addServeCart = async (params: { optionId: string, hospitalId?: string }) => {
     return http.order.post('/v1/bc/app/cart/create', params)

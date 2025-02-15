@@ -290,9 +290,10 @@
                                         maxlength="4"
                                     >
                                         <template v-slot:suffix>
-                                            <TnButton bg-color="white" text-color="#41A0FE" font-size="26rpx" :disabled="data.countdown > 0" @tap="getCode">
-                                {{ data.countdown > 0 ? `${data.countdown}秒后重新获取` : '获取验证码' }}
+                                            <TnButton bg-color="white" text-color="#41A0FE" font-size="26rpx" :disabled="countdown > 0" @click="getCode">
+                                {{countdown > 0 ? `${countdown}秒后重新获取` : '获取验证码' }}
                             </TnButton>
+
                                         </template>
                                     </TnInput>
                                 </view>
@@ -310,12 +311,14 @@
             <view class="popup_healt" @click="appointment">
                 <view class="popup_but">{{makeType == 3 ? '知道了' : '立即预约' }}</view>
             </view>
+            <BCNotify ref="bcNotify"></BCNotify>
         </TnPopup>
-        <BCNotify ref="bcNotify"></BCNotify>
         <shareView @sharePage="sharePage" ref="shaView" :detailObj="shareObj" :path="path"></shareView>
+        <yk-authpup ref="authpup" :isNativeHead="false" type="top" @changeAuth="callfun" permissionID="CALL_PHONE"></yk-authpup>
 </view>
 </template>
 <script setup>
+import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import TnInput from '@tuniao/tnui-vue3-uniapp/components/input/src/input.vue'
 import shareView from '@/pagesCnt/components/shareView/shareView.vue'
@@ -325,40 +328,16 @@ import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { formattime } from '@/common/formatTime'
 import BCNotify from '@/components/notify/index.vue'
-// import {
-//     gotoproductDetails,
-//     gototextInstitution,
-//     gotoimgdetails,
-//     gotochoiceDetails
-// } from "@/route/plateform-routes"
-// import shareView from "@/Channel/components/shareView/shareView.vue"
-// import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
-import { organizationDetail, agencylist, getOrganEsList } from '@/api/service-api'
-// import {
-//     prebookSave
-// } from "@/api/agency-api"
-// import { gotoIMSessionChat } from "@/route/message-routes"
-// import { shopAdd, shopCancel } from "@/api/care-api"
+
+import { sendMobileCode, getDestroyInfo } from '@/api/user-api'
+import { organizationDetail, agencylist, getOrganEsList, prebookSave } from '@/api/service-api'
 import { PlatformManage } from '@bc/sys'
-// import {
-//     getLoginCode,
-//     sendMobileCode
-// } from '@/api/open-api'
-// import recommend from "@/libs/recommend"
-// import { appear } from "@/api/user-api"
-// import agencyItem from "@/components/agencyItem/agencyItem.vue"
-// import ykAuthpup from './components/ykAuthpup.vue'
-
-// import agencyItem from './components/agencyItem.vue'
-
 import { ref, reactive, computed, onMounted, onBeforeMount, watch } from 'vue'
 import { useRoute } from 'vue-router' // Assuming you're using vue-router
 
-
-// import { sendMobileCode, getorganizationDetail, agencylist, prebookSave, appear, setColl, shopAdd, shopCancel, getOrganEsList, gotoIMSessionChat, gotochoiceDetails, gotoproductDetails, gototextInstitution, gotoimgdetails } from '@/api'; // Adjust according to your actual API
-
 const route = useRoute()
-
+const authpup = ref()
+const countdown = ref(0)
 const makeType = ref(1)
 const itemId = ref('')
 const swiperIndex = ref(0)
@@ -405,6 +384,28 @@ const area = computed(() => (area) => {
 })
 const makeEdit = () => {
     makeType.value = 2
+}
+// 收藏/取消收藏 机构
+const setColl = () => {
+    if (needlogin.value) {
+        tochoiceDetails(this.detailObj.shopId, 0, true)
+        return
+    }
+    setTimeout(() => {
+        isColl.value ? shopCancel({
+            shopIds: [detailObj.shopId]
+        }).then(() => {
+            isColl.value = false
+            bcNotify.value.show('取消收藏')
+        }) : shopAdd(detailObj.shopId).then(() => {
+            isColl.value = true
+            bcNotify.value.show('收藏成功')
+        })
+    }, 300)
+    this.$refs.paging.reload()
+}
+const tochoiceDetails = (itemId, tologin = false) => {
+    gotochoiceDetails(itemId, tologin)
 }
 const isForward = computed(() => recommend.get())
 
@@ -467,11 +468,21 @@ onMounted(() => {
 watch(() => route, (newVal) => {
     // Handle route changes if needed
 })
-
-const codeChange = (text) => {
-    tips.value = text
+const callfun = () => {
+    uni.makePhoneCall({
+        phoneNumber: this.detailObj.telephones
+    })
 }
+//这个是自己的方法名
+const openAuth = () => {
+    // #ifdef APP-PLUS
+    authpup.value.open() //调起自定义权限目的弹框,具体可看示例里面很详细
+    // #endif
 
+    // #ifndef APP-PLUS
+    callfun()
+    // #endif
+}
 const codeInput = () => {
     isEmptyCode.value = !code.value
 }
@@ -491,27 +502,33 @@ const getCode = async () => {
         bcNotify.value.show('请填写正确的手机号码')
         return
     }
-    if ($refs.uCode.canGetCode) {
-        uni.showLoading({ title: '正在获取验证码' })
-        try {
-            const res = await sendMobileCode({ mobile: detailObj.phone })
-            if (!isNaN(res) && res !== 1) {
-                smsCode.value = res
-            }
-            setTimeout(() => {
-                uni.hideLoading()
-                isEmptyPhone.value = false
-                uni.$u.toast('验证码已发送')
-                $refs.uCode.start()
-            }, 1500)
+
+    uni.showLoading({ title: '正在获取验证码' })
+    try {
+        const res = await sendMobileCode({ mobile: detailObj.phone })
+        uni.hideLoading()
+        if (res !== 1) {
+            smsCode.value = res
         }
-        catch (err) {
-            uni.$u.toast(err.message)
+        if (countdown.value === 0) {
+            countdown.value = 60
+            const intervalId = setInterval(() => {
+                if (countdown.value > 0) {
+                    countdown.value--
+                    isEmptyPhone.value = false
+                }
+                else {
+                    clearInterval(intervalId)
+                }
+            }, 1000)
         }
+
     }
-    else {
-        uni.$u.toast('倒计时结束后再发送')
+    catch (err) {
+        bcNotify.value.show(err.message)
     }
+
+
 }
 const getDistancesfun = () => {
     return new Promise((resolve, reject) => {
@@ -560,10 +577,10 @@ const appointment = async () => {
         return
     }
     if (makeType.value === 2 && !detailObj.phone) {
-        return $refs.uToastRef.error('请输入正确手机号')
+        return bcNotify.value.show('请输入正确手机号')
     }
     if (makeType.value === 2 && !detailObj.code) {
-        return $refs.uToastRef.error('请输入验证码')
+        return bcNotify.value.show('请输入验证码')
     }
 
     try {
@@ -574,7 +591,7 @@ const appointment = async () => {
     }
     catch (error) {
         console.log(error.message)
-        $refs.uToastRef.error(error.message)
+        bcNotify.value.error(error.message)
     }
 }
 
@@ -584,8 +601,10 @@ const getorganizationDetail = async (shopId, isAd) => {
     try {
         const res = await organizationDetail({ shopId, isAd })
         const userinfo = uni.getStorageSync("userinfo")
+        getDestroyInfo().then(res => {
+            detailObj.mobile = res.mobile
+        })
         Object.assign(detailObj, res)
-        detailObj.mobile = userinfo.mobile
         console.log(detailObj)
         isColl.value = res.isFavorite
         appear({ shopId })
@@ -612,15 +631,16 @@ const getagencylist = async (organizationId) => {
 
 <style lang="scss" scoped>
 .popup-box{
-   padding: 30rpx;
+   padding:30rpx;
 }
 .successful {
+    padding-top: 80rpx;
     position: relative;
     .successful_image {
         width: 140rpx;
         height: 140rpx;
         left: 50%;
-        top: -70rpx;
+        top: -150rpx;
         transform: translateX(-50%);
         position: absolute;
     }
@@ -650,6 +670,7 @@ const getagencylist = async (organizationId) => {
 
         .title {
             flex-shrink: 0;
+            margin-right: 50rpx;
         }
     }
 }
