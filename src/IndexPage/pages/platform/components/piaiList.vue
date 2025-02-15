@@ -1,13 +1,12 @@
 <template>
     <view class="activityCed row i-center j-between">
-        <view class="activili">
+        <view class="activili" @click.stop="gotoSettled">
             <view class="activiname">
-                <text>优选店铺</text>
-                <text class="activitit">品质服务的首选</text>
+                <view>品牌馆</view>
+                <text class="activitit">为您精选店铺推荐</text>
             </view>
-            <scroll-view class="sett-seler row i-center" scroll-x>
-                <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.shopList" :key="item.id"
-                    @click.stop="gotoSettled(item)">
+            <scroll-view class="sett-seler" scroll-x>
+                <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.subsetList" :key="item.id">
                     <view class="sett-seli-img">
                         <image class="imgsel" :src="item.thumb"></image>
                     </view>
@@ -24,7 +23,7 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/count-down.vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { gotoShopDetail } from "@/routes/service-routes"
-// import { gotoNewcomerWelfare } from '@/routes/goods-routes'
+import { gotoPingP } from '@/routes/active-routes'
 
 interface Props {
     dataObjTre: any
@@ -37,9 +36,8 @@ const getAssetsUrl = computed(() => (src: string) => {
 })
 
 // 更多
-const gotoSettled = (item: any) => {
-    console.log(item)
-    gotoShopDetail(item.id)
+const gotoSettled = () => {
+    gotoPingP()
 }
 
 </script>
@@ -50,7 +48,7 @@ const gotoSettled = (item: any) => {
 
     .activili {
         width: 100%;
-        height: 240rpx;
+        height: 304rpx;
         background: linear-gradient(180deg, #FDF9F0 0%, #FEEDDD 100%);
         background-size: cover;
         border-radius: 24rpx;
@@ -73,7 +71,6 @@ const gotoSettled = (item: any) => {
         }
 
         .activitit {
-            padding-left: 20rpx;
             line-height: 34rpx;
             font-weight: 400;
             font-size: 24rpx;
@@ -83,24 +80,28 @@ const gotoSettled = (item: any) => {
 }
 
 .sett-seler {
-    margin-top: 30rpx;
-    justify-content: space-around;
+    margin-top: 10rpx;
     width: 100%;
-    height: 118rpx;
+    height: 160rpx;
     overflow: hidden;
     white-space: nowrap;
     padding: 0 10rpx;
     box-sizing: border-box;
+    border-radius: 16rpx 16rpx 16rpx 16rpx;
+    background: #fff;
+    display: flex;
+    align-items: center;
 
     .sett-seli {
         display: inline-flex;
-        margin-right: 32rpx;
+        margin-right: 42rpx;
+        margin-top: 10px;
 
         .sett-seli-img {
-            border: 4rpx solid #FFFFFF;
+            border: 4rpx solid pink;
             border-radius: 50%;
-            width: 86rpx;
-            height: 86rpx;
+            width: 94rpx;
+            height: 94rpx;
 
             .imgsel {
                 width: 86rpx;
@@ -123,7 +124,6 @@ const gotoSettled = (item: any) => {
             margin-top: -20rpx;
             position: relative;
             z-index: 30;
-            overflow: hidden;
         }
     }
 }

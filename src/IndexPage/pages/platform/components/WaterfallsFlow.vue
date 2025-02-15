@@ -4,7 +4,7 @@
          <view>
              <view id="left" v-if="data.leftList.length">
                 <template v-for="(item,index) in data.leftList" :key="item.id">
-                    <view  class="wf-item">
+                    <view class="wf-item">
                         <!-- :is_statistics="is_statistics"  -->
                         <waterfallItem :isSmall="false" :direction="1" :item="item" @clickwaterItem="clickwaterItem"/>
                     </view>
@@ -16,7 +16,7 @@
          <view>
              <view id="right" v-if="data.rightList.length">
                 <template v-for="(item,index) in data.rightList" :key="item.id">
-                    <view   class="wf-item">
+                    <view class="wf-item">
                         <!-- :is_statistics="is_statistics" -->
                         <waterfallItem :isSmall="index == 0" :direction="2" :item="item" @clickwaterItem="clickwaterItem"/>
                     </view>
@@ -115,7 +115,7 @@ const clickwaterItem = (item:any) =>{
 }
 
 .wf-item {
-	width: 360rpx;
+	width: 350rpx;
 }
 </style>
  

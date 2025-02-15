@@ -1,17 +1,17 @@
 <template>
     <view class="activityCed row i-center j-between">
-        <view class="activili">
+        <view class="activili" @click="gotoMark">
             <view class="activiname">
-                <text>优选店铺</text>
-                <text class="activitit">品质服务的首选</text>
+                <view>超值购</view>
+                <text class="activitit">优惠抢购，机不可失</text>
             </view>
-            <scroll-view class="sett-seler row i-center" scroll-x>
-                <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.shopList" :key="item.id"
-                    @click.stop="gotoSettled(item)">
+            <scroll-view class="sett-seler" scroll-x>
+                <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.subsetList" :key="item.id">
                     <view class="sett-seli-img">
                         <image class="imgsel" :src="item.thumb"></image>
                     </view>
                     <view class="sett-seli-name u-line-1">{{ item.name }}</view>
+                    <view class="priceText">低至<text class="priceNum">299</text>元起</view>
                 </view>
             </scroll-view>
         </view>
@@ -25,6 +25,7 @@ import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/coun
 import { getAssetsPic } from '@/common/setPicture'
 import { gotoShopDetail } from "@/routes/service-routes"
 // import { gotoNewcomerWelfare } from '@/routes/goods-routes'
+import { gotoPiMark } from '@/routes/active-routes'
 
 interface Props {
     dataObjTre: any
@@ -35,6 +36,10 @@ const props = defineProps<Props>()
 const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
+
+const gotoMark = () => {
+    gotoPiMark()
+}
 
 // 更多
 const gotoSettled = (item: any) => {
@@ -50,7 +55,7 @@ const gotoSettled = (item: any) => {
 
     .activili {
         width: 100%;
-        height: 240rpx;
+        height: 304rpx;
         background: linear-gradient(180deg, #FDF9F0 0%, #FEEDDD 100%);
         background-size: cover;
         border-radius: 24rpx;
@@ -73,7 +78,6 @@ const gotoSettled = (item: any) => {
         }
 
         .activitit {
-            padding-left: 20rpx;
             line-height: 34rpx;
             font-weight: 400;
             font-size: 24rpx;
@@ -83,24 +87,26 @@ const gotoSettled = (item: any) => {
 }
 
 .sett-seler {
-    margin-top: 30rpx;
-    justify-content: space-around;
+    margin-top: 10rpx;
     width: 100%;
-    height: 118rpx;
+    height: 160rpx;
     overflow: hidden;
     white-space: nowrap;
     padding: 0 10rpx;
     box-sizing: border-box;
+    border-radius: 16rpx 16rpx 16rpx 16rpx;
+    background: #fff;
+    display: flex;
+    align-items: center;
 
     .sett-seli {
         display: inline-flex;
-        margin-right: 32rpx;
+        margin-right: 42rpx;
+        margin-top: 10px;
 
         .sett-seli-img {
-            border: 4rpx solid #FFFFFF;
-            border-radius: 50%;
-            width: 86rpx;
-            height: 86rpx;
+            width: 120rpx;
+            height: 90rpx;
 
             .imgsel {
                 width: 86rpx;
@@ -112,18 +118,25 @@ const gotoSettled = (item: any) => {
             width: 110rpx;
             height: 38rpx;
             padding: 0 6rpx;
-            background: #FFAD65;
-            border: 3rpx solid #FFFFFF;
+            background: #fff;
             border-radius: 18rpx;
-            font-size: 20rpx;
             font-weight: 400;
             line-height: 36rpx;
-            color: #FFFFFF;
+            font-size: 18rpx;
+            color: #461800;
             text-align: center;
-            margin-top: -20rpx;
+            margin-top: -30rpx;
             position: relative;
             z-index: 30;
-            overflow: hidden;
+        }
+
+        .priceText {
+            font-size: 18rpx;
+            color: #F51F1F;
+            .priceNum {
+                font-size: 22rpx;
+                font-weight: 600;
+            }
         }
     }
 }

@@ -126,6 +126,7 @@
             </view>
         </view>
 
+        <!-- tab -->
         <view class="fliex_box">
             <view class="Nav_box">
                 <view class="Nav_scoll_box">
@@ -138,38 +139,34 @@
                     </view>
                 </view>
             </view>
-            <view class="more_icon">
+            <view class="more_icon" @click="openBotMun">
                 <TnIcon name="down" size="32rpx" color="#333"></TnIcon>
             </view>
         </view>
 
         <!-- 新人福利 -->
-        <view class="newPople">
+        <view class="newPople" v-if="showBk.includes(3)">
             <!-- 活动1 -->
-            <NewcomerWelfare :dataObj="dataObj"></NewcomerWelfare>
+            <NewcomerWelfare v-if="dataObj.type !== 3" :dataObj="dataObj"></NewcomerWelfare>
             <!-- 活动2 -->
-            <NewcomerTwo :dataObjTwo="dataObjTwo"></NewcomerTwo>
+            <!-- <NewcomerTwo :dataObjTwo="dataObjTwo"></NewcomerTwo> -->
             <!-- 活动三 -->
-            <NewcomerTre :dataObjTre="dataObjTre"></NewcomerTre>
+            <NewcomerTre v-if="dataObj.type == 3" :dataObjTre="dataObj"></NewcomerTre>
         </view>
         <!-- 瀑布列表 -->
         <view class="content_right_list" :class="{ 'not_height': data.dataList.length == 0 }">
             <WaterfallsFlow :wfList="data.dataList" :navid="NavId" @waterItem="clickwaterItem"></WaterfallsFlow>
         </view>
 
+        <BottomMenu @upCalik="upCalik" :NavList="NavList" :current="NavId" v-model="showBottomMenu"></BottomMenu>
 
         <BCNotify ref="bcNotify"></BCNotify>
-
-        <template #bottom>
-            <view class="zpage_bottom">
-
-            </view>
-        </template>
     </z-paging>
 </template>
 
 <script setup lang="ts">
-import { servicelist } from "@/api/goods-api"
+import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
+import { servicelist, recomLikeList } from "@/api/goods-api"
 import { moneyFilter } from "@/common/filters"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import { ref, reactive, computed, onMounted, defineExpose, nextTick, watch } from 'vue'
@@ -193,9 +190,9 @@ import { searListFlag } from "@/api/open-api"
 import createCollectAndReport from "@/utils/collection"
 import { Debounce } from '@/libs/antivibthrot'
 import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
-import { gotoServiceStore } from '@/routes/service-routes'
-import { gotoCenterChanges } from '@/routes/active-routes'
-
+import { gotoServiceStore, gotoserviceDetail } from '@/routes/service-routes'
+import { gotoCenterChanges, gotoZone } from '@/routes/active-routes'
+import BottomMenu from "./channelSheet.vue"
 interface Data {
     dataList: any,
     categoryId: string | number,
@@ -225,59 +222,7 @@ const data = reactive<Data>({
     attentionList: [],
 })
 
-const dataObjTre = ref(
-    {
-        id: "1874725877488230401",
-        type: 3,
-        specificLocation: 3,
-        name: "优选好店",
-        title: "品质服务的首选",
-        desc: "优选好店推荐",
-        thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_test/life/care/service/thumb/202512391530824.png",
-        subsetList: [
-            {
-                id: "1730477844675891201",
-                name: "晓椿照护",
-                desc: "",
-                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
-                price: null,
-                minPrice: 0,
-                categoriesName: "居家照护",
-                categoriesId: "1"
-            },
-            {
-                id: "1730477844675891201",
-                name: "晓椿照护",
-                desc: "",
-                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
-                price: null,
-                minPrice: 0,
-                categoriesName: "居家照护",
-                categoriesId: "1"
-            },
-            {
-                id: "1730477844675891201",
-                name: "晓椿照护",
-                desc: "",
-                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
-                price: null,
-                minPrice: 0,
-                categoriesName: "居家照护",
-                categoriesId: "1"
-            },  {
-                id: "1730477844675891201",
-                name: "晓椿照护",
-                desc: "",
-                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
-                price: null,
-                minPrice: 0,
-                categoriesName: "居家照护",
-                categoriesId: "1"
-            },
-        
-        ]
-    }
-)
+const showBottomMenu = ref(false)
 const orgSelect: any = ref([])
 const newGoodList: any = ref([])
 const showBk: any = ref([])
@@ -309,11 +254,22 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const upCalik = (item: any, index: number) => {
+    console.log(item.id, index)
+    NavId.value = item.id;
+    paging.value.reload()
+}
+
 const gotoColmDetail = (index: any, item: any) => {
     console.log(index, item)
+    gotoZone()
     if (index == 5) {
         return gotoWisdom()
     }
+}
+
+const openBotMun = () => {
+    showBottomMenu.value = !showBottomMenu.value
 }
 
 const seeGoods = (id: any, its: any) => {
@@ -349,52 +305,19 @@ const emit = defineEmits<Events>()
 
 onMounted(() => {
     getSetIds(1)
-    getChannelClsList()
 })
-
-const getChannelClsList = () => {
-    channelClsList(10).then(res => {
-        NavList.value = [
-            { id: 1, name: '推荐' },
-            ...res
-        ]
-    })
-}
 
 const paging = ref()
 const queryList = (pageNumber: number, pageSize: number) => {
-    nextTick(() => {
-        if (pageNumber == 1) {
-            // getActivityMation()
-        }
-        if (NavId.value == 1) {
-            //推荐
-            conGiveData(pageNumber)
-        }
-        // 关注
-        else {
-            contentist(pageNumber)
-        }
-    })
-}
-
-const contentist = (pageNumber) => {
     const data = {
         pageNumber,
         pageSize: 10,
         query: {
-            categoryIds: [NavId.value]
+            categoryIds: NavId.value == 1 ? [] : [NavId.value]
         }
     }
-    getEsContentList(data).then((res) => {
-        const dataMapFlag = res.data.map((item) => {
-            const its = {
-                ...item,
-                sourceType: 4
-            }
-            return its
-        })
-        paging.value.complete(dataMapFlag)
+    recomLikeList(data).then((res) => {
+        paging.value.complete(res.data)
     })
 }
 
@@ -485,7 +408,11 @@ const healthMyData = (list: any) => {
         }
         // 文字导航
         if (element.moduleId == 8) {
-            getTextList(element.dataIds)
+            NavList.value = [
+                { id: 1, name: '推荐' },
+                ...element.navbarList
+            ]
+            getTextList(1)
         }
     })
 }
@@ -526,17 +453,13 @@ const channeCatelList = (item: any, id: any) => {
     })
 }
 
-const getTextList = (list: any) => {
-    const sendda = {
-        pageNumber: 1,
-        pageSize: 10,
-        query: {
-            categoryIds: list
-        }
+// 请求第一个tab
+const getTextList = (cateIndex: number) => {
+    if (cateIndex == 1) {
+
+    } else {
+
     }
-    servicelist(sendda).then(res => {
-        console.log(res, '文字导航')
-    })
 }
 
 const getBannerList = (data: any) => {
@@ -584,11 +507,13 @@ const clickwaterItem = (item: any) => {
             return
         }
 
-        item.type == 3 && gotoarticledetails({
-            id: item.id
-        })
-        item.type == 2 && gotovideoPreview({ videoId: item.id, videoPagetype: 2 })
-        item.type == 1 && gotoarticledetails({ id: item.id })
+        gotoServiceStore({ itemId: item.id })
+
+        // item.type == 3 && gotoarticledetails({
+        //     id: item.id
+        // })
+        // item.type == 2 && gotovideoPreview({ videoId: item.id, videoPagetype: 2 })
+        // item.type == 1 && gotoarticledetails({ id: item.id })
     })
 }
 
@@ -1106,6 +1031,6 @@ defineExpose({
 }
 
 .content_right_list {
-    padding: 0 10rpx;
+    padding: 0 16rpx;
 }
 </style>

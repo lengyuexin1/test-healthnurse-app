@@ -14,7 +14,7 @@ export const gotoZone = (id:any, name:string) => {
         path: '/IndexPage/pages/platform/onlyZone',
         query: { id, name }
     } as any
-    return pageController.replace(route)
+    return pageController.push(route)
 }
 
 // 房间管理
@@ -460,6 +460,23 @@ export const gotoCateArrList = (query:any) => {
 export const gotoEditName = ( id:any ) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/editLightName',
+        query: { id }
+    } as any
+    return pageController.push(route)
+}
+
+export const gotoPiMark = (id:any) => {
+    const route = {
+        path: '/pagesMall/pages/activity/supervaluepage',
+        query: { id }
+    } as any
+    return pageController.push(route)
+}
+
+// 品牌管
+export const gotoPingP = (id:any) => {
+    const route = {
+        path: '/pagesMall/pages/activity/brandpage',
         query: { id }
     } as any
     return pageController.push(route)

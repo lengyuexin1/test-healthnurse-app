@@ -1,121 +1,102 @@
 <template>
-    <view class="container" v-if="isAdorn">
-        <z-paging ref="paging" :auto="false" :refresher-enabled="false" @scroll="scrollPage">
-            <!-- <template #top> -->
-            <view class="fixedCs">
-                <PageTopbg bgstyle="background: transparent;"></PageTopbg>
-                <bc-page-navbar :title="detailData.name"></bc-page-navbar>
-            </view>
-            <view class="indexImg" :style="imgStyle" v-if="closeImg">
-                <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
-                    @change="liveswiperChange">
-                    <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="index">
-                        <image class="towPro_img" :src="item.icon" />
-                    </swiper-item>
-                </swiper>
-                <view class="swiper_sign_box">
-                    <view class="sign_item" :class="{ 'is_sign': signIndex == swiperIndex }"
-                        v-for="(signItem, signIndex) in swiperList.length" :key="signIndex"></view>
-                </view>
-            </view>
-            <!-- </template> -->
-            <!-- <view class="space_box"></view> -->
-            <view class="btns" v-if="detailData.couponIds">
-                <view class="btnItem" @click="tapArt(item, index)" :class="{ 'acticol': curret == index }"
-                    v-for="(item, index) in couDatas" key="index">
-                    <view class="zoneQuan">
-                        <!-- <view class="fuha">￥ <span class="monum">10</span></view> -->
-                        <view class="fuha"> <span class="monum">{{ item.typeName }}</span></view>
-                        <view class="textuse">{{ item.desc }}</view>
-                    </view>
-                    <view class="syuas">
-                        <view class="zonr1"></view>
-                        <view class="lineDa"></view>
-                        <view class="zonr2"></view>
-                    </view>
-                    <view v-if="!item.status" class="goUse" @click="getQuCou(item)">领取</view>
-                    <view class="alseUse" v-else @click="useCou">去使用</view>
-                </view>
-            </view>
-            <view class="qianGoods">
-                <!-- <TnTabs v-model="currentTabIndex" color="#959595" v-if="detailData.categoryList" bg-color="transparent"
-                    :bottom-shadow="false" active-color="#333333" font-size="36rpx" bar-color="transparent">
-                    <view class="typeLi" v-for="(item, index) in detailData.categoryList" :key="index">
-                        <image class="towPro_img" :src="getAssetsUrl('/device/home/newUserwe.png')"
-                            @click="changeType(item)" />
-                        <view class="typeText">二级分类1</view>
-                    </view>
-                </TnTabs> -->
-                <view v-for="(its, inds) in faList" key="index">
-                    <view class="qianTitle">
-                        <view>{{ its.name }}</view>
-                        <view class="mornSee" @click="seeMonr(its)">
-                            <view>查看更多</view>
-                            <TnIcon name="right" />
-                        </view>
-                    </view>
-                    <view class="crazy">
-                        <view class="crezy_ul">
-                            <view class="crezy_li" v-for="(item, index) in its.dataList" :key="index"
-                                @click="gotoDetail(item)">
-                                <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
-                                <view class="crazy_bottom">
-                                    <view>
-                                        <view class="product_name">{{ item.name }}</view>
-                                        <view class="product_smal">{{ item.desc }}</view>
+    <view class="container">
+        <z-paging ref="paging" :defaultPageSize="6" v-model="moreGoodList" @query="queryList" :auto="false"
+            :refresher-enabled="false" @scroll="scrollPage">
+            <template #top>
+                <view class="navbar_box" :style="{ paddingTop: titleTop + 'px', paddingRight: titleRight + 'px' }">
+                    <view class="top_box" :style="{ height: sBarHeight + 'px' }">
+                        <view class="back_icon" @click="goback">
+                            <TnIcon name="left" color="#2F2F2F" size="38" :bold="true" />
+                            <view class="inp_box" @click="tosearch">
+                                <view class="left_box">
+                                    <view class="left_icon_box">
+                                        <TnIcon name="search" color="#999999" size="32" bold></TnIcon>
                                     </view>
-                                    <view class="difMoney">
-                                        <view class="realMoney">￥{{ moneyFilter(item.price) }}</view>
-                                        <!-- <view class="ageMoney">￥362</view> -->
+                                    <view class="inp_left">
+                                        <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500"
+                                            :vertical="true">
+                                            <swiper-item v-for="(item, index) in noticeData" :key="index">
+                                                <view class="swiper_item_item">{{ item }}</view>
+                                            </swiper-item>
+                                        </swiper>
                                     </view>
                                 </view>
                             </view>
                         </view>
                     </view>
                 </view>
-            </view>
-        </z-paging>
-    </view>
-    <view v-else>
-        <z-paging ref="paging2" v-model="norList" :auto="true" :fixed="true" @query="queryList" :defaultPageSize="6"
-            :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="还没有数据哦~"
-            :empty-view-img-style="{ width: '320rpx', height: '320rpx' }">
-            <template #top>
-                <bc-page-navbar :title="'产品列表'"></bc-page-navbar>
             </template>
-            <div class="shopbox">
-                <div class="shopli row" v-for="(item, index) in norList" :key="index" @click="gotoDetail(item)">
-                    <div class="shopimg">
-                        <image :src="item.thumb" class="imgBox1"></image>
-                    </div>
-                    <div class="shoprig">
-                        <div class="shoptit u-line-1">{{ item.name }}</div>
-                        <div class="shoptip u-line-1" v-if="item.desc">
-                            {{ item.desc }}
-                        </div>
-                        <div class="shoppic">
-                            <text class="shopmon">￥{{ moneyFilter(item.price) }}</text>
-                            <text class="shopmon left">起</text>
-                            <text class="shopdel" v-if="item.fakePrice">￥{{ moneyFilter(item.fakePrice) }}</text>
-                        </div>
-                        <div class="shopjudge row i-center">
-                            <image :src="item.shopThumb" class="imgBox2"></image>
-                            <text class=" u-line-1">{{ item.shopName || '' }}</text>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
+            <view class="mainCent">
+                <view class="live_swiper" v-if="swiperList.length > 0">
+                    <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
+                        @change="liveswiperChange">
+                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id">
+                            <!-- @click="liveList(item)" -->
+                            <image class="live_swiper_img" :src="item.icon" mode="aspectFill" />
+                        </swiper-item>
+                    </swiper>
+                    <view class="swiper_sign_box">
+                        <view class="sign_item" :class="{ 'is_sign': signIndex == swiperIndex }"
+                            v-for="(signItem, signIndex) in swiperList.length" :key="signIndex"></view>
+                    </view>
+                </view>
+
+                <!-- <view class="space_box"></view> -->
+                <view class="btns" v-if="detailData.couponIds">
+                    <view class="btnItem" @click="tapArt(item, index)" :class="{ 'acticol': curret == index }"
+                        v-for="(item, index) in couDatas" key="index">
+                        <view class="zoneQuan">
+                            <!-- <view class="fuha">￥ <span class="monum">10</span></view> -->
+                            <view class="fuha"> <span class="monum">{{ item.typeName }}</span></view>
+                            <view class="textuse">{{ item.desc }}</view>
+                        </view>
+                        <view class="syuas">
+                            <view class="zonr1"></view>
+                            <view class="lineDa"></view>
+                            <view class="zonr2"></view>
+                        </view>
+                        <view v-if="!item.status" class="goUse" @click="getQuCou(item)">领取</view>
+                        <view class="alseUse" v-else @click="useCou">去使用</view>
+                    </view>
+                </view>
+
+                <view class="cateListcs">
+                    <view class="cateText">住院陪护分类</view>
+                    <view class="cateUl">
+                        <view class="cateItem" v-for="(item, index) in jiaCate" :key="index">
+                            <image class="cateIcon" :src="item.icon" mode="aspectFill" />
+                            <view class="cateName">{{ item.name }}</view>
+                        </view>
+                    </view>
+                </view>
+                <view class="activeCon">
+                    <view class="activeConLeft">
+                        <piaiList :dataObjTre="dataObjTre"></piaiList>
+                    </view>
+                    <view class="activeConRight">
+                        <valGou :dataObjTre="dataObjTre"></valGou>
+                    </view>
+                </view>
+                <view class="goodWu">
+                    <view class="goodText">精选好物</view>
+                    <!-- 列表 -->
+                    <ListItem :wfList="moreGoodList" @waterItem="clickwaterItem"></ListItem>
+                </view>
+            </view>
         </z-paging>
     </view>
 </template>
 
 <script setup lang="ts">
+import { gotosearch } from "@/routes/service-routes"
 import { moneyFilter } from "@/common/filters"
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { takeCoupon } from '@/api/order-api'
+import piaiList from './components/piaiList.vue'
+import valGou from './components/valGou.vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import TnTabs from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue'
 import TnTabsItem from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue'
@@ -126,45 +107,98 @@ import { PlatformManage } from "@bc/sys"
 import { gotoLogin } from "@/routes/public-routes"
 import { gotogoodsDetail } from '@/routes/goods-routes'
 import { gotoCateArrList } from '@/routes/active-routes'
-
+import { recommendList } from "@/api/goods-api"
+import ListItem from "@/components/recommended/listItem.vue"
+const moreGoodList = ref([])
+const jiaCate = ref([
+    { name: '脑部疾病', icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
+    { name: '脑部疾病', icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
+    { name: '脑部疾病', icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
+    { name: '脑部疾病', icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
+    { name: '脑部疾病', icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
+])
+const dataObjTre = ref(
+    {
+        id: "1874725877488230401",
+        type: 3,
+        specificLocation: 3,
+        name: "优选好店",
+        title: "品质服务的首选",
+        desc: "优选好店推荐",
+        thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_test/life/care/service/thumb/202512391530824.png",
+        subsetList: [
+            {
+                id: "1730477844675891201",
+                name: "晓椿照护",
+                desc: "",
+                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
+                price: null,
+                minPrice: 0,
+                categoriesName: "居家照护",
+                categoriesId: "1"
+            },
+            {
+                id: "1730477844675891201",
+                name: "晓椿照护",
+                desc: "",
+                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
+                price: null,
+                minPrice: 0,
+                categoriesName: "居家照护",
+                categoriesId: "1"
+            },
+            {
+                id: "1730477844675891201",
+                name: "晓椿照护",
+                desc: "",
+                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
+                price: null,
+                minPrice: 0,
+                categoriesName: "居家照护",
+                categoriesId: "1"
+            },
+        ]
+    }
+)
 const norList: any = ref([])
 const paging = ref()
-const paging2 = ref()
 const swiperIndex = ref(0)
-const pageTitle = ref('产品')
-
-const imgStyle = ref('opacity: 1')
-const closeImg = ref(true)
-const swiperList: any = ref([])
-
-const isAdorn = ref(0)
-const detailData: any = ref({})
+const titleTop = ref(0)
+const titleRight = ref(0)
+const sBarHeight = ref(0)
+const swiperList: any = ref([
+    { icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
+    { icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' }
+])
+const detailData: any = ref({
+    couponIds: {}
+})
 const detailId = ref('')
-const titleName = ref('')
 onLoad((option: any) => {
     detailId.value = option.id
-    columnDetail(option.id).then(res => {
-        titleName.value = option.name
-        detailData.value = res
-        isAdorn.value = res.isAdorn
-        if (res.isAdorn) {
-            // 轮播图
-            getBannerList(res.bannerIds)
-            //类目产品
-            faList.value = res.categoryList
-            if (faList.value.length > 0) {
-                faList.value.forEach((element: any) => {
-                    channeCatelList(element, element.categoryIds)
-                })
-            }
-            // 优惠券
-            getCouList(res.couponIds)
-        }
+    // columnDetail(option.id).then(res => {
+    //     titleName.value = option.name
+    //     detailData.value = res
+    //     isAdorn.value = res.isAdorn
+    //     if (res.isAdorn) {
+    //         // 轮播图
+    //         getBannerList(res.bannerIds)
+    //         //类目产品
+    //         faList.value = res.categoryList
+    //         if (faList.value.length > 0) {
+    //             faList.value.forEach((element: any) => {
+    //                 channeCatelList(element, element.categoryIds)
+    //             })
+    //         }
+    //         // 优惠券
+    //         getCouList(res.couponIds)
+    //     }
 
-    })
+    // })
 })
 
-const couDatas: any = ref([])
+const noticeData = ref(['休闲/玩乐'])
+const couDatas: any = ref([{ typeName: 154, desc: 'sdda' }, { typeName: 154, desc: 'sdda' }])
 const getCouList = (cuoIds: any) => {
     const couData = {
         pageNumber: 1,
@@ -177,6 +211,15 @@ const getCouList = (cuoIds: any) => {
     zqCouList(couData).then(res => {
         couDatas.value = res.data
     })
+}
+
+const tosearch = () => {
+    gotosearch()
+}
+
+// 退出页面
+const goback = () => {
+    uni.navigateBack()
 }
 
 const faList: any = ref([])
@@ -195,39 +238,12 @@ const channeCatelList = (item: any, id: any) => {
 
 const cateList: any = ref([])
 const diajCou = ref(false)
-// const queryList = (pageNumber: number, pageSize: number) => {
-//     columnDetail(detailId.value).then((res: any) => {
-//         const sendda = {
-//             pageNumber: pageNumber,
-//             pageSize: pageSize,
-//             query: {
-//                 categoryIds: res.isAdorn || diajCou.value ? cateList.value : res.categoryIds
-//             }
-//         }
-//         productList(sendda).then(res => {
-//             // norList.value = res.data
-//             (paging2.value as any).complete(res.data)
-//         })
-//     })
-// }
 
 const liveswiperChange = (e: any) => {
     swiperIndex.value = e.detail.current
 }
 const scrollPage = (e: any) => {
-    // const opacity = e.detail.scrollTop / 80
-    // console.log(opacity)
 
-    // closeImg.value = true
-    // if (e.detail.scrollTop < 30) {
-    //     return imgStyle.value = 'opacity: 1'
-    // }
-    // if (opacity > 1) {
-    //     imgStyle.value = 'opacity: 0'
-    //     closeImg.value = false
-    //     return
-    // }
-    // imgStyle.value = `opacity: ${opacity}`
 }
 const curret = ref(0)
 const getAssetsUrl = computed(() => (src: string) => {
@@ -239,6 +255,45 @@ const tapArt = (item: any, index: number) => {
     }
     curret.value = index
 }
+
+onMounted(() => {
+    // #ifdef MP-WEIXIN
+    // 获取胶囊按钮位置信息
+    const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
+    const { top, height, width } = menuButtonInfo
+    // #endif
+
+    // #ifdef APP-PLUS || H5
+    console.log('app顶部')
+    const height = 0
+    const width = 0
+    const top = 0
+    // #endif
+
+
+
+    // #ifdef MP-WEIXIN
+    // 获取系统状态栏高度
+    sBarHeight.value = uni.getSystemInfoSync().statusBarHeight!
+    // 计算标题需要偏移的位置
+    titleTop.value = top + (height - sBarHeight.value) / 2
+
+    // 计算顶部右侧偏移量
+    titleRight.value = width + 8
+    // #endif
+
+
+
+    // #ifdef APP-PLUS || H5
+    sBarHeight.value = 33
+    const pageObj = uni.getSystemInfoSync() as any
+    titleTop.value = pageObj.safeArea.top
+
+    titleRight.value = 8
+    // #endif
+
+    queryList(1, 6)
+})
 
 const gotoDetail = (item: any) => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
@@ -255,6 +310,24 @@ const gotoDetail = (item: any) => {
         gotogoodsDetail(item.id)
     })
 }
+
+const queryList = (pageNumber, pageSize) => {
+    recommendList({
+        pageSize: pageSize,
+        pageNumber: pageNumber,
+        query: {
+            lat: null,
+            lng: null,
+            sortType: 7,
+            businessType: 2,
+            sourceType: 2
+        }
+    }).then((res: any) => {
+        paging.value.complete(res.data)
+        console.log('moreGoodList', moreGoodList.value);
+    })
+}
+
 
 const changeType = (item: any) => { }
 
@@ -285,11 +358,11 @@ const useCou = () => {
     // diajCou.value = false
     // cateList.value = []
     // isAdorn.value = 0
-    gotoCateArrList({type: 1, id: detailId.value})
+    gotoCateArrList({ type: 1, id: detailId.value })
 }
 const seeMonr = (item: any) => {
     console.log(item);
-    gotoCateArrList({type: 2, id: item.id})
+    gotoCateArrList({ type: 2, id: item.id })
     // gotoCateList({id: item.id})
     // diajCou.value = false
     // cateList.value = item.categoryIds
@@ -297,32 +370,11 @@ const seeMonr = (item: any) => {
 }
 </script>
 <style lang="scss" scoped>
-.fixedCs {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-}
-.indexImg {
-    width: 100%;
-    height: 1000rpx;
-    position: relative;
-    // top: 0;
-    // left: 0;
-    // z-index: 99;
-
-    .towPro_img {
-        width: 100%;
-        height: 500rpx;
-    }
-}
-
 .btns {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 16rpx;
-    margin: 30rpx 20rpx 0 20rpx;
+    margin: 30rpx 0rpx 0 0rpx;
     height: 180rpx;
 
     .btnItem {
@@ -416,22 +468,6 @@ const seeMonr = (item: any) => {
     height: 700rpx;
 }
 
-.swiper {
-    width: 100%;
-    height: 100%;
-
-    .swiper_item {
-        width: 100%;
-        height: 100%;
-        position: relative;
-
-        .towPro_img {
-            width: 100%;
-            height: 1000rpx;
-        }
-    }
-}
-
 .swiper_sign_box {
     position: absolute;
     bottom: 12rpx;
@@ -462,197 +498,281 @@ const seeMonr = (item: any) => {
     }
 }
 
-.qianGoods {
-    margin: 30rpx 20rpx 40rpx 20rpx;
+.navbar_box {
+    // #ifdef APP-PLUS || H5
+    padding-bottom: 12rpx;
 
-    .typeLi {
-        width: 150rpx;
+    // #endif
+    .top_box {
+        padding: 10rpx;
+
+        padding-left: 24rpx;
+        box-sizing: border-box;
         display: flex;
         align-items: center;
-        flex-direction: column;
-        justify-content: center;
+        // justify-content: space-between;
 
-        .towPro_img {
-            width: 50rpx;
-            height: 50rpx;
+        // #ifdef APP-PLUS || H5
+        width: 100%;
+        height: auto !important;
+
+        // #endif
+        .title_text {
+            font-weight: 500;
+            font-size: 34rpx;
+            color: #333333;
+            margin-left: 16rpx;
+        }
+
+        .appChat_icon {
+            width: 70rpx;
+            height: 70rpx;
+            position: relative;
+            border-radius: 50%;
+            background: #fff;
+
+            .appChat_img {
+                width: 100%;
+                height: 100%;
+            }
+
+            .appChat_text {
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                width: 58rpx;
+                height: 24rpx;
+                background: #EA3E1A;
+                border-radius: 14rpx;
+                text-align: center;
+                line-height: 24rpx;
+                font-weight: 400;
+                font-size: 16rpx;
+                color: #FFFFFF;
+                transform: translate(-50%, 0rpx);
+            }
         }
     }
 
-    .typeText {
-        margin-top: 10rpx;
-        font-size: 24rpx;
-        color: #2B2C2E;
-    }
-
-    .qianTitle {
+    .back_icon {
+        width: 100%;
+        margin-right: 20rpx;
         display: flex;
-        justify-content: space-between;
-        font-weight: 600;
-        font-size: 32rpx;
-        color: #020202;
-        margin: 50rpx 0 20rpx 0;
-
-        .mornSee {
-            display: flex;
-            font-size: 28rpx;
-            color: #999999;
-        }
+        align-items: center;
     }
 
-    .crazy {
+    .inp_box {
+        flex: 1;
+        background: #fff;
+        box-shadow: 0rpx 0rpx 32rpx 2rpx rgba(0, 0, 0, 0.04);
+        box-sizing: border-box;
+        padding: 10rpx 20rpx;
+        padding-right: 10rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 50rpx;
+        position: relative;
+        margin-left: 30rpx;
 
-        .crezy_ul {
-            margin-top: 20rpx;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-gap: 16rpx;
+        .left_box {
+            display: flex;
+            align-items: center;
 
-            .crezy_li {
-                background-color: #fff;
-                height: 430rpx;
-                border-radius: 24rpx;
+            .left_icon_box {
+                display: flex;
+                align-items: center;
+            }
 
-                .towPro_img {
-                    width: 226rpx;
-                    height: 226rpx;
-                    padding: 20rpx;
+            .inp_left {
+                // display: flex;
+                // align-items: center;
+                margin-left: 10rpx;
+                box-sizing: border-box;
+                width: 50%;
+                height: 48rpx;
+
+                .swiper {
+                    width: 100%;
+                    height: 100%;
+
+                    .swiper_item_item {
+                        line-height: 52rpx;
+                        font-size: 26rpx;
+                        font-weight: 400;
+                        color: #A8A8A8;
+                    }
                 }
 
-                .crazy_bottom {
-                    margin-top: 8rpx;
-                    margin-left: 16rpx
-                }
+            }
+        }
 
-                .product_name {
-                    font-weight: 600;
-                    font-size: 24rpx;
-                    color: #020202;
-                }
+        .search_btn {
+            width: 84rpx;
+            height: 44rpx;
+            line-height: 44rpx;
+            text-align: center;
+            background: #EA3E1A;
+            border-radius: 24rpx;
+            font-weight: 400;
+            font-size: 24rpx;
+            color: #FFFFFF;
+        }
+    }
+}
 
-                .product_smal {
-                    margin-top: 8rpx;
-                    font-size: 20rpx;
-                    color: #666666;
-                }
+.mainCent {
+    margin: 0 20rpx;
 
-                .difMoney {
+    .goodWu {
+        margin: 16rpx 0 20rpx 0;
+
+        .goodText {
+            font-weight: 600;
+            font-size: 32rpx;
+            color: #020202;
+        }
+    }
+}
+
+.live_swiper {
+    position: relative;
+    border-radius: 12rpx;
+    overflow: hidden;
+    width: 718rpx;
+    // height: 280rpx;
+    margin: auto;
+    padding-top: 10rpx;
+    box-sizing: border-box;
+    margin-bottom: 20rpx;
+
+    .swiper {
+        width: 100%;
+        height: 144rpx;
+
+        .swiper_item {
+            width: 100%;
+            height: 100%;
+            position: relative;
+
+            .live_swiper_img {
+                width: 100%;
+                height: 100%;
+                border-radius: 12rpx;
+                overflow: hidden;
+                // border: 2rpx solid red;
+            }
+
+            .live_box {
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: rgba(0, 0, 0, 0.4);
+                border-radius: 0rpx 16rpx 0rpx 16rpx;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                font-size: 20rpx;
+                color: #FFFFFF;
+
+                .live_left_box {
                     display: flex;
                     align-items: center;
-                    margin-top: 60rpx;
+                    padding: 4rpx 14rpx;
+                    box-sizing: border-box;
+                    background: #EA3E1A;
+                    border-radius: 0rpx 8rpx 0rpx 0rpx;
+
+                    .live_img {
+                        width: 16rpx;
+                        height: 16rpx;
+                        margin-right: 4rpx;
+                    }
                 }
 
-                .realMoney {
-                    font-weight: 600;
-                    font-size: 28rpx;
-                    color: #000000;
-                    padding-right: 10rpx;
+                .live_number_box {
+                    padding: 4rpx 14rpx;
+                    box-sizing: border-box;
                 }
 
-                .ageMoney {
-                    font-size: 20rpx;
-                    color: #999999;
-                    text-decoration: line-through;
-                }
+            }
+        }
+    }
+
+    .swiper_sign_box {
+        position: absolute;
+        bottom: 12rpx;
+        left: 50%;
+        transform: translate(-50%, 0rpx);
+        display: flex;
+        align-items: center;
+
+        .sign_item {
+            width: 12rpx;
+            height: 12rpx;
+            background: #FFFFFF;
+            opacity: 0.3;
+            margin-left: 8rpx;
+            border-radius: 50%;
+
+            &.is_sign {
+                opacity: 1;
+            }
+        }
+    }
+
+}
+
+.cateListcs {
+    background: #fff;
+    margin: 20rpx 0;
+    padding: 30rpx;
+    border-radius: 30rpx 30rpx 30rpx 30rpx;
+
+    .cateText {
+        font-size: 28rpx;
+        color: #535353;
+    }
+
+    .cateUl {
+        margin-top: 20rpx;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+
+        .cateItem {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20rpx 0;
+            width: 25%;
+
+            .cateIcon {
+                width: 55rpx;
+                height: 55rpx;
+                align-items: center;
+            }
+
+            .cateName {
+                margin-top: 20rpx;
+                font-size: 22rpx;
+                color: #1B1B1B;
             }
         }
     }
 }
 
-.shopbox {
-    padding: 0 24rpx 24rpx;
+.activeCon {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
 
-    .shopli {
-        margin-top: 24rpx;
-        background: #FFFFFF;
-        border-radius: 24rpx;
-        padding: 24rpx;
+    .activeConLeft {
+        width: 48%;
+    }
 
-        .shopimg {
-            position: relative;
-
-            .imgBox1 {
-                width: 210rpx;
-                height: 210rpx;
-            }
-
-            .shopgrade {
-                width: 64rpx;
-                border-radius: 0rpx 0rpx 5rpx 5rpx;
-                position: absolute;
-                left: 50%;
-                margin-left: -32rpx;
-                top: 0;
-                z-index: 50;
-            }
-        }
-
-        .shoprig {
-            margin-left: 24rpx;
-
-            .shoptit {
-                margin-top: 10rpx;
-                font-size: 30rpx;
-                font-weight: 500;
-                line-height: 40rpx;
-                color: #333333;
-            }
-
-            .shopjudge {
-                margin-top: 14rpx;
-
-                .imgBox2 {
-                    width: 30rpx;
-                    height: 30rpx;
-                }
-
-                text {
-                    margin-left: 12rpx;
-                    font-size: 24rpx;
-                    font-weight: 400;
-                    color: #999999;
-                }
-            }
-
-            .shoptip {
-                margin-top: 8rpx;
-                font-size: 26rpx;
-                font-weight: 400;
-                line-height: 42rpx;
-                color: #808080;
-
-                text {
-                    border-right: 2rpx solid #808080;
-                    padding: 0 8rpx;
-
-                    &:last-child {
-                        border: none;
-                    }
-                }
-            }
-
-            .shoppic {
-                margin-top: 20rpx;
-
-                .shopmon {
-                    font-size: 28rpx;
-                    font-weight: 500;
-                    color: #333333;
-
-                    &.left {
-                        font-size: 24rpx;
-                        padding-left: 2rpx;
-                    }
-                }
-
-                .shopdel {
-                    font-size: 24rpx;
-                    font-weight: 400;
-                    color: #999999;
-                    margin-left: 4rpx;
-                    text-decoration: line-through;
-                }
-            }
-        }
+    .activeConRight {
+        width: 48%;
     }
 }
 </style>

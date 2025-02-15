@@ -35,3 +35,11 @@ export const getSerListAll = (params: any) => {
 export const getswiperList = async (placementLocation: number) => {
     return http.order.get('/v1/bc/public/app/activity/list', { placementLocation })
 }
+
+//================================================================================
+/** 营销活动 */
+//================================================================================
+/* 超值购，品牌馆列表数据 */
+export const getactiviList = async (id: number) => {
+    return http.get('api/order/v1/bc/public/app/activity/detail', { id })
+}
