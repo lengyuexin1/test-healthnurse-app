@@ -176,25 +176,23 @@ const detailData: any = ref({
 const detailId = ref('')
 onLoad((option: any) => {
     detailId.value = option.id
-    // columnDetail(option.id).then(res => {
-    //     titleName.value = option.name
-    //     detailData.value = res
-    //     isAdorn.value = res.isAdorn
-    //     if (res.isAdorn) {
-    //         // 轮播图
-    //         getBannerList(res.bannerIds)
-    //         //类目产品
-    //         faList.value = res.categoryList
-    //         if (faList.value.length > 0) {
-    //             faList.value.forEach((element: any) => {
-    //                 channeCatelList(element, element.categoryIds)
-    //             })
-    //         }
-    //         // 优惠券
-    //         getCouList(res.couponIds)
-    //     }
+    columnDetail(option.id).then(res => {
+        detailData.value = res
+        if (res.bannerIds) {
+            // 轮播图
+            getBannerList(res.bannerIds)
+        }
+        //类目产品
+        faList.value = res.categoryIds
+        if (faList.value.length > 0) {
+            faList.value.forEach((element: any) => {
+                // channeCatelList(element, element.categoryIds)
+            })
+        }
+        // 优惠券
+        getCouList(res.couponIds)
 
-    // })
+    })
 })
 
 const noticeData = ref(['休闲/玩乐'])
@@ -350,14 +348,12 @@ const getBannerList = (data: any) => {
     bannerList(dares).then(res => {
         swiperList.value = res
         console.log(swiperList.value, '轮播图');
-
     })
 }
 
 const useCou = () => {
     // diajCou.value = false
     // cateList.value = []
-    // isAdorn.value = 0
     gotoCateArrList({ type: 1, id: detailId.value })
 }
 const seeMonr = (item: any) => {
@@ -366,7 +362,6 @@ const seeMonr = (item: any) => {
     // gotoCateList({id: item.id})
     // diajCou.value = false
     // cateList.value = item.categoryIds
-    // isAdorn.value = 0
 }
 </script>
 <style lang="scss" scoped>

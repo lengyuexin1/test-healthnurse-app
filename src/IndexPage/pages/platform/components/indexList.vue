@@ -50,8 +50,8 @@
         <!-- 首页列表 -->
         <view class="deCionBox">
             <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index" @click="gotoColmDetail(index, item)">
-                <image class="left_menu_img" :src="item.url" mode="scaleToFill" />
-                <view class="iconText">{{ item.title }}</view>
+                <image class="left_menu_img" :src="item.icon" mode="scaleToFill" />
+                <view class="iconText">{{ item.name }}</view>
             </view>
         </view>
         <!-- 甄选推荐 -->
@@ -233,16 +233,11 @@ const NavId = ref(1)
 const dataObj: any = ref({})
 const dataObjTwo: any = ref({})
 const tabsData: any = ref([
-    { id: '10', url: getAssetsPic('/fare/v2/home_icon_jujia.png'), title: '居家照护', typeId: 11, colnum: 3, hotTag: null, activity_id: 3, templateCode: 65793 },
-    { id: '16', url: getAssetsPic('/fare/v2/home_icon_zhuyuan.png'), title: '住院陪护', typeId: 13, colnum: 5, hotTag: null, activity_id: 5, templateCode: 65800 },
-    { id: '4', url: getAssetsPic('/fare/v2/home_icon_peizhen.png'), title: '就医协助', typeId: 12, colnum: 3, hotTag: null, activity_id: 4, templateCode: 65795 },
-    { id: '6', url: getAssetsPic('/fare/v2/home_icon_lift.png'), title: '生活服务', typeId: 16, colnum: 4, hotTag: null, activity_id: 7, templateCode: 65797 },
-    { id: '489', url: getAssetsPic('/fare/v2/sma-car.png'), title: '代办服务', templateId: 123, templateCode: 0 },
-    { id: '88', url: getAssetsPic('/fare/v2/zhihui.png'), title: '智慧康护', templateId: 123, templateCode: 0 },
-    { id: '2', url: getAssetsPic('/fare/v2/home_icon_heal.png'), title: '到家健康', typeId: 15, colnum: 3, hotTag: '上门', activity_id: 6, templateCode: 65798 },
-    { id: '5', url: getAssetsPic('/fare/v2/gre-cai.png'), title: '到店健康', typeId: 4, templateCode: 131586 },
-    { id: '8', url: getAssetsPic('/fare/v2/home_icon_jigou.png'), title: '找机构', templateId: 122, templateCode: 0 },
-    { id: '360', url: getAssetsPic('/fare/home-more.png'), title: '全部服务', templateId: 122, templateCode: 0 },
+    { id: '88', icon: getAssetsPic('/fare/v2/zhihui.png'), name: '智慧康护',flagCode: 1 },
+    { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康',flagCode: 1  },
+    { id: '5', icon: getAssetsPic('/fare/v2/gre-cai.png'), name: '到店健康', flagCode: 1},
+    { id: '8', icon: getAssetsPic('/fare/v2/home_icon_jigou.png'), name: '找机构', flagCode: 1 },
+    { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 },
 ])
 
 interface Props {
@@ -262,9 +257,12 @@ const upCalik = (item: any, index: number) => {
 
 const gotoColmDetail = (index: any, item: any) => {
     console.log(index, item)
-    gotoZone()
-    if (index == 5) {
-        return gotoWisdom()
+    if (item.flagCode) {
+        // 跳转默认页
+        // return gotoWisdom()
+    } else {
+        // 跳转微页面
+        return gotoZone(item.id, item.name) 
     }
 }
 
@@ -384,7 +382,7 @@ const healthMyData = (list: any) => {
         }
         // 导航栏
         if (element.moduleId == 2) {
-            // getTabbar(element.dataIds)
+            getTabbar(element.dataIds)
         }
         // 新人活动
         if (element.moduleId == 3) {
@@ -478,7 +476,22 @@ const scrollPage = (e: any) => {
     else {
         emit('changeTabbarTop', true)
     }
+}
 
+const getTabbar = (data: any) => {
+    const dares = {
+        ids: data
+    }
+    columnList(dares).then(res => {
+        tabsData.value.unshift(...res)
+        console.log(tabsData.value)
+        
+        // tabsData.value = res
+        // if (res.length > 0) {
+        //     columnDetail(res[0].id).then(res => {
+        //     })
+        // }
+    })
 }
 
 const bcNotify = ref()

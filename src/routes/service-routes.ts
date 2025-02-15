@@ -6,7 +6,7 @@ import { pageController } from '@bc/uni-tools'
  *
  */
 
-//服务详情
+//上门服务详情
 export const gotoserviceDetail = (itemId: string) => {
     console.log('没有服务详情界面')
     const route = {
@@ -17,9 +17,29 @@ export const gotoserviceDetail = (itemId: string) => {
     return pageController.push(route)
 }
 
+// 到店服务详情
+export const gotoServiceStore = (query: any) => {
+    const route = {
+        path: '/pagesService/pages/serviceDetail/serviceDetail',
+        query
+    } as any
+    return pageController.push(route)
+}
+
+// 机构详情
+export const gotoServiceOrg = (query: any) => {
+    const route = {
+        path: '/pagesService/pages/Servicestore/choiceDetails',
+        query
+    } as any
+    return pageController.push(route)
+}
+
+
+
 export const gotoShopDetail = (shopId: string) => {
     const route = {
-        path: '/pagesGoods/pages/shop/shopDetail',
+        path: '/pagesMall/pages/shop/shopDetail',
         query: { id: shopId }
     } as any
     return pageController.push(route)
@@ -32,19 +52,11 @@ export const gotoShopDetail = (shopId: string) => {
  *
  */
 
-// 乐悠机构详情
-export const gotoServiceStore = (query:any) => {
-    const route = {
-        path: '/pagesService/pages/serviceDetail/serviceDetail',
-        query
-    } as any
-    return pageController.push(route)
-}
 
 
 
 // 超值券详情
-export const voucherDetails = (query:any) => {
+export const voucherDetails = (query: any) => {
     const route = {
         path: '/pagesService/pages/Servicestore/voucherDetails',
         query
@@ -53,7 +65,7 @@ export const voucherDetails = (query:any) => {
 }
 
 // 乐悠产品详情
-export const gotohealthproductDetails = (query:any) => {
+export const gotohealthproductDetails = (query: any) => {
     const route = {
         path: '/pagesService/pages/Servicestore/healthproductDetails',
         query
@@ -62,7 +74,7 @@ export const gotohealthproductDetails = (query:any) => {
 }
 
 // 机构以及产品评论列表
-export const serviceComment = (id:string, son:number = 1) => {
+export const serviceComment = (id: string, son: number = 1) => {
     const route = {
         path: '/pagesService/pages/Servicestore/serviceComment',
         query: {
@@ -74,20 +86,20 @@ export const serviceComment = (id:string, son:number = 1) => {
 }
 
 // 机构图集列表
-export const toimgInstitution = (query:any) => {
+export const toimgInstitution = (query: any) => {
     const route = {
         path: '/pagesService/pages/Servicestore/imgInstitution',
         query
-    }as any
+    } as any
     return pageController.push(route)
 }
 
 // 机构列表内页
-export const toInnerPage = (query:any) => {
+export const toInnerPage = (query: any) => {
     const route = {
         path: '/pagesService/pages/InnerPage/InnerPage',
         query
-    }as any
+    } as any
     return pageController.push(route)
 }
 
@@ -101,7 +113,7 @@ export const toInnerPage = (query:any) => {
  * tosearch 是否进入就直接搜索 1 是 0 否
  *
  */
-export const gotosearch = (query?:any) => {
+export const gotosearch = (query?: any) => {
     const route = {
         path: '/IndexPage/pages/search/search',
         query
@@ -112,7 +124,7 @@ export const gotosearch = (query?:any) => {
 /**
  * 康养屯 康养服务页面
  */
-export const gotoserviceLnnerPage = (query:any) => {
+export const gotoserviceLnnerPage = (query: any) => {
     const route = {
         path: '/pagesService/pages/InnerPage/serviceLnnerPage',
         query
@@ -123,7 +135,7 @@ export const gotoserviceLnnerPage = (query:any) => {
 /**
  * 康养屯 康养服务子页面
  */
-export const gotoserviceLnnerSonPage = (query:any) => {
+export const gotoserviceLnnerSonPage = (query: any) => {
     const route = {
         path: '/pagesService/pages/InnerPage/serviceLnnerSonPage',
         query
@@ -147,7 +159,7 @@ export const gotoServiceExpo = () => {
  * 扫码跳转
  *
  */
-export const gotoScanCode = (path:any, query:any) => {
+export const gotoScanCode = (path: any, query: any) => {
     const route = {
         path,
         query

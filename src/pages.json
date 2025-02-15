@@ -144,6 +144,14 @@
           }
         },
         {
+          "path": "pages/platform/newUser",
+          "style": {
+            "navigationBarTitleText": "新人特惠",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
           "path": "pages/my/update",
           "style": {
             "navigationStyle": "custom",
