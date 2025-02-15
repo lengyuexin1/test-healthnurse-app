@@ -73,6 +73,11 @@ export const servicelist = (req: any) => {
     return http.post('api/search/v1/bc/public/es/item/list', req)
 }
 
+/** 首页tab列表*/
+export const indexTabList = (req: any) => {
+    return http.get('api/order/v1/bc/public/app/adorn/navbar/list', {id :req})
+}
+
 /* 商品列表(猜你喜欢) */
 export const getGoodsList = (req: _v1_bc_app_product_list_post_req) => {
     return http.order.post('/v1/bc/app/product/list', req)

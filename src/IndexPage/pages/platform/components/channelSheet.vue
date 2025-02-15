@@ -21,7 +21,7 @@
                     </view>
                 </view>
             </view>
-        </TnPopup>>
+        </TnPopup>
     </view>
 </template>
 
