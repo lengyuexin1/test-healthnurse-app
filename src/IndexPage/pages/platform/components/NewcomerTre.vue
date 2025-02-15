@@ -6,7 +6,7 @@
                 <text class="activitit">品质服务的首选</text>
             </view>
             <scroll-view class="sett-seler row i-center" scroll-x>
-                <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.subsetList" :key="item.id"
+                <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.shopList" :key="item.id"
                     @click.stop="gotoSettled(item)">
                     <view class="sett-seli-img">
                         <image class="imgsel" :src="item.thumb"></image>
@@ -94,7 +94,7 @@ const gotoSettled = (item: any) => {
 
     .sett-seli {
         display: inline-flex;
-        margin-right: 42rpx;
+        margin-right: 32rpx;
 
         .sett-seli-img {
             border: 4rpx solid #FFFFFF;
@@ -123,6 +123,7 @@ const gotoSettled = (item: any) => {
             margin-top: -20rpx;
             position: relative;
             z-index: 30;
+            overflow: hidden;
         }
     }
 }
