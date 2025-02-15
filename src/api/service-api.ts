@@ -13,6 +13,18 @@ import type { _v1_bc_api_comment_commodity_list_post_req, _v1_bc_api_comment_sco
 export const getcategoryList = (req:any) => {
     return openHttp.order.get('/v1/bc/app/category_show/list', req)
 }
+/** 服务列表 */
+export const agencylist = (req:any) => {
+    return openHttp.order.post('/v1/bc/public/app/agency/list', req)
+}
+/** 康养es列表 */
+export const getOrganEsList = (req:any) => {
+    return openHttp.post('api/search/v1/bc/public/es/shop/list', req)
+}
+/** 机构服务预约 */
+export const prebookSave = (req:any) => {
+    return http.order.post('/v1/bc/app/prebook/save', req)
+}
 
 /* 服务加入购物车 */
 export const addServeCart = async (params: { optionId: string, hospitalId?: string }) => {

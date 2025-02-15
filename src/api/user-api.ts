@@ -13,7 +13,10 @@ const WEB_ENV: TEnv = import.meta.env.VITE_WEB_ENV as TEnv
 export const getNoticeConfig = () => {
     return http.message.get('/v1/bc/app/config/get')
 }
-
+/* 机构详情获取手机号码 */
+export const sendMobileCode = (req) => {
+    return http.user.get('/ali/sms/sendBindCode', req)
+}
 /* 设置通知状态 */
 export const setNoticeConfig = (isPush: any) => {
     return http.message.post('/v1/bc/app/config/push', { isPush })

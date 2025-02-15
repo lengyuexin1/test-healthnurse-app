@@ -160,7 +160,7 @@
                 <!-- :class="{'have_max':!showmoreroom}" -->
                 <div class="more_room">
                     <div class="more_room_title">产品列表</div>
-                    <div class="more_room_item" v-for="item in showRoom(productList)" :key="item.id">
+                    <div class="more_room_item" v-for="item in showRoomList" :key="item.id">
                         <div class="more_room_item_right">
                             <image class="more_right_img" :src="item.mainPics && item.mainPics[0]" mode="scaleToFill" />
                             <div class="more_right_text">
@@ -230,103 +230,188 @@
                     </div>
                 </div>
             </view>
+            <template #bottom>
+            <view class="bottom_btn">
+                <!-- <div class="contact" @click="gotoIMSessionChat">联系客服</div> -->
+                <div class="call_yuyue" @click="popupShow = true">点击预约</div>
+                <div class="call" @click="openAuth">拨打电话</div>
+            </view>
+        </template>
     </z-paging>
+    <TnPopup v-model="popupShow"
+             mode="center"
+              width="94%"
+            :safeAreaInsetBottom="false"
+            :round="10"
+            :closeable="true"
+            @close="popupShow = false,makeType = 1,detailObj.phone = '',detailObj.code = ''"
+           >
+                <view class="popup-box">
+                <block v-if="makeType == 1">
+                    <view class="title">预约到店</view>
+                    <view class="box_phone">预约后商户将通过电话联系您</view>
+                    <view class="popup_content">
+                        <view class="popup_phone">{{ detailObj.mobile }}</view>
+                        <view class="popup_edit" @click="makeEdit">
+                            点击修改
+                            <u-icon name="arrow-right"></u-icon>
+                        </view>
+                    </view>
+                </block>
+                <block v-if="makeType == 2">
+                    <view class="popup_box">
+                        <view class="content">
+                            <view class="item row j-between i-center">
+                                <view class="title">手机号</view>
+                                <view class="input">
+                                    <TnInput
+                                        maxlength="11"
+                                        type="number"
+                                        placeholder="请输入手机号"
+                                        inputAlign="right"
+                                        :clearable="true"
+                                        border="none"
+                                        v-model="detailObj.phone"
+                                    ></TnInput>
+                                </view>
+                            </view>
+                            <view style="color: red; text-align: right; font-size: 24rpx;" v-if="isEmptyPhone">{{ phoneText }}</view>
+                            <view class="item row j-between i-center" style="border-bottom: none; margin-top: 50rpx;">
+                                <view class="title">验证码</view>
+                                <view class="input">
+                                    <TnInput
+                                        type="number"
+                                        placeholder="请输入验证码"
+                                        inputAlign="right"
+                                        :clearable="true"
+                                        border="none"
+                                        v-model="detailObj.code"
+                                        @input="codeInput"
+                                        maxlength="4"
+                                    >
+                                        <template v-slot:suffix>
+                                            <TnButton bg-color="white" text-color="#41A0FE" font-size="26rpx" :disabled="countdown > 0" @click="getCode">
+                                {{countdown > 0 ? `${countdown}秒后重新获取` : '获取验证码' }}
+                            </TnButton>
+
+                                        </template>
+                                    </TnInput>
+                                </view>
+                            </view>
+                            <!-- <view style="color: red; text-align: right; font-size: 24rpx;" v-if="isEmptyCode">请输入验证码</view> -->
+                        </view>
+                    </view>
+                </block>
+            </view>
+            <view v-if="makeType == 3" class="successful">
+                <image src="@/static/appointment.png" mode="scaleToFill" class="successful_image" />
+                <view class="successful_title">预约成功</view>
+                <view class="successful_desc">我们将很快为您处理，请留意回访电话。</view>
+            </view>
+            <view class="popup_healt" @click="appointment">
+                <view class="popup_but">{{makeType == 3 ? '知道了' : '立即预约' }}</view>
+            </view>
+            <BCNotify ref="bcNotify"></BCNotify>
+        </TnPopup>
+        <shareView @sharePage="sharePage" ref="shaView" :detailObj="shareObj" :path="path"></shareView>
+        <yk-authpup ref="authpup" :isNativeHead="false" type="top" @changeAuth="callfun" permissionID="CALL_PHONE"></yk-authpup>
 </view>
 </template>
 <script setup>
+import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
+import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
+import TnInput from '@tuniao/tnui-vue3-uniapp/components/input/src/input.vue'
+import shareView from '@/pagesCnt/components/shareView/shareView.vue'
+import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
+import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
+import PageTopbg from '@/components/page-topbg/page-topbg.vue'
+import { getAssetsPic } from '@/common/setPicture'
+import { formattime } from '@/common/formatTime'
+import BCNotify from '@/components/notify/index.vue'
 
-// import { getAssetsPic } from "@/common/setPicture.js"
-// import {
-//     gotoproductDetails,
-//     gototextInstitution,
-//     gotoimgdetails,
-//     gotochoiceDetails
-// } from "@/route/plateform-routes"
-// import shareView from "@/Channel/components/shareView/shareView.vue"
-// import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
-// import {
-//     agencylist,
-//     getorganizationDetail,
-//     getOrganEsList,
-//     prebookSave
-// } from "@/api/agency-api"
-// import { gotoIMSessionChat } from "@/route/message-routes"
-// import { shopAdd, shopCancel } from "@/api/care-api"
+import { sendMobileCode, getDestroyInfo } from '@/api/user-api'
+import { organizationDetail, agencylist, getOrganEsList, prebookSave } from '@/api/service-api'
 import { PlatformManage } from '@bc/sys'
-// import {
-//     getLoginCode,
-//     sendMobileCode
-// } from '@/api/open-api'
-// import recommend from "@/libs/recommend"
-// import { appear } from "@/api/user-api"
-// import agencyItem from "@/components/agencyItem/agencyItem.vue"
-import { ref, reactive, computed, onMounted } from 'vue'
-import ykAuthpup from './components/ykAuthpup.vue'
-import agencyItem from './components/agencyItem.vue'
+import { ref, reactive, computed, onMounted, onBeforeMount, watch } from 'vue'
+import { useRoute } from 'vue-router' // Assuming you're using vue-router
 
+const route = useRoute()
+const authpup = ref()
+const countdown = ref(0)
+const makeType = ref(1)
+const itemId = ref('')
+const swiperIndex = ref(0)
+const count = ref(3)
+const phoneText = ref('')
+const isEmptyPhone = ref(false)
+const tips = ref('获取验证码')
+const popupShow = ref(false)
+const showmoreroom = ref(false)
+const detailObj = reactive({})
+const productList = ref([])
+const shareObj = ref({})
+const path = ref('')
+const isColl = ref(false)
+const backChannellist = ref(false)
+const needlogin = ref(false)
 
-const typeTitle = ref < string > ('')
-const show = ref < boolean > (false)
-const showregion = ref < boolean > (false)
-const showcategory = ref < boolean > (false)
-const showpriceItem = ref < boolean > (false)
-const navbarTop = ref < number > (175)
-const rateValue = ref < number > (3)
-const areaList = ref([]) // Adjust the type according to the actual data structure
-const areaIndex = ref(null)
-const categoryList = ref([]) // Adjust the type according to the actual data structure
-const categoryIndex = ref(null)
-const dataList = ref([]) // Adjust the type according to the actual data structure
+const positioning = ref(false)
+const coordinate = reactive({})
 
-const parentId = ref < number > (0)
-const templateId = ref(null)
+const dataList = ref([])
+const isAd = ref(0)
 
-const positioning = ref < boolean > (false)
-const coordinate = reactive < Location > ({ lat: 0, lng: 0 })
-const longitude = ref < number > (0)
-const latitude = ref < number > (0)
-
-const categoryId = ref(null)
-const categoryIds = ref([])
-const districtId = ref(null)
-const districtIds = ref([])
-const sortType = ref < number > (0) // Price sorting: 1 ascending, 2 descending, 0 not selected
-
-const priceItemlist = [
-    { id: 1, maxPrice: 100000, minPrice: null },
-    { id: 2, maxPrice: 200000, minPrice: 100000 },
-    { id: 3, maxPrice: 300000, minPrice: 200000 },
-    { id: 4, maxPrice: 500000, minPrice: 300000 },
-    { id: 5, maxPrice: 1000000, minPrice: 500000 },
-    { id: 6, maxPrice: 1200000, minPrice: 1000000 },
-    { id: 7, maxPrice: null, minPrice: 1200000 }
+const tagList = [
+    { id: 1, name: "自理" },
+    { id: 2, name: "半自理" },
+    { id: 3, name: "全护理" },
+    { id: 4, name: "特护" },
+    { id: 5, name: "临终关怀" }
 ]
-const priceId = ref < number > (0)
-const priceIndex = ref(null)
 
 const getAssetsUrl = computed(() => (str) => getAssetsPic(str))
-const setShopPic = computed(() => (str) => setPriceVer(str))
 
-const baseGrade = computed(() => (type) => {
-    switch (type) {
-        case 4:
-            return false
-        default:
-            return getAssetsPic(`/shop/seller_level_${type}.png`)
+const showRoomList = computed(() => () => !showmoreroom.value ? productList.value.slice(0, 2) : productList.value)
+
+
+const timeFormat = computed(() => (time) => {
+    return formattime(time, 'YYYY-MM-DD')
+})
+
+const area = computed(() => (area) => {
+    const s = area / 10000
+    return s.toFixed(1)
+})
+const makeEdit = () => {
+    makeType.value = 2
+}
+// 收藏/取消收藏 机构
+const setColl = () => {
+    if (needlogin.value) {
+        tochoiceDetails(this.detailObj.shopId, 0, true)
+        return
     }
-})
-
-const getdistance = computed(() => (lat, lng) => {
-    const distance = getDistances(latitude.value, longitude.value, lat, lng)
-    return distance
-})
+    setTimeout(() => {
+        isColl.value ? shopCancel({
+            shopIds: [detailObj.shopId]
+        }).then(() => {
+            isColl.value = false
+            bcNotify.value.show('取消收藏')
+        }) : shopAdd(detailObj.shopId).then(() => {
+            isColl.value = true
+            bcNotify.value.show('收藏成功')
+        })
+    }, 300)
+    this.$refs.paging.reload()
+}
+const tochoiceDetails = (itemId, tologin = false) => {
+    gotochoiceDetails(itemId, tologin)
+}
+const isForward = computed(() => recommend.get())
 
 const showprice = computed(() => (min, max) => {
     if (min && max) {
-        if (min === max) {
-            return 1
-        }
-        return 2
+        return min === max ? 1 : 2
     }
     else if (!min && !max) {
         return 3
@@ -336,220 +421,226 @@ const showprice = computed(() => (min, max) => {
     }
 })
 
-const priceText = computed(() => (index) => {
-    if (index === 999) {
-        return "不限"
-    }
-    else if (index && maxPrice.value && minPrice.value) {
-        return `${minPrice.value / 100}-${maxPrice.value / 100}`
-    }
-    else if (index === 0 && maxPrice.value && !minPrice.value) {
-        return `${maxPrice.value / 100}以下`
-    }
-    else if (index && !maxPrice.value && minPrice.value) {
-        return `${minPrice.value / 100}以上`
-    }
-    else {
-        return "价格"
-    }
+const showswiper = computed(() => (list) => {
+    if (!list.length) { return }
+    return list.length > 5 ? list.slice(0, 5) : list
+})
+
+const notright = computed(() => (list, index) => {
+    return list.length === 1 || list.length === index + 1
+})
+
+const slogan = computed(() => {
+    const slogList = [
+        '我在保椿照护，找到一家超舒适的养老机构！',
+        '保椿照护上的养老机构，真的很专业！'
+    ]
+    return slogList[Math.floor(Math.random() * slogList.length)]
+})
+const showroom = () => {
+    showmoreroom.value = !showmoreroom.value
+}
+onBeforeMount(() => {
+    const options = route.query
+    itemId.value = options.itemId
+    isAd.value = options.isAd
+
+    PlatformManage.isRequireLogin().then((loginRequired) => {
+        needlogin.value = loginRequired
+        if (!needlogin.value) {
+            queryList()
+        }
+    })
+
+    getagencylist(itemId.value)
+    getorganizationDetail(itemId.value, isAd.value)
 })
 
 onMounted(() => {
-    console.log('Mounted', parentId.value)
-    parentId.value = templateId.value === 122 ? options.parentId : 440100
-    templateId.value = options.templateId
-    hasAreaList()
-
-    if (templateId.value === 122) {
-        typeTitle.value = "找机构"
-        getStairCategory(12)
+    if (process.env.PLATFORM === 'app') {
+    // This will be executed in APP-PLUS
     }
     else {
-        typeTitle.value = "找康养"
-        getStairCategory(13)
-    }
-
-    getnavbarTop()
-    if (uni.getPlatform() === 'APP-PLUS') {
-        $refs.authpup.open()
-    }
-    else {
-        getLocation()
+        // getLocation()
     }
 })
 
-function getLocation() {
+watch(() => route, (newVal) => {
+    // Handle route changes if needed
+})
+const callfun = () => {
+    uni.makePhoneCall({
+        phoneNumber: this.detailObj.telephones
+    })
+}
+//这个是自己的方法名
+const openAuth = () => {
+    // #ifdef APP-PLUS
+    authpup.value.open() //调起自定义权限目的弹框,具体可看示例里面很详细
+    // #endif
+
+    // #ifndef APP-PLUS
+    callfun()
+    // #endif
+}
+const codeInput = () => {
+    isEmptyCode.value = !code.value
+}
+const isValidPhoneNumber = (phoneNumber) => {
+    const regex = /^1[0-9]{10}$/
+    return regex.test(phoneNumber)
+}
+const bcNotify = ref()
+const getCode = async () => {
+    if (!detailObj.phone) {
+        isEmptyPhone.value = true
+        bcNotify.value.show('请填写手机号码')
+        return
+    }
+    if (!isValidPhoneNumber(detailObj.phone)) {
+        isEmptyPhone.value = true
+        bcNotify.value.show('请填写正确的手机号码')
+        return
+    }
+
+    uni.showLoading({ title: '正在获取验证码' })
+    try {
+        const res = await sendMobileCode({ mobile: detailObj.phone })
+        uni.hideLoading()
+        if (res !== 1) {
+            smsCode.value = res
+        }
+        if (countdown.value === 0) {
+            countdown.value = 60
+            const intervalId = setInterval(() => {
+                if (countdown.value > 0) {
+                    countdown.value--
+                    isEmptyPhone.value = false
+                }
+                else {
+                    clearInterval(intervalId)
+                }
+            }, 1000)
+        }
+
+    }
+    catch (err) {
+        bcNotify.value.show(err.message)
+    }
+
+
+}
+const getDistancesfun = () => {
+    return new Promise((resolve, reject) => {
+        uni.getLocation({
+            type: "gcj02",
+            isHighAccuracy: true,
+            success: (res) => {
+                positioning.value = true
+                resolve({
+                    lat1: res.latitude,
+                    lng1: res.longitude
+                })
+            },
+            fail: (err) => {
+                positioning.value = false
+                reject(err)
+            }
+        })
+    })
+}
+const getLocation = () => {
     getDistancesfun().then((res) => {
         coordinate.lat = res.lat1
         coordinate.lng = res.lng1
     })
 }
 
-function queryList(pageNumber, pageSize) {
-    getOrganEsList({
-        pageNumber,
-        pageSize,
-        query: {
-            categoryIds: categoryIds.value,
-            districtIds: districtIds.value,
-            businessType: templateId.value === 122 ? 4 : 3,
-            maxPrice: priceIndex.value === 999 ? null : maxPrice.value || null,
-            minPrice: priceIndex.value === 999 ? null : minPrice.value || null
-        }
-    }).then((res) => {
-        res.forEach((item) => {
-            appear({ shopId: item.id, eventId: 1 })
+const queryList = async () => {
+    try {
+        const res = await getOrganEsList({
+            pageNumber: 1,
+            pageSize: 10,
+            query: { businessType: 4 }
         })
-        $refs.paging.complete(res)
-    })
+        dataList.value = res
+    }
+    catch (err) {
+        console.log(err)
+    }
 }
 
-function getStairCategory(type) {
-    const action = type === 13
-        ? getCategoryShowList({ id: 18, appType: 1 })
-        : getCategoryShowList({ id: 17, appType: 1 })
+const appointment = async () => {
+    if (makeType.value === 3) {
+        popupShow.value = false
+        makeType.value = 1
+        return
+    }
+    if (makeType.value === 2 && !detailObj.phone) {
+        return bcNotify.value.show('请输入正确手机号')
+    }
+    if (makeType.value === 2 && !detailObj.code) {
+        return bcNotify.value.show('请输入验证码')
+    }
 
-    action.then((res) => {
-        categoryList.value = res
-    })
+    try {
+        await prebookSave({ shopId: detailObj.shopId, phone: makeType.value !== 1 ? detailObj.phone : '', code: detailObj.code })
+        makeType.value = 3
+        detailObj.phone = ''
+        detailObj.code = ''
+    }
+    catch (error) {
+        console.log(error.message)
+        bcNotify.value.error(error.message)
+    }
 }
 
-function hasAreaList() {
-    getAreaList(parentId.value).then((res) => {
-        areaList.value = res
-        $refs.paging.reload()
-    })
-}
+// You can add the rest of the methods similarly...
 
-function getnavbarTop() {
-    $u.getRect("#navbarTop").then((res) => {
-        navbarTop.value = res.height
-    })
-}
-
-function getDistancesfun() {
-    return new Promise() < { lat1: number, lng1: number } > ((resolve, reject) => {
-        uni.getLocation({
-            type: "gcj02",
-            isHighAccuracy: true,
-            success: (res) => {
-                positioning.value = true
-                console.log("定位成功")
-                resolve({ lat1: res.latitude, lng1: res.longitude })
-            },
-            fail: (err) => {
-                positioning.value = false
-                console.log("定位失败")
-                reject(err)
-            }
+const getorganizationDetail = async (shopId, isAd) => {
+    try {
+        const res = await organizationDetail({ shopId, isAd })
+        const userinfo = uni.getStorageSync("userinfo")
+        getDestroyInfo().then(res => {
+            detailObj.mobile = res.mobile
         })
-    })
-}
-
-function showRegion() {
-    showcategory.value = false
-    showpriceItem.value = false
-    showregion.value = !showregion.value
-    show.value = showregion.value
-}
-
-function showCategory() {
-    showregion.value = false
-    showpriceItem.value = false
-    showcategory.value = !showcategory.value
-    show.value = showcategory.value
-}
-
-function changePrice() {
-    showcategory.value = false
-    showregion.value = false
-    showpriceItem.value = !showpriceItem.value
-    show.value = showpriceItem.value
-}
-
-function clickarea(item) {
-    if (districtIds.value.includes(item.id)) {
-        const districtIndex = districtIds.value.indexOf(item.id)
-        if (districtIndex !== -1) {
-            districtIds.value.splice(districtIndex, 1)
-        }
-        return
+        Object.assign(detailObj, res)
+        console.log(detailObj)
+        isColl.value = res.isFavorite
+        appear({ shopId })
     }
-    districtIds.value.push(item.id)
-}
-
-function clickcategory(item) {
-    if (categoryIds.value.includes(item.id)) {
-        const categoryIndex = categoryIds.value.indexOf(item.id)
-        if (categoryIndex !== -1) {
-            categoryIds.value.splice(categoryIndex, 1)
-        }
-        return
-    }
-    categoryIds.value.push(item.id)
-}
-
-function clickpriceItem(item, index) {
-    if (priceIndex.value === index) {
-        priceIndex.value = null
-        maxPrice.value = null
-        minPrice.value = null
-        return
-    }
-    priceIndex.value = index
-    maxPrice.value = item.maxPrice
-    minPrice.value = item.minPrice
-}
-
-function selected() {
-    allClose()
-    $refs.paging.reload()
-}
-
-function allClose() {
-    show.value = false
-    showregion.value = false
-    showcategory.value = false
-    showpriceItem.value = false
-}
-
-function resetting() {
-    if (showregion.value) {
-        districtIds.value = []
-    }
-    if (showcategory.value) {
-        categoryIds.value = []
-    }
-    if (showpriceItem.value) {
-        priceIndex.value = null
-        maxPrice.value = null
-        minPrice.value = null
+    catch (err) {
+        console.log(err)
     }
 }
 
-function searKey() {
-    gotoSearch()
+const getagencylist = async (organizationId) => {
+    try {
+        const res = await agencylist({ pageSize: 10, pageNumber: 1, query: { organizationId } })
+        productList.value = res || []
+    }
+    catch (err) {
+        console.log(err)
+    }
 }
 
-function tochoiceDetails(item) {
-    if (templateId.value === 122) {
-        gotochoiceDetails(item.id, item.isAd)
-    }
-    else {
-        gotohealthDetails(item.id, item.isAd)
-    }
-}
+
+
 </script>
 
 
 <style lang="scss" scoped>
+.popup-box{
+   padding:30rpx;
+}
 .successful {
+    padding-top: 80rpx;
     position: relative;
     .successful_image {
         width: 140rpx;
         height: 140rpx;
         left: 50%;
-        top: -70rpx;
+        top: -150rpx;
         transform: translateX(-50%);
         position: absolute;
     }
@@ -579,6 +670,7 @@ function tochoiceDetails(item) {
 
         .title {
             flex-shrink: 0;
+            margin-right: 50rpx;
         }
     }
 }
@@ -587,9 +679,8 @@ function tochoiceDetails(item) {
     background: #29c86f;
     border-radius: 46rpx;
     font-size: 32rpx;
-    margin-top: 50rpx;
+    margin:32rpx;
     text-align: center;
-    margin-bottom: 12rpx;
     color: #ffffff;
     line-height: 90rpx;
 }
