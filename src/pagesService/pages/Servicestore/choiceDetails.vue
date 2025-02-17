@@ -179,7 +179,7 @@
                         </div>
                         <div class="more_room_item_left">
                             <div class="more_room_price_box">
-                                <div class="more_room_price">￥{{ item.price | moneyFilter }}</div>
+                                <div class="more_room_price">￥{{ item.price || moneyFilter }}</div>
                                 <div class="more_room_extend">/{{ item.unit == 1 ? "日" : "月" }}</div>
                             </div>
                             <div class="show_btn" @click="tuproduct(item.id)">查看</div>
@@ -292,7 +292,7 @@
                                         <template v-slot:suffix>
                                             <TnButton bg-color="white" text-color="#41A0FE" font-size="26rpx" :disabled="countdown > 0" @click="getCode">
                                 {{countdown > 0 ? `${countdown}秒后重新获取` : '获取验证码' }}
-                            </TnButton>
+                                </TnButton>
 
                                         </template>
                                     </TnInput>
@@ -329,7 +329,7 @@ import { getAssetsPic } from '@/common/setPicture'
 import { formattime } from '@/common/formatTime'
 import BCNotify from '@/components/notify/index.vue'
 
-import { sendMobileCode, getDestroyInfo } from '@/api/user-api'
+import { sendMobileCode, getDestroyInfo, unHealthShop, addShop } from '@/api/user-api'
 import { organizationDetail, agencylist, getOrganEsList, prebookSave } from '@/api/service-api'
 import { PlatformManage } from '@bc/sys'
 import { ref, reactive, computed, onMounted, onBeforeMount, watch } from 'vue'
@@ -360,7 +360,7 @@ const coordinate = reactive({})
 
 const dataList = ref([])
 const isAd = ref(0)
-
+const shaView = ref()
 const tagList = [
     { id: 1, name: "自理" },
     { id: 2, name: "半自理" },
@@ -377,7 +377,13 @@ const showRoomList = computed(() => () => !showmoreroom.value ? productList.valu
 const timeFormat = computed(() => (time) => {
     return formattime(time, 'YYYY-MM-DD')
 })
-
+const slogan = computed(() => {
+    const slogList = [
+        '我在保椿照护，找到一家超舒适的养老机构！',
+        '保椿照护上的养老机构，真的很专业！'
+    ]
+    return slogList[Math.floor(Math.random() * slogList.length)]
+})
 const area = computed(() => (area) => {
     const s = area / 10000
     return s.toFixed(1)
@@ -388,16 +394,16 @@ const makeEdit = () => {
 // 收藏/取消收藏 机构
 const setColl = () => {
     if (needlogin.value) {
-        tochoiceDetails(this.detailObj.shopId, 0, true)
+        tochoiceDetails(detailObj.shopId, 0, true)
         return
     }
     setTimeout(() => {
-        isColl.value ? shopCancel({
+        isColl.value ? unHealthShop({
             shopIds: [detailObj.shopId]
         }).then(() => {
             isColl.value = false
             bcNotify.value.show('取消收藏')
-        }) : shopAdd(detailObj.shopId).then(() => {
+        }) : addShop({ shopId: detailObj.shopId }).then(() => {
             isColl.value = true
             bcNotify.value.show('收藏成功')
         })
@@ -405,8 +411,60 @@ const setColl = () => {
     this.$refs.paging.reload()
 }
 const tochoiceDetails = (itemId, tologin = false) => {
-    gotochoiceDetails(itemId, tologin)
+    // gotochoiceDetails(itemId, tologin)
 }
+const share = () => {
+    if (needlogin.value) {
+        tochoiceDetails(detailObj.shopId, 0, true)
+        return
+    }
+
+    shareObj.value = {
+        id: detailObj.shopId,
+        title: detailObj.company,
+        accountName: slogan.value, //this.detailObj.shopName,
+        // mainPics
+        accountThumb: detailObj.thumb, //头像
+        cover: detailObj.covers && detailObj.covers[0], //背景
+        // 自定义副标题
+        Customsubtitle: false,
+        price: detailObj.price
+    }
+    path.value = `/pagesService/pages/Servicestore/choiceDetails?itemId=${detailObj.shopId}`
+
+    setTimeout(() => {
+        shaView.value.open()
+    }, 500)
+}
+// toColl(){
+// 	if (this.isColl) {
+// 		// 取消
+// 		this.isColl = false
+// 	}else{
+// 		// 收藏
+
+// 		this.isColl = true
+// 	}
+// },
+// app分享参数
+const sharePage = () => {
+    // const shareType = import.meta.env.VITE_WEIXIN_OPEN
+
+    uni.share({
+        provider: "weixin",
+        scene: "WXSceneSession",
+        type: 5,
+        imageUrl: detailObj.albums && detailObj.albums[0],
+        title: slogan.value, //this.detailObj.shopName,
+        miniProgram: {
+            id: 'gh_c2469c570746', //微信小程序原始id
+            path: `/pagesService/pages/Servicestore/choiceDetails?itemId=${detailObj.shopId}`, //点击链接进入的页面
+            type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
+            webUrl: "http://www.baochuncare.com" //兼容低版本的网页链接
+        }
+    })
+}
+
 const isForward = computed(() => recommend.get())
 
 const showprice = computed(() => (min, max) => {
@@ -430,13 +488,7 @@ const notright = computed(() => (list, index) => {
     return list.length === 1 || list.length === index + 1
 })
 
-const slogan = computed(() => {
-    const slogList = [
-        '我在保椿照护，找到一家超舒适的养老机构！',
-        '保椿照护上的养老机构，真的很专业！'
-    ]
-    return slogList[Math.floor(Math.random() * slogList.length)]
-})
+
 const showroom = () => {
     showmoreroom.value = !showmoreroom.value
 }
@@ -590,8 +642,7 @@ const appointment = async () => {
         detailObj.code = ''
     }
     catch (error) {
-        console.log(error.message)
-        bcNotify.value.error(error.message)
+        bcNotify.value.show(error.message)
     }
 }
 
@@ -600,7 +651,6 @@ const appointment = async () => {
 const getorganizationDetail = async (shopId, isAd) => {
     try {
         const res = await organizationDetail({ shopId, isAd })
-        const userinfo = uni.getStorageSync("userinfo")
         getDestroyInfo().then(res => {
             detailObj.mobile = res.mobile
         })
