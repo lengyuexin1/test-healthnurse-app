@@ -116,10 +116,10 @@ export const gotoproductDetails = (itemId: any, shopId: any, shopName: any, tolo
 /**机构文字详情 */
 export const gototextInstitution = (itemId: any) => {
     const route = {
-        path: '/Channel/pages/orderConfirm/textInstitution',
+        path: '/pagesService/pages/Servicestore/setUpTextDetails',
         query: { itemId }
     } as any
-    return pageController.isTokenPush(route)
+    return pageController.push(route)
 }
 /**机构图集 */
 export const gotoimgdetails = (itemId: any) => {
