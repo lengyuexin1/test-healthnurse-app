@@ -143,13 +143,13 @@
           }
         },
         {
-					"path": "pages/classPage/allClassPage",
-					"style": {
-						"navigationBarTitleText": "全部分类",
-						"navigationStyle": "custom",
-						"enablePullDownRefresh": false
-					}
-				},
+          "path": "pages/classPage/allClassPage",
+          "style": {
+            "navigationBarTitleText": "全部分类",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
         {
           "path": "pages/my/update",
           "style": {
@@ -1701,6 +1701,32 @@
         //     "navigationStyle": "custom"
         //   }
         // }
+      ]
+    },
+    {
+      "root": "pagesDevice",
+      "pages": [
+        {
+          "path": "pages/science/assort",
+          "style": {
+            "navigationBarTitleText": "康品百科分类",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/science/product",
+          "style": {
+            "navigationBarTitleText": "康品百科产品",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/science/productDetail",
+          "style": {
+            "navigationBarTitleText": "康品百科详情",
+            "navigationStyle": "custom"
+          }
+        }
       ]
     }
   ],

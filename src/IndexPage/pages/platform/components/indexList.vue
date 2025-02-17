@@ -1,17 +1,18 @@
 <template>
     <z-paging ref="paging" v-model="data.dataList" :auto="true" :fixed="false" @query="queryList" @scroll="scrollPage"
-        :defaultPageSize="6" :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="还没有数据哦~"
-        :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true"
-        back-to-top-bottom="180rpx" :back-to-top-img="getAssetsUrl('/leyou/home/page_Topup.svg')"
-        :back-to-top-style="{ width: '80rpx', height: '80rpx', padding: '18rpx', background: '#fff', borderRadius: '50%' }">
+              :defaultPageSize="6" :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
+              empty-view-text="还没有数据哦~"
+              :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true"
+              back-to-top-bottom="180rpx" :back-to-top-img="getAssetsUrl('/leyou/home/page_Topup.svg')"
+              :back-to-top-style="{ width: '80rpx', height: '80rpx', padding: '18rpx', background: '#fff', borderRadius: '50%' }">
 
         <template #top>
             <view class="author" v-if="(props.channelId == 1 && data.attentionList.length != 0)">
                 <view class="author_item" v-for="item in data.attentionList" :key="item.followId">
                     <view class="author_img_box" @click="clickauthor(item)">
                         <image class="author_img"
-                            :src="item.accountId == 999 ? getAssetsUrl(item.followImage) : item.followImage"
-                            mode="scaleToFill" />
+                               :src="item.accountId == 999 ? getAssetsUrl(item.followImage) : item.followImage"
+                               mode="scaleToFill"/>
                     </view>
                     <view class="author_text">
                         {{ item.followName }}
@@ -24,13 +25,13 @@
         <view class="top_bg_box">
             <view class="live_swiper" v-if="swiperList.length != 0">
                 <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
-                    @change="liveswiperChange">
+                        @change="liveswiperChange">
 
                     <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id">
-                        <image class="live_swiper_img" :src="item.icon" mode="scaleToFill" @click="liveList(item)" />
+                        <image class="live_swiper_img" :src="item.icon" mode="scaleToFill" @click="liveList(item)"/>
                         <!-- index == 0 -->
                         <view class="live_box"
-                            v-if="((item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon))">
+                              v-if="((item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon))">
                             <view class="live_left_box">
                                 <BarPlaying bgColor="#FFFFFF"></BarPlaying>
                                 <view>直播中</view>
@@ -43,14 +44,15 @@
                 </swiper>
                 <view class="swiper_sign_box">
                     <view class="sign_item" :class="{ 'is_sign': signIndex == data.swiperIndex }"
-                        v-for="(signItem, signIndex) in swiperList.length" :key="signIndex"></view>
+                          v-for="(signItem, signIndex) in swiperList.length" :key="signIndex"></view>
                 </view>
             </view>
         </view>
         <!-- 首页列表 -->
         <view class="deCionBox">
-            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index" @click="gotoColmDetail(index, item)">
-                <image class="left_menu_img" :src="item.icon" mode="scaleToFill" />
+            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index"
+                  @click="gotoColmDetail(index, item)">
+                <image class="left_menu_img" :src="item.icon" mode="scaleToFill"/>
                 <view class="iconText">{{ item.name }}</view>
             </view>
         </view>
@@ -69,7 +71,7 @@
             <view class="newTitle">新品上市</view>
             <view class="newUp">
                 <view class="everyItem" v-for="(item, index) in newGoodList" :key="index">
-                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
+                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill"/>
                     <view class="img_right">
                         <view>
                             <view class="text_tit">{{ item.name }}</view>
@@ -96,7 +98,7 @@
             <view class="Nav_box">
                 <view class="Nav_scoll_box">
                     <view class="Nav_item" :class="{ 'have_right': NavList.length == (index + 1) }"
-                        v-for="(item, index) in NavList" :key="index" @click="changeNav(item)">
+                          v-for="(item, index) in NavList" :key="index" @click="changeNav(item)">
                         <view class="item_name">
                             <view> {{ item.name }}</view>
                             <view class="isSelect" v-if="NavId == item.id"></view>
@@ -132,27 +134,28 @@
 <script setup lang="ts">
 import onlyFor from './onlyFor.vue'
 import crazy from './crazy.vue'
-import { servicelist, recomLikeList } from "@/api/goods-api"
+import { recomLikeList, servicelist } from "@/api/goods-api"
 import { moneyFilter } from "@/common/filters"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
-import { ref, reactive, computed, onMounted, defineExpose, nextTick, watch } from 'vue'
+import { computed, defineExpose, onMounted, reactive, ref } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { PlatformManage } from "@bc/sys"
 import NewZhen from './NewZhen.vue'
 import NewcomerWelfare from './newcomerWelfare.vue'
-import NewcomerTwo from './NewcomerTwo.vue'
 import NewcomerTre from './NewcomerTre.vue'
 import BCNotify from '@/components/notify/index.vue'
 import WaterfallsFlow from './WaterfallsFlow.vue'
 import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { gotoLogin } from "@/routes/public-routes"
-import { gotoChannelFollow, gotoarticledetails, gotoLiveShow, gotowxLive, gotovideoPreview, gotocourseVideo, gotosalonPostsDetailPage, gotoChannel } from '@/routes/create-routes'
+import { gotoChannel, gotoChannelFollow } from '@/routes/create-routes'
 import { gotoLiveList } from '@/routes/user-routes'
 import { searListFlag } from "@/api/open-api"
-import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
-import { gotoServiceStore, gotoserviceDetail } from '@/routes/service-routes'
-import { gotoCenterChanges, gotoZone, gotoNewActive, gotoallClassPage } from '@/routes/active-routes'
+import { activeDetail, bannerList, columnList, setPageBank } from "@/api/setite-api"
+import { gotoServiceStore } from '@/routes/service-routes'
+import { gotoallClassPage, gotoCenterChanges, gotoZone } from '@/routes/active-routes'
 import BottomMenu from "./channelSheet.vue"
+import { gotoPersonnel } from "@/routes/wisdom-routes"
+
 interface Data {
     dataList: any,
     categoryId: string | number,
@@ -166,6 +169,7 @@ interface Data {
     swiperIndex: number,
     attentionList: any
 }
+
 const data = reactive<Data>({
     dataList: [],
     categoryId: 2,
@@ -177,7 +181,7 @@ const data = reactive<Data>({
     lat: 0,
     lng: 0,
     swiperIndex: 0,
-    attentionList: [],
+    attentionList: []
 })
 
 const showBottomMenu = ref(false)
@@ -197,7 +201,7 @@ const tabsData: any = ref([
     { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康', flagCode: 1 },
     { id: '5', icon: getAssetsPic('/fare/v2/gre-cai.png'), name: '到店健康', flagCode: 1 },
     { id: '8', icon: getAssetsPic('/fare/v2/home_icon_jigou.png'), name: '找机构', flagCode: 1 },
-    { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 },
+    { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 }
 ])
 
 interface Props {
@@ -211,7 +215,7 @@ const props = defineProps<Props>()
 
 const upCalik = (item: any, index: number) => {
     console.log(item.id, index)
-    NavId.value = item.id;
+    NavId.value = item.id
     paging.value.reload()
 }
 
@@ -221,9 +225,14 @@ const gotoColmDetail = (index: any, item: any) => {
         if (item.id == '360') {
             gotoallClassPage()
         }
+        else if (item.id === '88') {
+            gotoPersonnel()
+        }
         // 跳转默认页
         // return gotoWisdom()
-    } else {
+
+    }
+    else {
         // 跳转微页面
         return gotoZone(item.id, item.name)
     }
@@ -258,10 +267,14 @@ const getAssetsUrl = computed(() => (src: string) => {
 
 interface Events {
     (e: 'showLifeMenu'): void,
+
     (e: 'hideNav', val: boolean): void,
+
     (e: 'changeNav', index: number): void,
+
     (e: 'changeTabbarTop', val: boolean): void,
 }
+
 const emit = defineEmits<Events>()
 
 onMounted(() => {
@@ -286,8 +299,7 @@ const conGiveData = (pageNumber) => {
     const data = {
         pageNumber,
         pageSize: 10,
-        query: {
-        }
+        query: {}
     }
     searListFlag(data).then((res: any) => {
         paging.value.complete(res.data)
@@ -315,10 +327,10 @@ const allInList: any = ref([])
 const getSetIds = (num: number) => {
     setPageBank(num).then(res => {
         allInList.value = res.recordList.filter((item: any) => item.moduleId == 7)
-        console.log(allInList.value, '等于7');
+        console.log(allInList.value, '等于7')
         if (allInList.value.length > 0) {
             allInList.value.forEach((element: any) => {
-                console.log(element);
+                console.log(element)
                 // 业务模块专区
                 channeCatelList(element, element.categoryIds)
             })
@@ -418,7 +430,8 @@ const channeCatelList = (item: any, id: any) => {
 const getTextList = (cateIndex: number) => {
     if (cateIndex == 1) {
 
-    } else {
+    }
+    else {
 
     }
 }
@@ -463,7 +476,7 @@ const bcNotify = ref()
 const pagingReload = (val: boolean = false) => {
 
     if (val) {
-        paging.value && (paging.value as any).refresh();
+        paging.value && (paging.value as any).refresh()
     }
     else {
         paging.value && (paging.value as any).reload()
@@ -499,7 +512,7 @@ const liveswiperChange = (e: any) => {
 }
 
 const liveList = (item: any) => {
-    console.log('item', item);
+    console.log('item', item)
     if ([1, 2, 3].includes(item.moduleType)) {
         if (item.moduleType == 1 && props.liveType.channel) {
             gotoLiveList({ type: 1 })

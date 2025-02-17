@@ -1,16 +1,16 @@
 <template>
     <div class="container">
         <div class="mainbox">
-            <Summary v-if="data.value1 === 0" />
-            <Package v-if="data.value1 === 2" />
-            <Facility v-if="data.value1 === 1" />
-            <Mine v-if="data.value1 === 3" />
+            <Summary v-if="data.value1 === 0"/>
+            <Package v-if="data.value1 === 2"/>
+            <RoomDev v-if="data.value1 === 1"/>
+            <Mine v-if="data.value1 === 3"/>
         </div>
         <div class="footbox">
             <TnTabbar v-model="data.value1" @change="name => data.value1 = name" active-color="#333333"
-                inactive-color="#6E7378">
+                      inactive-color="#6E7378">
                 <TnTabbarItem v-for="(item, index) in data.tabList" :key="item.id" :text="item.name"
-                    :icon="item.inactive" :active-icon="item.active"></TnTabbarItem>
+                              :icon="item.inactive" :active-icon="item.active"></TnTabbarItem>
             </TnTabbar>
         </div>
     </div>
@@ -19,7 +19,7 @@
 <script lang="ts" setup>
 import Summary from './summary.vue'
 import Package from './package.vue'
-import Facility from './facility.vue'
+import RoomDev from '@/pagesTuya/pages/roomDev.vue'
 import Mine from './mine.vue'
 import TnTabbar from '@tuniao/tnui-vue3-uniapp/components/tabbar/src/tabbar.vue'
 import TnTabbarItem from '@tuniao/tnui-vue3-uniapp/components/tabbar/src/tabbar-item.vue'
@@ -99,5 +99,12 @@ const change1 = (e) => {
 .mainbox {
     flex-grow: 1;
     /* 使子元素填满剩余空间 */
+}
+
+.footbox {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }
 </style>

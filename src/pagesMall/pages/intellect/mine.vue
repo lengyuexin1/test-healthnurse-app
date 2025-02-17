@@ -68,8 +68,7 @@ import TnBadge from '@tuniao/tnui-vue3-uniapp/components/badge/src/badge.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import { gotoEditProfile } from "@/routes/user-routes"
 import { gotoLogin } from "@/routes/public-routes"
-import { gotoChatPage } from "@/routes/nim-routes"
-import { gotoMessage } from '@/routes/plateform-routes'
+import { gotoChatPage, gotoNoticeList } from "@/routes/nim-routes"
 import { getAssetsPic } from "@/common/setPicture"
 import { gotoKnowledge } from "@/routes/wisdom-routes"
 import { gotoScienceAssort } from "@/routes/care-routes"
@@ -78,6 +77,7 @@ import { appLogins } from "@/libs/appLogin" //阿里云一键登录sdk
 // #endif
 import { computed, onMounted, reactive } from 'vue'
 import { PlatformManage } from "@bc/sys"
+import { createTeam } from "@/api/nim-api"
 
 interface celList {
     id: string;
@@ -131,10 +131,30 @@ const editInfo = async () => {
 }
 
 const navUrl = () => {
-    gotoChatPage()
+    PlatformManage.getToken().then((token: any) => {
+        createTeam({
+            userId: token?.id,
+            userName: token?.nickname,
+            userThumb: token?.avatar,
+            flag: 1, //1小程序用户，2服务人员
+            shopId: token?.shopId ?? 0,
+            type: 1 // 1平台，2店铺
+        }).then((res) => {
+            gotoChatPage({
+                to: res.tid,
+                scene: 'customer',
+                originPage: 'pagesMall/pages/intellect/home'
+            })
+        }).catch((err) => {
+            uni.showToast({
+                title: err.message,
+                icon: 'none'
+            })
+        })
+    })
 }
 const gotoMessage = () => {
-    gotoMessage()
+    gotoNoticeList()
 }
 const gotoCell = (item) => {
     console.log(item.name)

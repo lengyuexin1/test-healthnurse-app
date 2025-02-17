@@ -472,7 +472,7 @@ export const gotoPlatformExplosive = () => {
 // 康养百科分类
 export const gotoScienceAssort = () => {
     const route = {
-        path: '/Mall/pages/science/assort',
+        path: '/pagesDevice/pages/science/assort',
         query: {}
     }
     return pageController.push(route)
@@ -481,14 +481,14 @@ export const gotoScienceAssort = () => {
 
 export const gotoScienceProduct = (query: { id: string, name: string }) => {
     const route = {
-        path: '/Mall/pages/science/product',
+        path: '/pagesDevice/pages/science/product',
         query
     }
     return pageController.push(route)
 }
 export const gotoScienceDetail = (query: { id: string }) => {
     const route = {
-        path: '/Mall/pages/science/productDetail',
+        path: '/pagesDevice/pages/science/productDetail',
         query
     }
     return pageController.push(route)
