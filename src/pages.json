@@ -152,6 +152,14 @@
           }
         },
         {
+					"path": "pages/classPage/allClassPage",
+					"style": {
+						"navigationBarTitleText": "全部分类",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+        {
           "path": "pages/my/update",
           "style": {
             "navigationStyle": "custom",

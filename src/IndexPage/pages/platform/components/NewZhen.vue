@@ -42,6 +42,7 @@ import { moneyFilter } from "@/common/filters"
 import { PlatformManage } from "@bc/sys"
 import { gotoLogin } from "@/routes/public-routes"
 import { gotoServiceStore } from '@/routes/service-routes'
+import { gotogoodsDetail } from '@/routes/goods-routes'
 
 interface Props {
     newZhen: any
@@ -68,7 +69,13 @@ const gotoDetail = (item: any) => {
             }, 1000)
             return
         }
-        gotoServiceStore({itemId: item.id})
+        console.log(item)
+        if (item.businessType == 1) {
+            gotoServiceStore({itemId: item.id})
+        }
+        if (item.businessType == 2) {
+            gotogoodsDetail(item.id)
+        }
     })
 }
 
@@ -78,7 +85,7 @@ const gotoDetail = (item: any) => {
 .newHanle {
     background: #fff;
     border-radius: 24rpx 24rpx 24rpx 24rpx;
-    margin: 0 20rpx 20rpx 20rpx;
+    margin: 0 0rpx 20rpx 0rpx;
     padding: 24rpx;
     overflow: hidden;
     height: 676rpx;

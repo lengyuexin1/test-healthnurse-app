@@ -15,7 +15,7 @@
             <view class="item-info-box row" v-if="item.sourceType !== 4">
                 <text class="item-info-pric" v-if="item.quantity">￥{{ moneyFilter(item.price / item.quantity) }}</text>
                 <text class="item-info-pric" v-else>￥{{ moneyFilter(item.price) }}</text>
-                <text class="item-info-optionName">/起</text>
+                <text class="item-info-optionName" v-if="item.businessType !== 2">/起</text>
                 <text class="item-info-fakePrice" v-if="item.fakePrice">￥{{ moneyFilter(item.fakePrice / item.quantity)
                 }}</text>
                 <!-- <view class="item-info-tag row">

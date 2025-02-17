@@ -61,27 +61,7 @@
 
         <!-- 专区 -->
         <view v-if="showBk.includes(7)">
-            <view class="newHanle threeGoods" v-for="(its, ins) in allInList" :key="ins">
-                <view class="getQuan">
-                    <view class="quanTitle">{{ its.name }}</view>
-                    <view class="seeMone" @click="seeGoods(its.dataIds, its)">
-                        <view class="left_jin">查看更多</view>
-                        <TnIcon name="right" />
-                    </view>
-                </view>
-                <view class="goodUl">
-                    <view class="goodsArea" v-for="(item, index) in its.dataList" :key="index" @click="gotoDetail(item)">
-                        <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
-                        <!-- <TnLazyLoad :src="item.thumb" class="towPro_img" /> -->
-                        <view class="goodsName">{{ item.name }}</view>
-                        <view class="difMoney">
-                            <view class="realMoney">￥{{ moneyFilter(item.price) }}</view>
-                            <view class="ageMoney">￥{{ item.fakePrice }}</view>
-                        </view>
-                    </view>
-                </view>
-            </view>
-            <!-- <view class="mapBt"></view> -->
+            <onlyFor :allInList="allInList"></onlyFor>
         </view>
 
         <!-- 新品 -->
@@ -106,25 +86,10 @@
         </view>
 
         <!-- 爆品精选 -->
-        <view class="crazy" v-if="showBk.includes(6)">
-            <view class="newTitle">爆品精选</view>
-            <view class="crezy_ul">
-                <view class="crezy_li" v-for="(item, index) in orgSelect" :key="index" @click="gotoDetail(item)">
-                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
-                    <!-- <TnLazyLoad :src="item.thumb" class="towPro_img" /> -->
-                    <view class="crazy_bottom">
-                        <view>
-                            <view class="product_name">{{ item.name }}</view>
-                            <view class="product_smal">{{ item.desc }}</view>
-                        </view>
-                        <view class="difMoney">
-                            <view class="realMoney">￥{{ moneyFilter(item.price) }}</view>
-                            <!-- <view class="ageMoney">￥{{ item.realPri }}</view> -->
-                        </view>
-                    </view>
-                </view>
-            </view>
+        <view v-if="showBk.includes(6)">
+            <crazy :orgSelect="orgSelect"></crazy>
         </view>
+
 
         <!-- tab -->
         <view class="fliex_box">
@@ -165,7 +130,8 @@
 </template>
 
 <script setup lang="ts">
-import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
+import onlyFor from './onlyFor.vue'
+import crazy from './crazy.vue'
 import { servicelist, recomLikeList } from "@/api/goods-api"
 import { moneyFilter } from "@/common/filters"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -180,23 +146,16 @@ import BCNotify from '@/components/notify/index.vue'
 import WaterfallsFlow from './WaterfallsFlow.vue'
 import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { gotoLogin } from "@/routes/public-routes"
-import { channelClsList, getEsContentList } from "@/api/smart-api"
-import { getescourselist, escontentlist, followContentList, getranklist, getappcontentList, getcoursefollowList } from "@/api/create-api"
-import { nearbyList } from "@/api/user-api"
 import { gotoChannelFollow, gotoarticledetails, gotoLiveShow, gotowxLive, gotovideoPreview, gotocourseVideo, gotosalonPostsDetailPage, gotoChannel } from '@/routes/create-routes'
 import { gotoLiveList } from '@/routes/user-routes'
-import { TempStorage } from "@bc/base"
 import { searListFlag } from "@/api/open-api"
-import createCollectAndReport from "@/utils/collection"
-import { Debounce } from '@/libs/antivibthrot'
 import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
 import { gotoServiceStore, gotoserviceDetail } from '@/routes/service-routes'
-import { gotoCenterChanges, gotoZone, gotoNewActive } from '@/routes/active-routes'
+import { gotoCenterChanges, gotoZone, gotoNewActive, gotoallClassPage } from '@/routes/active-routes'
 import BottomMenu from "./channelSheet.vue"
 interface Data {
     dataList: any,
     categoryId: string | number,
-    tagId: number | string,
     followList: any,
     query: any,
     followId: string,
@@ -210,7 +169,6 @@ interface Data {
 const data = reactive<Data>({
     dataList: [],
     categoryId: 2,
-    tagId: 1,
     followList: [],
     query: {},
     followId: '',
@@ -260,6 +218,9 @@ const upCalik = (item: any, index: number) => {
 const gotoColmDetail = (index: any, item: any) => {
     console.log(index, item)
     if (item.flagCode) {
+        if (item.id == '360') {
+            gotoallClassPage()
+        }
         // 跳转默认页
         // return gotoWisdom()
     } else {
@@ -806,243 +767,6 @@ defineExpose({
         align-items: center;
         justify-content: center;
     }
-}
-
-.newHanle {
-    height: 368rpx;
-    background: #fff;
-    border-radius: 24rpx 24rpx 24rpx 24rpx;
-    margin: 0 20rpx 20rpx 20rpx;
-    padding: 24rpx;
-    overflow: hidden;
-
-    .getQuan {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-
-        .quanTitle {
-            font-size: 36rpx;
-            color: #020202;
-            font-weight: 600;
-        }
-    }
-
-    .towPro_img {
-        width: 100%;
-        height: 360rpx;
-    }
-}
-
-.towPro {
-    height: 676rpx;
-}
-
-.threeGoods {
-    height: 484rpx;
-
-    // margin-top: 40rpx;
-    .goodUl {
-        display: flex;
-        justify-content: space-around;
-        margin-top: 28rpx;
-    }
-
-    .seeMone {
-        display: flex;
-        font-size: 28rpx;
-        color: #999999;
-        min-width: 86rpx;
-    }
-
-    .left_jin {
-        margin-right: 10rpx;
-    }
-
-    .goodsArea {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        .towPro_img {
-            width: 240rpx;
-            height: 240rpx;
-        }
-
-        .goodsName {
-            margin-top: 20rpx;
-            font-weight: 600;
-            font-size: 28rpx;
-            color: #020202;
-        }
-
-        .difMoney {
-            display: flex;
-            align-items: center;
-            margin-top: 20rpx;
-        }
-
-        .realMoney {
-            font-weight: 600;
-            font-size: 28rpx;
-            color: #000000;
-            padding-right: 10rpx;
-        }
-
-        .ageMoney {
-            font-size: 20rpx;
-            color: #999999;
-            text-decoration: line-through;
-        }
-    }
-}
-
-.neds {
-    margin-top: 30rpx;
-}
-
-.newTitle {
-    text-align: center;
-    font-weight: 600;
-    font-size: 32rpx;
-    color: #020202;
-}
-
-.newUp {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin: 30rpx 20rpx 0 20rpx;
-
-    .everyItem {
-        display: flex;
-        flex: 1;
-        background: #fff;
-        padding: 20rpx;
-        margin-bottom: 20rpx;
-        height: 240rpx;
-        border-radius: 24rpx;
-    }
-
-    .towPro_img {
-        width: 200rpx;
-        height: 200rpx;
-    }
-
-    .img_right {
-        flex: 1;
-        margin-left: 30rpx;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        .text_tit {
-            font-weight: 600;
-            font-size: 28rpx;
-            color: #020202;
-        }
-
-        .text_small {
-            margin-top: 12rpx;
-            font-weight: 400;
-            font-size: 24rpx;
-            color: #666666;
-        }
-
-        .price_text {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20rpx;
-            padding-top: 10rpx;
-
-            .realPrice {
-                font-weight: 600;
-                font-size: 32rpx;
-                color: #000000;
-
-                .piz {
-                    margin-left: 2rpx;
-                    font-size: 22rpx;
-                    color: #000000;
-                }
-            }
-
-            .nowBuy {
-                border: 1rpx solid #8F8F8F;
-                border-radius: 36rpx;
-                font-size: 24rpx;
-                color: #000000;
-                padding: 8rpx 18rpx;
-                margin-right: 20rpx;
-            }
-        }
-    }
-}
-
-.crazy {
-    margin: 40rpx 20rpx 20rpx 20rpx;
-
-    .crezy_ul {
-        margin-top: 30rpx;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 16rpx;
-
-        .crezy_li {
-            background-color: #fff;
-            height: 430rpx;
-            border-radius: 24rpx;
-
-            .towPro_img {
-                width: 226rpx;
-                height: 226rpx;
-                padding: 20rpx;
-            }
-
-            .crazy_bottom {
-                margin-top: 8rpx;
-                margin-left: 16rpx
-            }
-
-            .product_name {
-                font-weight: 600;
-                font-size: 24rpx;
-                color: #020202;
-            }
-
-            .product_smal {
-                margin-top: 8rpx;
-                font-weight: 400;
-                font-size: 20rpx;
-                color: #666666;
-            }
-
-            .difMoney {
-                display: flex;
-                align-items: center;
-                margin-top: 60rpx;
-            }
-
-            .realMoney {
-                font-weight: 600;
-                font-size: 28rpx;
-                color: #000000;
-                padding-right: 10rpx;
-            }
-
-            .ageMoney {
-                font-size: 20rpx;
-                color: #999999;
-                text-decoration: line-through;
-            }
-        }
-    }
-}
-
-.foryou {
-    margin: 40rpx 20rpx 20rpx 20rpx;
-    margin-bottom: 80rpx;
 }
 
 .content_right_list {

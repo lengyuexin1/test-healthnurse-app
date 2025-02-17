@@ -482,3 +482,12 @@ export const gotoPingP = (id:any) => {
     } as any
     return pageController.push(route)
 }
+
+// 所有分类
+export const gotoallClassPage = () => {
+    const route = {
+        path: '/IndexPage/pages/classPage/allClassPage',
+        query: {}
+    } as any
+    return pageController.push(route)
+}
