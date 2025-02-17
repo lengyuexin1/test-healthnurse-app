@@ -318,17 +318,18 @@
 </view>
 </template>
 <script setup>
+import { toimgInstitution } from '@/routes/service-routes'
 import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import TnInput from '@tuniao/tnui-vue3-uniapp/components/input/src/input.vue'
-import shareView from '@/pagesCnt/components/shareView/shareView.vue'
+import shareView from './components/shareView.vue'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { formattime } from '@/common/formatTime'
 import BCNotify from '@/components/notify/index.vue'
-
+import { gototextInstitution } from "@/routes/plateform-routes"
 import { sendMobileCode, getDestroyInfo, unHealthShop, addShop } from '@/api/user-api'
 import { organizationDetail, agencylist, getOrganEsList, prebookSave } from '@/api/service-api'
 import { PlatformManage } from '@bc/sys'
@@ -391,6 +392,13 @@ const area = computed(() => (area) => {
 const makeEdit = () => {
     makeType.value = 2
 }
+const toimgdetails = (itemId) => {
+    if (needlogin.value) {
+        tochoiceDetails(detailObj.shopId, 0, true)
+        return
+    }
+    toimgInstitution({ itemId: detailObj.shopId })
+}
 // 收藏/取消收藏 机构
 const setColl = () => {
     if (needlogin.value) {
@@ -412,6 +420,13 @@ const setColl = () => {
 }
 const tochoiceDetails = (itemId, tologin = false) => {
     // gotochoiceDetails(itemId, tologin)
+}
+const totextInstitution = (itemId) => {
+    // if (needlogin.value) {
+    //     tochoiceDetails(this.detailObj.shopId, 0, true)
+    //     return
+    // }
+    gototextInstitution(itemId)
 }
 const share = () => {
     if (needlogin.value) {
@@ -655,7 +670,6 @@ const getorganizationDetail = async (shopId, isAd) => {
             detailObj.mobile = res.mobile
         })
         Object.assign(detailObj, res)
-        console.log(detailObj)
         isColl.value = res.isFavorite
         appear({ shopId })
     }

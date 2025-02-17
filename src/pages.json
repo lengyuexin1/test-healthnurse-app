@@ -56,15 +56,6 @@
         "enablePullDownRefresh": false,
         "navigationBarBackgroundColor": "#FFFFFF"
       }
-    },
-    {
-      "path": "pages/agency/agency",
-      "style": {
-        "navigationBarTitleText": "找机构",
-        "navigationStyle": "custom",
-        "enablePullDownRefresh": false,
-        "backgroundColor": "#F8F9F9"
-      }
     }
   ],
   "subPackages": [
@@ -191,6 +182,13 @@
           "style": {
             "navigationBarTitleText": "机构详情",
             "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/Servicestore/setUpTextDetails",
+          "style": {
+            "navigationBarTitleText": "机构文字详情",
             "enablePullDownRefresh": false
           }
         },
@@ -1659,21 +1657,7 @@
             "enablePullDownRefresh": false,
             "navigationStyle": "custom"
           }
-        },
-        {
-          "path": "pages/activity/brandpage",
-          "style": {
-            "navigationBarTitleText": "活动页面",
-            "navigationStyle": "custom"
-          }
-        },
-        {
-          "path": "pages/activity/supervaluepage",
-          "style": {
-            "navigationBarTitleText": "活动页面",
-            "navigationStyle": "custom"
-          }
-        },
+        }
         // {
         //   "path": "pages/service/serviceTab",
         //   "style": {

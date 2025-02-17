@@ -15,7 +15,7 @@
             <PageTopbg :zIndex="-1"></PageTopbg>
             <bc-page-navbar :title="pageTitle"></bc-page-navbar>
 
-            <view class="top_inp_box">
+            <!-- <view class="top_inp_box">
                 <view class="inp_box" @click="tosearch">
                     <TnIcon name="search" color="#666" size="26"></TnIcon>
                     <view class="inp_text">搜索</view>
@@ -24,10 +24,10 @@
 
             <view class="top_icon_list">
                 <view class="top_scrool">
-                    <view 
-                    class="scrool_item" 
-                    @click="changeToplist(item,index)" 
-                    :class="{ 'is_select' : data.topIndex == index }" 
+                    <view
+                    class="scrool_item"
+                    @click="changeToplist(item,index)"
+                    :class="{ 'is_select' : data.topIndex == index }"
                     v-for="(item,index) in data.topList" :key="item.id">
                         <image
                             class="item_img"
@@ -38,19 +38,19 @@
                         <view class="select_box" v-if="data.topIndex == index"></view>
                     </view>
                 </view>
-            </view>
+            </view> -->
             <view class="screen_box">
                 <view class="screen_list">
                     <view class="screen_item" @click="changeScreen(1)">
-                        <text class="screen_text" :class="{'is_screen_text' : data.screenIndex == 1 }">全部</text>
+                        <text class="screen_text" :class="{ 'is_screen_text': data.screenIndex == 1 }">全部</text>
                     </view>
                     <view class="screen_item" @click="changeScreen(2)">
-                        <text class="screen_text" :class="{'is_screen_text' : data.screenIndex == 2 }">销量</text>
+                        <text class="screen_text" :class="{ 'is_screen_text': data.screenIndex == 2 }">销量</text>
                         <view class="state_box">
                             <image
                                 v-if="data.screenIndex == 2"
                                 class="change_state_img"
-                                :class="{'is_down' : data.salesType == 0}"
+                                :class="{ 'is_down': data.salesType == 0 }"
                                 :src="getAssetsUrl('/leyou/serviceIcon/screen-icon-highight.svg')"
                                 mode="scaleToFill"
                             />
@@ -60,16 +60,16 @@
                                 :src="getAssetsUrl('/leyou/serviceIcon/screen-icon.svg')"
                                 mode="scaleToFill"
                             />
-                            
+
                         </view>
                     </view>
                     <view class="screen_item" @click="changeScreen(3)">
-                        <text class="screen_text" :class="{'is_screen_text' : data.screenIndex == 3 }">价格</text>
+                        <text class="screen_text" :class="{ 'is_screen_text': data.screenIndex == 3 }">价格</text>
                         <view class="state_box">
                             <image
                                 v-if="data.screenIndex == 3"
                                 class="change_state_img"
-                                :class="{'is_down' : data.priceType == 0}"
+                                :class="{ 'is_down': data.priceType == 0 }"
                                 :src="getAssetsUrl('/leyou/serviceIcon/screen-icon-highight.svg')"
                                 mode="scaleToFill"
                             />
@@ -79,20 +79,20 @@
                                 :src="getAssetsUrl('/leyou/serviceIcon/screen-icon.svg')"
                                 mode="scaleToFill"
                             />
-                            
+
                         </view>
                     </view>
                 </view>
-                <view></view>
+                <!-- <view></view> -->
             </view>
 
         </template>
         <institutionList :dataList="data.dataList"></institutionList>
 
         <BCNotify ref="bcNotify"></BCNotify>
-        
+
         <template #bottom>
-            
+
         </template>
     </z-paging>
 </template>
@@ -107,7 +107,7 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import BCNotify from '@/components/notify/index.vue'
 import institutionList from './institutionList.vue'
-import {getcategoryList, shoplist} from '@/api/service-api'
+import { getcategoryList, shoplist } from '@/api/service-api'
 
 import { gotosearch } from '@/routes/service-routes'
 
@@ -124,13 +124,13 @@ interface Data{
 }
 
 const data = reactive<Data>({
-    dataList:[],
-    topList:[],
-    topIndex:0,
-    screenIndex:1,
-    salesType:0,
-    priceType:0,
-    sortType:1,
+    dataList: [],
+    topList: [],
+    topIndex: 0,
+    screenIndex: 1,
+    salesType: 0,
+    priceType: 0,
+    sortType: 1
 })
 
 
@@ -142,49 +142,50 @@ const props = defineProps<Props>()
 
 
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
 
 
-onMounted(()=>{
+onMounted(() => {
 })
 
 
 const paging = ref()
-const queryList = async (pageNumber:number, pageSize:number)=>{
+const queryList = async (pageNumber:number, pageSize:number) => {
     if (pageNumber == 1) {
         await getcategoryList({
-            id:props.id
-        }).then((res:any)=>{
+            id: props.id
+        }).then((res:any) => {
             data.topList = res
         })
     }
 
-    let categoryIds : any = []
+    const categoryIds : any = []
 
     if (data.topIndex == 0) {
-        console.log('手动');
+        console.log('手动')
         categoryIds.push(data.topList[0].id)
-    }else{
-        console.log('自动获取');
+    }
+    else {
+        console.log('自动获取')
         categoryIds.push(data.topList[data.topIndex].id)
     }
 
-    console.log('data.sortType',data.sortType);
+    console.log('data.sortType', data.sortType)
 
     shoplist({
         pageSize,
         pageNumber,
-        query:{
+        query: {
             categoryIds,
-            businessType:3,
-            sortType:data.sortType,
+            businessType: 3,
+            sortType: data.sortType
         }
-    }).then((res:any)=>{
+    }).then((res:any) => {
         (paging.value as any).complete(res.data)
-    }).catch(()=>{
+    }).catch(() => {
         (paging.value as any).complete([])
     })
 }
@@ -193,7 +194,7 @@ const queryList = async (pageNumber:number, pageSize:number)=>{
 
 const bcNotify = ref()
 
-const changeToplist = (item:any,index:number) => {
+const changeToplist = (item:any, index:number) => {
     data.topIndex = index;
     (paging.value as any).reload()
 }
@@ -206,7 +207,8 @@ const changeScreen = (index:number) => {
             data.salesType = 0
             data.sortType = 4
 
-        }else{
+        }
+        else {
             data.salesType = 1
             data.sortType = 8
 
@@ -217,7 +219,8 @@ const changeScreen = (index:number) => {
             data.priceType = 0
             data.sortType = 2
 
-        }else{
+        }
+        else {
             data.priceType = 1
             data.sortType = 3
 
@@ -326,7 +329,7 @@ defineExpose({
     padding-left: 0rpx;
     box-sizing: border-box;
     background: #fff;
-    border-radius: 32rpx 32rpx 0rpx 0rpx;
+    // border-radius: 32rpx 32rpx 0rpx 0rpx;
     .screen_list{
         display: flex;
         align-items: center;
