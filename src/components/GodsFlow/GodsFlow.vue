@@ -5,7 +5,8 @@
             <view id="left" v-if="data.leftList.length">
                 <block v-for="(item) in data.leftList" :key="item.id">
                     <view class="wf-item" :style="{ 'width': itemwidth + 'rpx' }" @tap="itemTap(item)">
-                        <WaterfallsFlowItem :item="item" :itemwidth="itemwidth" :isHtml="props.isHtml"></WaterfallsFlowItem>
+                        <WaterfallsFlowItem :item="item" :itemwidth="itemwidth"
+                                            :isHtml="props.isHtml"></WaterfallsFlowItem>
                     </view>
                 </block>
             </view>
@@ -16,7 +17,8 @@
             <view id="right" v-if="data.rightList.length">
                 <block v-for="(item) in data.rightList" :key="item.id">
                     <view class="wf-item" :style="{ 'width': itemwidth + 'rpx' }" @tap="itemTap(item)">
-                        <WaterfallsFlowItem :item="item" :itemwidth="itemwidth" :isHtml="props.isHtml"></WaterfallsFlowItem>
+                        <WaterfallsFlowItem :item="item" :itemwidth="itemwidth"
+                                            :isHtml="props.isHtml"></WaterfallsFlowItem>
                     </view>
                 </block>
             </view>
@@ -25,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, watch, defineEmits } from 'vue'
+import { computed, defineEmits, nextTick, reactive, watch } from 'vue'
 import WaterfallsFlowItem from './GodsFlowItem.vue'
 
 const props = defineProps({
@@ -90,29 +92,29 @@ const itemwidth = computed(() => {
 })
 
 watch(() => props.wfList, (newVal, oldVal) => {
-    data.allList = data.handleRecovery ? 
-    newVal.filter((n:any) =>  {
-        return n.templateCode != 65798
-    }) : newVal;
+    data.allList = data.handleRecovery ?
+          newVal.filter((n: any) => {
+              return n.templateCode != 65798
+          }) : newVal
 
-    data.leftList = [];
-    data.rightList = [];
-    data.boxHeight = [];
-    data.mark = 0;
+    data.leftList = []
+    data.rightList = []
+    data.boxHeight = []
+    data.mark = 0
 
-    nextTick(()=>{
-        waterFall();
+    nextTick(() => {
+        waterFall()
     })
 
 
 }, { immediate: true, deep: true })
 
 // 监听标记，当标记发生变化，则执行下一个item排序
-watch(() => data.mark, ()=> {
-    const len = data.allList.length;
+watch(() => data.mark, () => {
+    const len = data.allList.length
     if (data.mark < len && data.mark !== 0) {
-        nextTick(()=>{
-            waterFall();
+        nextTick(() => {
+            waterFall()
         })
     }
 })
@@ -128,8 +130,8 @@ const waterFall = () => {
     }
 }
 
-const clickwaterItem = (item:any) =>{
-    emit('waterItem',item)
+const clickwaterItem = (item: any) => {
+    emit('waterItem', item)
 }
 
 

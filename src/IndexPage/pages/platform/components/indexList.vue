@@ -98,7 +98,7 @@
                     <view class="Nav_item" :class="{ 'have_right': NavList.length == (index + 1) }"
                         v-for="(item, index) in NavList" :key="index" @click="changeNav(item)">
                         <view class="item_name">
-                            <view> {{ item.name }} </view>
+                            <view> {{ item.name }}</view>
                             <view class="isSelect" v-if="NavId == item.id"></view>
                         </view>
                     </view>
@@ -767,6 +767,243 @@ defineExpose({
         align-items: center;
         justify-content: center;
     }
+}
+
+.newHanle {
+    height: 368rpx;
+    background: #fff;
+    border-radius: 24rpx 24rpx 24rpx 24rpx;
+    margin: 0 20rpx 20rpx 20rpx;
+    padding: 24rpx;
+    overflow: hidden;
+
+    .getQuan {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+
+        .quanTitle {
+            font-size: 36rpx;
+            color: #020202;
+            font-weight: 600;
+        }
+    }
+
+    .towPro_img {
+        width: 100%;
+        height: 360rpx;
+    }
+}
+
+.towPro {
+    height: 676rpx;
+}
+
+.threeGoods {
+    height: 484rpx;
+
+    // margin-top: 40rpx;
+    .goodUl {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 28rpx;
+    }
+
+    .seeMone {
+        display: flex;
+        font-size: 28rpx;
+        color: #999999;
+        min-width: 86rpx;
+    }
+
+    .left_jin {
+        margin-right: 10rpx;
+    }
+
+    .goodsArea {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .towPro_img {
+            width: 240rpx;
+            height: 240rpx;
+        }
+
+        .goodsName {
+            margin-top: 20rpx;
+            font-weight: 600;
+            font-size: 28rpx;
+            color: #020202;
+        }
+
+        .difMoney {
+            display: flex;
+            align-items: center;
+            margin-top: 20rpx;
+        }
+
+        .realMoney {
+            font-weight: 600;
+            font-size: 28rpx;
+            color: #000000;
+            padding-right: 10rpx;
+        }
+
+        .ageMoney {
+            font-size: 20rpx;
+            color: #999999;
+            text-decoration: line-through;
+        }
+    }
+}
+
+.neds {
+    margin-top: 30rpx;
+}
+
+.newTitle {
+    text-align: center;
+    font-weight: 600;
+    font-size: 32rpx;
+    color: #020202;
+}
+
+.newUp {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 30rpx 20rpx 0 20rpx;
+
+    .everyItem {
+        display: flex;
+        flex: 1;
+        background: #fff;
+        padding: 20rpx;
+        margin-bottom: 20rpx;
+        height: 240rpx;
+        border-radius: 24rpx;
+    }
+
+    .towPro_img {
+        width: 200rpx;
+        height: 200rpx;
+    }
+
+    .img_right {
+        flex: 1;
+        margin-left: 30rpx;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .text_tit {
+            font-weight: 600;
+            font-size: 28rpx;
+            color: #020202;
+        }
+
+        .text_small {
+            margin-top: 12rpx;
+            font-weight: 400;
+            font-size: 24rpx;
+            color: #666666;
+        }
+
+        .price_text {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20rpx;
+            padding-top: 10rpx;
+
+            .realPrice {
+                font-weight: 600;
+                font-size: 32rpx;
+                color: #000000;
+
+                .piz {
+                    margin-left: 2rpx;
+                    font-size: 22rpx;
+                    color: #000000;
+                }
+            }
+
+            .nowBuy {
+                border: 1rpx solid #8F8F8F;
+                border-radius: 36rpx;
+                font-size: 24rpx;
+                color: #000000;
+                padding: 8rpx 18rpx;
+                margin-right: 20rpx;
+            }
+        }
+    }
+}
+
+.crazy {
+    margin: 40rpx 20rpx 20rpx 20rpx;
+
+    .crezy_ul {
+        margin-top: 30rpx;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 16rpx;
+
+        .crezy_li {
+            background-color: #fff;
+            height: 430rpx;
+            border-radius: 24rpx;
+
+            .towPro_img {
+                width: 226rpx;
+                height: 226rpx;
+                padding: 20rpx;
+            }
+
+            .crazy_bottom {
+                margin-top: 8rpx;
+                margin-left: 16rpx
+            }
+
+            .product_name {
+                font-weight: 600;
+                font-size: 24rpx;
+                color: #020202;
+            }
+
+            .product_smal {
+                margin-top: 8rpx;
+                font-weight: 400;
+                font-size: 20rpx;
+                color: #666666;
+            }
+
+            .difMoney {
+                display: flex;
+                align-items: center;
+                margin-top: 60rpx;
+            }
+
+            .realMoney {
+                font-weight: 600;
+                font-size: 28rpx;
+                color: #000000;
+                padding-right: 10rpx;
+            }
+
+            .ageMoney {
+                font-size: 20rpx;
+                color: #999999;
+                text-decoration: line-through;
+            }
+        }
+    }
+}
+
+.foryou {
+    margin: 40rpx 20rpx 20rpx 20rpx;
+    margin-bottom: 80rpx;
 }
 
 .content_right_list {

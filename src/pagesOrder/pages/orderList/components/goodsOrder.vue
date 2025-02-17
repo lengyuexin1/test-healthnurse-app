@@ -13,9 +13,9 @@
         >
             <template #top>
                 <view class="top_box">
-                    <view 
-                    class="navList_item" 
-                    :class="{ 'is_select' : data.navIndex == index }" 
+                    <view
+                          class="navList_item"
+                          :class="{ 'is_select' : data.navIndex == index }"
                     v-for="(item,index) in data.navList" :key="item.id"
                     @click="select(item,index)">
                         {{ item.category_name }}
@@ -54,9 +54,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
-import { getserviceOrderList, getAftersaleReason, houseOrderCancel, applyRefund } from '@/api/order-api'
+import { applyRefund, getAftersaleReason, getserviceOrderList, houseOrderCancel } from '@/api/order-api'
 import goodsOrderItem from './goodsOrderItem.vue'
 import BCNotify from '@/components/notify/index.vue'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
@@ -80,6 +80,13 @@ interface Data{
     reasonItemid: string,
 
 }
+
+interface Prop {
+    tabsIndsex: number | null,
+    month_t: string | number | null
+}
+
+const props = defineProps<Prop>()
 
 const data = reactive<Data>({
     dataList:[],
@@ -117,10 +124,10 @@ const data = reactive<Data>({
     showreason: false,
     cancelObj:{},
     reasonItemid: '',
+})
 
-
-    
-    
+onMounted(() => {
+    data.navIndex = props.tabsIndsex
 })
 
 const getAssetsUrl = computed(()=>(src:string)=> {
@@ -147,16 +154,16 @@ const getOrderList = (pageNumber:number, pageSize:number) => {
         size:pageSize,
         query:{
             kind:2,
-            statusId: data.statusId!,
+            statusId: data.navList[data.navIndex].category_id,
             title:'',
-            dateOption:'',
+            dateOption: props.month_t
         }
     }).then((res)=>{
         (paging.value as any).complete(res.list)
         data.cursor = res.nextCursor!
     })
 
-    
+
 }
 
 const bcNotify = ref()
@@ -180,7 +187,7 @@ const cancelOrder = (obj:any) => {
     }).catch(() => {
         bcNotify.value.error('取消原因数据获取失败')
     })
-    
+
 }
 
 const clickdelreason = (id:string) => {
@@ -199,7 +206,7 @@ const goRemove = () => {
 
         if (data.cancelObj.actionableList.includes('apply_refund')) {
             console.log('走售后');
-            
+
             // 不存在serviceInfo.info
             applyRefund({
                 orderEntityId: data.cancelObj.shopList[0].entityList[0].entityId,

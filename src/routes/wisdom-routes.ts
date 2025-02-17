@@ -44,7 +44,7 @@ export const gotoSceneFactor = () => {
 /* 跳转到 我的智护帮 */
 export const gotoPersonnel = (inds: number) => {
     const route = {
-        path: '/pagesMall/pages/wisdom/personnel',
+        path: '/pagesMall/pages/intellect/home',
         query: { inds }
     } as any
     return pageController.push(route)

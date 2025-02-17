@@ -3,7 +3,7 @@ import { apiVersion } from './config.js'
 /* 接口模块分类 */
 export const apiPrefix = {
     /* 订单 */
-    order: `/api/order${apiVersion}/bc`,
+    order: `api/order${apiVersion}/bc`,
     /* 商城订单 */
     product: `/api/order${apiVersion}/product`,
     /* 个人中心 */

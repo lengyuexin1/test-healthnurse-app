@@ -13,9 +13,9 @@
         >
             <template #top>
                 <view class="top_box">
-                    <view 
-                    class="navList_item" 
-                    :class="{ 'is_select' : data.navIndex == index }" 
+                    <view
+                          class="navList_item"
+                          :class="{ 'is_select' : data.navIndex == index }"
                     v-for="(item,index) in data.navList" :key="item.id"
                     @click="select(item,index)">
                         {{ item.category_name }}
@@ -48,20 +48,15 @@
         </TnPopup>
 		<BCNotify ref="bcNotify"></BCNotify>
 
-        
+
 
     </view>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
-import {
-    getserviceOrderList,
-    getAftersaleReason,
-    houseOrderCancel,
-    applyRefund,
-} from '@/api/order-api'
+import { applyRefund, getAftersaleReason, getserviceOrderList, houseOrderCancel } from '@/api/order-api'
 import serviceOrderItem from './serviceOrderItem.vue'
 
 import BCNotify from '@/components/notify/index.vue'
@@ -79,12 +74,20 @@ interface Data{
     navList:navList[],
     navIndex:number,
     statusId:number | null,
-    cursor:string | null,
+    cursor: string | 0,
     showreason: boolean,
     reasonList: any,
     reasonItemid: string,
     cancelObj: any,
 }
+
+interface Prop {
+    tabsIndsex: number | null,
+    month_t: string | number | null
+}
+
+const props = defineProps<Prop>()
+
 
 const data = reactive<Data>({
     dataList:[],
@@ -122,8 +125,10 @@ const data = reactive<Data>({
     reasonList: [],
     reasonItemid: '',
     cancelObj: {},
-    
-    
+})
+
+onMounted(() => {
+    data.navIndex = props.tabsIndsex
 })
 
 const getAssetsUrl = computed(()=>(src:string)=> {
@@ -150,16 +155,16 @@ const getOrderList = (pageNumber:number, pageSize:number) => {
         size:pageSize,
         query:{
             kind:1,
-            statusId: data.statusId!,
+            statusId: data.navList[data.navIndex].category_id,
             title:'',
-            dateOption:'',
+            dateOption: props.month_t
         }
     }).then((res)=>{
         (paging.value as any).complete(res.list)
         data.cursor = res.nextCursor!
     })
 
-    
+
 }
 
 // 刷新页面
@@ -180,7 +185,7 @@ const cancelOrder = (obj:any) => {
     }).catch(() => {
         bcNotify.value.error('取消原因数据获取失败')
     })
-    
+
 }
 
 const clickdelreason = (id:string) => {
@@ -190,13 +195,13 @@ const clickdelreason = (id:string) => {
 // 提交取消订单
 const goRemove = () => {
     console.log('data.cancelObj',data.cancelObj);
-    
+
     setTimeout(()=>{
         if (data.reasonItemid == '') {
             delreasonNotify.value.error('请选择取消原因')
             return
         }
-        
+
         if (data.cancelObj.actionableList.includes('apply_refund')) {
             console.log({
                 orderEntityId: data.cancelObj.shopList[0].entityList[0].entityId,
@@ -204,7 +209,7 @@ const goRemove = () => {
                 number: data.cancelObj.shopList[0].entityList[0].quantity,
                 refund: data.cancelObj.shopList[0].entityList[0].paidAmount
             });
-            
+
             // 不存在serviceInfo.info
             applyRefund({
                 orderEntityId: data.cancelObj.shopList[0].entityList[0].entityId,
@@ -225,7 +230,7 @@ const goRemove = () => {
             orderId: data.cancelObj.id,
             reasonId: data.reasonItemid
         });
-        
+
 
         houseOrderCancel({
             orderId: data.cancelObj.id,

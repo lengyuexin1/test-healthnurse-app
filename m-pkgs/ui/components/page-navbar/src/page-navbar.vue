@@ -148,7 +148,7 @@ const clickBtn = () => {
 const goback = () => {
     pageController.back().catch(() => {
         console.log('返回失败: 跳转到首页')
-        
+
         uni.reLaunch({
             url: '/IndexPage/pages/index/index',
         })

@@ -25,7 +25,6 @@ interface IPlayBillQuery {
 }
 
 
-
 interface IAfterSalesDetailsQuery {
     id: number
     item_id: number
@@ -48,6 +47,7 @@ interface ISerDetaQuery {
     /** 陪诊医院信息 */
     hospital?: string
 }
+
 /**
  * 跳转到被照护人情况
  **/
@@ -170,7 +170,6 @@ export const gotoChoiceHospital = (templateId: any) => {
 }
 
 
-
 /** 改造专区 */
 export const gotoRenovationpage = () => {
     const route = {
@@ -196,7 +195,9 @@ export const gotoHandleSuccess = (query: IHandleSuccessQuery, type?: string) => 
         query
     } as any
 
-    if (type == 'replace') { return pageController.replace(route) }
+    if (type == 'replace') {
+        return pageController.replace(route)
+    }
 
     return pageController.push(route)
 }
@@ -277,6 +278,7 @@ export const gotoInvitation = (query: any) => {
     } as any
     return pageController.push(route)
 }
+
 /** 跳转到 活动规则 */
 // export const gotoPlayBill = (query: IPlayBillQuery) => {
 //     const route = {
@@ -327,12 +329,12 @@ type TShopApply = 2 | 3 | 12 | 13
 export const gotoAttendShop = (id: string, applyId?: TShopApply) => {
     console.log('applyId', applyId)
     // return
-    // if (applyId === 2) {
-    //     return gotoserviceDetail(id)
-    // }
-    // if (applyId === 3) {
-    //     return gotoShopDetail(id)
-    // }
+    if (applyId === 2) {
+        return gotoserviceDetail(id)
+    }
+    if (applyId === 3) {
+        return gotoShopDetail(id)
+    }
     if (applyId === 12) {
         return gotoServiceStore({ id })
     }
@@ -406,7 +408,7 @@ export const gotoGoodsCategory = (parentId: number, typeId: number) => {
 */
 export const gotoGoodsTabul = (id: string, itemName: string, listType: number) => {
     const route = {
-        path: '/Mall/pages/serviceCategory/goodsTabul',
+        path: '/pagesMall/pages/serviceCategory/goodsTabul',
         query: { id, itemName, listType }
     }
     return pageController.push(route)

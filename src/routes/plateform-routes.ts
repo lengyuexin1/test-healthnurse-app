@@ -88,18 +88,18 @@ export const gotodataManage = (query: dataQuery) => {
 
 
 /** 机构详情 */
-export const gotochoiceDetails = (itemId: any, isAd: any = 0, tologin = false) => {
-    const route = {
-        path: '/Channel/pages/orderConfirm/choiceDetails',
-        query: { itemId, isAd }
-    } as any
-    if (!tologin) {
-        return pageController.isTokenPush(route)
-    }
-    else {
-        return pageController.logingPush(route, '请先登录')
-    }
-}
+// export const gotochoiceDetails = (itemId: any, isAd: any = 0, tologin = false) => {
+//     const route = {
+//         path: '/Channel/pages/orderConfirm/choiceDetails',
+//         query: { itemId, isAd }
+//     } as any
+//     if (!tologin) {
+//         return pageController.isTokenPush(route)
+//     }
+//     else {
+//         return pageController.logingPush(route, '请先登录')
+//     }
+// }
 /** 产品详情 */
 export const gotoproductDetails = (itemId: any, shopId: any, shopName: any, tologin = false) => {
     const route = {
@@ -186,7 +186,7 @@ export const reLaunchIndex = () => {
 /** 跳转到 搜索 */
 export const gotoSearch = (key?: string, type?: number) => {
     const route = {
-        path: '/Mall/pages/search/search',
+        path: '/IndexPage/pages/search/search',
         query: {
             key: key,
             type: type //1 直接搜索 ，null 待搜索

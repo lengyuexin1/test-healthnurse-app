@@ -7,14 +7,19 @@ import { pageController } from '@bc/uni-tools'
  */
 
 // 订单管理列表
-export const gotoorderList = (typeIndex:number = 0) => {
+export const gotoorderList = (query: any) => {
     const route = {
         path: '/pagesOrder/pages/orderList/orderList',
-        query: {
-            typeIndex
-        }
+        query
     } as any
-    return pageController.push(route)
+    // console.log('query', query)
+    return uni.navigateTo({
+        url: `${route.path}?typeIndex=${query.taborIndex}&sub=${query.sub}`,
+        success: () => {
+            console.log('跳转成功')
+        }
+    })
+    // return pageController.push(route)
 }
 
 
