@@ -191,7 +191,7 @@ import createCollectAndReport from "@/utils/collection"
 import { Debounce } from '@/libs/antivibthrot'
 import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
 import { gotoServiceStore, gotoserviceDetail } from '@/routes/service-routes'
-import { gotoCenterChanges, gotoZone } from '@/routes/active-routes'
+import { gotoCenterChanges, gotoZone, gotoNewActive } from '@/routes/active-routes'
 import BottomMenu from "./channelSheet.vue"
 interface Data {
     dataList: any,
@@ -228,14 +228,16 @@ const newGoodList: any = ref([])
 const showBk: any = ref([])
 const zhenList: any = ref([])
 const swiperList: any = ref([])
-const NavList: any = ref([])
+const NavList: any = ref([
+    { id: 1, name: '推荐' }
+])
 const NavId = ref(1)
 const dataObj: any = ref({})
 const dataObjTwo: any = ref({})
 const tabsData: any = ref([
-    { id: '88', icon: getAssetsPic('/fare/v2/zhihui.png'), name: '智慧康护',flagCode: 1 },
-    { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康',flagCode: 1  },
-    { id: '5', icon: getAssetsPic('/fare/v2/gre-cai.png'), name: '到店健康', flagCode: 1},
+    { id: '88', icon: getAssetsPic('/fare/v2/zhihui.png'), name: '智慧康护', flagCode: 1 },
+    { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康', flagCode: 1 },
+    { id: '5', icon: getAssetsPic('/fare/v2/gre-cai.png'), name: '到店健康', flagCode: 1 },
     { id: '8', icon: getAssetsPic('/fare/v2/home_icon_jigou.png'), name: '找机构', flagCode: 1 },
     { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 },
 ])
@@ -262,7 +264,7 @@ const gotoColmDetail = (index: any, item: any) => {
         // return gotoWisdom()
     } else {
         // 跳转微页面
-        return gotoZone(item.id, item.name) 
+        return gotoZone(item.id, item.name)
     }
 }
 
@@ -485,7 +487,7 @@ const getTabbar = (data: any) => {
     columnList(dares).then(res => {
         tabsData.value.unshift(...res)
         console.log(tabsData.value)
-        
+
         // tabsData.value = res
         // if (res.length > 0) {
         //     columnDetail(res[0].id).then(res => {

@@ -30,6 +30,7 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/count-down.vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { moneyFilter } from "@/common/filters"
+import { gotoNewActive } from '@/routes/active-routes'
 // import { gotoNewcomerWelfare } from '@/routes/goods-routes'
 
 interface Props {
@@ -44,7 +45,7 @@ const getAssetsUrl = computed(()=>(src:string)=> {
 
 // 更多
 const clickMore = () => {
-    gotoNewcomerWelfare()
+    gotoNewActive(props.dataObj.id)
 }
 
 </script>

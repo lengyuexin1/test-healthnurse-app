@@ -280,7 +280,6 @@ const changeTabbar = (id: number, showrecommend: boolean) => {
 }
 const tabbarRef = ref()
 const hidetabbarTop = (val: boolean) => {
-    console.log('val11', val);
 
     (tabbarRef.value as any).hideTop(val);
 }

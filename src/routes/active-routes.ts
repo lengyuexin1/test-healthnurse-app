@@ -1,9 +1,10 @@
 import { pageController } from '@bc/uni-tools'
 
 // 新人特惠
-export const gotoNewActive = () => {
+export const gotoNewActive = (id:any) => {
     const route = {
-        path: '/IndexPage/pages/platform/newUser'
+        path: '/IndexPage/pages/platform/newUser',
+        query: { id }
     } as any
     return pageController.push(route)
 }

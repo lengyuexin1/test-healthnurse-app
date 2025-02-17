@@ -34,24 +34,24 @@
                                 <view class="cart_left">
                                     <view class="card_top_text" v-if="item.price">
                                         <view>日常价</view>
-                                        <view style="margin-left:12rpx;" class="fakePrice">￥{{ item.price | moneyFilter }}
+                                        <view style="margin-left:12rpx;" class="fakePrice">￥{{ moneyFilter(item.price ) }}
                                         </view>
                                     </view>
                                     <view class="cart_bottom_text">
                                         <view>优惠价</view>
                                         <view style="font-size:24rpx;font-weight:bold;">￥{{ (item.couponPrice == 0 ?
-                                            item.price : item.couponPrice) | moneyFilter }}</view>
+                                            moneyFilter(item.price) : moneyFilter(item.couponPrice)) }}</view>
                                     </view>
                                 </view>
                                 <view class="card_right">
-                                    <u-button :customStyle="{
+                                    <TnButton :customStyle="{
                                         width: '96rpx',
                                         height: '52rpx',
                                         background: '#FD2E38',
                                         borderRadius: '8rpx',
                                         fontSize: '24rpx',
                                         padding: 0
-                                    }" color="#FFFFFF">抢购</u-button>
+                                    }" color="#FFFFFF">抢购</TnButton>
                                 </view>
 
                             </view>
@@ -83,7 +83,7 @@
                             <view class="store_box" @click.stop="tostore(item.shopId)">
                                 <image class="imgStore" v-if="item.shopThumb" :src="item.shopThumb"></image>
                                 <view class="store_name">{{ item.shopName ? item.shopName : '' }}</view>
-                                <u-icon name="arrow-right" size="20rpx"></u-icon>
+                                <TnIcon name="right" size="20rpx"></TnIcon>
                             </view>
                         </view>
                     </view>
@@ -95,16 +95,19 @@
 </template>
 
 <script setup lang="ts">
+import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 import TnNavbar from '@tuniao/tnui-vue3-uniapp/components/navbar/src/navbar.vue'
 import { getAssetsPic } from "@/common/setPicture"
 import { getactiviList } from '@/api/care-api'
+import { gotoServiceStore } from '@/routes/service-routes'
 // import { gotoServeDetail, gotoAttendShop } from '@/route/care-routes'
-// import { gotoGoodsDetails } from '@/route/goods-routes'
+import { gotogoodsDetail } from '@/routes/goods-routes'
 // import { gotoIndex } from '@/route/care-routes'
 // import authGuard from '@/sys/auth-guard'
 import { PlatformManage } from "@bc/sys"
+import { gotoShopDetail } from "@/routes/service-routes"
 import { ref, computed } from 'vue'
 import { moneyFilter } from "@/common/filters"
 import { onLoad } from "@dcloudio/uni-app"
@@ -175,7 +178,9 @@ const queryList = (start: number, end: number) => {
     }
 }
 
-const toactivity = (shopitem, item) => {
+const toactivity = (item) => {
+    console.log(12313,item)
+    
     PlatformManage.isRequireLogin().then((needlogin) => {
         if (needlogin) {
             uni.showModal({
@@ -188,13 +193,13 @@ const toactivity = (shopitem, item) => {
                         // authGuard.gotoLogin({ page: 1 })
                     }
                     if (res.cancel) {
-                        gotoChanpinInfo(shopitem, item)
+                        gotoChanpinInfo(item)
                     }
                 }
             })
             return
         }
-        gotoChanpinInfo(shopitem, item)
+        gotoChanpinInfo(item)
     })
 }
 
@@ -202,16 +207,17 @@ const gotoBack = () => {
     uni.navigateBack()
 }
 
-const gotoChanpinInfo = (shopitem, item) => {
-    if (item.applyId == 3) {
-        gotoGoodsDetails({ id: shopitem.id })
+const gotoChanpinInfo = (item) => {
+    if (item.type == 1) {
+        // gotoServeDetail({ itemId: item.id })
+        gotoServiceStore({ itemId: item.id })
     }
-    else {
-        gotoServeDetail({ itemId: shopitem.id })
+    else if (item.type == 2) {
+        gotogoodsDetail(item.id)
     }
 }
 const tostore = (id) => {
-    gotoAttendShop(id)
+    gotoShopDetail(id)
 }
 </script>
 
@@ -315,6 +321,7 @@ const tostore = (id) => {
                 border-radius: 12rpx;
                 overflow: hidden;
                 box-sizing: border-box;
+
                 .imgBox {
                     width: 228rpx;
                     height: 228rpx;
@@ -396,6 +403,16 @@ const tostore = (id) => {
                         color: #999;
                         margin: 0rpx 4rpx 0rpx 8rpx;
                     }
+
+                    .shopImg {
+                        width: 28rpx;
+                        height: 28rpx;
+                    }
+
+                    .imgStore {
+                        width: 28rpx;
+                        height: 28rpx;
+                    }
                 }
 
                 .bay_card {
@@ -475,6 +492,7 @@ const tostore = (id) => {
     display: flex;
     align-items: center;
 }
+
 :deep(.tn-navbar__content) {
     padding: 0 !important;
 }

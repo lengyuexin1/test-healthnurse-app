@@ -38,7 +38,7 @@ const getAssetsUrl = computed(() => (src: string) => {
 })
 
 const gotoMark = () => {
-    gotoPiMark()
+    gotoPiMark('1716988256624369666')
 }
 
 // 更多
