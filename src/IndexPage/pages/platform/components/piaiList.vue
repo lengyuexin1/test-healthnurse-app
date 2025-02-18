@@ -37,7 +37,7 @@ const getAssetsUrl = computed(() => (src: string) => {
 
 // 更多
 const gotoSettled = () => {
-    gotoPingP()
+    gotoPingP(props.dataObjTre.id)
 }
 
 </script>

@@ -29,7 +29,7 @@ import { moneyFilter } from "@/common/filters"
 import { PlatformManage } from "@bc/sys"
 import { gotoLogin } from "@/routes/public-routes"
 import { gotoServiceStore } from '@/routes/service-routes'
-
+import { gotoCenterChanges } from '@/routes/active-routes'
 interface Props {
     allInList: any
 }
@@ -41,9 +41,10 @@ const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 
-const liveswiperChange = (e: any) => {
-    swiperIndex.value = e.detail.current
+const seeGoods = (id: any, its: any) => {
+    gotoCenterChanges(id[0], its.name)
 }
+
 const gotoDetail = (item: any) => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {

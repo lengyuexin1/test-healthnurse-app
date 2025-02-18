@@ -431,15 +431,6 @@ export const gotoCateList = (query:any) => {
     return pageController.replace(route)
 }
 
-/** 跳转到 全部列表 */
-export const gotoCateType = (query:any) => {
-    const route = {
-        path: '/IndexPage/pages/platform/catesList',
-        query: query
-    } as any
-    return pageController.push(route)
-}
-
 /** 跳转到 中转 */
 export const gotoCenterChanges = (id:any, name:string) => {
     const route = {

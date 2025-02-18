@@ -1693,7 +1693,21 @@
             "enablePullDownRefresh": false,
             "navigationStyle": "custom"
           }
-        }
+        },
+        {
+          "path": "pages/activity/brandpage",
+          "style": {
+            "navigationBarTitleText": "活动页面",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/activity/supervaluepage",
+          "style": {
+            "navigationBarTitleText": "活动页面",
+            "navigationStyle": "custom"
+          }
+        },
         // {
         //   "path": "pages/service/serviceTab",
         //   "style": {
