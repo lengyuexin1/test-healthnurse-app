@@ -34,3 +34,8 @@ export const activeDetail = (req: any) => {
 export const zqCouList = (req: any) => {
     return http.post('api/order/v1/bc/app/coupon/list', req)
 }
+
+// 所有栏目
+export const allColm = (req: any) => {
+    return http.post('api/order/v1/bc/public/app/adorn/column/all', req)
+}

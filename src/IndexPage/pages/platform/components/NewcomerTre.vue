@@ -1,5 +1,5 @@
 <template>
-    <view class="activityCed row i-center j-between">
+    <view class="activityCed row i-center j-between" @click="gotoShop">
         <view class="activili">
             <view class="activiname">
                 <text>优选店铺</text>
@@ -25,6 +25,7 @@ import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/coun
 import { getAssetsPic } from '@/common/setPicture'
 import { gotoShopDetail } from "@/routes/service-routes"
 // import { gotoNewcomerWelfare } from '@/routes/goods-routes'
+import { gotoPingP } from '@/routes/active-routes'
 
 interface Props {
     dataObjTre: any
@@ -40,6 +41,10 @@ const getAssetsUrl = computed(() => (src: string) => {
 const gotoSettled = (item: any) => {
     console.log(item)
     gotoShopDetail(item.id)
+}
+
+const gotoShop = () => {
+    gotoPingP(props.dataObjTre.id)
 }
 
 </script>

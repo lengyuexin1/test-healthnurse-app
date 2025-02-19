@@ -1,28 +1,26 @@
 <template>
-    <view class="activeStr">
+    <view class="activeStr" @click.stop="clickMore">
         <view class="activeStrTop">
-            <view>
-                <view class="timeOver">您领取的优惠券即将到期</view>
-                <view class="useplase">(请尽快使用)</view>
-            </view>
-            <view class="activeStrTopLset">
-                <view class="left_jin">查看更多</view>
-                <TnIcon name="right" />
+            <view class="toptext">
+                <view class="timeOver">优先服务</view>
+                <view class="useplase">服务新人下单立减80元</view>
             </view>
         </view>
         <view class="activeTimeBot">
-            <view class="activeMoney">
-                <view class="monyNum"><text class="fids">￥</text>60</view>
-                <view class="minyName">服务满减劵</view>
-            </view>
-            <view class="activeCenter">
-                <view class="actiCon">实际支付0元可用</view>
-                <view class="allCon">全平台使用</view>
-                <view class="daoTine">有效期至 2023-05-31 23:59</view>
-            </view>
-            <view>
-                <TnButton class="btnCs">去使用</TnButton>
-            </view>
+            <swiper :indicator-dots="false" :autoplay="true" :interval="5000" class="swiper">
+                <swiper-item class="swiper_item" v-for="(swiperitem, index) in swiperList(jai)" :key="index">
+                    <view class="swiper_con_box_item" v-for="(item) in swiperitem" :key="item.id">
+                        <image class="live_swiper_img" :src="getAssetsPic('/fare/v2/zhihui.png')" mode="scaleToFill" />
+                        <view class="botTetx">
+                            <view class="titleName">中度失能照护</view>
+                            <view class="fova_pric" v-if="item.minPrice">低至<text class="monyeText">{{ item.minPrice ?
+                                (item.minPrice / 100) :
+                                '' }}</text>起
+                            </view>
+                        </view>
+                    </view>
+                </swiper-item>
+            </swiper>
         </view>
     </view>
 </template>
@@ -35,102 +33,156 @@ import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/coun
 import { getAssetsPic } from '@/common/setPicture'
 import { moneyFilter } from "@/common/filters"
 // import { gotoNewcomerWelfare } from '@/routes/goods-routes'
+import { gotoPiMark } from '@/routes/active-routes'
 
 interface Props {
     dataObjTwo: any
 }
 
+const jai = {
+    subsetList: [{
+        id: "1730484766258343937",
+        name: "居家照护（轻度失能）",
+        desc: "适合需要部分协助生活的老人",
+        thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/202312116735892.png",
+        price: 210000,
+        minPrice: 210000,
+        categoriesName: null,
+        categoriesId: "1"
+    },
+    {
+        id: "1730484766258343937",
+        name: "居家照护（轻度失能）",
+        desc: "适合需要部分协助生活的老人",
+        thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/202312116735892.png",
+        price: 210000,
+        minPrice: 210000,
+        categoriesName: null,
+        categoriesId: "1"
+    },
+    {
+        id: "1730484766258343937",
+        name: "居家照护（轻度失能）",
+        desc: "适合需要部分协助生活的老人",
+        thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/202312116735892.png",
+        price: 210000,
+        minPrice: 210000,
+        categoriesName: null,
+        categoriesId: "1"
+    }]
+}
+
+const swiperList = (list) => {
+    const arr: any = []
+    for (let i = 0; i < list?.subsetList?.length; i += 2) {
+        const pair = [list.subsetList[i], list.subsetList[i + 1]]
+        arr.push(pair.filter((item) => {
+            return item
+        }))
+    }
+    return arr
+}
 const props = defineProps<Props>()
 
 const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 
+const liveswiperChange = () => {
+
+}
+
 // 更多
 const clickMore = () => {
-    gotoNewcomerWelfare()
+    gotoPiMark('1716988256624369666')
 }
 
 </script>
   
 <style lang="scss" scoped>
 .activeStr {
-        height: 290rpx;
-        background: linear-gradient(180deg, #F7E4D4 0%, #FFFFFF 100%);
+    height: 290rpx;
+    background: linear-gradient(180deg, #F7E4D4 0%, #FFFFFF 100%);
+    border-radius: 24rpx 24rpx 24rpx 24rpx;
+
+    .activeTimeBot {
+        padding: 0 20rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 178rpx;
+        // background: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%);
         border-radius: 24rpx 24rpx 24rpx 24rpx;
 
-        .activeTimeBot {
-            padding: 0 20rpx;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .swiper {
+            width: 100%;
             height: 178rpx;
-            background: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 100%);
-            border-radius: 24rpx 24rpx 24rpx 24rpx;
-
-            .monyNum {
-                font-size: 56rpx;
-                color: #FF554A;
-                font-weight: 600;
-
-                .fids {
-                    font-size: 28rpx;
-                }
-            }
-
-            .actiCon {
-                font-size: 28rpx;
-                color: #333333;
-            }
-
-            .allCon {
-                font-size: 24rpx;
-                color: #666666;
-                margin: 6rpx 0;
-            }
-
-            .daoTine {
-                font-size: 24rpx;
-                color: #666666;
-            }
-
-            .minyName {
-                font-size: 24rpx;
-                color: #3D3D3D;
-            }
-
-            .btnCs {
-                height: 60rpx;
-                background: #FF554A;
-                border-radius: 30rpx 30rpx 30rpx 30rpx;
-            }
         }
 
-        .activeStrTop {
-            padding: 20rpx;
+        .swiper_item {
             display: flex;
-            justify-content: space-between;
-
-            .timeOver {
-                font-size: 28rpx;
-                color: #5C270A;
-            }
-
-            .useplase {
-                font-size: 20rpx;
-                color: #FF5A00;
-            }
-
-            .activeStrTopLset {
+            width: 136rpx;
+            // justify-content: space-between;
+            margin-right: 10rpx;
+            .swiper_con_box_item {
+                width: 322rpx;
                 display: flex;
+                background: #fff;
                 align-items: center;
-                font-size: 28rpx;
-                color: #666666;
+                padding: 0 12rpx;
+                margin:0 10rpx;
+                border-radius: 12rpx 12rpx 12rpx 12rpx;
+            }
 
-                .left_jin {
-                    margin-right: 12rpx;
+            .live_swiper_img {
+                width: 104rpx;
+                height: 104rpx;
+            }
+
+            .botTetx {
+                margin-left: 8rpx;
+
+                .titleName {
+                    font-weight: 600;
+                    font-size: 26rpx;
+                    color: #64290A;
+                    margin-bottom: 12rpx;
+                }
+
+                .fova_pric {
+                    font-size: 24rpx;
+                    color: #717171;
+                }
+
+                .monyeText {
+                    font-size: 24rpx;
+                    color: #F51F1F;
                 }
             }
         }
     }
+
+    .activeStrTop {
+        padding: 20rpx;
+        display: flex;
+        justify-content: space-between;
+
+        .toptext {
+            display: flex;
+            align-items: center;
+        }
+
+        .timeOver {
+            font-weight: 500;
+            font-size: 34rpx;
+            color: #333333;
+        }
+
+        .useplase {
+            font-size: 24rpx;
+            color: #B47143;
+            padding-left: 16rpx;
+        }
+    }
+}
 </style>

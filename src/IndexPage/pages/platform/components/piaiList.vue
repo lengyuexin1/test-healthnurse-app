@@ -6,7 +6,7 @@
                 <text class="activitit">为您精选店铺推荐</text>
             </view>
             <scroll-view class="sett-seler" scroll-x>
-                <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.subsetList" :key="item.id">
+                <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.shopList" :key="item.id">
                     <view class="sett-seli-img">
                         <image class="imgsel" :src="item.thumb"></image>
                     </view>

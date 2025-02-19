@@ -1,6 +1,6 @@
 <template>
     <view class="container">
-        <z-paging ref="paging" v-model="data.dataList" :auto="true" :fixed="true" @query="queryList" :defaultPageSize="10"
+        <z-paging ref="paging" :auto="true" :fixed="true" :defaultPageSize="10"
             :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="还没有数据哦~"
             :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true">
             <template #top>
@@ -10,13 +10,13 @@
                 <bc-page-navbar :title="'全部分类'"></bc-page-navbar>
             </template>
 
-            <view class="menu_list">
-                <view class="menu_item" v-for="(item) in data.dataList" :key="item.id">
-
-                    <view class="menu_title">{{ item.name }}</view>
+            <view class="menu_list" v-if="dataListTwo.length > 0">
+                <view class="menu_item">
+                    <!-- v-for="(item) in dataListTwo" :key="item.id" -->
+                    <!-- <view class="menu_title">{{ item.name }}</view> -->
                     <view class="icon_list">
-                        <view class="icon_item" v-for="(sonItem) in item.sonCategoryShows" :key="sonItem.id"
-                            @click="toClassPage(item, sonItem)">
+                        <view class="icon_item" v-for="(sonItem) in dataListTwo" :key="sonItem.id"
+                            @click="toClassPage(sonItem, sonItem)">
                             <image class="item_img" :src="sonItem.icon" mode="scaleToFill" />
                             <view class="item_text">{{ sonItem.name }}</view>
                         </view>
@@ -35,14 +35,10 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { onLoad } from '@dcloudio/uni-app'
-
 import { getAssetsPic } from '@/common/setPicture'
-// import { newCourseCategory } from "@/api/create-api"
-
 import BCNotify from '@/components/notify/index.vue'
-
-// import { gotoarticleClassPage } from '@/routes/service-routes'
-
+import { allColm, setPageBank } from "@/api/setite-api"
+import { gotoZone } from "@/routes/active-routes"
 
 interface Data {
     dataList: any
@@ -51,32 +47,7 @@ const data = reactive<Data>({
     dataList: [],
 })
 
-const dataListTwo = [
-    {
-        name: '4654',
-        sonCategoryShows: [{
-            sonItem: '74979',
-            id: 464,
-            name: '7987',
-            icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/marketing-manage/otherCenter/classManage/2024423174526668.png'
-        }, {
-            sonItem: '74979',
-            id: 464,
-            name: '7987',
-            icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/marketing-manage/otherCenter/classManage/2024423174526668.png'
-        }]
-    },
-    {
-        name: '4654',
-        sonCategoryShows: [{
-            sonItem: '74979',
-            id: 464,
-            name: '7987',
-            icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/marketing-manage/otherCenter/classManage/2024423174526668.png'
-        }]
-    },
-
-]
+const dataListTwo: any = ref([])
 
 
 const bcNotify = ref()
@@ -91,32 +62,27 @@ const getAssetsUrl = computed(() => (src: string) => {
 })
 
 onLoad((option: any) => {
+    getData(option.type)
 })
 
-const paging = ref(null)
-const queryList = async (pageNumber: number, pageSize: number) => {
-    // if (pageNumber == 1) {
-    //     newCourseCategory({
-    //         id: 7
-    //     }).then((res:any) => {
-    (paging.value as any).complete(dataListTwo);
-    //         console.log('data.dataList',data.dataList);
-    //     }).catch((err:any)=>{
-    //         console.log('err类目',err);
-    //         (paging.value as any).complete([])
-
-    //     })
-    //     return
-    // }
-
+const getData = (num: number) => {
+    setPageBank(num).then(res => {
+        const dataList = res.recordList.filter((item: any) => item.moduleId == 2)
+        if (dataList.length > 0) {
+            const sendData = {
+                ids: dataList[0].dataIds
+            }
+            allColm(sendData).then(res => {
+                dataListTwo.value = res
+            })
+        }
+    })
 }
 
+const paging = ref(null)
+
 const toClassPage = (item: any, sonItem: any) => {
-    gotoarticleClassPage({
-        title: item.name,
-        id: item.id,
-        sonId: sonItem.id
-    })
+    gotoZone(item.id, item.name)
 }
 
 

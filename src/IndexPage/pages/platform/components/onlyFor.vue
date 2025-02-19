@@ -29,7 +29,7 @@ import { moneyFilter } from "@/common/filters"
 import { PlatformManage } from "@bc/sys"
 import { gotoLogin } from "@/routes/public-routes"
 import { gotoServiceStore } from '@/routes/service-routes'
-import { gotoCenterChanges } from '@/routes/active-routes'
+import { gotoCenterChanges, gotoCateList } from '@/routes/active-routes'
 interface Props {
     allInList: any
 }
@@ -42,7 +42,9 @@ const getAssetsUrl = computed(() => (src: string) => {
 })
 
 const seeGoods = (id: any, its: any) => {
-    gotoCenterChanges(id[0], its.name)
+    // gotoCenterChanges(id[0], its.name) //中转页面
+
+    gotoCateList({type: 2, id:its.id })
 }
 
 const gotoDetail = (item: any) => {

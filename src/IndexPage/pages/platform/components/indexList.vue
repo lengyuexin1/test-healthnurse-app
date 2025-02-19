@@ -1,18 +1,17 @@
 <template>
     <z-paging ref="paging" v-model="data.dataList" :auto="true" :fixed="false" @query="queryList" @scroll="scrollPage"
-              :defaultPageSize="6" :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
-              empty-view-text="还没有数据哦~"
-              :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true"
-              back-to-top-bottom="180rpx" :back-to-top-img="getAssetsUrl('/leyou/home/page_Topup.svg')"
-              :back-to-top-style="{ width: '80rpx', height: '80rpx', padding: '18rpx', background: '#fff', borderRadius: '50%' }">
+        :defaultPageSize="6" :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="还没有数据哦~"
+        :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true"
+        back-to-top-bottom="180rpx" :back-to-top-img="getAssetsUrl('/leyou/home/page_Topup.svg')"
+        :back-to-top-style="{ width: '80rpx', height: '80rpx', padding: '18rpx', background: '#fff', borderRadius: '50%' }">
 
         <template #top>
             <view class="author" v-if="(props.channelId == 1 && data.attentionList.length != 0)">
                 <view class="author_item" v-for="item in data.attentionList" :key="item.followId">
                     <view class="author_img_box" @click="clickauthor(item)">
                         <image class="author_img"
-                               :src="item.accountId == 999 ? getAssetsUrl(item.followImage) : item.followImage"
-                               mode="scaleToFill"/>
+                            :src="item.accountId == 999 ? getAssetsUrl(item.followImage) : item.followImage"
+                            mode="scaleToFill" />
                     </view>
                     <view class="author_text">
                         {{ item.followName }}
@@ -25,13 +24,13 @@
         <view class="top_bg_box">
             <view class="live_swiper" v-if="swiperList.length != 0">
                 <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
-                        @change="liveswiperChange">
+                    @change="liveswiperChange">
 
                     <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id">
-                        <image class="live_swiper_img" :src="item.icon" mode="scaleToFill" @click="liveList(item)"/>
+                        <image class="live_swiper_img" :src="item.icon" mode="scaleToFill" @click="liveList(item)" />
                         <!-- index == 0 -->
                         <view class="live_box"
-                              v-if="((item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon))">
+                            v-if="((item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon))">
                             <view class="live_left_box">
                                 <BarPlaying bgColor="#FFFFFF"></BarPlaying>
                                 <view>直播中</view>
@@ -44,15 +43,14 @@
                 </swiper>
                 <view class="swiper_sign_box">
                     <view class="sign_item" :class="{ 'is_sign': signIndex == data.swiperIndex }"
-                          v-for="(signItem, signIndex) in swiperList.length" :key="signIndex"></view>
+                        v-for="(signItem, signIndex) in swiperList.length" :key="signIndex"></view>
                 </view>
             </view>
         </view>
         <!-- 首页列表 -->
         <view class="deCionBox">
-            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index"
-                  @click="gotoColmDetail(index, item)">
-                <image class="left_menu_img" :src="item.icon" mode="scaleToFill"/>
+            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index" @click="gotoColmDetail(index, item)">
+                <image class="left_menu_img" :src="item.icon" mode="scaleToFill" />
                 <view class="iconText">{{ item.name }}</view>
             </view>
         </view>
@@ -62,16 +60,16 @@
         </view>
 
         <!-- 专区 -->
-        <view v-if="showBk.includes(7)">
+        <!-- <view v-if="showBk.includes(7)">
             <onlyFor :allInList="allInList"></onlyFor>
-        </view>
+        </view> -->
 
         <!-- 新品 -->
         <view class="neds" v-if="showBk.includes(5)">
             <view class="newTitle">新品上市</view>
             <view class="newUp">
                 <view class="everyItem" v-for="(item, index) in newGoodList" :key="index">
-                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill"/>
+                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
                     <view class="img_right">
                         <view>
                             <view class="text_tit">{{ item.name }}</view>
@@ -98,7 +96,7 @@
             <view class="Nav_box">
                 <view class="Nav_scoll_box">
                     <view class="Nav_item" :class="{ 'have_right': NavList.length == (index + 1) }"
-                          v-for="(item, index) in NavList" :key="index" @click="changeNav(item)">
+                        v-for="(item, index) in NavList" :key="index" @click="changeNav(item)">
                         <view class="item_name">
                             <view> {{ item.name }}</view>
                             <view class="isSelect" v-if="NavId == item.id"></view>
@@ -112,13 +110,14 @@
         </view>
 
         <!-- 新人福利 -->
-        <view class="newPople" v-if="showBk.includes(3)">
+        <view class="newPople" v-if="showBk.includes(999)">
             <!-- 活动1 -->
-            <NewcomerWelfare v-if="dataObj.type !== 3" :dataObj="dataObj"></NewcomerWelfare>
+            <NewcomerWelfare :dataObj="dataObj" v-if="dataObj.type == 6"></NewcomerWelfare>
+            <!-- v-if="dataObj.type !== 3" -->
             <!-- 活动2 -->
-            <!-- <NewcomerTwo :dataObjTwo="dataObjTwo"></NewcomerTwo> -->
+            <!-- <NewcomerTwo v-if="dataObj.type == 2" :dataObjTwo="dataObjTwo"></NewcomerTwo> -->
             <!-- 活动三 -->
-            <NewcomerTre v-if="dataObj.type == 3" :dataObjTre="dataObj"></NewcomerTre>
+            <!-- <NewcomerTre v-if="dataObj.type == 3" :dataObjTre="dataObj"></NewcomerTre> -->
         </view>
         <!-- 瀑布列表 -->
         <view class="content_right_list" :class="{ 'not_height': data.dataList.length == 0 }">
@@ -155,6 +154,7 @@ import { gotoServiceStore } from '@/routes/service-routes'
 import { gotoallClassPage, gotoCenterChanges, gotoZone } from '@/routes/active-routes'
 import BottomMenu from "./channelSheet.vue"
 import { gotoPersonnel } from "@/routes/wisdom-routes"
+import NewcomerTwo from './NewcomerTwo.vue'
 
 interface Data {
     dataList: any,
@@ -220,10 +220,9 @@ const upCalik = (item: any, index: number) => {
 }
 
 const gotoColmDetail = (index: any, item: any) => {
-    console.log(index, item)
     if (item.flagCode) {
         if (item.id == '360') {
-            gotoallClassPage()
+            gotoallClassPage(1)
         }
         else if (item.id === '88') {
             gotoPersonnel()
@@ -332,7 +331,7 @@ const getSetIds = (num: number) => {
             allInList.value.forEach((element: any) => {
                 console.log(element)
                 // 业务模块专区
-                channeCatelList(element, element.categoryIds)
+                // channeCatelList(element, element.categoryIds)
             })
         }
         if (!res.recordList) {
@@ -386,6 +385,15 @@ const healthMyData = (list: any) => {
                 ...element.navbarList
             ]
             getTextList(1)
+
+            if (element.activityIds.length > 0) {
+                showBk.value.push(999)
+                activeDetail(element.activityIds[0]).then(res => {
+                    console.log('活动想去', res)
+                    dataObj.value = res
+                    console.log(dataObj.value, '活动想去', res)
+                })
+            }
         }
     })
 }
@@ -460,13 +468,6 @@ const getTabbar = (data: any) => {
     }
     columnList(dares).then(res => {
         tabsData.value.unshift(...res)
-        console.log(tabsData.value)
-
-        // tabsData.value = res
-        // if (res.length > 0) {
-        //     columnDetail(res[0].id).then(res => {
-        //     })
-        // }
     })
 }
 

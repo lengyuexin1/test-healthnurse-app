@@ -1,181 +1,167 @@
 <template>
     <view class="container">
-        <z-paging ref="paging" :auto="false" :refresher-enabled="false" @scroll="scrollPage">
-            <template #top>
-                <PageTopbg bgstyle="background: transparent;"></PageTopbg>
-                <customNavbar pageTitle="新人特惠"></customNavbar>
+        <TnNavbar bgColor="transparent" :bottom-shadow="false" home-icon="" placeholder>
+            <template #back>
+                <TnIcon @click="gotoBack" color="##333333" name="left" size="42"></TnIcon>
             </template>
-            <view class="indexImg">
-                <image class="towPro_img" :src="getAssetsUrl('/device/home/newUserwe.png')" mode="scaleToFill" />
-            </view>
-            <view class="space_box"></view>
-            <view class="btns">
-                <view class="btnItem" @click="tapArt(item, index)" :class="{ 'acticol': curret == index }"
-                    v-for="(item, index) in artList">{{ item.text }}</view>
-            </view>
-            <view class="qianUse" v-for="(items, index) in artList" :key="index" :id="items.id">
-                <view class="qianTitle">
-                    <view>{{ items.text }}</view>
-                </view>
-                <view class="qianUl">
-                    <view class="quanLi" v-for="(item, index) in qianList" :key="index">
-                        <view>
-                            <view class="groupMon">
-                                <view class="ecad">￥</view>
-                                <view class="numMoney">{{ item.money }}</view>
+            <view class=titleCs>{{ dataObj.name }}</view>
+        </TnNavbar>
+        <view class="gradient" :style="{ backgroundImage: `url(${dataObj.mainImage})` }"></view>
+        <view class="centent">
+            <z-paging @query="queryList" ref="paging" v-model="dataList" :auto="false" :fixed="false"
+                :refresher-enabled="false" @scroll="scrollPage">
+                <view class="qianUse">
+                    <view class="qianUl">
+                        <view class="quanLi" v-for="(item, index) in artList" :key="index">
+                            <view>
+                                <view class="groupMon">
+                                    <view class="ecad">￥</view>
+                                    <view class="numMoney">{{ item.money }}</view>
+                                </view>
+                                <view class="whereUse">{{ item.text }}</view>
                             </view>
-                            <view class="whereUse">{{ item.text }}</view>
-                        </view>
-                        <view class="syuas">
-                            <view class="lineBox">
-                                <view class="zonr1"></view>
-                                <view class="lineDa"></view>
-                                <view class="zonr2"></view>
-                            </view>
-                        </view>
-                        <view class="noget" v-if="item.isUse == 1">领取</view>
-                        <view class="noget alseUse" v-else>领取</view>
-                    </view>
-                </view>
-                <view class="qianGoods">
-                    <view class="goodsList" v-for="(item, index) in qianList" :key="index">
-                        <view class="goodsTitle">智能中控屏平板</view>
-                        <view class="goodsCont">
-                            <view class="goodsLeft">
-                                <view class="goodsName">全屋监控</view>
-                                <view>
-                                    <view class="finalMony">￥899</view>
-                                    <view class="realMony">￥1358</view>
+                            <view class="syuas">
+                                <view class="lineBox">
+                                    <view class="zonr1"></view>
+                                    <view class="lineDa"></view>
+                                    <view class="zonr2"></view>
                                 </view>
                             </view>
-                            <image class="towPro_img" :src="getAssetsUrl('/device/home/newUserwe.png')"
-                                mode="scaleToFill" />
+                            <view class="noget" v-if="item.isUse == 1" @click="getUp(item)">领取</view>
+                            <view class="noget alseUse" v-else @click="gotoUse(item)">去使用</view>
                         </view>
                     </view>
+
+                    <view class="centTitle">特惠商品</view>
+
+                    <view class="qianGoods">
+                        <WaterfallsFlow :wfList="dataList" @waterItem="clickwaterItem">
+                        </WaterfallsFlow>
+                    </view>
                 </view>
-            </view>
-        </z-paging>
+            </z-paging>
+        </view>
+
     </view>
 </template>
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
-import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { getAssetsPic } from '@/common/setPicture'
-import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
-import customNavbar from '@/components/custom-navbar/custom-navbar.vue'
-
+import TnNavbar from '@tuniao/tnui-vue3-uniapp/components/navbar/src/navbar.vue'
+import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
+import { activeDetail, zqCouList } from "@/api/setite-api"
+import { onLoad } from "@dcloudio/uni-app"
+import WaterfallsFlow from '@/IndexPage/pages/platform/components/WaterfallsFlow.vue'
+import { gotoServiceStore } from '@/routes/service-routes'
+import { gotogoodsDetail } from '@/routes/goods-routes'
 const paging = ref()
-const imgStyle = ref('opacity: 1')
-const closeImg = ref(true)
-const artList = ref([
-    {
-        text: '用券专区', list: [
-            { money: 10, text: '限部分商品可用', isUse: 1 },
-            { money: 30, text: '限部分商品可用', isUse: 1 },
-            { money: 30, text: '限部分商品可用', isUse: 1 },
-            { money: 30, text: '限部分商品可用', isUse: 1 },
-            { money: 40, text: '限部分商品可用', isUse: 2 }
-        ],
-        id: 'nes1'
-    },
-    {
-        text: '新人专区', list: [
-            { money: 10, text: '限部分商品可用', isUse: 1 },
-            { money: 30, text: '限部分商品可用', isUse: 1 },
-            { money: 30, text: '限部分商品可用', isUse: 1 },
-            { money: 30, text: '限部分商品可用', isUse: 1 },
-            { money: 40, text: '限部分商品可用', isUse: 2 }
-        ],
-        id: 'nes2'
+const dataList = ref([])
+const artList:any = ref([])
+const dataObj:any = ref({})
+onLoad((option: any) => {
+    activeDetail(option.id).then(res => {
+        dataObj.value = res
+        paging.value.complete(res.itemList)
+        
+        // 优惠券
+        getCouList(res.couponIds || res.carouselIds)
+    })
+})
+
+const getCouList = (cuoIds: any) => {
+    const couData = {
+        pageNumber: 1,
+        pageSize: 30,
+        query: {
+            ids: cuoIds
+        }
     }
-])
-const btnList = ref([
-    { text: '用券专区' },
-    { text: '新人特惠' }
-])
-const qianList = ref([
-    { money: 10, text: '限部分商品可用', isUse: 1 },
-    { money: 30, text: '限部分商品可用', isUse: 1 },
-    { money: 30, text: '限部分商品可用', isUse: 1 },
-    { money: 30, text: '限部分商品可用', isUse: 1 },
-    { money: 40, text: '限部分商品可用', isUse: 2 }
-])
-const scrollPage = (e: any) => {
-    const opacity = e.detail.scrollTop / 30
-    closeImg.value = true
-    if (e.detail.scrollTop < 30) {
-        return imgStyle.value = 'opacity: 1'
-    }
-    if (opacity > 1) {
-        imgStyle.value = 'opacity: 0'
-        closeImg.value = false
-        return
-    }
-    imgStyle.value = `opacity: ${opacity}`
+    zqCouList(couData).then(res => {
+        artList.value = res.data
+    })
 }
-const curret = ref(0)
+
+const scrollPage = (e: any) => { }
 const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
-const tapArt = (item: any, index: number) => {
-    if (index == 1) {
-        paging.value.scrollIntoViewById(item.id, 200)
-    }
-    curret.value = index
 
+const clickwaterItem = (item: any) => {
+    if (item.type == 1) {
+        gotoServiceStore({itemId:item.id })
+    }
+    if (item.type == 2) {
+        gotogoodsDetail(item.id)
+    }
+}
+
+const queryList = (pageNumber: number, pageSize: number) => {
+
+}
+
+const getUp = (item: any) => {
+    item.isUse = 2
+}
+const gotoUse = (item: any) => {
+
+}
+
+const gotoBack = () => {
+    uni.navigateBack()
 }
 </script>
 <style lang="scss" scoped>
+.container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    .titleCs {
+        font-size: 34rpx;
+    }
+
+    .gradient {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 440rpx;
+        z-index: -1;
+        background-position: center center;
+        background-size: 100% 100%;
+    }
+
+    .centent {
+        overflow: auto;
+        position: absolute;
+        top: 440rpx;
+        bottom: 0;
+        left: 0;
+        right: 0px;
+    }
+}
+
 .indexImg {
     width: 100%;
-    height: 500rpx;
-    // position: absolute;
-    // top: 0;
-    // left: 0;
-    // z-index: 99;
+    height: 430rpx;
 
     .towPro_img {
         width: 100%;
-        height: 500rpx;
+        height: 430rpx;
     }
 }
-
-.btns {
-    margin-top: 50rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .btnItem {
-        background: #E7E8EA;
-        font-size: 28rpx;
-        color: #333333;
-        border-radius: 30rpx;
-        padding: 16rpx 32rpx;
-        margin-right: 40rpx;
-    }
-
-    .acticol {
-        background: #18181A;
-        color: #FFFFFF;
-    }
-}
-
-// .space_box {
-//     width: 100%;
-//     height: 350rpx;
-// }
 
 .qianUse {
-    margin: 60rpx 0 40rpx 0;
+    margin: 30rpx 0 40rpx 0;
 
-    .qianTitle {
-        display: flex;
-        justify-content: center;
+    .centTitle {
+        text-align: center;
         font-weight: 600;
         font-size: 32rpx;
         color: #020202;
-        margin-bottom: 40rpx;
+        margin: 30rpx 10rpx;
     }
 
     .qianUl {
@@ -235,6 +221,7 @@ const tapArt = (item: any, index: number) => {
             .alseUse {
                 background: #333333;
                 color: #FFFFFF;
+                width: 128rpx;
             }
 
             .syuas {
@@ -275,57 +262,16 @@ const tapArt = (item: any, index: number) => {
     }
 
     .qianGoods {
-        margin: 30rpx 20rpx 0 20rpx;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 16rpx;
-
-        .goodsList {
-            background: #fff;
-            border-radius: 24rpx;
-            height: 290rpx;
-            padding: 24rpx;
-            box-sizing: border-box;
-
-            .towPro_img {
-                width: 160rpx;
-                height: 160rpx;
-            }
-
-            .goodsCont {
-                display: flex;
-                margin-top: 20rpx;
-                justify-content: space-between;
-            }
-
-            .goodsTitle {
-                font-weight: 600;
-                font-size: 28rpx;
-                color: #020202;
-            }
-
-            .goodsLeft {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-
-                .finalMony {
-                    font-weight: 600;
-                    font-size: 28rpx;
-                    color: #000000;
-                }
-
-                .realMony {
-                    font-size: 20rpx;
-                    color: #999999;
-                }
-            }
-
-            .goodsName {
-                font-size: 20rpx;
-                color: #666666;
-            }
-        }
+        margin: 30rpx 18rpx 0 18rpx;
     }
+}
+
+:deep(.tn-navbar-back) {
+    display: flex;
+    align-items: center;
+}
+
+:deep(.tn-navbar__content) {
+    padding: 0 !important;
 }
 </style>
