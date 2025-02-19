@@ -96,8 +96,8 @@
                     <!-- 主页右侧栏切换按钮 -->
                     <view class="top_left">
 
-                        <image @click="openAisearch" class="ai_search" :src="getAssetsUrl('/leyou/home/ai_search_icon.svg')"
-                            mode="scaleToFill" />
+                        <!-- <image @click="openAisearch" class="ai_search" :src="getAssetsUrl('/leyou/home/ai_search_icon.svg')"
+                            mode="scaleToFill" /> -->
 
                         <image @click="changebubble" class="more_icon" :src="getAssetsUrl('/leyou/home/more_icon.svg')"
                             mode="scaleToFill" />
@@ -482,7 +482,7 @@ const toChannel = () => {
     gotoChannel()
 }
 const changebubble = () => {
-    emit('showRightMenu')
+    // emit('showRightMenu')
     // data.showrightMenu = true
     // data.showbubble = !data.showbubble
 }
@@ -1138,8 +1138,8 @@ defineExpose({
         }
 
         .inp_box {
-            // width: 612rpx;
-            width: 418rpx;
+            width: 510rpx;
+            // width: 418rpx;
             height: 70rpx;
             // border: 2rpx solid #F6CBCB;
             box-sizing: border-box;

@@ -148,7 +148,6 @@ import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { gotoLogin } from "@/routes/public-routes"
 import { gotoChannel, gotoChannelFollow } from '@/routes/create-routes'
 import { gotoLiveList } from '@/routes/user-routes'
-import { searListFlag } from "@/api/open-api"
 import { activeDetail, bannerList, columnList, setPageBank } from "@/api/setite-api"
 import { gotoServiceStore } from '@/routes/service-routes'
 import { gotoallClassPage, gotoCenterChanges, gotoZone } from '@/routes/active-routes'
@@ -249,10 +248,6 @@ const openBotMun = () => {
     showBottomMenu.value = !showBottomMenu.value
 }
 
-const seeGoods = (id: any, its: any) => {
-    gotoCenterChanges(id[0], its.name)
-}
-
 const gotoDetail = (item: any) => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
@@ -298,17 +293,6 @@ const queryList = (pageNumber: number, pageSize: number) => {
         }
     }
     recomLikeList(data).then((res) => {
-        paging.value.complete(res.data)
-    })
-}
-
-const conGiveData = (pageNumber) => {
-    const data = {
-        pageNumber,
-        pageSize: 10,
-        query: {}
-    }
-    searListFlag(data).then((res: any) => {
         paging.value.complete(res.data)
     })
 }
@@ -369,9 +353,7 @@ const healthMyData = (list: any) => {
         // 新人活动
         if (element.moduleId == 3) {
             activeDetail(element.dataIds[0]).then(res => {
-                console.log('活动想去', res)
                 dataObj.value = res
-                console.log(dataObj.value, '活动想去', res)
             })
         }
         // 产品推荐
@@ -397,9 +379,7 @@ const healthMyData = (list: any) => {
             if (element.activityIds.length > 0) {
                 showBk.value.push(999)
                 activeDetail(element.activityIds[0]).then(res => {
-                    console.log('活动想去', res)
                     dataObj.value = res
-                    console.log(dataObj.value, '活动想去', res)
                 })
             }
         }
@@ -444,12 +424,8 @@ const channeCatelList = (item: any, id: any) => {
 
 // 请求第一个tab
 const getTextList = (cateIndex: number) => {
-    if (cateIndex == 1) {
-
-    }
-    else {
-
-    }
+    if (cateIndex == 1) { }
+    else { }
 }
 
 const getBannerList = (data: any) => {
@@ -504,9 +480,7 @@ const clickwaterItem = (item: any) => {
             }, 1000)
             return
         }
-
         gotoServiceStore({ itemId: item.id })
-
         // item.type == 3 && gotoarticledetails({
         //     id: item.id
         // })
