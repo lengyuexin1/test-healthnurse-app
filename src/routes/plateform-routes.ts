@@ -31,7 +31,7 @@ export const gotoArticledetails = (itemId: any, content: string | null = null, t
     if (!content) {
         console.log('保存历史记录')
 
-        return pageController.isTokenPush(route)
+        return pageController.push(route)
     }
     else {
         console.log('不保存历史记录')
@@ -88,18 +88,18 @@ export const gotodataManage = (query: dataQuery) => {
 
 
 /** 机构详情 */
-// export const gotochoiceDetails = (itemId: any, isAd: any = 0, tologin = false) => {
-//     const route = {
-//         path: '/Channel/pages/orderConfirm/choiceDetails',
-//         query: { itemId, isAd }
-//     } as any
-//     if (!tologin) {
-//         return pageController.isTokenPush(route)
-//     }
-//     else {
-//         return pageController.logingPush(route, '请先登录')
-//     }
-// }
+export const gotochoiceDetails = (itemId: any, isAd: any = 0, tologin = false) => {
+    const route = {
+        path: '/Channel/pages/orderConfirm/choiceDetails',
+        query: { itemId, isAd }
+    } as any
+    if (!tologin) {
+        return pageController.isTokenPush(route)
+    }
+    else {
+        return pageController.logingPush(route, '请先登录')
+    }
+}
 /** 产品详情 */
 export const gotoproductDetails = (itemId: any, shopId: any, shopName: any, tologin = false) => {
     const route = {
@@ -132,11 +132,11 @@ export const gotoimgdetails = (itemId: any) => {
 /** 康养详情 */
 export const gotohealthDetails = (itemId: any, isAd: any = 0, tologin = false) => {
     const route = {
-        path: '/Channel/pages/orderConfirm/healthDetails',
+        path: '/pagesService/pages/Servicestore/ServicestoreDetail',
         query: { itemId, isAd }
     } as any
     if (!tologin) {
-        return pageController.isTokenPush(route)
+        return pageController.push(route)
     }
     return pageController.isTokenPush(route)
 }

@@ -774,7 +774,16 @@ export const gotoBusinessAuth = (isReplace?: boolean) => {
 /* 找机构 */
 export const gotoAgency = (query: any) => {
     const route = {
-        path: '/pages/agency/agency',
+        path: '/IndexPage/pages/agency/agency',
+        query
+    }
+    return pageController.push(route)
+}
+
+/* 平台资质 */
+export const gotoPlatformQualification = (query: any) => {
+    const route = {
+        path: '/pagesUser/pages/credential/credential',
         query
     }
     return pageController.push(route)

@@ -63,6 +63,14 @@
       "root": "IndexPage",
       "pages": [
         {
+          "path": "pages/agency/agency",
+          "style": {
+            "navigationBarTitleText": "到店健康",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
           "path": "pages/index/index",
           "style": {
             "navigationBarTitleText": "首页",
@@ -331,6 +339,14 @@
     {
       "root": "pagesUser",
       "pages": [
+        {
+          "path": "pages/credential/credential",
+            "style": {
+                "navigationBarTitleText": "平台资质",
+                "navigationStyle": "custom",
+                "enablePullDownRefresh": false
+            }
+        },
         {
           "path": "pages/setting/setting",
           "style": {
@@ -1146,6 +1162,13 @@
       "root": "pagesCnt",
       "pages": [
         {
+          "path": "pages/knowledge/knowledge",
+          "style": {
+            "navigationBarTitleText": "康护知识",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "pages/channel/channel",
           "style": {
             "navigationBarTitleText": "康养百科",
@@ -1707,7 +1730,7 @@
             "navigationBarTitleText": "活动页面",
             "navigationStyle": "custom"
           }
-        },
+        }
         // {
         //   "path": "pages/service/serviceTab",
         //   "style": {
@@ -1738,6 +1761,27 @@
           "path": "pages/science/productDetail",
           "style": {
             "navigationBarTitleText": "康品百科详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/science/problem",
+          "style": {
+            "navigationBarTitleText": "常见问题",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/science/problemDetail",
+          "style": {
+            "navigationBarTitleText": "问题详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/science/caption",
+          "style": {
+            "navigationBarTitleText": "使用说明",
             "navigationStyle": "custom"
           }
         }

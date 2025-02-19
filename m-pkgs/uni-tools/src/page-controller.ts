@@ -1,21 +1,21 @@
 import { UrlTools } from "@bc/base"
-
-/** 初始化 */
-const debug = true
 // import authGuard from '@/sys/auth-guard'
 
 import createCollectAndReport from "@/utils/collection"
 import { Debounce } from '@/libs/antivibthrot'
 
+/** 初始化 */
+const debug = true
+
 //===============================================================
 /** 核心类 */
+
 //===============================================================
 
 /**
  * 页面控制器
  * TODO 后续增加各种路由模式
  */
-
 
 
 class PageController {
@@ -57,14 +57,14 @@ class PageController {
             })
         })
     }
+
     isTokenPush(route: IRoute) {
         const url = UrlTools.buildUrlByParams(route.path, route.query)
-        if (!uni.getStorageSync('MINI_USER@app_token')) {
+        if (!uni.getStorageSync('USER_MOD@app_token')) {
             uni.showModal({
                 content: '登录已失效, 请重新登陆',
                 success: function(res) {
                     if (res.confirm) {
-
                         authGuard.gotoLogin({ page: 1 })
                     }
                     else if (res.cancel) {
@@ -92,6 +92,7 @@ class PageController {
             })
         })
     }
+
     replace(route: IRoute) {
         const url = UrlTools.buildUrlByParams(route.path, route.query)
         return new Promise<void>((reslove, reject) => {
@@ -168,7 +169,6 @@ class PageController {
         route.query = page.options
         return route
     }
-
 
 
     // 页面浏览上报

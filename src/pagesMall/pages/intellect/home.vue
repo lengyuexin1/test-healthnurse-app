@@ -9,8 +9,14 @@
         <div class="footbox">
             <TnTabbar v-model="data.value1" @change="name => data.value1 = name" active-color="#333333"
                       inactive-color="#6E7378">
+                <!--                #ifdef MP-WEIXIN-->
                 <TnTabbarItem v-for="(item, index) in data.tabList" :key="item.id" :text="item.name"
                               :icon="item.inactive" :active-icon="item.active"></TnTabbarItem>
+                <!--                #endif-->
+                <!--                #ifdef APP-PLUS || H5-->
+                <TnTabbarItem v-for="(item, index) in data.tabList" :key="item.id" :text="item.name"
+                              :icon="'/src' + item.inactive" :active-icon="'/src' + item.active"></TnTabbarItem>
+                <!--                #endif-->
             </TnTabbar>
         </div>
     </div>
@@ -19,7 +25,7 @@
 <script lang="ts" setup>
 import Summary from './summary.vue'
 import Package from './package.vue'
-import RoomDev from '@/pagesTuya/pages/roomDev.vue'
+import RoomDev from '@/pagesTuya/pages/wisdom/roomDev.vue'
 import Mine from './mine.vue'
 import TnTabbar from '@tuniao/tnui-vue3-uniapp/components/tabbar/src/tabbar.vue'
 import TnTabbarItem from '@tuniao/tnui-vue3-uniapp/components/tabbar/src/tabbar-item.vue'
@@ -57,26 +63,26 @@ const data = reactive<Data>({
         {
             id: '001',
             name: '智护帮',
-            active: '/src/pagesMall/static/tabimg/inte-tab1.svg',
-            inactive: '/src/pagesMall/static/tabimg/inte-in-tab1.svg'
+            active: '/pagesMall/static/tabimg/inte-tab1.svg',
+            inactive: '/pagesMall/static/tabimg/inte-in-tab1.svg'
         },
         {
             id: '003',
             name: '智慧椿家',
-            active: '/src/pagesMall/static/tabimg/inte-tab3.svg',
-            inactive: '/src/pagesMall/static/tabimg/inte-in-tab3.svg'
+            active: '/pagesMall/static/tabimg/inte-tab3.svg',
+            inactive: '/pagesMall/static/tabimg/inte-in-tab3.svg'
         },
         {
             id: '002',
             name: '全屋智能',
-            active: '/src/pagesMall/static/tabimg/inte-tab2.svg',
-            inactive: '/src/pagesMall/static/tabimg/inte-in-tab2.svg'
+            active: '/pagesMall/static/tabimg/inte-tab2.svg',
+            inactive: '/pagesMall/static/tabimg/inte-in-tab2.svg'
         },
         {
             id: '004',
             name: '我的',
-            active: '/src/pagesMall/static/tabimg/inte-tab4.svg',
-            inactive: '/src/pagesMall/static/tabimg/inte-in-tab4.svg'
+            active: '/pagesMall/static/tabimg/inte-tab4.svg',
+            inactive: '/pagesMall/static/tabimg/inte-in-tab4.svg'
         }
     ]
 })

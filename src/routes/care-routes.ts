@@ -496,7 +496,7 @@ export const gotoScienceDetail = (query: { id: string }) => {
 
 export const gotoCaption = (query: { id: string }) => {
     const route = {
-        path: '/Mall/pages/science/caption',
+        path: '/pagesDevice/pages/science/caption',
         query
     }
     return pageController.push(route)
@@ -505,7 +505,7 @@ export const gotoCaption = (query: { id: string }) => {
 
 export const gotoProblem = (query: { id: string }) => {
     const route = {
-        path: '/Mall/pages/science/problem',
+        path: '/pagesDevice/pages/science/problem',
         query
     }
     return pageController.push(route)
@@ -514,7 +514,7 @@ export const gotoProblem = (query: { id: string }) => {
 // 问题详情 pid:百科id, qid:问题id
 export const gotoProblemDetail = (query: { pid: string, qid: string }) => {
     const route = {
-        path: '/Mall/pages/science/problemDetail',
+        path: '/pagesDevice/pages/science/problemDetail',
         query
     }
     return pageController.push(route)

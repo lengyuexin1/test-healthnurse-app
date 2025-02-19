@@ -9,13 +9,13 @@ import { pageController } from '@bc/uni-tools'
 export const gotoSceneManage = () => {
     const route = {
         path: '/pagesMall/pages/scene/sceneManage',
-        query: {  }
+        query: {}
     } as any
     return pageController.push(route)
 }
 
 /* 跳转到 场景服务 */
-export const gotoSceneServer = (patientId:string, name: string) => {
+export const gotoSceneServer = (patientId: string, name: string) => {
     const route = {
         path: '/pagesMall/pages/scene/sceneServer',
         query: { patientId, name }
@@ -27,7 +27,7 @@ export const gotoSceneServer = (patientId:string, name: string) => {
 export const gotoSceneIncrease = () => {
     const route = {
         path: '/pagesMall/pages/scene/sceneIncrease',
-        query: {  }
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -36,7 +36,7 @@ export const gotoSceneIncrease = () => {
 export const gotoSceneFactor = () => {
     const route = {
         path: '/pagesMall/pages/scene/sceneFactor',
-        query: {  }
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -63,7 +63,7 @@ export const gotoUtilise = (status = 0 as number, lcode?: string) => {
 export const gotoSceneSmart = () => {
     const route = {
         path: '/pagesMall/pages/scene/sceneSmart',
-        query: {  }
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -82,13 +82,13 @@ export const gotoSmartDetail = (id: number) => {
 export const gotoRoomManag = () => {
     const route = {
         path: '/pagesTuya/pages/wisdom/roomManage',
-        query: {  }
+        query: {}
     } as any
     return pageController.push(route)
 }
 
 /*  跳转到 房间详情 */
-export const gotoRoomDetail = (roomId: string, roomName: string, tuyaHomeId:string) => {
+export const gotoRoomDetail = (roomId: string, roomName: string, tuyaHomeId: string) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/roomDetail',
         query: { roomId, roomName, tuyaHomeId }
@@ -97,7 +97,7 @@ export const gotoRoomDetail = (roomId: string, roomName: string, tuyaHomeId:stri
 }
 
 /** 跳转到 设备管理 */
-export const gotoDeviceManag = (query:{roomId?: string, roomName?: string}) => {
+export const gotoDeviceManag = (query: { roomId?: string, roomName?: string }) => {
     const route = {
         path: '/pagesMall/pages/wisdom/deviceManag',
         query
@@ -113,19 +113,22 @@ export const gotoDeviceManag = (query:{roomId?: string, roomName?: string}) => {
  * BLOOD_PRESSURE 血压监测
  */
 type IModel = 'ALARM' | 'SLEEP' | 'FALL' | 'BLOOD_PRESSURE'
-interface IDeviceLinkQuery{
+
+interface IDeviceLinkQuery {
     deviceId: string
     deviceName: string
     status?: number
     sn?: string
 }
+
 interface IRouteFun {
     (query: IDeviceLinkQuery): Promise<void> | void
 }
+
 const deviceDetailRoute = {} as Record<IModel, IRouteFun>
 
 /** 跳转到 睡眠检测详情 统一调用设备详情 gotoDeviceDetail */
-export const gotoSleepDetail = (query:IDeviceLinkQuery) => {
+export const gotoSleepDetail = (query: IDeviceLinkQuery) => {
     const route = {
         path: '/pagesMall/pages/wisdom/sleepDetail',
         query
@@ -135,7 +138,7 @@ export const gotoSleepDetail = (query:IDeviceLinkQuery) => {
 
 
 /** 跳转到 设备详情 */
-export const gotoDeviceDetail = (query:IDeviceLinkQuery, model: IModel) => {
+export const gotoDeviceDetail = (query: IDeviceLinkQuery, model: IModel) => {
     const routeFun = deviceDetailRoute[model]
     if (routeFun) {
         return routeFun(query)
@@ -145,7 +148,7 @@ export const gotoDeviceDetail = (query:IDeviceLinkQuery, model: IModel) => {
 }
 
 /** 跳转到 SOS报警器/跌倒报警器 统一调用设备详情 gotoDeviceDetail */
-export const gotoAlarmDetail = (query:IDeviceLinkQuery) => {
+export const gotoAlarmDetail = (query: IDeviceLinkQuery) => {
     const route = {
         path: '/pagesMall/pages/wisdom/alarmDetail',
         // path: '/Mall/pages/wisdom/deviceDetail',
@@ -155,7 +158,7 @@ export const gotoAlarmDetail = (query:IDeviceLinkQuery) => {
 }
 
 /** 跳转到 血压 */
-export const gotoBooldYa = (query:IDeviceLinkQuery) => {
+export const gotoBooldYa = (query: IDeviceLinkQuery) => {
     const route = {
         path: '/pagesMall/pages/wisdom/bloodDev',
         query
@@ -170,7 +173,7 @@ deviceDetailRoute.BLOOD_PRESSURE = gotoBooldYa
 
 
 /** 跳转到 接警人 */
-export const gotoCaller = (id?:string) => {
+export const gotoCaller = (id?: string) => {
     const route = {
         path: '/pagesMall/pages/wisdom/caller',
         query: { id }
@@ -180,7 +183,7 @@ export const gotoCaller = (id?:string) => {
 
 
 /** 跳转到 睡眠检测报告 */
-export const gotoSleepReport = (deviceId:string) => {
+export const gotoSleepReport = (deviceId: string) => {
     const route = {
         path: '/pagesCreate/pages/wisdom/sleepReport',
         query: { deviceId }
@@ -190,7 +193,7 @@ export const gotoSleepReport = (deviceId:string) => {
 
 
 /** 跳转到 睡眠检测设置 */
-export const gotoSleepSetup = (query: {deviceId:string, devName: string}) => {
+export const gotoSleepSetup = (query: { deviceId: string, devName: string }) => {
     const route = {
         path: '/pagesMall/pages/wisdom/sleepSetup',
         query: query
@@ -200,7 +203,7 @@ export const gotoSleepSetup = (query: {deviceId:string, devName: string}) => {
 
 
 /** 跳转到 睡眠检测信息 */
-export const gotoSleepMation = (deviceId:string, type: 0 | 1) => {
+export const gotoSleepMation = (deviceId: string, type: 0 | 1) => {
     const route = {
         path: '/pagesMall/pages/wisdom/sleepMation',
         query: { deviceId, type }
@@ -227,7 +230,7 @@ export const gotoTemLaya = (roomId: string, type: string) => {
 }
 
 /** 跳转到 血压结果 */
-export const gotoBooldResult = (data:any) => {
+export const gotoBooldResult = (data: any) => {
     const route = {
         path: '/pagesMall/pages/wisdom/bloodResult',
         query: data
@@ -240,14 +243,14 @@ export const gotoBooldResult = (data:any) => {
 export const gotoSuccedLaya = (deviceId: string) => {
     const route = {
         path: '/pagesMall/pages/wisdom/addLayaDev',
-        query: {  }
+        query: {}
     } as any
     return pageController.replace(route)
 }
 
 /** 跳转到 体温设备页 */
 export const gotoBodyTem = (deviceId: string) => {
-    const data =  encodeURIComponent(JSON.stringify(deviceId))
+    const data = encodeURIComponent(JSON.stringify(deviceId))
     const route = {
         path: '/pagesMall/pages/wisdom/bodyTem',
         query: { data }
@@ -259,7 +262,7 @@ export const gotoBodyTem = (deviceId: string) => {
 export const gotoStartTep = (deviceId: string) => {
     const route = {
         path: '/pagesMall/pages/wisdom/startLiang',
-        query: {  }
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -268,14 +271,14 @@ export const gotoStartTep = (deviceId: string) => {
 export const gotoStartTepTow = (deviceId: string) => {
     const route = {
         path: '/pagesMall/pages/wisdom/startLiang',
-        query: {  }
+        query: {}
     } as any
     return pageController.replace(route)
 }
 
 /** 跳转到 体温记录 */
 export const gotorecListTem = (mac: string) => {
-    const data =  encodeURIComponent(JSON.stringify(mac))
+    const data = encodeURIComponent(JSON.stringify(mac))
     const route = {
         path: '/pagesMall/pages/wisdom/recodeList',
         query: { data }
@@ -293,7 +296,7 @@ export const gotoRecodEcart = (tep: string, time: string, sdaMac: string) => {
 }
 
 /** 跳转到 血压记录 */
-export const gotobooldLuc = (tep:any) => {
+export const gotobooldLuc = (tep: any) => {
     const route = {
         path: '/pagesCreate/pages/wisdom/bloodResult',
         query: { tep }
@@ -312,7 +315,7 @@ export const gotoResult = (tem: any) => {
 }
 
 /** 跳转到 设备类型列表 */
-export const gotoDeviceChoice = (roomId?: string, tuyaHomeId?:string) => {
+export const gotoDeviceChoice = (roomId?: string, tuyaHomeId?: string) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/deviceChoice',
         query: { roomId, tuyaHomeId }
@@ -342,8 +345,8 @@ export const gotoScenServer = (type: 1 | 2) => {
 /** 跳转到 康护知识 */
 export const gotoKnowledge = () => {
     const route = {
-        path: '/pagesMall/pages/wisdom/knowledge',
-        query: {  }
+        path: '/pagesCnt/pages/knowledge/knowledge',
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -352,7 +355,7 @@ export const gotoKnowledge = () => {
 export const gotoCareAlbum = () => {
     const route = {
         path: '/pagesMall/pages/wisdom/careAlbum',
-        query: {  }
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -361,7 +364,7 @@ export const gotoCareAlbum = () => {
 export const gotoAfterwards = () => {
     const route = {
         path: '/pagesMall/pages/wisdom/afterwards',
-        query: {  }
+        query: {}
     } as any
     return pageController.push(route)
 }

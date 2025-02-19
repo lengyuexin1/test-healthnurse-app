@@ -222,6 +222,7 @@ import {
     gotoCouponHistory,
     gotoEditProfile,
     gotoFeedback,
+    gotoPlatformQualification,
     gotoshareQR,
     gotoTrackList,
     gotoWallet
@@ -424,13 +425,13 @@ const data = reactive<Data>({
             title: "质量公告",
             img: getAssetsPic("/mine/v1/my_list_zz.svg"),
             affair_id: 0
-        }
-        /* {
-            name: "hetong",
-            title: "合同管理",
+        },
+        {
+            name: "zizhi",
+            title: "平台资质",
             img: getAssetsPic("/mine/my_icon_hetong.png"),
-            affair_id: 63,
-        }, */
+            affair_id: 0
+        }
         /* {
             name: "kefu",
             title: "致电客服",
@@ -610,8 +611,11 @@ const listClick = (item) => {
             case 'cart':
                 gotoShoppingCart()
                 break
+            case 'zizhi':
+                gotoPlatformQualification()
+                break
             default:
-                item.url()
+
         }
     }, 1000)
 }

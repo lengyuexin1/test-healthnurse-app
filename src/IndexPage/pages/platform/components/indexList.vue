@@ -220,12 +220,20 @@ const upCalik = (item: any, index: number) => {
 }
 
 const gotoColmDetail = (index: any, item: any) => {
+    console.log(index, item)
     if (item.flagCode) {
-        if (item.id == '360') {
-            gotoallClassPage(1)
-        }
-        else if (item.id === '88') {
-            gotoPersonnel()
+        switch (item.id) {
+            case '360':
+                gotoallClassPage(1)
+                break
+            case '88':
+                gotoPersonnel()
+                break
+            case '5':
+                gotoAgency()
+                break
+            default:
+                break
         }
         // 跳转默认页
         // return gotoWisdom()

@@ -44,6 +44,12 @@
         "compatible" : {
             "ignoreVersion" : true //忽略版本检查图示框
         },
+        /* 安全区配置 */
+        "safearea": {
+            "bottom": {
+                "offset": "none"
+            }
+        },
         /* 模块配置 */
         "modules" : {
             "VideoPlayer" : {},

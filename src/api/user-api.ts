@@ -653,3 +653,8 @@ export const authShopVerifyBinding = (req: any) => {
 export const authUnbindShop = () => {
     return http.user.post('/v1/bc/app/user/shopBinding/unbind')
 }
+
+/* 资质 */
+export const getLicence = (req: any) => {
+    return http.user.get('/v1/bc/public/app/public/licence/content', req)
+}
