@@ -152,6 +152,7 @@ import { activeDetail, bannerList, columnList, setPageBank } from "@/api/setite-
 import { gotoServiceStore } from '@/routes/service-routes'
 import { gotoallClassPage, gotoCenterChanges, gotoZone } from '@/routes/active-routes'
 import BottomMenu from "./channelSheet.vue"
+import { gotogoodsDetail } from '@/routes/goods-routes'
 import { gotoPersonnel } from "@/routes/wisdom-routes"
 import NewcomerTwo from './NewcomerTwo.vue'
 
@@ -496,16 +497,11 @@ const liveswiperChange = (e: any) => {
 
 const liveList = (item: any) => {
     console.log('item', item)
-    if ([1, 2, 3].includes(item.moduleType)) {
-        if (item.moduleType == 1 && props.liveType.channel) {
-            gotoLiveList({ type: 1 })
-        }
-        if (item.moduleType == 2 && props.liveType.course) {
-            gotoLiveList({ type: 2 })
-        }
-        if (item.moduleType == 3 && props.liveType.salon) {
-            gotoLiveList({ type: 3 })
-        }
+    if (item.type == 1) {
+        gotoServiceStore({ itemId: item.dataId })
+    }
+    if (item.type == 2) {
+        gotogoodsDetail(item.dataId)
     }
 }
 

@@ -59,9 +59,8 @@
                         </view>
                         <!-- 信息盒子 -->
                         <view class="top_left">
-                            <view class="more_icon" @click="changebubble">
-                                <TnIcon name="more-horizontal" color="#646464" size="54" bold></TnIcon>
-                            </view>
+                            <image @click="changebubble" class="messageIcom" :src="getAssetsUrl('/device/home/mesicon.svg')"
+                                mode="scaleToFill" />
                         </view>
                     </view>
                 </view>
@@ -72,8 +71,7 @@
                 <view class="live_swiper" v-if="showBk.includes(1) && swiperList.length > 0">
                     <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
                         @change="liveswiperChange">
-                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id">
-                            <!-- @click="liveList(item)" -->
+                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id" @click="liveList(item)">
                             <image class="live_swiper_img" :src="item.icon" mode="aspectFill" />
                         </swiper-item>
                     </swiper>
@@ -160,7 +158,7 @@
                             </view>
                         </view>
                     </view>
-                    <view class="more_icon" @click="openBotMun">
+                    <view class="messageIcom" @click="openBotMun">
                         <TnIcon name="down" size="32rpx" color="#333"></TnIcon>
                     </view>
                 </view>
@@ -299,6 +297,16 @@ const getSetIds = (num: number) => {
     })
 }
 
+const liveList = (item: any) => {
+    console.log('item', item)
+    if (item.type == 1) {
+        gotoServiceStore({ itemId: item.dataId })
+    }
+    if (item.type == 2) {
+        gotogoodsDetail(item.dataId)
+    }
+}
+
 const gotoColmDetail = (index: any, item: any) => {
     if (item.id == '360') {
         gotoallClassPage(3)
@@ -308,234 +316,206 @@ const gotoColmDetail = (index: any, item: any) => {
     }
 }
 
-    const channeCatelList = (item: any, id: any) => {
-        const sendda = {
-            pageNumber: 1,
-            pageSize: 10,
-            query: {
-                categoryIds: id
-            }
+const channeCatelList = (item: any, id: any) => {
+    const sendda = {
+        pageNumber: 1,
+        pageSize: 10,
+        query: {
+            categoryIds: id
         }
-        productList(sendda).then(res => {
-            console.log('专区', res)
-            item.dataList = res.data.length > 0 ? res.data.slice(0, 2) : res.data
-            console.log(allInList.value)
-        })
     }
-
-    onMounted(() => {
-        getSetIds(3)
-        // #ifdef MP-WEIXIN
-        // 获取胶囊按钮位置信息
-        const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
-        const { top, height, width } = menuButtonInfo
-        // #endif
-
-        // #ifdef APP-PLUS || H5
-        console.log('app顶部')
-        const height = 0
-        const width = 0
-        const top = 0
-        // #endif
-
-        // #ifdef MP-WEIXIN
-        // 获取系统状态栏高度
-        data.sBarHeight = uni.getSystemInfoSync().statusBarHeight!
-        // 计算标题需要偏移的位置
-        data.titleTop = top + (height - data.sBarHeight) / 2
-
-        // 计算顶部右侧偏移量
-        data.titleRight = width + 8
-        // #endif
-
-        // #ifdef APP-PLUS || H5
-        data.sBarHeight = 33
-        const pageObj = uni.getSystemInfoSync() as any
-        data.titleTop = pageObj.safeArea.top
-
-        data.titleRight = 8
-        // #endif
-
-        console.log('7891011,data.titleRight', data.titleRight)
-        getCity()
-
+    productList(sendda).then(res => {
+        console.log('专区', res)
+        item.dataList = res.data.length > 0 ? res.data.slice(0, 2) : res.data
+        console.log(allInList.value)
     })
+}
 
-    const healthMyData = (list: any) => {
-        showBk.value = []
-        if (list.length < 1) {
-            return
+onMounted(() => {
+    getSetIds(3)
+    // #ifdef MP-WEIXIN
+    // 获取胶囊按钮位置信息
+    const menuButtonInfo = uni.getMenuButtonBoundingClientRect()
+    const { top, height, width } = menuButtonInfo
+    // #endif
+
+    // #ifdef APP-PLUS || H5
+    console.log('app顶部')
+    const height = 0
+    const width = 0
+    const top = 0
+    // #endif
+
+    // #ifdef MP-WEIXIN
+    // 获取系统状态栏高度
+    data.sBarHeight = uni.getSystemInfoSync().statusBarHeight!
+    // 计算标题需要偏移的位置
+    data.titleTop = top + (height - data.sBarHeight) / 2
+
+    // 计算顶部右侧偏移量
+    data.titleRight = width + 8
+    // #endif
+
+    // #ifdef APP-PLUS || H5
+    data.sBarHeight = 33
+    const pageObj = uni.getSystemInfoSync() as any
+    data.titleTop = pageObj.safeArea.top
+
+    data.titleRight = 8
+    // #endif
+
+    console.log('7891011,data.titleRight', data.titleRight)
+    getCity()
+
+})
+
+const healthMyData = (list: any) => {
+    showBk.value = []
+    if (list.length < 1) {
+        return
+    }
+    list.forEach((element: any) => {
+        showBk.value.push(element.moduleId)
+        // banner图
+        if (element.moduleId == 1) {
+            getBannerList(element.dataIds)
         }
-        list.forEach((element: any) => {
-            showBk.value.push(element.moduleId)
-            // banner图
-            if (element.moduleId == 1) {
-                getBannerList(element.dataIds)
-            }
-            // 导航栏
-            if (element.moduleId == 2) {
-                getTabbar(element.dataIds)
-            }
-            // 新人活动
-            if (element.moduleId == 3) {
-                activeDetail(element.dataIds[0]).then(res => {
-                    dataObj.value = res
-                })
-            }
-            // 产品推荐
-            if (element.moduleId == 4) {
-                channelList(element.dataIds, 4)
-            }
-            // 新品上市
-            if (element.moduleId == 5) {
-                channelList(element.dataIds, 5)
-            }
-            // 爆品精选
-            if (element.moduleId == 6) {
-                channelList(element.dataIds, 6)
-            }
-
-            // 文字导航
-            if (element.moduleId == 8) {
-                NavList.value = [
-                    { id: 1, name: '推荐' },
-                    ...element.navbarList
-                ]
-                getTextList(1)
-            }
-        })
-    }
-
-    // 请求第一个tab
-    const getTextList = (cateIndex: number) => {
-        if (cateIndex == 1) {
-
-        } else {
-
+        // 导航栏
+        if (element.moduleId == 2) {
+            getTabbar(element.dataIds)
         }
-    }
-
-    const channelList = (id: any, num: number) => {
-        const sendda = {
-            pageNumber: 1,
-            pageSize: 10,
-            query: {
-                ids: id
-            }
-        }
-        productList(sendda).then(res => {
-            if (num == 4) {
-                zhenList.value = res.data
-            }
-            if (num == 5) {
-                newGoodList.value = res.data
-            }
-            if (num == 6) {
-                orgSelect.value = res.data
-            }
-        })
-    }
-
-    const getTabbar = (data: any) => {
-        const dares = {
-            ids: data
-        }
-        columnList(dares).then(res => {
-            tabsData.value.unshift(...res)
-        })
-    }
-
-    const getBannerList = (data: any) => {
-        const dares = {
-            ids: data
-        }
-        bannerList(dares).then(res => {
-            swiperList.value = res
-        })
-    }
-
-    const getCity = () => {
-
-        PlatformManage.getToken().then((res: any) => {
-            console.log('获取城市', res.city);
-
-            data.nowCity = res.city ? res.city : '广州'
-        })
-    }
-
-    const getAssetsUrl = computed(() => (src: string) => {
-        return getAssetsPic(src)
-    })
-
-
-    const paging = ref()
-
-    const queryList = async (pageNumber: number, pageSize: number) => {
-        const data = {
-            pageNumber,
-            pageSize: 10,
-            query: {
-                categoryIds: NavId.value == 1 ? [] : [NavId.value]
-            }
-        }
-        productList(data).then((res) => {
-            paging.value.complete(res.data)
-        })
-    }
-
-
-    const clickActivityList = (item: any) => {
-        console.log('item1111', item);
-        // 邀请好友
-        // item.id == 1 && invitationDetail()
-        // 优选店铺
-        // item.id == 2 && gotoGoodsPerferShop()
-        PlatformManage.isRequireLogin().then((isRequireLogin) => {
-            if (isRequireLogin) {
-                bcNotify.value.show('登录失效,请重新登录')
-                setTimeout(() => {
-                    gotoLogin({})
-                }, 1000)
-                return
-            }
-            item == 1 && gotoServiceExpo();
-            item == 2 && gotoLiveSelection();
-            item == 3 && gotogoodsRanking();
-            item == 4 && gotoRegister();
-            item == 5 && gotodiscussListPage()
-        })
-    }
-
-    const changeNav = (item: any) => {
-        if (item.id == 11) {
-            // 检查登录状态
-            PlatformManage.isRequireLogin().then((isRequireLogin) => {
-                if (isRequireLogin) {
-                    bcNotify.value.show('登录失效,请重新登录')
-                    setTimeout(() => {
-                        gotoLogin({})
-                    }, 1000)
-                    return
-                }
+        // 新人活动
+        if (element.moduleId == 3) {
+            activeDetail(element.dataIds[0]).then(res => {
+                dataObj.value = res
             })
         }
-        NavId.value = item.id;
-        (paging.value as any).reload()
-    }
+        // 产品推荐
+        if (element.moduleId == 4) {
+            channelList(element.dataIds, 4)
+        }
+        // 新品上市
+        if (element.moduleId == 5) {
+            channelList(element.dataIds, 5)
+        }
+        // 爆品精选
+        if (element.moduleId == 6) {
+            channelList(element.dataIds, 6)
+        }
 
-    const changebubble = () => {
-        emit('showServiceMenu')
-    }
+        // 文字导航
+        if (element.moduleId == 8) {
+            NavList.value = [
+                { id: 1, name: '推荐' },
+                ...element.navbarList
+            ]
+            getTextList(1)
+        }
+    })
+}
 
-    const changecity = () => {
-        gotoCitychange()
-    }
-    const tosearch = () => {
-        gotosearch()
-    }
+// 请求第一个tab
+const getTextList = (cateIndex: number) => {
+    if (cateIndex == 1) {
 
-    const clickwaterItem = (item: any) => {
-        console.log('item', item);
+    } else {
+
+    }
+}
+
+const channelList = (id: any, num: number) => {
+    const sendda = {
+        pageNumber: 1,
+        pageSize: 10,
+        query: {
+            ids: id
+        }
+    }
+    productList(sendda).then(res => {
+        if (num == 4) {
+            zhenList.value = res.data
+        }
+        if (num == 5) {
+            newGoodList.value = res.data
+        }
+        if (num == 6) {
+            orgSelect.value = res.data
+        }
+    })
+}
+
+const getTabbar = (data: any) => {
+    const dares = {
+        ids: data
+    }
+    columnList(dares).then(res => {
+        tabsData.value.unshift(...res)
+    })
+}
+
+const getBannerList = (data: any) => {
+    const dares = {
+        ids: data
+    }
+    bannerList(dares).then(res => {
+        swiperList.value = res
+    })
+}
+
+const getCity = () => {
+
+    PlatformManage.getToken().then((res: any) => {
+        console.log('获取城市', res.city);
+
+        data.nowCity = res.city ? res.city : '广州'
+    })
+}
+
+const getAssetsUrl = computed(() => (src: string) => {
+    return getAssetsPic(src)
+})
+
+
+const paging = ref()
+
+const queryList = async (pageNumber: number, pageSize: number) => {
+    const data = {
+        pageNumber,
+        pageSize: 10,
+        query: {
+            categoryIds: NavId.value == 1 ? [] : [NavId.value]
+        }
+    }
+    productList(data).then((res) => {
+        paging.value.complete(res.data)
+    })
+}
+
+
+const clickActivityList = (item: any) => {
+    console.log('item1111', item);
+    // 邀请好友
+    // item.id == 1 && invitationDetail()
+    // 优选店铺
+    // item.id == 2 && gotoGoodsPerferShop()
+    PlatformManage.isRequireLogin().then((isRequireLogin) => {
+        if (isRequireLogin) {
+            bcNotify.value.show('登录失效,请重新登录')
+            setTimeout(() => {
+                gotoLogin({})
+            }, 1000)
+            return
+        }
+        item == 1 && gotoServiceExpo();
+        item == 2 && gotoLiveSelection();
+        item == 3 && gotogoodsRanking();
+        item == 4 && gotoRegister();
+        item == 5 && gotodiscussListPage()
+    })
+}
+
+const changeNav = (item: any) => {
+    if (item.id == 11) {
         // 检查登录状态
         PlatformManage.isRequireLogin().then((isRequireLogin) => {
             if (isRequireLogin) {
@@ -545,26 +525,50 @@ const gotoColmDetail = (index: any, item: any) => {
                 }, 1000)
                 return
             }
-            gotogoodsDetail(item.id)
         })
     }
+    NavId.value = item.id;
+    (paging.value as any).reload()
+}
 
-    // 退出页面
-    const goback = () => {
-        uni.navigateBack();
-    }
+const changebubble = () => {
+    emit('showServiceMenu')
+}
 
-    const liveswiperChange = (e: any) => {
-        data.swiperIndex = e.detail.current
-    }
+const changecity = () => {
+    gotoCitychange()
+}
+const tosearch = () => {
+    gotosearch()
+}
 
-    const liveList = (item: any) => {
-        console.log('item', item);
-    }
-
-    defineExpose({
-        getCity,
+const clickwaterItem = (item: any) => {
+    console.log('item', item);
+    // 检查登录状态
+    PlatformManage.isRequireLogin().then((isRequireLogin) => {
+        if (isRequireLogin) {
+            bcNotify.value.show('登录失效,请重新登录')
+            setTimeout(() => {
+                gotoLogin({})
+            }, 1000)
+            return
+        }
+        gotogoodsDetail(item.id)
     })
+}
+
+// 退出页面
+const goback = () => {
+    uni.navigateBack();
+}
+
+const liveswiperChange = (e: any) => {
+    data.swiperIndex = e.detail.current
+}
+
+defineExpose({
+    getCity,
+})
 
 </script>
 
@@ -664,6 +668,11 @@ const gotoColmDetail = (index: any, item: any) => {
             display: flex;
             align-items: center;
             position: relative;
+
+            .messageIcom {
+                width: 52rpx;
+                height: 52rpx;
+            }
         }
 
         .inp_box {
