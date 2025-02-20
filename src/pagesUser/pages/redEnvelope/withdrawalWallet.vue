@@ -1,18 +1,18 @@
 <template>
     <view class="container">
         <z-paging
-            ref="paging"
-            v-model="dataList"
-            :auto="true"
-            :fixed="true"
-            @query="queryList"
-            :defaultPageSize="defaultPageSize"
-            :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
-            empty-view-text="还没有数据哦~"
-            :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
+              ref="paging"
+              v-model="dataList"
+              :auto="true"
+              :fixed="true"
+              @query="queryList"
+              :defaultPageSize="defaultPageSize"
+              :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
+              empty-view-text="还没有数据哦~"
+              :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
         >
             <template #top>
-                <PageTopbg></PageTopbg>
+                <!--                <PageTopbg></PageTopbg>-->
                 <bc-page-navbar :title="'分销提现'" bg-color="#F2F3F5"></bc-page-navbar>
             </template>
 
@@ -29,13 +29,18 @@
                     <view class="notice_right" @click="homeUser = true">立即提现</view>
                 </view>
                 <view class="redEnvelope">
-                    <view class="redEnvelope_left">入账中: ¥{{ (Number(cashData.transferring) / 100).toFixed(2) }}</view>
+                    <view class="redEnvelope_left">入账中: ¥{{
+                            (Number(cashData.transferring) / 100).toFixed(2)
+                        }}
+                    </view>
                 </view>
             </view>
-              <TnTabs
-                :scroll="false" :bottom-shadow="false" font-size="30rpx" active-font-size="32rpx" bg-color="rgba(243, 244, 246, 1)" color="#333333" bar-color="#29C86F" active-color="#29C86F" @change="changeTabList">
-                    <TnTabsItem v-for="(item, index) in list" :key="index" :title="item.name" />
-              </TnTabs>
+            <TnTabs
+                  :scroll="false" :bottom-shadow="false" font-size="30rpx" active-font-size="32rpx"
+                  bg-color="rgba(243, 244, 246, 1)" color="#333333" bar-color="#29C86F" active-color="#29C86F"
+                  @change="changeTabList">
+                <TnTabsItem v-for="(item, index) in list" :key="index" :title="item.name"/>
+            </TnTabs>
 
             <view class="menu" v-if="dataList.length">
                 <view class="menu-list row i-center j-between" v-for="(item,index) in dataList" :key="index">
@@ -43,34 +48,40 @@
                         <view class="menu_left_title">{{ item.rewardName }}</view>
                         <view class="menu_left_time">{{ formatTime(item.utcCreated) }}</view>
                     </view>
-                    <view class="menu_list_right">{{item.incomeExpense == 1 ? '+' : '-'}}{{(Number(item.reward) / 100).toFixed(2)}}元</view>
+                    <view class="menu_list_right">
+                        {{ item.incomeExpense == 1 ? '+' : '-' }}{{ (Number(item.money) / 100).toFixed(2) }}元
+                    </view>
                 </view>
             </view>
-          <!-- 首页弹窗广告 -->
-          <TnPopup v-model="homeUser" closeable mode="center"  bg-color="transparent"  :overlayOpacity="0.7" @close="homeUser = false">
+            <!-- 首页弹窗广告 -->
+
+            <TnPopup v-model="homeUser" mode="center"
+                     @close="homeUser = false" open-direction="bottom" :close-btn="true">
                 <view class="regboxs">
                     <view class="withdrawal_proup">
                         <view class="Withdrawal_title">提现金额</view>
                         <!-- <view class="Withdrawal_desc">金额提现需要扣除{{cashData.commission}}%手续费</view> -->
                         <view class="Withdrawal_desc">
                             ￥
-                            <text style="font-size: 50rpx;">{{toFixedNumber((cashData?.cash / 100))}}</text>
+                            <text style="font-size: 50rpx;">{{ toFixedNumber((cashData?.cash / 100)) }}</text>
                         </view>
 
                         <view class="withdrawal_proup_user">
                             <view class="withdrawal_proup_tax">
                                 <view class="withdrawal_tax_left">税前所得金额</view>
                                 <!-- <view class="withdrawal_tax_price">{{(cashData.money / 100).toFixed(2)}} 元</view> -->
-                                <view class="withdrawal_tax_price">{{toFixedNumber((cashData?.money / 100))}} 元</view>
+                                <view class="withdrawal_tax_price">{{ toFixedNumber((cashData?.money / 100)) }} 元
+                                </view>
                             </view>
-                             <!-- <view class="withdrawal_proup_tax">
-                                <view class="withdrawal_tax_left">扣税金额</view>
-                                <view class="withdrawal_tax_price">{{toFixedNumber(((cashData?.money - cashData?.cash) / 100))}} 元</view>
-                            </view> -->
-                             <view class="withdrawal_proup_tax">
+                            <!-- <view class="withdrawal_proup_tax">
+                               <view class="withdrawal_tax_left">扣税金额</view>
+                               <view class="withdrawal_tax_price">{{toFixedNumber(((cashData?.money - cashData?.cash) / 100))}} 元</view>
+                           </view> -->
+                            <view class="withdrawal_proup_tax">
                                 <view class="withdrawal_tax_left">到账方式</view>
                                 <view class="withdrawal_tax_right">
-                                    <image :src="getAssetsUrl('/fare/weChatMini.png')" class="withdrawal_tax_img"></image>
+                                    <image :src="getAssetsUrl('/fare/weChatMini.png')"
+                                           class="withdrawal_tax_img"></image>
                                     微信零钱
                                 </view>
                             </view>
@@ -110,12 +121,12 @@ import BCNotify from '@/components/notify/index.vue'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { getMoneyInfo, getMoneyRecord, getUserTransfer } from '@/api/user-api'
-import { ref, reactive, computed, defineProps } from 'vue' // Import ref and reactive from Vue 3 Composition API
+import { computed, ref } from 'vue' // Import ref and reactive from Vue 3 Composition API
 import dayjs from 'dayjs'
 import { gotoTaskRecord } from '@/routes/user-routes'
-import { onShow, onLoad } from '@dcloudio/uni-app'
+import { onLoad } from '@dcloudio/uni-app'
 import ReflectPopup from './components/reflect-popup.vue'
-import { homePage, initFaceVerifyIdPlus, certificateByCertifyId } from '@/api/create-api'
+import { certificateByCertifyId, homePage, initFaceVerifyIdPlus } from '@/api/create-api'
 import { getWechatOpenid } from '@/api/open-api'
 import { callApiLocal } from "@/utils/client"
 
@@ -132,7 +143,7 @@ const paging = ref() as any
 const cashData = ref<any>({})
 const withdIndex = ref<number>(0)
 const dataList = ref([])
-const incomeExpense = ref<number|string>('')
+const incomeExpense = ref<number | string>('')
 const show = ref(false)
 const defaultPageSize = 10
 const rewardId = ref()
@@ -152,20 +163,20 @@ const getResultString = (code: any) => {
 // Computed properties
 // 计算属性
 const getAssetsUrl = computed(() => {
-    return (str:any) => {
+    return (str: any) => {
         return getAssetsPic(str)
     }
 })
-const formatTime = (number:number) => {
+const formatTime = (number: number) => {
     return dayjs(number * 1000).format('YYYY-MM-DD HH:mm')
 }
-const toFixedNumber = computed(() => (number:number) => {
+const toFixedNumber = computed(() => (number: number) => {
     const val = number.toFixed(2)
     return val
 })
 
 // Lifecycle hook: onLoad
-onLoad((options:any) => {
+onLoad((options: any) => {
 
     // #ifdef MP-WEIXIN
     getClient.value = 'WEIXIN'
@@ -286,7 +297,7 @@ const submit = () => {
                 })
             }
         },
-        fail: (err:any) => {
+        fail: (err: any) => {
             console.log('err', err)
 
         }
@@ -309,7 +320,7 @@ const weixinInitSubmit = () => {
         openid,
         rewardId: rewardId.value,
         cash: Number(cashData.value.cashList[withdIndex.value]?.cash)
-    }).then((res:any) => {
+    }).then((res: any) => {
         console.log('res', res)
 
         homeUser.value = false
@@ -328,11 +339,11 @@ const weixinInitSubmit = () => {
     })
 }
 
-const changewithdIndex = (index:number) => {
+const changewithdIndex = (index: number) => {
     withdIndex.value = index
 }
 
-const initReward = (id:any) => {
+const initReward = (id: any) => {
     getMoneyInfo({ id }).then((res) => {
         cashData.value = res
         console.log(cashData.value)
@@ -340,14 +351,23 @@ const initReward = (id:any) => {
 }
 
 
+const changeTabList = (e: any) => {
+    function getIncomeExpenseValue(num: number) {
+        if (num == 1) {
+            return 2
+        }
+        if (num == 2) {
+            return 1
+        }
+        return ''
+    }
 
-const changeTabList = (e:any) => {
-    incomeExpense.value = e == 1 ? 2 : e == 2 ? 1 : 0
+    incomeExpense.value = getIncomeExpenseValue(e)
     console.log(incomeExpense.value, e)
     queryList(1, 10)
 }
 
-const queryList = (pageNumber:number, pageSize:number) => {
+const queryList = (pageNumber: number, pageSize: number) => {
     getMoneyRecord({
         query: {
             rewardId: rewardId.value,
@@ -356,6 +376,7 @@ const queryList = (pageNumber:number, pageSize:number) => {
         pageNumber,
         pageSize
     }).then((res) => {
+        console.log(res.data);
         (paging.value as any).complete(res.data)
     }).catch(() => {
         (paging.value as any).complete(false)
@@ -408,67 +429,49 @@ const startFacial = () => {
     background: #29c86f !important;
     color: #ffffff !important;
 }
+
 .regboxs {
-    width: 650rpx;
+    width: 100%;
     background: #ffffff;
-    border-radius: 40rpx !important;
-    .withdrawal_proup_text {
-        font-size: 24rpx;
-        color: #666666;
+    border-radius: 40rpx 40rpx 0 0 !important;
+    padding-bottom: 20rpx;
+
+    .confirm_withdrawal {
         display: flex;
-        justify-content: center;
-        line-height: 44rpx;
-        padding: 0 32rpx 50rpx 32rpx;
-    }
-    .withdrawal_proup_content {
-        padding: 40rpx 24rpx;
-        display: flex;
-        flex-wrap: wrap;
-        .withdrawal_proup_row {
-            width: 187rpx;
-            height: 136rpx;
-            margin-bottom: 12rpx;
-            background: #f6f7fa;
-            border-radius: 12rpx;
-            color: #888888;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-left: 12rpx;
-            .withdrawal_proup_price {
-                font-size: 48rpx;
-                color: #333333;
-                padding-bottom: 10rpx;
-                text {
-                    font-size: 30rpx;
-                }
-            }
-            .withdrawal_proup_desc {
-                font-size: 20rpx;
-                color: #888888;
-            }
-        }
-        .withdrawal_proup_but {
-            width: 570rpx;
-            height: 90rpx;
-            margin: 0rpx auto;
-            margin-top: 40rpx;
-            background: #29c86f;
+        margin: 60rpx 30rpx 20rpx 30rpx;
+
+        .confirm_withdrawal_cencel {
+            width: 330rpx;
+            height: 80rpx;
+            background: #FFFFFF;
+            border-radius: 40rpx;
+            border: 2rpx solid #D1D1D1;
+            margin-right: 30rpx;
             display: flex;
             font-size: 32rpx;
-            color: #ffffff;
+            color: #666666;
             justify-content: center;
             align-items: center;
-            border-radius: 46rpx;
+        }
+
+        .withdrawal_proup_but {
+            display: flex;
+            font-size: 32rpx;
+            justify-content: center;
+            align-items: center;
+            color: #FFFFFF;
+            width: 330rpx;
+            height: 80rpx;
+            background: #29C86F;
+            border-radius: 40rpx;
         }
     }
+
     .withdrawal_proup {
         display: flex;
         flex-direction: column;
         align-items: center;
-        font-size: 24rpx;
-        color: #999999;
+
         .Withdrawal_title {
             font-size: 36rpx;
             font-weight: 600;
@@ -476,48 +479,177 @@ const startFacial = () => {
             margin-bottom: 20rpx;
             color: #333333;
         }
+
+        .withdrawal_proup_user {
+            width: 100%;
+
+            .withdrawal_proup_tax_desc {
+                font-size: 28rpx;
+                color: #666666;
+                padding: 50rpx 0;
+                padding-left: 40rpx;
+
+                text {
+                    font-size: 28rpx;
+                    color: #0083F6;
+                    padding-left: 8rpx;
+                }
+            }
+
+            .withdrawal_proup_tax {
+                display: flex;
+                height: 102rpx;
+                margin: 0 40rpx;
+                border-bottom: 2rpx solid rgba(242, 242, 242, 1);
+                justify-content: space-between;
+                align-items: center;
+                font-size: 30rpx;
+                color: #333333;
+
+                .withdrawal_tax_right {
+                    display: flex;
+                    align-items: center;
+
+                    .withdrawal_tax_img {
+                        width: 36rpx;
+                        height: 36rpx;
+                        margin-right: 12rpx;
+                    }
+                }
+            }
+        }
     }
 }
+
+//.regboxs {
+//    width: 100%;
+//    background: #ffffff;
+//    border-radius: 40rpx !important;
+//
+//    .withdrawal_proup_text {
+//        font-size: 24rpx;
+//        color: #666666;
+//        display: flex;
+//        justify-content: center;
+//        line-height: 44rpx;
+//        padding: 0 32rpx 50rpx 32rpx;
+//    }
+//
+//    .withdrawal_proup_content {
+//        padding: 40rpx 24rpx;
+//        display: flex;
+//        flex-wrap: wrap;
+//
+//        .withdrawal_proup_row {
+//            width: 187rpx;
+//            height: 136rpx;
+//            margin-bottom: 12rpx;
+//            background: #f6f7fa;
+//            border-radius: 12rpx;
+//            color: #888888;
+//            display: flex;
+//            flex-direction: column;
+//            align-items: center;
+//            justify-content: center;
+//            margin-left: 12rpx;
+//
+//            .withdrawal_proup_price {
+//                font-size: 48rpx;
+//                color: #333333;
+//                padding-bottom: 10rpx;
+//
+//                text {
+//                    font-size: 30rpx;
+//                }
+//            }
+//
+//            .withdrawal_proup_desc {
+//                font-size: 20rpx;
+//                color: #888888;
+//            }
+//        }
+//
+//        .withdrawal_proup_but {
+//            width: 570rpx;
+//            height: 90rpx;
+//            margin: 0rpx auto;
+//            margin-top: 40rpx;
+//            background: #29c86f;
+//            display: flex;
+//            font-size: 32rpx;
+//            color: #ffffff;
+//            justify-content: center;
+//            align-items: center;
+//            border-radius: 46rpx;
+//        }
+//    }
+//
+//    .withdrawal_proup {
+//        display: flex;
+//        flex-direction: column;
+//        align-items: center;
+//        font-size: 24rpx;
+//        color: #999999;
+//
+//        .Withdrawal_title {
+//            font-size: 36rpx;
+//            font-weight: 600;
+//            margin-top: 26rpx;
+//            margin-bottom: 20rpx;
+//            color: #333333;
+//        }
+//    }
+//}
+
 ::v-deep .u-tabs__wrapper__nav__line {
     background: none !important;
 }
+
 ::v-deep .u-popup__content {
     border-radius: 40rpx !important;
 }
+
 .menu {
     background-color: #ffffff;
     margin: 24rpx 16rpx;
     border-radius: 24rpx;
     padding-top: 20rpx;
+
     &-list {
         padding: 24rpx 36rpx;
         border-bottom: 2rpx solid #f2f2f2;
+
         &-left {
             display: flex;
             flex-direction: column;
+
             .menu_left_title {
                 font-size: 30rpx;
                 padding-top: 8tpx;
                 color: #333333;
             }
+
             .menu_left_time {
                 font-size: 24rpx;
                 color: #999999;
                 padding-top: 8rpx;
             }
         }
+
         .menu_list_right {
             font-size: 30rpx;
             color: #29c86f;
         }
     }
 }
+
 .withdrawal {
     height: 280rpx;
     margin: 20rpx;
     background: linear-gradient(47deg, #3dd681 0%, #29c86f 100%);
     border-radius: 24rpx;
     padding: 0 40rpx;
+
     .redEnvelope {
         height: 88rpx;
         font-size: 28rpx;
@@ -527,23 +659,28 @@ const startFacial = () => {
         align-items: center;
         border-top: 2rpx solid rgba(255, 255, 255, 0.3);
     }
+
     .withdrawal_notice {
         display: flex;
         padding: 30rpx 0 20rpx 0;
         justify-content: space-between;
         align-items: center;
+
         .notice_left {
             color: #ffffff;
             display: flex;
             padding-top: 24rpx;
             flex-direction: column;
+
             .notice_left_title {
                 font-size: 28rpx;
             }
+
             .notice_left_price {
                 font-size: 60rpx;
             }
         }
+
         .notice_right {
             background: #ffffff;
             font-size: 24rpx;
@@ -559,7 +696,8 @@ const startFacial = () => {
         }
     }
 }
-.popup_box{
+
+.popup_box {
     width: 500rpx;
     padding: 50rpx 0rpx;
     padding-bottom: 0rpx;
@@ -569,18 +707,21 @@ const startFacial = () => {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    .content_text{
+
+    .content_text {
         display: flex;
         text-align: center;
         margin-bottom: 40rpx;
     }
-    .bottom_box{
+
+    .bottom_box {
         width: 100%;
         border-top: 2rpx solid #F0F0F0;
         display: flex;
         align-items: center;
         box-sizing: border-box;
-        .cancel_btn{
+
+        .cancel_btn {
             text-align: center;
             height: 96rpx;
             line-height: 96rpx;
@@ -591,7 +732,8 @@ const startFacial = () => {
             font-size: 28rpx;
             width: 50%;
         }
-        .confirm_btn{
+
+        .confirm_btn {
             text-align: center;
             height: 96rpx;
             line-height: 96rpx;
