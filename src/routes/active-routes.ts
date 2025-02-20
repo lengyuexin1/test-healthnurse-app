@@ -482,3 +482,14 @@ export const gotoallClassPage = (type: any) => {
     } as any
     return pageController.push(route)
 }
+
+// 消息
+export const gotoaNews = () => {
+    const route = {
+        path: '/pagesMsg/pages/news/news',
+        query: {  }
+    } as any
+    return pageController.push(route)
+}
+
+// 

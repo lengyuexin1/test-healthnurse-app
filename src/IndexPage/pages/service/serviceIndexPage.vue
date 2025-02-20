@@ -61,6 +61,8 @@
                         <view class="top_left">
                             <image @click="changebubble" class="messageIcom" :src="getAssetsUrl('/device/home/mesicon.svg')"
                                 mode="scaleToFill" />
+                            <TnBadge v-if="badge" bgColor="#FF2A2A" absolute type="danger" max="99" :value="badge"
+                                :offset="[-5, -10]"></TnBadge>
                         </view>
                     </view>
                 </view>
@@ -71,7 +73,8 @@
                 <view class="live_swiper" v-if="showBk.includes(1) && swiperList.length > 0">
                     <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
                         @change="liveswiperChange">
-                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id" @click="liveList(item)">
+                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id"
+                            @click="liveList(item)">
                             <image class="live_swiper_img" :src="item.icon" mode="aspectFill" />
                         </swiper-item>
                     </swiper>
@@ -158,7 +161,7 @@
                             </view>
                         </view>
                     </view>
-                    <view class="messageIcom" @click="openBotMun">
+                    <view class="more_icon" @click="openBotMun">
                         <TnIcon name="down" size="32rpx" color="#333"></TnIcon>
                     </view>
                 </view>
@@ -192,6 +195,7 @@
 </template>
 
 <script setup lang="ts">
+import TnBadge from '@tuniao/tnui-vue3-uniapp/components/badge/src/badge.vue'
 import NewcomerWelfare from '../platform/components/newcomerWelfare.vue'
 import NewcomerTre from '../platform/components/NewcomerTre.vue'
 import NewZhen from '../platform/components/NewZhen.vue'
@@ -212,7 +216,7 @@ import { gotoServiceStore, toInnerPage, gotosearch, gotoShopDetail, gotoserviceL
 import { PlatformManage } from '@bc/sys'
 import { gotoLogin } from "@/routes/public-routes"
 import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
-import { gotoZone, gotoallClassPage } from "@/routes/active-routes"
+import { gotoZone, gotoallClassPage, gotoaNews } from "@/routes/active-routes"
 
 interface Data {
     titleTop: number
@@ -247,6 +251,7 @@ const data = reactive<Data>({
 const tabsData: any = ref([
     { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 }
 ])
+const badge = ref(0)
 const showBk: any = ref([])
 const zhenList: any = ref([])
 const orgSelect: any = ref([])
@@ -532,7 +537,7 @@ const changeNav = (item: any) => {
 }
 
 const changebubble = () => {
-    emit('showServiceMenu')
+    gotoaNews()
 }
 
 const changecity = () => {

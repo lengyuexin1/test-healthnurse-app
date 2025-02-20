@@ -5,9 +5,9 @@
             <template #top>
                 <PageTopbg></PageTopbg>
                 <bc-page-navbar :title="'消息'">
-                    <template #back>
+                    <!-- <template #back>
                         <view></view>
-                    </template>
+                    </template> -->
                 </bc-page-navbar>
             </template>
 

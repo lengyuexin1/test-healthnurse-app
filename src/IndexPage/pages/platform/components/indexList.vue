@@ -312,7 +312,8 @@ const changeNav = (item: any) => {
         })
     }
     NavId.value = item.id;
-    (paging.value as any).reload()
+    // (paging.value as any).reload()
+    queryList(1,6)
 }
 
 const allInList: any = ref([])
