@@ -99,7 +99,7 @@ const data = reactive<Data>({
         {id:1,name:'签到红包',icon:'/leyou/home/sign-in-icon.svg'},
         {id:2,name:'写评语',icon:'/leyou/menu/tocomment_icon.svg'},
         {id:3,name:'创作入驻',icon:'/leyou/home/comment-icon.svg'},
-        {id:4,name:'商户入驻',icon:'/leyou/menu/addgood_icon.svg'},
+        // {id:4,name:'商户入驻',icon:'/leyou/menu/addgood_icon.svg'},
     ],
     bottomMenu:[
         {id:1,name:'设置',icon:'/leyou/home/settings-icon.svg'},

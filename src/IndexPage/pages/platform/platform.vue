@@ -482,7 +482,7 @@ const toChannel = () => {
     gotoChannel()
 }
 const changebubble = () => {
-    // emit('showRightMenu')
+    emit('showRightMenu')
     // data.showrightMenu = true
     // data.showbubble = !data.showbubble
 }
