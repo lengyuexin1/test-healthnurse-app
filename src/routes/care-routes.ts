@@ -1,5 +1,5 @@
 import { pageController } from '@bc/uni-tools'
-import { gotoserviceDetail, gotoServiceStore, gotoShopDetail } from '@/routes/service-routes'
+import { gotoserviceDetail, gotoShopDetail } from '@/routes/service-routes'
 
 
 interface ICommentListQuery {
@@ -226,10 +226,10 @@ export const gotoWelfare = () => {
 }
 
 /** 跳转到 优惠券 */
-export const gotoCoupon = () => {
+export const gotoCoupon = (query: any) => {
     const route = {
         path: '/pagesUser/pages/coupon/coupon',
-        query: {}
+        query
     } as any
     return pageController.push(route)
 }
@@ -301,7 +301,7 @@ interface IPatientEditQuery {
 /** 跳转到 新建/编辑照护人档案 */
 export const gotoPatientEdit = (query: IPatientEditQuery) => {
     const route = {
-        path: "/User/pages/ElderlyFiles/ElderlyDetail",
+        path: "/pagesUser/pages/elderlyFiles/elderlyFiles",
         query
     } as any
     return pageController.push(route)
@@ -324,7 +324,7 @@ export const gotoNurseDetail = (query: INurseDetailQuery) => {
  12：机构
  13：康养 */
 type TShopApply = 2 | 3 | 12 | 13
-const serviceCode = [2,13,12]
+const serviceCode = [2, 13, 12]
 /** 跳转到 店铺详情 */
 export const gotoAttendShop = (id: string, applyId?: TShopApply) => {
     console.log('applyId', applyId)

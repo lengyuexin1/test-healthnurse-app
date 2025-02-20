@@ -215,11 +215,12 @@ import TnBadge from '@tuniao/tnui-vue3-uniapp/components/badge/src/badge.vue'
 import { gotoLogin, gotoSetting } from "@/routes/public-routes"
 import { gotoInvoiceHistory, gotoorderList } from "@/routes/order-routes"
 import {
+    gotoAddressList,
     gotoAftersalesList,
     gotoAuth,
     gotoCollectLists,
     gotoCommentList,
-    gotoCouponHistory,
+    gotoCouponList,
     gotoEditProfile,
     gotoFeedback,
     gotoPlatformQualification,
@@ -245,9 +246,11 @@ import TnTabs from "@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue"
 import TnTabsItem from "@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue"
 import TnScrollList from '@tuniao/tnui-vue3-uniapp/components/scroll-list/src/scroll-list.vue'
 import { gotoDeviceManag, gotoDeviceSetup } from "@/routes/active-routes"
-import { gotoCoupon } from "@/routes/care-routes"
+import { gotoPatientEdit } from "@/routes/care-routes"
 import { gotoRoomManag, gotoScenServer } from "@/routes/wisdom-routes"
 import { getordercount } from '@/api/order-api'
+import { createTeam } from "@/api/nim-api"
+import { gotoChatPage } from "@/routes/nim-routes"
 
 interface tabulation {
     id: number,
@@ -317,15 +320,15 @@ const data = reactive<Data>({
             name: 'youhuiquan',
             title: '优惠券',
             icon: getAssetsPic("/mine/v1/my_wall_6.png"),
-            url: gotoCouponHistory,
-            param: { sub: 0 }
+            url: gotoCouponList,
+            param: { type: '0' }
         },
         {
-            name: 'youhuiquan',
+            name: 'hongbao',
             title: '红包',
             icon: getAssetsPic("/mine/v1/my_wall_7.png"),
-            url: gotoCouponHistory,
-            param: { sub: 1 }
+            url: gotoCouponList,
+            param: { type: '1' }
         },
         {
             name: 'myWallet',
@@ -566,23 +569,42 @@ const changeType = (item: any) => {
     data.istag = item.id;
     (paging.value as any).reload()
 }
+const navUrl = () => {
+    PlatformManage.getToken().then((token: any) => {
+        createTeam({
+            userId: token?.id,
+            userName: token?.nickname,
+            userThumb: token?.avatar,
+            flag: 1, //1小程序用户，2服务人员
+            shopId: token?.shopId ?? 0,
+            type: 1 // 1平台，2店铺
+        }).then((res) => {
+            gotoChatPage({
+                to: res.tid,
+                scene: 'customer',
+                originPage: 'pagesMall/pages/intellect/home'
+            })
+        }).catch((err) => {
+            uni.showToast({
+                title: err.message,
+                icon: 'none'
+            })
+        })
+    })
+}
 
 const listClick = (item) => {
+    console.log(item)
     Debounce(() => {
         switch (item.name) {
-            case "kefu":
-                // uni.makePhoneCall({
-                //     phoneNumber: this.$store.state.about.emergencyContact
-                // })
-                break
             case "serve":
-                // gotoIMSessionChat({ type: 1 })
+                navUrl()
                 break
             case "qualification_list":
-                // gotoUserQuality({ type: item.name })
+                gotoPlatformQualification(item)
                 break
             case "quality_announcement":
-                // gotoUserQuality({ type: item.name })
+                gotoPlatformQualification(item)
                 break
             case 'shoucang':
                 gotoCollectLists()
@@ -606,13 +628,25 @@ const listClick = (item) => {
                 gotoFeedback()
                 break
             case 'youhuiquan':
-                gotoCoupon()
+                item.url(item.param.type)
+                break
+            case 'hongbao':
+                item.url(item.param.type)
+                break
+            case 'myWallet':
+                item.url()
                 break
             case 'cart':
                 gotoShoppingCart()
                 break
             case 'zizhi':
-                gotoPlatformQualification()
+                gotoPlatformQualification({ name: 'zizhi', title: '平台资质' })
+                break
+            case 'dizhi':
+                gotoAddressList()
+                break
+            case 'dangan':
+                gotoPatientEdit()
                 break
             default:
 
