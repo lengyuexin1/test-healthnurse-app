@@ -324,23 +324,23 @@ export const gotoNurseDetail = (query: INurseDetailQuery) => {
  12：机构
  13：康养 */
 type TShopApply = 2 | 3 | 12 | 13
-
+const serviceCode = [2,13,12]
 /** 跳转到 店铺详情 */
 export const gotoAttendShop = (id: string, applyId?: TShopApply) => {
     console.log('applyId', applyId)
     // return
-    if (applyId === 2) {
+    if (serviceCode.includes(applyId)) {
         return gotoserviceDetail(id)
     }
     if (applyId === 3) {
         return gotoShopDetail(id)
     }
-    if (applyId === 12) {
-        return gotoServiceStore({ id })
-    }
-    if (applyId === 13) {
-        return gotoserviceDetail(id)
-    }
+    // if (applyId === 12) {
+    //     return gotoserviceDetail({ id })
+    // }
+    // if (applyId === 13) {
+    //     return gotoserviceDetail(id)
+    // }
     const route = {
         path: '/pagesMall/pages/shop/shopDetail',
         query: { id }
