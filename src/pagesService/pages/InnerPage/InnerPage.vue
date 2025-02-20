@@ -3,10 +3,10 @@
         <InnerDetailPage :id="data.id" :pageTitle="data.pageTitle"></InnerDetailPage>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
-import InnerDetailPage from './components/InnerDetailPage.vue';
+import InnerDetailPage from './components/InnerDetailPage.vue'
 import { onLoad } from '@dcloudio/uni-app'
 
 interface Data {
@@ -14,11 +14,11 @@ interface Data {
     pageTitle:string,
 }
 const data = reactive<Data>({
-    id:'',
-    pageTitle:''
+    id: '',
+    pageTitle: ''
 })
 
-onLoad((option:any)=>{
+onLoad((option:any) => {
     data.id = option.id
     data.pageTitle = option.pageTitle
 })
@@ -31,7 +31,7 @@ onMounted(() => {
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 
 </style>
@@ -39,4 +39,4 @@ onMounted(() => {
 page{
     background-color: #fff;
 }
-</style> 
+</style>

@@ -102,6 +102,14 @@ export const toInnerPage = (query: any) => {
     } as any
     return pageController.push(route)
 }
+// 服务列表内页
+export const gotoServicePage = (query: any) => {
+    const route = {
+        path: '/pagesService/pages/InnerPage/organizationPage',
+        query
+    } as any
+    return pageController.push(route)
+}
 
 
 

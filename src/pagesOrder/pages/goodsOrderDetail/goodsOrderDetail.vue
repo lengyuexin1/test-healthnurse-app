@@ -8,10 +8,10 @@
 
 <script setup lang="ts">
 import { ref, reactive, nextTick } from 'vue'
-import { onLoad, onShow, onReady } from '@dcloudio/uni-app'
+import { onLoad, onShow, onReady, onShareAppMessage } from '@dcloudio/uni-app'
 
 import goodsOrderDetailPage from './components/goodsOrderDetailPage'
-import verifyAccount from '@/pagesOrder/components/verifyAccount.vue'
+import verifyAccount from '@/Order/components/verifyAccount.vue'
 
 
 interface Data {
@@ -38,11 +38,11 @@ onLoad((option:any)=>{
         data.orderId = payJSON.itemId
         data.isAppOpen = payJSON.isAppOpen
 
-
+        
 
         console.log('payJSON',payJSON);
         console.log('data.isAppOpen',data.isAppOpen);
-
+        
 
     }
 
@@ -61,10 +61,24 @@ onReady(()=>{
         nextTick(()=>{
             // (accountUserRef.value as any).checkUser(data.userId)
             (accountUserRef.value as any).checkUser(data.userId)
-
+            
         })
     }
 })
+
+//#ifdef MP-WEIXIN
+onShareAppMessage((res:any)=>{
+    const orderObj = res.target.dataset.object.shopList[0].entityList[0]
+    const collageRecordId = res.target.dataset.object.collageRecordId
+
+    
+    return {
+        title: '超优惠！快来和我一起拼团',
+        path: `/Order/pages/groupSplit/groupSplit?id=${orderObj.itemId}&collage_id=${collageRecordId}`,
+        imageUrl: orderObj.image
+    }
+})
+//#endif
 
 
 </script>
@@ -73,7 +87,7 @@ onReady(()=>{
 .bottom_btn{
     background: #fff;
     height: 120rpx;
-
+    
 }
 </style>
 <style>

@@ -22,6 +22,18 @@ export const cancelInvoice = async (params: { id: number }) => {
     return http.order.post(INVOICE_API.cancelInvoice, params)
 }
 
+/* 获取子区域列表 */
+export const getAreaList = async (parentId: number) => {
+    return http.user.get('/v1/bc/app/district/getSonList', { parentId }) as Promise<[]>
+}
+import { PromiseProvider } from "@/libs/provider"
+const areaData = new PromiseProvider<[]>().setCallback(() => {
+    return getAreaList(440100)
+})
+
+export const getAreaDict = async () => {
+    return areaData.getData()
+}
 /** 区分小程序获取类目 二级类目 */
 export const getCategoryShowList = (req: any) => {
     return http.order.get('/v1/bc/public/app/category_show/list', req)

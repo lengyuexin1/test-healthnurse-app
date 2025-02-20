@@ -180,6 +180,7 @@ import BCNotify from '@/components/notify/index.vue'
 import WaterfallsFlow from './WaterfallsFlow.vue'
 import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { gotoLogin } from "@/routes/public-routes"
+
 import { channelClsList, getEsContentList } from "@/api/smart-api"
 import { getescourselist, escontentlist, followContentList, getranklist, getappcontentList, getcoursefollowList } from "@/api/create-api"
 import { nearbyList } from "@/api/user-api"
@@ -190,7 +191,7 @@ import { searListFlag } from "@/api/open-api"
 import createCollectAndReport from "@/utils/collection"
 import { Debounce } from '@/libs/antivibthrot'
 import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
-import { gotoServiceStore, gotoserviceDetail } from '@/routes/service-routes'
+import { gotoServiceStore, gotoserviceDetail, toInnerPage } from '@/routes/service-routes'
 import { gotoCenterChanges, gotoZone } from '@/routes/active-routes'
 import BottomMenu from "./channelSheet.vue"
 interface Data {
@@ -219,7 +220,7 @@ const data = reactive<Data>({
     lat: 0,
     lng: 0,
     swiperIndex: 0,
-    attentionList: [],
+    attentionList: []
 })
 
 const showBottomMenu = ref(false)
@@ -233,11 +234,11 @@ const NavId = ref(1)
 const dataObj: any = ref({})
 const dataObjTwo: any = ref({})
 const tabsData: any = ref([
-    { id: '88', icon: getAssetsPic('/fare/v2/zhihui.png'), name: '智慧康护',flagCode: 1 },
-    { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康',flagCode: 1  },
-    { id: '5', icon: getAssetsPic('/fare/v2/gre-cai.png'), name: '到店健康', flagCode: 1},
+    { id: '88', icon: getAssetsPic('/fare/v2/zhihui.png'), name: '智慧康护', flagCode: 1 },
+    { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康', flagCode: 1  },
+    { id: '5', icon: getAssetsPic('/fare/v2/gre-cai.png'), name: '到店健康', flagCode: 1 },
     { id: '8', icon: getAssetsPic('/fare/v2/home_icon_jigou.png'), name: '找机构', flagCode: 1 },
-    { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 },
+    { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 }
 ])
 
 interface Props {
@@ -251,18 +252,23 @@ const props = defineProps<Props>()
 
 const upCalik = (item: any, index: number) => {
     console.log(item.id, index)
-    NavId.value = item.id;
+    NavId.value = item.id
     paging.value.reload()
 }
 
 const gotoColmDetail = (index: any, item: any) => {
     console.log(index, item)
-    if (item.flagCode) {
+
+    if (item.id == '8') {
+        toInnerPage(item.id)
+    }
+    else   if (item.flagCode) {
         // 跳转默认页
         // return gotoWisdom()
-    } else {
+    }
+    else {
         // 跳转微页面
-        return gotoZone(item.id, item.name) 
+        return gotoZone(item.id, item.name)
     }
 }
 
@@ -352,10 +358,10 @@ const allInList: any = ref([])
 const getSetIds = (num: number) => {
     setPageBank(num).then(res => {
         allInList.value = res.recordList.filter((item: any) => item.moduleId == 7)
-        console.log(allInList.value, '等于7');
+        console.log(allInList.value, '等于7')
         if (allInList.value.length > 0) {
             allInList.value.forEach((element: any) => {
-                console.log(element);
+                console.log(element)
                 // 业务模块专区
                 channeCatelList(element, element.categoryIds)
             })
@@ -455,7 +461,8 @@ const channeCatelList = (item: any, id: any) => {
 const getTextList = (cateIndex: number) => {
     if (cateIndex == 1) {
 
-    } else {
+    }
+    else {
 
     }
 }
@@ -485,7 +492,7 @@ const getTabbar = (data: any) => {
     columnList(dares).then(res => {
         tabsData.value.unshift(...res)
         console.log(tabsData.value)
-        
+
         // tabsData.value = res
         // if (res.length > 0) {
         //     columnDetail(res[0].id).then(res => {
@@ -500,7 +507,7 @@ const bcNotify = ref()
 const pagingReload = (val: boolean = false) => {
 
     if (val) {
-        paging.value && (paging.value as any).refresh();
+        paging.value && (paging.value as any).refresh()
     }
     else {
         paging.value && (paging.value as any).reload()
@@ -536,7 +543,7 @@ const liveswiperChange = (e: any) => {
 }
 
 const liveList = (item: any) => {
-    console.log('item', item);
+    console.log('item', item)
     if ([1, 2, 3].includes(item.moduleType)) {
         if (item.moduleType == 1 && props.liveType.channel) {
             gotoLiveList({ type: 1 })

@@ -207,39 +207,29 @@ const open = () => {
 
 const getGoodsSpecifications = () => {
 	goodsSpecifications({
-        optionValueIds: data.idsarr.toString(',') 
+        optionValueIds: data.idsarr.toString(',')
     }).then((res:any) => {
         data.comInfo = {
             ...data.comInfo,
             ...res
         }
-		
-		console.log('joinInfo.value',joinInfo.value);
-		console.log('data.comInfo111',data.comInfo);
+		// 获取拼团规格新的价格
+		getGroupBuyInfo({ productId: props.info.id }).then((pac: any) => {
+			joinInfo.value.collagePrice = pac.optionCollages.filter((item: any) => res.id == item.optionId)[0].collagePrice
+		})
 
-		if (joinInfo.value) {
-			// 获取拼团规格新的价格
-			getGroupBuyInfo({ productId: props.info.id }).then((pac: any) => {
-				joinInfo.value.collagePrice = pac.optionCollages.filter((item: any) => res.id == item.optionId)[0].collagePrice
-			})
-
-			if (!joinInfo.value.collagePrice && joinInfo.value.collagePrice) {
-				joinInfo.value.collagePrice = joinInfo.value.optionCollages?.find((element) => res.id == element.optionId)?.collagePrice
-			}
+		if (!joinInfo.value?.collagePrice) {
+			joinInfo.value.collagePrice = joinInfo.value.optionCollages?.find((element) => res.id == element.optionId)?.collagePrice
 		}
-
-		
 		// 获取最大库存
         getStock()
         emit('setOption', res.optionValueNames)
-
-		console.log('data.comInfo2222',data.comInfo);
-
     })
 }
 
 
 const getNorm = (item:any, index:number, elids:number = 1, ele:any = {}) => {
+	console.log(props.type)
             
     // this.idsarr.length = this.optionList.length
 
@@ -275,8 +265,6 @@ const getNorm = (item:any, index:number, elids:number = 1, ele:any = {}) => {
 // 获取最大库存
 const getStock = () => {
     maxStock.value = data.comInfo.stock
-	console.log('maxStock.value',maxStock.value);
-	
 }
 
 
@@ -339,8 +327,6 @@ const balance = (type?: number) => {
 		...params
 	} : params)
 
-	console.log('params111',params);
-
 	// #ifdef MP-WEIXIN
     gotoBalanceGood(uniqueId)
     // #endif
@@ -348,11 +334,6 @@ const balance = (type?: number) => {
 
 
 	// #ifdef APP-PLUS
-
-	console.log('optionListid1111',optionListid);
-	console.log('vModelValue1111',vModelValue);
-	console.log('joinInfo1111',joinInfo);
-
 
 	let payInfo = {
 		optionDetailId: props.type == 1 ? goods.id : optionListid.value,

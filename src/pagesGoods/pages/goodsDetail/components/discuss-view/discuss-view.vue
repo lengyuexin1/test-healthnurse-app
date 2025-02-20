@@ -3,9 +3,18 @@
 		<view class="evaluateBox">
 			<view class="evaluateLi" v-for="(pinitm) in mypinglist" :key="pinitm.id">
 				<view class="evaluateMation row i-center">
-					<image class="evaluMationPic" v-if="pinitm.userThumb" :src="pinitm.userThumb" mode="aspectFill" />
-					<image class="evaluMationPic" v-else :src="getAssetsUrl('/leyou/static/default_avatar.png')"
-						mode="aspectFill" />
+					<image	
+						class="evaluMationPic"
+						v-if="pinitm.userThumb"
+						:src="pinitm.userThumb"
+						mode="aspectFill"
+					/>
+					<image
+						class="evaluMationPic"
+						v-else
+						:src="getAssetsUrl('/leyou/static/default_avatar.png')"
+						mode="aspectFill"
+					/>
 					<view class="evaluMationRig">
 						<view class="evaluMationName">{{ pinitm.userName ? pinitm.userName : '--' }}</view>
 						<view class="evaluMationGrade">
@@ -33,25 +42,25 @@ import { ref, watch, computed } from "vue"
 import { getAssetsPic } from '@/common/setPicture'
 
 const props = defineProps({
-    bgColor: {
-        type: String,
-        default: '#FFFFFF'
-    },
-    pingjia: {
-        type: Array,
-        default: () => []
-    }
+	bgColor: {
+		type: String,
+		default: '#FFFFFF'
+	},
+	pingjia: {
+		type: Array,
+		default: () => []
+	}
 })
 const mypinglist: any = ref(props.pingjia)
 // 预览图片
 const showpic = (index: number, imgList: any) => {
-    uni.previewImage({
-        current: index, //预览图片的下标
-        urls: imgList //预览图片的地址，必须要数组形式，如果不是数组形式就转换成数组形式就可以
-    })
+	uni.previewImage({
+		current: index, //预览图片的下标
+		urls: imgList //预览图片的地址，必须要数组形式，如果不是数组形式就转换成数组形式就可以
+	})
 }
 
-const getAssetsUrl = computed(() => (src: string) => {
+const getAssetsUrl = computed(()=>(src:string)=> {
     return getAssetsPic(src)
 })
 

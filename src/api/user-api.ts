@@ -9,6 +9,7 @@ const WEB_ENV: TEnv = import.meta.env.VITE_WEB_ENV as TEnv
  *
  */
 
+
 /* 获取通知状态 */
 export const getNoticeConfig = () => {
     return http.message.get('/v1/bc/app/config/get')

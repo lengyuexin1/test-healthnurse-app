@@ -184,6 +184,14 @@
           }
         },
         {
+          "path": "pages/InnerPage/organizationPage",
+          "style": {
+            "navigationBarTitleText": "服务列表内页",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
           "path": "pages/InnerPage/InnerPage",
           "style": {
             "navigationBarTitleText": "机构列表内页",
@@ -1082,7 +1090,13 @@
             "enablePullDownRefresh": false,
             "navigationStyle": "custom"
           }
-        }
+        },
+        {
+					"path": "pages/groupSplit/groupSplit",
+					"style": {
+                        "navigationBarTitleText": "拼团分享"
+                    }
+				}
       ]
     },
     {

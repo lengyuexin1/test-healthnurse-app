@@ -15,8 +15,8 @@
                 <view id="wrap" class="wrap_box" v-if="showtab" :style="'opacity:' + (opacityNumber)">
                     <view class="navbar_box" :style="{ paddingTop: titleTop + 'px', paddingRight: titleRight + 'px' }">
                         <view class="top_box" :style="{ height: sBarHeight + 'px' }">
-                            <view @click="goback">
-                                <TnIcon name="left" color="#333333" size="38" :bold="true" />
+                            <view @click="goback" >
+                                <TnIcon name="left" color="#333333" size="38" :bold="true"/>
                             </view>
                             <view class="title_text">详情</view>
 
@@ -47,12 +47,11 @@
                             />
                         </TnTabs>
                     </div>
-
                 </view>
             </template>
 
             <view class="back_icon" v-if="!showtab" @click="goback">
-                <TnIcon name="left" color="#fff" size="38" :bold="true" />
+                <TnIcon name="left" color="#fff" size="38" :bold="true"/>
             </view>
 
             <div class="head_box" id="toView1">
@@ -84,17 +83,17 @@
                         <view class="goods-up">
                             <text class="goods-title u-line-2 u-font-xl">{{
                                 orderObj.name
-                                }}</text>
+                            }}</text>
                         </view>
                         <view class="servebat row i-center">
                             <!-- orderObj.tagList -->
                             <block v-for="(item, index) in orderObj.afterList" :key="index">
-                                <view class="servebatli u-line-1">{{ item.name }}</view>
+                                <view class="servebatli u-line-1">{{item.name}}</view>
                             </block>
                         </view>
                         <view class="servemation row i-center">
                             <view class="serveprice">￥{{ moneyFilter(orderObj.price) }}起</view>
-                            <view class="servenum">已购买 {{ orderObj.salesVolume || 0 }}次</view>
+                            <view class="servenum">已购买 {{orderObj.salesVolume || 0}}次</view>
                         </view>
                     </view>
                     <view>
@@ -102,16 +101,14 @@
                             <view class="serve-opt-li column i-center j-center" @click="setcollect">
                                 <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
                                     <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
-                                        <image style="width: 36rpx;height: 36rpx;" :src="favoriteImg" mode="aspectFill">
-                                        </image>
+                                        <image width="36rpx" height="36rpx" :src="favoriteImg" mode="aspectFill"></image>
                                     </view>
                                 </view>
                                 <text :style="{ color: isFavorite ? '#ffae21' : '' }">收藏</text>
                             </view>
                             <view class="serve-opt-li column i-center j-center" @click="share">
                                 <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
-                                    <image style="width: 36rpx;height: 36rpx;"
-                                        :src="getAssetsUrl('/default/v1/share.svg')" mode="aspectFill"></image>
+                                    <image width="36rpx" height="36rpx" :src="getAssetsUrl('/default/v1/share.svg')" mode="aspectFill"></image>
                                 </view>
                                 <text>分享</text>
                             </view>
@@ -126,7 +123,7 @@
                         <view class="godirig row">
                             <view class="godsel">
                                 <view class="seltex" style="word-break: break-all;">
-                                    <text>{{ orderObj.productExt.shippingAddress || '' }}</text>
+                                    <text>{{orderObj.productExt.shippingAddress || ''}}</text>
                                     <text style="margin: 0 14rpx">|</text>
                                     <text v-if="orderObj.freeShippingFlag == 0 && orderObj.freight > 0">
                                         邮费：￥{{ moneyFilter(orderObj.freight) }}
@@ -134,34 +131,36 @@
                                     <text v-else>快递：包邮</text>
                                 </view>
                                 <view class="seltex">
-                                    <text v-if="orderObj.delivery">{{ orderObj.delivery.name || '' }}</text>
+                                    <text v-if="orderObj.delivery">{{orderObj.delivery.name || ''}}</text>
                                 </view>
                             </view>
                         </view>
                     </view>
-                    <view class="godinfo row" @click="openSelect(0)">
+                    <view class="godinfo row" @click="openSelect(false)">
                         <view class="surelef">选择</view>
                         <view class="godirig row j-between">
                             <view class="godsel">
                                 <view class="seltex">
-                                    <text v-if="optionValueNames">已选：{{ optionValueNames }}</text>
+                                    <text v-if="optionValueNames">已选：{{optionValueNames}}</text>
                                     <text v-else>选择规格</text>
                                 </view>
                                 <view class="godcls row i-center">
                                     <!-- <view class="godsclsimg row">
                                         <image src="" mode="aspectFill" v-for="(item,index) in 3" :key="index"></image>
                                     </view> -->
-                                    <view class="godsclstex">共{{ orderObj.optionList ? orderObj.optionList.length :
-                                        0 }}个商品规格可选</view>
+                                    <view class="godsclstex">共{{orderObj.optionList ? orderObj.optionList.length : 0}}个商品规格可选</view>
                                 </view>
                             </view>
                             <view class="godjian">
-                                <TnIcon name="right" color="#BEBEBE" size="20" />
+                                <TnIcon name="right" color="#BEBEBE" size="20"/>
                             </view>
                         </view>
                     </view>
                 </view>
             </view>
+
+            <!-- 拼团团购 -->
+            <GroupBuy ref="groupBuyRef" :groupInfo="groupInfo" :itemId="itemId" @toGroupBuy="toGroupBuy" v-if="groupInfo"></GroupBuy>
 
             <!-- 评论组件 -->
             <view class="serbox" id="toView2">
@@ -178,7 +177,8 @@
                     <image
                     @click="preImage(index,orderObj.productExt.detailImage)"
                     :src="item"
-                    style="width:750rpx ;height: auto;"
+                    width="750rpx"
+                    height="auto"
                     mode="widthFix"></image>
                 </block>
             </view>
@@ -190,8 +190,7 @@
                 <WaterfallsFlow :wfList="dataList" @waterItem="clickwaterItem"></WaterfallsFlow>
             </view>
 
-            <image class="shop-service" :src="getAssetsUrl('/leyou/icon/customer_service.png')" mode="scaleToFill"
-                @tap="clickCustomerService" />
+            <image class="shop-service" :src="getAssetsUrl('/leyou/icon/customer_service.png')" mode="scaleToFill" @tap="clickCustomerService" />
 
 
 
@@ -215,13 +214,11 @@
     />
 
     <!-- 优惠券 coupon-->
-    <receiveCoupon ref="refCoup" :list="couparr" @openSkunotice="openSkunotice" />
+    <receiveCoupon ref="refCoup" :list="couparr" @openSkunotice="openSkunotice"/>
 
     <!-- 分享 -->
-    <shareView ref="shareBox" @sharePage="sharePage" @sharePoster="sharePoster" :status="status" :imgUrl="shareimgUrl">
-    </shareView>
-    <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="254" height="344"
-        style="width:254px; height:344px"></canvas>
+    <shareView ref="shareBox" @sharePage="sharePage" @sharePoster="sharePoster" :status="status" :imgUrl="shareimgUrl"></shareView>
+    <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="254" height="344" style="width:254px; height:344px"></canvas>
 
 
 
@@ -231,38 +228,44 @@
 // import couponGet from "@/components/receiveCoupon/couponGet.vue"
 // import receiveCoupon from "@/components/receiveCoupon/receiveCoupon.vue"
 
-import couponGet from "@/pagesGoods/components/receiveCoupon/couponGet.vue"
-import receiveCoupon from "@/pagesGoods/components/receiveCoupon/receiveCoupon.vue"
+import couponGet from "@/Goods/components/receiveCoupon/couponGet.vue"
+import receiveCoupon from "@/Goods/components/receiveCoupon/receiveCoupon.vue"
 
 import { onLoad, onReady, onShareAppMessage } from '@dcloudio/uni-app'
 
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
+import TnSwiper from '@tuniao/tnui-vue3-uniapp/components/swiper/src/swiper.vue'
 import TnTabs from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue'
 import TnTabsItem from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue'
 
 import { goodsDetail, recommendList } from '@/api/goods-api'
-import { addItemBrowerHistory, cancelCollect, collectService, itemCouponList } from "@/api/service-api"
-import { getQrcode, isFavoriteItem } from '@/api/user-api'
+import { collectService, cancelCollect, itemCouponList, addItemBrowerHistory } from "@/api/service-api"
+import { isFavoriteItem } from '@/api/user-api'
+import recommend from '@/libs/recommend'
 import { moneyFilter } from "@/common/filters"
-import { computed, getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue'
+import { ref, reactive, toRefs, computed, nextTick, getCurrentInstance, onMounted } from 'vue'
 import { PlatformManage } from "@bc/sys"
 import { getAssetsPic } from "@/common/setPicture"
 import { pageController } from '@bc/uni-tools'
+import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import tabbar from "./components/detailTabbar/detailTabbar.vue"
 
-import shareView from '@/pagesGoods/components/shareView/shareView.vue'
+import shareView from '@/Goods/components/shareView/shareView.vue'
 
 import optionSelect from './components/optionSelect/optionSelect.vue'
 import commentView from "./components/discuss-view/commentView.vue"
 import shopView from "./components/shopView/shopView.vue"
 import BCNotify from '@/components/notify/index.vue'
-import { gotogoodsDetail, gotoShoppingCart } from '@/routes/goods-routes'
+import { gotoShoppingCart, gotogoodsDetail } from '@/routes/goods-routes'
 import { gotoShopDetail } from "@/routes/service-routes"
 import { gotoIndex, gotoLogin } from "@/routes/public-routes"
 import { drawBGIMG } from '@/libs/canvas-tools'
+import { getQrcode } from "@/api/user-api"
 import WaterfallsFlow from './components/WaterfallsFlow.vue'
 import { createTeam } from "@/api/nim-api"
 import { gotoChatPage } from "@/routes/nim-routes"
+import GroupBuy from "./components/groupBuy/groupBuy.vue"
+import { getGroupBuyInfo } from '@/api/goods-api'
 
 const dataList: any = ref([])
 const isFavorite = ref(false)
@@ -289,6 +292,7 @@ const optionValueNames = ref('')
 
 const status = ref(1)
 const shareimgUrl = ref('')
+const groupInfo = ref()
 
 const shareInfo = reactive({
     data: {
@@ -296,7 +300,7 @@ const shareInfo = reactive({
         name: '',
         shopavatar: ''
     },
-    couparr: [] as any, //优惠券列表
+    couparr: [] as any //优惠券列表
 })
 const shareData = reactive<any>({
     qrimg: '',
@@ -320,6 +324,9 @@ onLoad((options: any) => {
         itemId: itemId.value
     }).then((res) => {
         isFavorite.value = !!res
+    })
+    getGroupBuyInfo({ productId: itemId.value }).then((res: any) => {
+        groupInfo.value = res
     })
 })
 
@@ -370,7 +377,6 @@ onMounted(async () => {
     titleRight.value = 8
     // #endif
 
-    console.log(',data.titleRight',titleRight.value)
 })
 
 const getDetail = (id: any) => {
@@ -396,7 +402,7 @@ const hospital: any = ref({})
 const optionList: any = ref([])
 
 
-const clickTab = (type: string) => {
+const clickTab = (type:string) => {
     console.log('tyep', type)
     // 检查登录状态
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
@@ -416,7 +422,7 @@ const clickTab = (type: string) => {
     })
 }
 
-const getAssetsUrl = computed(() => (src: string) => {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
@@ -505,7 +511,7 @@ const celcoll = () => {
         })
 }
 
-const setOption = (str: string) => {
+const setOption = (str:string) => {
     optionValueNames.value = str || ''
 }
 
@@ -548,9 +554,18 @@ const queryList = (pageNumber = 1, pageSize = 10) => {
     })
 }
 
+const toGroupBuy = (joinInfo: any) => {
+    optSel.value.godOpen(false, joinInfo, 4)
+}
+
 // 打开sku面板
-const openSelect = (type: boolean | number) => {
-    optSel.value.godOpen(type)
+const openSelect = (type:boolean) => {
+    if (groupInfo.value?.collageId) {
+        optSel.value.godOpen(type, groupInfo.value, 4)
+    }
+    else {
+        optSel.value.godOpen(type, null, 0)
+    }
 }
 // 打开面板确认下单后的自动领取优惠卷
 const opengetAllCoupon = () => {
@@ -566,14 +581,15 @@ const openSkunotice = () => {
 const { couparr } = toRefs(shareInfo)
 
 // 滚动计算透明导航栏
-const pagingScroll = (e: any) => {
+const pagingScroll = (e:any) => {
     tabList.value.forEach((item, index) => {
-        query.select('#' + item.jumpId).boundingClientRect((rect: any) => {
+        query.select('#' + item.jumpId).boundingClientRect((rect:any) => {
             if (rect.top <= 150 && rect.top >= 50) {
                 tabCurrent.value = index
             }
         }).exec()
     })
+    console.log('e', e)
 
     opacityNumber.value = Math.abs(((e.detail.scrollTop - 40) * 0.01))
 
@@ -586,12 +602,12 @@ const pagingScroll = (e: any) => {
 }
 
 // 导航栏跳转定位
-const changeTab = (item: any, index: number) => {
+const changeTab = (item:any, index:number) => {
     tabCurrent.value = index
     paging.value.scrollIntoViewById(item.jumpId, 150)
 }
 
-const preImage = (current: number, urls: any) => {
+const preImage = (current:number, urls:any) => {
     uni.previewImage({
         current,
         urls
@@ -620,7 +636,7 @@ const clickCustomerService = () => {
             gotoChatPage({
                 to: res.tid,
                 scene: 'customer',
-                originPage: 'pagesGoods/pages/goodsDetail/goodsDetail',
+                originPage: 'Goods/pages/goodsDetail/goodsDetail',
                 msgProduct: JSON.stringify(msgProduct)
             })
         }).catch((err) => {
@@ -633,7 +649,7 @@ const linkCart = () => {
     gotoShoppingCart()
 }
 
-const clickwaterItem = (item: any) => {
+const clickwaterItem = (item:any) => {
     gotogoodsDetail(item.id)
 }
 
@@ -651,12 +667,12 @@ const goback = () => {
 
 // 微信小程序分享
 //#ifdef MP-WEIXIN
-onShareAppMessage((res: any) => {
+onShareAppMessage((res:any) => {
     return {
         title: orderObj.value.name,
         imageUrl: orderObj.value.thumb,
         desc: orderObj.value.desc,
-        path: `/pagesGoods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`
+        path: `/Goods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`
     }
 })
 //#endif
@@ -666,7 +682,7 @@ const sharePoster = async () => {
 
     const coverUrl = await drawBGIMG(orderObj.value.thumb)
     // 二维码链接图片
-    const qrimg = await getQrcode(`/pagesGoods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`).then((img: any) => {
+    const qrimg =  await getQrcode(`/Goods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`).then((img:any) => {
         return img
     })
     const qrimgUrl = await drawBGIMG(qrimg)
@@ -735,7 +751,7 @@ const sharePoster = async () => {
         setTimeout(async () => {
             uni.canvasToTempFilePath({
                 canvasId: 'mycanvas',
-                success: (res: any) => {
+                success: (res:any) => {
                     shareimgUrl.value = res.tempFilePath
                     status.value = 2
                     title = ''
@@ -771,7 +787,7 @@ const sharePage = () => {
         title: orderObj.value.name,
         miniProgram: {
             id: 'gh_fd20b530cb94', //微信小程序原始id
-            path: `/pagesGoods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`, //点击链接进入的页面
+            path: `/Goods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`, //点击链接进入的页面
             type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
             webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接
         },
@@ -794,7 +810,7 @@ const closeShare = () => {
     (shareBox.value as any).close()
 }
 
-const changeSwiper = (e: any) => {
+const changeSwiper = (e:any) => {
     currentSwiperIndex.value = e.detail.current
 }
 
@@ -806,24 +822,22 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-#wrap {
+#wrap{
     position: relative;
 }
-
-.wrap_box {
+.wrap_box{
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
     background: #FFFFFF;
-
-    .navbar_box {
+    .navbar_box{
         // #ifdef APP-PLUS || H5
         padding-bottom: 12rpx;
         // #endif
 
-        .top_box {
+        .top_box{
 
             padding-left: 26rpx;
             padding-right: 136rpx;
@@ -837,10 +851,10 @@ defineExpose({
             // #ifdef APP-PLUS || H5
             width: 100%;
             padding-right: 26rpx;
-            height: auto !important;
+            height: auto!important;
             // #endif
 
-            .title_text {
+            .title_text{
                 font-size: 34rpx;
                 color: #333333;
                 font-weight: 500;
@@ -1009,19 +1023,16 @@ defineExpose({
 
     }
 }
-
-.head_box {
+.head_box{
     position: relative;
 
-    .swiper_box {
+    .swiper_box{
         width: 750rpx;
         height: 750rpx;
-
-        .swiper_item {
+        .swiper_item{
             width: 100%;
             height: 100%;
             z-index: 10;
-
             .image {
                 width: 100%;
                 height: 100%;
@@ -1030,23 +1041,20 @@ defineExpose({
         }
 
     }
-
-    .indicator_box {
+    .indicator_box{
         position: absolute;
         bottom: 56rpx;
         right: 40rpx;
         display: flex;
         align-items: center;
-
-        .indicator_item {
+        .indicator_item{
             width: 12rpx;
             height: 12rpx;
             background: #000000;
             opacity: 0.2;
             border-radius: 50%;
             margin-right: 12rpx;
-
-            &.is_Selected {
+            &.is_Selected{
                 opacity: 1;
                 background: #18181A;
                 border-radius: 6rpx 6rpx 6rpx 6rpx;
@@ -1057,11 +1065,9 @@ defineExpose({
     }
 
 }
-
 .swiper-data {
     width: 100%;
     height: 100%;
-
     .image {
         width: 100%;
         height: 100%;
@@ -1075,8 +1081,8 @@ defineExpose({
     background: #FFFFFF;
     border-radius: 24rpx;
 
-    .info-about {
-        .serve-abt {
+    .info-about{
+        .serve-abt{
             .goods-title {
                 display: flex;
                 flex-direction: row;
@@ -1090,7 +1096,6 @@ defineExpose({
                 flex-wrap: wrap;
                 margin-top: 16rpx;
             }
-
             .servebatli {
                 /* height: 46rpx;
                 background: #fff1e8;
@@ -1111,29 +1116,26 @@ defineExpose({
                 display: inline-flex;
                 align-items: center;
 
-                &::after {
+                &::after{
                     content: '|';
                     font-size: 26rpx;
                     font-weight: 400;
                     color: #999999;
                     margin-left: 6rpx;
                 }
-
-                &:last-child::after {
+                &:last-child::after{
                     display: none;
                 }
             }
-
-            .servemation {
+            .servemation{
                 margin-top: 20rpx;
 
-                .serveprice {
+                .serveprice{
                     margin-right: 30rpx;
                     font-size: 32rpx;
                     font-weight: 500;
                     color: #FF0000;
                 }
-
                 .servenum {
                     font-size: 28rpx;
                     font-weight: 400;
@@ -1141,20 +1143,16 @@ defineExpose({
                 }
             }
         }
-
         .serve-opt {
             font-size: 22rpx;
             font-weight: 400;
             color: #878787;
-
             text {
                 margin-top: 8rpx;
             }
-
             .serve-opt-li {
                 margin-left: 40rpx;
-                position: relative;
-
+                position:relative;
                 button {
                     position: absolute;
                     top: 0;
@@ -1167,47 +1165,41 @@ defineExpose({
         }
     }
 
-    .optbox {
+    .optbox{
         margin-top: 40rpx;
 
-        .optit {
+        .optit{
             font-size: 32rpx;
             font-weight: 500;
             color: #333333;
         }
-
-        .godinfo {
+        .godinfo{
             margin-top: 30rpx;
-
-            .surelef {
+            .surelef{
                 font-size: 26rpx;
                 font-weight: bold;
                 color: #333333;
                 margin-right: 50rpx;
             }
-
-            .godirig {
+            .godirig{
                 flex: 1;
-
-                .seltex {
+                .seltex{
                     font-size: 26rpx;
                     font-weight: 400;
                     color: #666666;
                 }
-
-                .godcls {
+                .godcls{
                     margin-top: 16rpx;
 
-                    .godsclsimg {
-                        image {
+                    .godsclsimg{
+                        image{
                             width: 60rpx;
                             height: 60rpx;
                             border-radius: 8rpx;
                             margin-right: 12rpx;
                         }
                     }
-
-                    .godsclstex {
+                    .godsclstex{
                         padding: 0 16rpx;
                         height: 50rpx;
                         background: #F8F8F8;
@@ -1223,7 +1215,7 @@ defineExpose({
     }
 }
 
-.serbox {
+.serbox{
     margin: 20rpx;
 }
 
@@ -1302,7 +1294,7 @@ defineExpose({
     height: 20rpx;
 }
 
-.back_icon {
+.back_icon{
     padding: 10rpx;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.3);
@@ -1315,7 +1307,7 @@ defineExpose({
     z-index: 1000;
 }
 
-.tab_box {
+.tab_box{
     height: 44px;
     background: #FFFFFF;
     // position: absolute;
@@ -1324,18 +1316,15 @@ defineExpose({
     // right: 0;
     // z-index: 10000;
 }
-
-.bilvas {
+.bilvas{
     border-radius: 20rpx;
     position: relative;
     left: -750px;
 }
-
-.list_box {
+.list_box{
     padding: 0rpx 14rpx;
     box-sizing: border-box;
-
-    .list_title {
+    .list_title{
         padding: 10rpx 16rpx;
         padding-bottom: 30rpx;
         box-sizing: border-box;
@@ -1353,4 +1342,8 @@ defineExpose({
     bottom: 350rpx;
     z-index: 1000;
 }
+
+
+
+
 </style>

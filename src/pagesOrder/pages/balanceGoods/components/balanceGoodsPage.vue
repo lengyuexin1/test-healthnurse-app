@@ -1,7 +1,7 @@
 <template>
     <view class="container" >
-        <z-paging
-            ref="paging"
+        <z-paging 
+            ref="paging" 
             :auto="false"
             :refresher-enabled="false"
             >
@@ -18,9 +18,9 @@
                                 <view class="locus-name">{{data.delivery.name}}  {{data.delivery.mobile}}</view>
                                 <view class="locus-desc">{{data.delivery.area}}{{data.delivery.address}}</view>
                             </view>
-                            <navigator class="locus-edit" url="/pagesUser/pages/address/goodsSiteList">修改</navigator>
+                            <navigator class="locus-edit" url="/User/pages/address/goodsSiteList">修改</navigator>
                         </view>
-                        <navigator url="/pagesUser/pages/address/goodsSiteList" class="locus-rig row i-center j-between"
+                        <navigator url="/User/pages/address/goodsSiteList" class="locus-rig row i-center j-between"
                             hover-class="none" v-else
                         >
                             <view class="locus-info">
@@ -52,7 +52,7 @@
                                             <view>￥{{(ele.price / 100)}}</view>
                                             <view class="bala-ord-num">
                                                 <template>
-                                                    <TnNumberBox v-model="ele.quantity" bg-color="#f5f5f5" :min="1" :max="100"
+                                                    <TnNumberBox v-model="ele.quantity" bg-color="#f5f5f5" :min="1" :max="1000"
                                                         buttonSize="56rpx" inputWidth="66rpx" @change="editNumber">
                                                     </TnNumberBox>
                                                 </template>
@@ -64,7 +64,7 @@
                             <view class="bala-ord-handle row i-center j-between" @click="showfast">
                                 <view class="bala-handle-tit">订单运费</view>
                                 <view class="bala-handle-rig row i-center j-between">
-                                    <view class="bala-handle-tex">包邮</view>
+                                    <view :class="['bala-handle-tex', data.calculationObj.postalAmount == 0 ? 'tex-free' : 'tex-shipping']">{{ isShippingFree }}</view>
                                 </view>
                             </view>
                             <view class="bala-mon-li bala-ord-handle row i-center j-between">
@@ -96,7 +96,7 @@
                 </block>
 
                 <view class="bala-money" >
-
+                    
                     <view class="bala-mon-li row i-center j-between">
                         <view class="row i-center">
                             <view class="bala-mon-name">通用优惠券</view>
@@ -139,7 +139,7 @@
                         </view>
                     </view>
                 </view>
-
+                
             </template>
             <BCNotify ref="bcNotify"></BCNotify>
 
@@ -150,7 +150,7 @@
 
     </view>
 </template>
-
+    
 <script setup lang="ts">
 import { ref, reactive, toRef, computed, onMounted, nextTick,  } from 'vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
@@ -159,15 +159,15 @@ import TnNumberBox from '@tuniao/tnui-vue3-uniapp/components/number-box/src/numb
 import { TempStorage } from "@bc/base"
 import PageTopbg from "@/components/page-topbg/page-topbg.vue"
 
-import choiceCoupon from '@/pagesOrder/components/choiceCoupon/choiceCoupon.vue'
-import currencyCoupon from '@/pagesOrder/components/choiceCoupon/currencyCoupon.vue'
+import choiceCoupon from '@/Order/components/choiceCoupon/choiceCoupon.vue'
+import currencyCoupon from '@/Order/components/choiceCoupon/currencyCoupon.vue'
 
 import { getCouponGranted, houseOrderPay, goodsCalculation, getPlatCoupon, submitOrder } from "@/api/order-api"
 import BCNotify from '@/components/notify/index.vue'
 import { pageController } from '@bc/uni-tools'
 import { packPayment } from '@/libs/pay/pay-tools'
 
-import { getAddressList, goodsPurchase, cartPurchase } from '@/api/goods-api'
+import { getAddressList, goodsPurchase, cartPurchase, collageCreate, collageJoin } from '@/api/goods-api'
 import { getAssetsPic } from '@/common/setPicture'
 
 import { addWEventsListener } from '@/events/event-registry'
@@ -197,7 +197,10 @@ interface Data {
     platCoupsCheckList:any,// 选中的通用优惠券id
     calculationObj:any,//计算的支付金额
     livePlayId: string,//直播间id
-
+    joinTheteamType: any,////参团类型
+    cntCollage: any,
+    recordId: any
+    collageId: any
 }
 const data = reactive<Data>({
     showPage:false,
@@ -214,7 +217,11 @@ const data = reactive<Data>({
     platCoups:{},
     platCoupsCheckList: [],
     calculationObj:{},
-    livePlayId: ''
+    livePlayId: '',
+    joinTheteamType: null,
+    cntCollage: null,
+    recordId: null,
+    collageId: null
 })
 
 const updateKey = ref(0)
@@ -238,7 +245,7 @@ const delcomma = computed(()=>(img:string)=>{
     else {
         return ''
     }
-})
+}) 
 
 
 // 是否是折扣券
@@ -246,6 +253,14 @@ const isRebate = computed(()=>(typeId:number)=>{
     const cpuponTypeList = [1000004, 1000002, 10004, 10002, 100002, 100004]
     return cpuponTypeList.includes(typeId)
 })
+
+/** @return {string|number} 是否包邮 */
+const isShippingFree = computed(() => {
+    if (data.calculationObj.postalAmount == 0) {
+        return '包邮'
+    }
+    return '￥' + data.calculationObj.postalAmount / 100
+}) 
 
 const placeOrder = () => {
 
@@ -304,13 +319,15 @@ const placeOrder = () => {
     }
 
     console.log('buyData',buyData);
-
+    
     /* 生成订单 */
-    submitOrder(buyData).then((res:any)=>{
+    const action = data.joinTheteamType == 1 ? collageJoin({ ...buyData, collageRecordId: data.recordId }) : data.collageId ? collageCreate(buyData) : submitOrder(buyData)
+
+    action.then((res:any)=>{
         uppay(res)
     }).catch((err:any)=>{
         console.log('err1',err);
-
+        
         bcNotify.value.error(err.message)
     })
 
@@ -323,8 +340,8 @@ const editNumber = (value: number) => {
     }
     initChoice();
     calculationPrice();
-
-
+    
+    
 
 }
 
@@ -372,7 +389,7 @@ const getShopCouponList = (item:any, index:number, isInit: boolean = false) => {
             })
             return
         }
-
+        
         nextTick(()=>{
             isInit ? initgetCoupon(index) : getCoupon(index)
         })
@@ -382,7 +399,7 @@ const getShopCouponList = (item:any, index:number, isInit: boolean = false) => {
 
 // 通用优惠券
 const getPingCouponList = (isInit: boolean = false) => {
-
+    
     // 使用店铺优惠券前价格
     let money = 0
     const itemIds = [] as any
@@ -405,7 +422,7 @@ const getPingCouponList = (isInit: boolean = false) => {
         itemId: itemIds
     }).then((res:any)=>{
         data.platCoupsList = res
-
+        
         if (!res.length) {
             nextTick(()=>{
                 isInit ? initgetcurrencyCoupon() : getcurrencyCoupon(0)
@@ -448,7 +465,7 @@ const calculationPrice = (isInitCoupon:boolean = false) => {
     }
 
 
-    const goodsdata = { entityList: arr, userRelCouponIds: favourList }
+    const goodsdata = { entityList: arr, userRelCouponIds: favourList, collageId: data.collageId, addressId: data.delivery.id }
 
     goodsCalculation(goodsdata)
         .then((res:any) => {
@@ -464,7 +481,7 @@ const calculationPrice = (isInitCoupon:boolean = false) => {
         })
         .catch((err) => {
             console.log('err2',err);
-
+            
             nextTick(()=>{
                 bcNotify.value.error(err.message);
                 refCoup.value.closeCpup();
@@ -492,17 +509,17 @@ const uppay = (orderId:string) => {
     const openid = uni.getStorageSync('openid')
 
     console.log('openid', openid);
-
+    
 
     /* 获取支付参数 */
-    houseOrderPay({
-        orderId,
+    houseOrderPay({ 
+        orderId, 
         openid: openid != '' ? openid : undefined,
-        subAppId: 'wxba2158972baec41b',
+        subAppId: 'wx0ad9e8733fb5cfa6',
         subopenId: openid,
     }).then(async (res:any) => {
         console.log('支付参数res',res);
-
+        
         /* 调起支付 */
         // #ifdef MP-WEIXIN || APP-PLUS
         packPayment(res.payParams).then((ret:any) => {
@@ -528,7 +545,7 @@ const uppay = (orderId:string) => {
         // #endif
     }).catch((err) => {
         console.log('err3',err);
-
+        
         bcNotify.value.error(err.message);
     }).finally(() => {
         uni.hideLoading()
@@ -544,7 +561,15 @@ const toOrderDetail = (id:string) => {
 onMounted(() => {
     const tempStorage = new TempStorage()
     tempStorage.get(props.uniqueId).then((res:any) => {
+
+        console.log('res1111',res);
+        
+
         data.livePlayId = res?.livePlayId
+        data.joinTheteamType = res.joinTheteamType
+        data.cntCollage = res.cntCollage
+        data.recordId = res.recordId
+        data.collageId = res.collageId
         res.isCart === 1 ? getCarPurchase(res.listData) : getGodsPurchase(res)
         if (res.adresMation) {
             // 携带地址
@@ -583,9 +608,9 @@ const getCarPurchase = (list:any) => {
 
         initChoice();
         calculationPrice();
-
+        
     })
-
+    
 }
 
 // 商品直接结算
@@ -593,7 +618,8 @@ const getGodsPurchase = ({optionDetailId, shopName, quantity, shopIcon, type}) =
     data.type = type
     goodsPurchase({
         optionDetailId,
-        productType: type
+        productType: type,
+        collageId: data.collageId
     }).then((res:any)=>{
 
         merchandise.value = [{
@@ -606,6 +632,7 @@ const getGodsPurchase = ({optionDetailId, shopName, quantity, shopIcon, type}) =
                 {
                     itemId: res.product.id,
                     optionId: res.option.id,
+                    title: res.product.name,
                     subtitle: res.option.name,
                     image: res.option.thumb,
                     quantity,
@@ -623,7 +650,7 @@ const getGodsPurchase = ({optionDetailId, shopName, quantity, shopIcon, type}) =
 
     }).catch((err:any) => {
         console.log('err4',err);
-
+        
         nextTick(()=>{
             bcNotify.value.error(err.message);
             setTimeout(() => {
@@ -632,14 +659,14 @@ const getGodsPurchase = ({optionDetailId, shopName, quantity, shopIcon, type}) =
         })
     })
 
-}
+} 
 
 // 初始化获取优惠券
 const initChoice = () => {
     merchandise.value.forEach((item:any,index:number) => {
         getShopCouponList(item,index,true)
     })
-
+    
 
 }
 
@@ -687,10 +714,10 @@ const selectCoup = (index:number,item:any, isInitCoupon: boolean = false) => {
             ...item
         }
     })
-
+    
     merchandise.value = [...newArr]
 
-    updateKey.value += 1
+    updateKey.value += 1 
 
     // 处理默认选中的优惠券
     if (item) {
@@ -698,7 +725,7 @@ const selectCoup = (index:number,item:any, isInitCoupon: boolean = false) => {
     }else{
         data.grantCoupsList = []
     }
-
+    
     calculationPrice(isInitCoupon)
 
 }
@@ -706,7 +733,7 @@ const selectCoup = (index:number,item:any, isInitCoupon: boolean = false) => {
 const setcurrencyCoupon = (index:number,item:any) => {
     // 处理默认选中的通用优惠券
     if (item) {
-        data.platCoups = item
+        data.platCoups = item  
         data.platCoupsCheckList.splice(0,1,item.grantedId)
 
     }else{
@@ -719,7 +746,7 @@ const setcurrencyCoupon = (index:number,item:any) => {
 }
 
 </script>
-
+  
 <style lang="scss" scoped>
 .conbox{
     padding: 20rpx;
@@ -872,13 +899,18 @@ const setcurrencyCoupon = (index:number,item:any) => {
 
         .bala-handle-tex{
             font-size: 28rpx;
+            margin-right: 16rpx;
+        }
+        .tex-free {
             font-weight: bold;
             color: #333333;
-            margin-right: 16rpx;
+        }
+        .tex-shipping {
+            color: #FC3848;
         }
     }
 
-
+    
 
     .bala-handle-tarea{
         flex: 1;
@@ -1067,3 +1099,4 @@ const setcurrencyCoupon = (index:number,item:any) => {
     height: 300rpx;
 }
 </style>
+  
