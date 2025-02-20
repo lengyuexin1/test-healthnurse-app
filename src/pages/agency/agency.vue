@@ -256,7 +256,6 @@ const searKey = () => {
             .region_box_item {
                 padding: 16rpx 50rpx;
                 height: 72rpx;
-                line-height: 28rpx;
                 text-align: center;
                 background: #f7f7f7;
                 border-radius: 36rpx;
@@ -287,7 +286,6 @@ const searKey = () => {
             .category_box_item {
                 padding: 16rpx 50rpx;
                 height: 72rpx;
-                line-height: 28rpx;
                 text-align: center;
                 background: #f7f7f7;
                 border-radius: 36rpx;
@@ -319,7 +317,6 @@ const searKey = () => {
             .priceItem {
                 padding: 10rpx 30rpx;
                 height: 72rpx;
-                line-height: 46rpx;
                 text-align: center;
                 background: #f7f7f7;
                 border-radius: 36rpx;

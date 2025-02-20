@@ -51,7 +51,8 @@ const data = reactive<Data>({
 })
 
 onLoad((options) => {
-    const index = options?.type === 'coupon' ? 0 : 1
+    console.log(options)
+    const index = options?.type == '0' ? 0 : 1
     tabsChange(index)
 })
 

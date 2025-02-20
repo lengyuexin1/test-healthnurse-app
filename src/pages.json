@@ -63,6 +63,14 @@
       "root": "IndexPage",
       "pages": [
         {
+          "path": "pages/agency/agency",
+          "style": {
+            "navigationBarTitleText": "到店健康",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
           "path": "pages/index/index",
           "style": {
             "navigationBarTitleText": "首页",
@@ -102,6 +110,55 @@
           }
         },
         {
+          "path": "pages/service/serviceIndexPage",
+          "style": {
+            "navigationBarTitleText": "适品囤内页",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/platform/onlyZone",
+          "style": {
+            "navigationBarTitleText": "适品专区",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/platform/catesList",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle": "default",
+            "enablePullDownRefresh": false,
+            "navigationBarBackgroundColor": "#FFFFFF"
+          }
+        },
+        {
+          "path": "pages/platform/centerChanges",
+          "style": {
+            "navigationBarTitleText": "''",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/platform/newUser",
+          "style": {
+            "navigationBarTitleText": "新人特惠",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/classPage/allClassPage",
+          "style": {
+            "navigationBarTitleText": "全部分类",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
           "path": "pages/my/update",
           "style": {
             "navigationStyle": "custom",
@@ -128,14 +185,14 @@
             "enablePullDownRefresh": false
           }
         },
-        {
-          "path": "pages/Servicestore/choiceDetails",
-          "style": {
-            "navigationBarTitleText": "机构详情",
-            "navigationStyle": "custom",
-            "enablePullDownRefresh": false
-          }
-        },
+        //        {
+        //          "path": "pages/Servicestore/choiceDetails",
+        //          "style": {
+        //            "navigationBarTitleText": "机构详情",
+        //            "navigationStyle": "custom",
+        //            "enablePullDownRefresh": false
+        //          }
+        //        },
         {
           "path": "pages/Servicestore/setUpTextDetails",
           "style": {
@@ -168,7 +225,7 @@
           }
         },
         {
-          "path": "pages/Servicestore/serviceComment",
+          "path": "pages/serviceComment/serviceComment",
           "style": {
             "navigationBarTitleText": "评论列表",
             "navigationStyle": "custom",
@@ -220,6 +277,14 @@
     {
       "root": "pagesGoods",
       "pages": [
+        {
+          "path": "pages/shop/shopDetail",
+          "style": {
+            "navigationBarTitleText": "店铺详情",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
         {
           "path": "pages/goodsDetail/goodsDetail",
           "style": {
@@ -282,6 +347,14 @@
     {
       "root": "pagesUser",
       "pages": [
+        {
+          "path": "pages/credential/credential",
+          "style": {
+            "navigationBarTitleText": "平台资质",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
         {
           "path": "pages/setting/setting",
           "style": {
@@ -1103,6 +1176,13 @@
       "root": "pagesCnt",
       "pages": [
         {
+          "path": "pages/knowledge/knowledge",
+          "style": {
+            "navigationBarTitleText": "康护知识",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "pages/channel/channel",
           "style": {
             "navigationBarTitleText": "康养百科",
@@ -1601,6 +1681,34 @@
       "root": "pagesMall",
       "pages": [
         {
+          "path": "pages/scene/sceneSmart",
+          "style": {
+            "navigationBarTitleText": "智慧场景",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/scene/smartDetail",
+          "style": {
+            "navigationBarTitleText": "智慧场景详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/serviceCategory/goodsTabul",
+          "style": {
+            "navigationBarTitleText": "",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/intellect/home",
+          "style": {
+            "navigationBarTitleText": "智护帮首页",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "pages/shop/shopDetail",
           "style": {
             "navigationBarTitleText": "店铺详情"
@@ -1622,6 +1730,20 @@
             "enablePullDownRefresh": false,
             "navigationStyle": "custom"
           }
+        },
+        {
+          "path": "pages/activity/brandpage",
+          "style": {
+            "navigationBarTitleText": "活动页面",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/activity/supervaluepage",
+          "style": {
+            "navigationBarTitleText": "活动页面",
+            "navigationStyle": "custom"
+          }
         }
         // {
         //   "path": "pages/service/serviceTab",
@@ -1630,6 +1752,65 @@
         //     "navigationStyle": "custom"
         //   }
         // }
+      ]
+    },
+    {
+      "root": "pagesDevice",
+      "pages": [
+        {
+          "path": "pages/science/assort",
+          "style": {
+            "navigationBarTitleText": "康品百科分类",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/science/product",
+          "style": {
+            "navigationBarTitleText": "康品百科产品",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/science/productDetail",
+          "style": {
+            "navigationBarTitleText": "康品百科详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/science/problem",
+          "style": {
+            "navigationBarTitleText": "常见问题",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/science/problemDetail",
+          "style": {
+            "navigationBarTitleText": "问题详情",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/science/caption",
+          "style": {
+            "navigationBarTitleText": "使用说明",
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pagesMsg",
+      "pages": [
+        {
+          "path": "pages/news/news",
+          "style": {
+            "navigationBarTitleText": "消息",
+            "navigationStyle": "custom"
+          }
+        }
       ]
     }
   ],

@@ -1,7 +1,7 @@
 <template>
     <view class="content">
-        <TnNavbar :title="prop.pageTitle" :bottom-shadow="false" :bg-color="colorCs" :autoBack="true"
-            :fixed="true">
+        <TnNavbar :bottom-shadow="false" :bg-color="colorCs"
+                  :fixed="true">
             <view class="topText">{{ prop.pageTitle }}</view>
             <template #back>
                 <view @click="leftClick" v-if="prop.showBack">
@@ -24,7 +24,6 @@
 <script lang="ts" setup>
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnNavbar from '@tuniao/tnui-vue3-uniapp/components/navbar/src/navbar.vue'
-import { withDefaults } from 'vue'
 // interface Props {
 // leftIconColor: {
 //     type: String,
@@ -78,10 +77,12 @@ const leftClick = () => {
     align-items: center;
     height: 1005;
 }
- // #ifdef APP-VUE || H5
+
+// #ifdef APP-VUE || H5
 :deep(.tn-navbar__content--center) {
-    padding-right: 0!important;
+    padding-right: 0 !important;
 }
+
 // #endif
 
 .topText {

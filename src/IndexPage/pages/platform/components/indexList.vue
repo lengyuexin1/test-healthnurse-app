@@ -1,17 +1,18 @@
 <template>
     <z-paging ref="paging" v-model="data.dataList" :auto="true" :fixed="false" @query="queryList" @scroll="scrollPage"
-        :defaultPageSize="6" :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="还没有数据哦~"
-        :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true"
-        back-to-top-bottom="180rpx" :back-to-top-img="getAssetsUrl('/leyou/home/page_Topup.svg')"
-        :back-to-top-style="{ width: '80rpx', height: '80rpx', padding: '18rpx', background: '#fff', borderRadius: '50%' }">
+              :defaultPageSize="6" :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
+              empty-view-text="还没有数据哦~"
+              :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true"
+              back-to-top-bottom="180rpx" :back-to-top-img="getAssetsUrl('/leyou/home/page_Topup.svg')"
+              :back-to-top-style="{ width: '80rpx', height: '80rpx', padding: '18rpx', background: '#fff', borderRadius: '50%' }">
 
         <template #top>
             <view class="author" v-if="(props.channelId == 1 && data.attentionList.length != 0)">
                 <view class="author_item" v-for="item in data.attentionList" :key="item.followId">
                     <view class="author_img_box" @click="clickauthor(item)">
                         <image class="author_img"
-                            :src="item.accountId == 999 ? getAssetsUrl(item.followImage) : item.followImage"
-                            mode="scaleToFill" />
+                               :src="item.accountId == 999 ? getAssetsUrl(item.followImage) : item.followImage"
+                               mode="scaleToFill"/>
                     </view>
                     <view class="author_text">
                         {{ item.followName }}
@@ -24,13 +25,13 @@
         <view class="top_bg_box">
             <view class="live_swiper" v-if="swiperList.length != 0">
                 <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
-                    @change="liveswiperChange">
+                        @change="liveswiperChange">
 
                     <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id">
-                        <image class="live_swiper_img" :src="item.icon" mode="scaleToFill" @click="liveList(item)" />
+                        <image class="live_swiper_img" :src="item.icon" mode="scaleToFill" @click="liveList(item)"/>
                         <!-- index == 0 -->
                         <view class="live_box"
-                            v-if="((item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon))">
+                              v-if="((item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon))">
                             <view class="live_left_box">
                                 <BarPlaying bgColor="#FFFFFF"></BarPlaying>
                                 <view>直播中</view>
@@ -43,14 +44,15 @@
                 </swiper>
                 <view class="swiper_sign_box">
                     <view class="sign_item" :class="{ 'is_sign': signIndex == data.swiperIndex }"
-                        v-for="(signItem, signIndex) in swiperList.length" :key="signIndex"></view>
+                          v-for="(signItem, signIndex) in swiperList.length" :key="signIndex"></view>
                 </view>
             </view>
         </view>
         <!-- 首页列表 -->
         <view class="deCionBox">
-            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index" @click="gotoColmDetail(index, item)">
-                <image class="left_menu_img" :src="item.icon" mode="scaleToFill" />
+            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index"
+                  @click="gotoColmDetail(index, item)">
+                <image class="left_menu_img" :src="item.icon" mode="scaleToFill"/>
                 <view class="iconText">{{ item.name }}</view>
             </view>
         </view>
@@ -61,27 +63,7 @@
 
         <!-- 专区 -->
         <view v-if="showBk.includes(7)">
-            <view class="newHanle threeGoods" v-for="(its, ins) in allInList" :key="ins">
-                <view class="getQuan">
-                    <view class="quanTitle">{{ its.name }}</view>
-                    <view class="seeMone" @click="seeGoods(its.dataIds, its)">
-                        <view class="left_jin">查看更多</view>
-                        <TnIcon name="right" />
-                    </view>
-                </view>
-                <view class="goodUl">
-                    <view class="goodsArea" v-for="(item, index) in its.dataList" :key="index" @click="gotoDetail(item)">
-                        <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
-                        <!-- <TnLazyLoad :src="item.thumb" class="towPro_img" /> -->
-                        <view class="goodsName">{{ item.name }}</view>
-                        <view class="difMoney">
-                            <view class="realMoney">￥{{ moneyFilter(item.price) }}</view>
-                            <view class="ageMoney">￥{{ item.fakePrice }}</view>
-                        </view>
-                    </view>
-                </view>
-            </view>
-            <!-- <view class="mapBt"></view> -->
+            <onlyFor :allInList="allInList"></onlyFor>
         </view>
 
         <!-- 新品 -->
@@ -89,7 +71,7 @@
             <view class="newTitle">新品上市</view>
             <view class="newUp">
                 <view class="everyItem" v-for="(item, index) in newGoodList" :key="index">
-                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
+                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill"/>
                     <view class="img_right">
                         <view>
                             <view class="text_tit">{{ item.name }}</view>
@@ -106,34 +88,19 @@
         </view>
 
         <!-- 爆品精选 -->
-        <view class="crazy" v-if="showBk.includes(6)">
-            <view class="newTitle">爆品精选</view>
-            <view class="crezy_ul">
-                <view class="crezy_li" v-for="(item, index) in orgSelect" :key="index" @click="gotoDetail(item)">
-                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
-                    <!-- <TnLazyLoad :src="item.thumb" class="towPro_img" /> -->
-                    <view class="crazy_bottom">
-                        <view>
-                            <view class="product_name">{{ item.name }}</view>
-                            <view class="product_smal">{{ item.desc }}</view>
-                        </view>
-                        <view class="difMoney">
-                            <view class="realMoney">￥{{ moneyFilter(item.price) }}</view>
-                            <!-- <view class="ageMoney">￥{{ item.realPri }}</view> -->
-                        </view>
-                    </view>
-                </view>
-            </view>
+        <view v-if="showBk.includes(6)">
+            <crazy :orgSelect="orgSelect"></crazy>
         </view>
+
 
         <!-- tab -->
         <view class="fliex_box">
             <view class="Nav_box">
                 <view class="Nav_scoll_box">
                     <view class="Nav_item" :class="{ 'have_right': NavList.length == (index + 1) }"
-                        v-for="(item, index) in NavList" :key="index" @click="changeNav(item)">
+                          v-for="(item, index) in NavList" :key="index" @click="changeNav(item)">
                         <view class="item_name">
-                            <view> {{ item.name }} </view>
+                            <view> {{ item.name }}</view>
                             <view class="isSelect" v-if="NavId == item.id"></view>
                         </view>
                     </view>
@@ -145,13 +112,14 @@
         </view>
 
         <!-- 新人福利 -->
-        <view class="newPople" v-if="showBk.includes(3)">
+        <view class="newPople" v-if="showBk.includes(999)">
             <!-- 活动1 -->
-            <NewcomerWelfare v-if="dataObj.type !== 3" :dataObj="dataObj"></NewcomerWelfare>
+            <NewcomerWelfare :dataObj="dataObj" v-if="dataObj.type == 6"></NewcomerWelfare>
+            <!-- v-if="dataObj.type !== 3" -->
             <!-- 活动2 -->
-            <!-- <NewcomerTwo :dataObjTwo="dataObjTwo"></NewcomerTwo> -->
+            <!-- <NewcomerTwo v-if="dataObj.type == 2" :dataObjTwo="dataObjTwo"></NewcomerTwo> -->
             <!-- 活动三 -->
-            <NewcomerTre v-if="dataObj.type == 3" :dataObjTre="dataObj"></NewcomerTre>
+            <!-- <NewcomerTre v-if="dataObj.type == 3" :dataObjTre="dataObj"></NewcomerTre> -->
         </view>
         <!-- 瀑布列表 -->
         <view class="content_right_list" :class="{ 'not_height': data.dataList.length == 0 }">
@@ -165,39 +133,33 @@
 </template>
 
 <script setup lang="ts">
-import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
-import { servicelist, recomLikeList } from "@/api/goods-api"
+import onlyFor from './onlyFor.vue'
+import crazy from './crazy.vue'
+import { recomLikeList, servicelist } from "@/api/goods-api"
 import { moneyFilter } from "@/common/filters"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
-import { ref, reactive, computed, onMounted, defineExpose, nextTick, watch } from 'vue'
+import { computed, defineExpose, onMounted, reactive, ref } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { PlatformManage } from "@bc/sys"
 import NewZhen from './NewZhen.vue'
 import NewcomerWelfare from './newcomerWelfare.vue'
-import NewcomerTwo from './NewcomerTwo.vue'
-import NewcomerTre from './NewcomerTre.vue'
 import BCNotify from '@/components/notify/index.vue'
 import WaterfallsFlow from './WaterfallsFlow.vue'
 import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { gotoLogin } from "@/routes/public-routes"
+import { gotoChannelFollow } from '@/routes/create-routes'
 
-import { channelClsList, getEsContentList } from "@/api/smart-api"
-import { getescourselist, escontentlist, followContentList, getranklist, getappcontentList, getcoursefollowList } from "@/api/create-api"
-import { nearbyList } from "@/api/user-api"
-import { gotoChannelFollow, gotoarticledetails, gotoLiveShow, gotowxLive, gotovideoPreview, gotocourseVideo, gotosalonPostsDetailPage, gotoChannel } from '@/routes/create-routes'
-import { gotoLiveList } from '@/routes/user-routes'
-import { TempStorage } from "@bc/base"
-import { searListFlag } from "@/api/open-api"
-import createCollectAndReport from "@/utils/collection"
-import { Debounce } from '@/libs/antivibthrot'
-import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
-import { gotoServiceStore, gotoserviceDetail, toInnerPage } from '@/routes/service-routes'
-import { gotoCenterChanges, gotoZone } from '@/routes/active-routes'
+import { gotoAgency, gotoLiveList } from '@/routes/user-routes'
+import { activeDetail, bannerList, columnList, setPageBank } from "@/api/setite-api"
+import { gotoServiceStore, toInnerPage } from '@/routes/service-routes'
+import { gotoallClassPage, gotoCenterChanges, gotoZone } from '@/routes/active-routes'
 import BottomMenu from "./channelSheet.vue"
+import { gotogoodsDetail } from '@/routes/goods-routes'
+import { gotoPersonnel } from "@/routes/wisdom-routes"
+
 interface Data {
     dataList: any,
     categoryId: string | number,
-    tagId: number | string,
     followList: any,
     query: any,
     followId: string,
@@ -208,10 +170,10 @@ interface Data {
     swiperIndex: number,
     attentionList: any
 }
+
 const data = reactive<Data>({
     dataList: [],
     categoryId: 2,
-    tagId: 1,
     followList: [],
     query: {},
     followId: '',
@@ -229,13 +191,15 @@ const newGoodList: any = ref([])
 const showBk: any = ref([])
 const zhenList: any = ref([])
 const swiperList: any = ref([])
-const NavList: any = ref([])
+const NavList: any = ref([
+    { id: 1, name: '推荐' }
+])
 const NavId = ref(1)
 const dataObj: any = ref({})
 const dataObjTwo: any = ref({})
 const tabsData: any = ref([
     { id: '88', icon: getAssetsPic('/fare/v2/zhihui.png'), name: '智慧康护', flagCode: 1 },
-    { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康', flagCode: 1  },
+    { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康', flagCode: 1 },
     { id: '5', icon: getAssetsPic('/fare/v2/gre-cai.png'), name: '到店健康', flagCode: 1 },
     { id: '8', icon: getAssetsPic('/fare/v2/home_icon_jigou.png'), name: '找机构', flagCode: 1 },
     { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 }
@@ -257,14 +221,26 @@ const upCalik = (item: any, index: number) => {
 }
 
 const gotoColmDetail = (index: any, item: any) => {
-    console.log(index, item)
-
-    if (item.id == '8') {
-        toInnerPage(item.id)
-    }
-    else   if (item.flagCode) {
+    if (item.flagCode) {
+        switch (item.id) {
+            case '360':
+                gotoallClassPage(1)
+                break
+            case '88':
+                gotoPersonnel()
+                break
+            case '5':
+                gotoAgency()
+                break
+            case '8':
+                toInnerPage(item.id)
+                break
+            default:
+                break
+        }
         // 跳转默认页
         // return gotoWisdom()
+
     }
     else {
         // 跳转微页面
@@ -274,10 +250,6 @@ const gotoColmDetail = (index: any, item: any) => {
 
 const openBotMun = () => {
     showBottomMenu.value = !showBottomMenu.value
-}
-
-const seeGoods = (id: any, its: any) => {
-    gotoCenterChanges(id[0], its.name)
 }
 
 const gotoDetail = (item: any) => {
@@ -301,10 +273,14 @@ const getAssetsUrl = computed(() => (src: string) => {
 
 interface Events {
     (e: 'showLifeMenu'): void,
+
     (e: 'hideNav', val: boolean): void,
+
     (e: 'changeNav', index: number): void,
+
     (e: 'changeTabbarTop', val: boolean): void,
 }
+
 const emit = defineEmits<Events>()
 
 onMounted(() => {
@@ -325,18 +301,6 @@ const queryList = (pageNumber: number, pageSize: number) => {
     })
 }
 
-const conGiveData = (pageNumber) => {
-    const data = {
-        pageNumber,
-        pageSize: 10,
-        query: {
-        }
-    }
-    searListFlag(data).then((res: any) => {
-        paging.value.complete(res.data)
-    })
-}
-
 const changeNav = (item: any) => {
     if (item.id == 11) {
         // 检查登录状态
@@ -350,8 +314,9 @@ const changeNav = (item: any) => {
             }
         })
     }
-    NavId.value = item.id;
-    (paging.value as any).reload()
+    NavId.value = item.id
+    // (paging.value as any).reload()
+    queryList(1, 6)
 }
 
 const allInList: any = ref([])
@@ -363,7 +328,7 @@ const getSetIds = (num: number) => {
             allInList.value.forEach((element: any) => {
                 console.log(element)
                 // 业务模块专区
-                channeCatelList(element, element.categoryIds)
+                // channeCatelList(element, element.categoryIds)
             })
         }
         if (!res.recordList) {
@@ -393,9 +358,7 @@ const healthMyData = (list: any) => {
         // 新人活动
         if (element.moduleId == 3) {
             activeDetail(element.dataIds[0]).then(res => {
-                console.log('活动想去', res)
                 dataObj.value = res
-                console.log(dataObj.value, '活动想去', res)
             })
         }
         // 产品推荐
@@ -417,6 +380,13 @@ const healthMyData = (list: any) => {
                 ...element.navbarList
             ]
             getTextList(1)
+
+            if (element.activityIds.length > 0) {
+                showBk.value.push(999)
+                activeDetail(element.activityIds[0]).then(res => {
+                    dataObj.value = res
+                })
+            }
         }
     })
 }
@@ -459,12 +429,8 @@ const channeCatelList = (item: any, id: any) => {
 
 // 请求第一个tab
 const getTextList = (cateIndex: number) => {
-    if (cateIndex == 1) {
-
-    }
-    else {
-
-    }
+    if (cateIndex == 1) { }
+    else { }
 }
 
 const getBannerList = (data: any) => {
@@ -491,13 +457,6 @@ const getTabbar = (data: any) => {
     }
     columnList(dares).then(res => {
         tabsData.value.unshift(...res)
-        console.log(tabsData.value)
-
-        // tabsData.value = res
-        // if (res.length > 0) {
-        //     columnDetail(res[0].id).then(res => {
-        //     })
-        // }
     })
 }
 
@@ -526,9 +485,7 @@ const clickwaterItem = (item: any) => {
             }, 1000)
             return
         }
-
         gotoServiceStore({ itemId: item.id })
-
         // item.type == 3 && gotoarticledetails({
         //     id: item.id
         // })
@@ -544,16 +501,11 @@ const liveswiperChange = (e: any) => {
 
 const liveList = (item: any) => {
     console.log('item', item)
-    if ([1, 2, 3].includes(item.moduleType)) {
-        if (item.moduleType == 1 && props.liveType.channel) {
-            gotoLiveList({ type: 1 })
-        }
-        if (item.moduleType == 2 && props.liveType.course) {
-            gotoLiveList({ type: 2 })
-        }
-        if (item.moduleType == 3 && props.liveType.salon) {
-            gotoLiveList({ type: 3 })
-        }
+    if (item.type == 1) {
+        gotoServiceStore({ itemId: item.dataId })
+    }
+    if (item.type == 2) {
+        gotogoodsDetail(item.dataId)
     }
 }
 

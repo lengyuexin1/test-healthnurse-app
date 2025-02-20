@@ -1,5 +1,5 @@
 import { pageController } from '@bc/uni-tools'
-import { gotoserviceDetail, gotoServiceStore, gotoShopDetail } from '@/routes/service-routes'
+import { gotoserviceDetail, gotoShopDetail } from '@/routes/service-routes'
 
 
 interface ICommentListQuery {
@@ -25,7 +25,6 @@ interface IPlayBillQuery {
 }
 
 
-
 interface IAfterSalesDetailsQuery {
     id: number
     item_id: number
@@ -48,6 +47,7 @@ interface ISerDetaQuery {
     /** 陪诊医院信息 */
     hospital?: string
 }
+
 /**
  * 跳转到被照护人情况
  **/
@@ -170,7 +170,6 @@ export const gotoChoiceHospital = (templateId: any) => {
 }
 
 
-
 /** 改造专区 */
 export const gotoRenovationpage = () => {
     const route = {
@@ -196,7 +195,9 @@ export const gotoHandleSuccess = (query: IHandleSuccessQuery, type?: string) => 
         query
     } as any
 
-    if (type == 'replace') { return pageController.replace(route) }
+    if (type == 'replace') {
+        return pageController.replace(route)
+    }
 
     return pageController.push(route)
 }
@@ -225,10 +226,10 @@ export const gotoWelfare = () => {
 }
 
 /** 跳转到 优惠券 */
-export const gotoCoupon = () => {
+export const gotoCoupon = (query: any) => {
     const route = {
         path: '/pagesUser/pages/coupon/coupon',
-        query: {}
+        query
     } as any
     return pageController.push(route)
 }
@@ -277,6 +278,7 @@ export const gotoInvitation = (query: any) => {
     } as any
     return pageController.push(route)
 }
+
 /** 跳转到 活动规则 */
 // export const gotoPlayBill = (query: IPlayBillQuery) => {
 //     const route = {
@@ -299,7 +301,7 @@ interface IPatientEditQuery {
 /** 跳转到 新建/编辑照护人档案 */
 export const gotoPatientEdit = (query: IPatientEditQuery) => {
     const route = {
-        path: "/User/pages/ElderlyFiles/ElderlyDetail",
+        path: "/pagesUser/pages/elderlyFiles/elderlyFiles",
         query
     } as any
     return pageController.push(route)
@@ -322,23 +324,23 @@ export const gotoNurseDetail = (query: INurseDetailQuery) => {
  12：机构
  13：康养 */
 type TShopApply = 2 | 3 | 12 | 13
-
+const serviceCode = [2, 13, 12]
 /** 跳转到 店铺详情 */
 export const gotoAttendShop = (id: string, applyId?: TShopApply) => {
     console.log('applyId', applyId)
     // return
-    // if (applyId === 2) {
-    //     return gotoserviceDetail(id)
-    // }
-    // if (applyId === 3) {
-    //     return gotoShopDetail(id)
-    // }
-    if (applyId === 12) {
-        return gotoServiceStore({ id })
-    }
-    if (applyId === 13) {
+    if (serviceCode.includes(applyId)) {
         return gotoserviceDetail(id)
     }
+    if (applyId === 3) {
+        return gotoShopDetail(id)
+    }
+    // if (applyId === 12) {
+    //     return gotoserviceDetail({ id })
+    // }
+    // if (applyId === 13) {
+    //     return gotoserviceDetail(id)
+    // }
     const route = {
         path: '/pagesMall/pages/shop/shopDetail',
         query: { id }
@@ -406,7 +408,7 @@ export const gotoGoodsCategory = (parentId: number, typeId: number) => {
 */
 export const gotoGoodsTabul = (id: string, itemName: string, listType: number) => {
     const route = {
-        path: '/Mall/pages/serviceCategory/goodsTabul',
+        path: '/pagesMall/pages/serviceCategory/goodsTabul',
         query: { id, itemName, listType }
     }
     return pageController.push(route)
@@ -470,7 +472,7 @@ export const gotoPlatformExplosive = () => {
 // 康养百科分类
 export const gotoScienceAssort = () => {
     const route = {
-        path: '/Mall/pages/science/assort',
+        path: '/pagesDevice/pages/science/assort',
         query: {}
     }
     return pageController.push(route)
@@ -479,14 +481,14 @@ export const gotoScienceAssort = () => {
 
 export const gotoScienceProduct = (query: { id: string, name: string }) => {
     const route = {
-        path: '/Mall/pages/science/product',
+        path: '/pagesDevice/pages/science/product',
         query
     }
     return pageController.push(route)
 }
 export const gotoScienceDetail = (query: { id: string }) => {
     const route = {
-        path: '/Mall/pages/science/productDetail',
+        path: '/pagesDevice/pages/science/productDetail',
         query
     }
     return pageController.push(route)
@@ -494,7 +496,7 @@ export const gotoScienceDetail = (query: { id: string }) => {
 
 export const gotoCaption = (query: { id: string }) => {
     const route = {
-        path: '/Mall/pages/science/caption',
+        path: '/pagesDevice/pages/science/caption',
         query
     }
     return pageController.push(route)
@@ -503,7 +505,7 @@ export const gotoCaption = (query: { id: string }) => {
 
 export const gotoProblem = (query: { id: string }) => {
     const route = {
-        path: '/Mall/pages/science/problem',
+        path: '/pagesDevice/pages/science/problem',
         query
     }
     return pageController.push(route)
@@ -512,7 +514,7 @@ export const gotoProblem = (query: { id: string }) => {
 // 问题详情 pid:百科id, qid:问题id
 export const gotoProblemDetail = (query: { pid: string, qid: string }) => {
     const route = {
-        path: '/Mall/pages/science/problemDetail',
+        path: '/pagesDevice/pages/science/problemDetail',
         query
     }
     return pageController.push(route)

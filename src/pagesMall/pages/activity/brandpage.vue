@@ -64,6 +64,7 @@ import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 import TnNavbar from '@tuniao/tnui-vue3-uniapp/components/navbar/src/navbar.vue'
 import { getAssetsPic } from "@/common/setPicture"
 import { getactiviList } from '@/api/care-api'
+import { gotoShopDetail } from "@/routes/service-routes"
 // import { gotoServeDetail, gotoAttendShop } from '@/route/care-routes'
 // import { gotoGoodsDetails } from '@/route/goods-routes'
 // import { gotoIndex } from '@/route/care-routes'
@@ -74,7 +75,7 @@ import { onLoad } from "@dcloudio/uni-app"
 const dataList: any = ref([])
 const id = ref('')
 const activityTitle = ref('优选好店')
-const activityBG = ref('https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/marketing/customerAcquisition/20251215541115.png')
+const activityBG = ref('')
 const allList = ref([])
 const slicingList = ref([])
 
@@ -150,7 +151,7 @@ const gotoChanpinInfo = (shopitem, item) => {
     }
 }
 const tostore = (id) => {
-    gotoAttendShop(id)
+    gotoShopDetail(id)
 }
 </script>
 

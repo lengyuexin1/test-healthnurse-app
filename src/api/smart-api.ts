@@ -5,13 +5,13 @@ import { openHttp, http } from "@bc/api"
 /** 智护模块 */
 //================================================================================
 
-// interface IPatientList extends Paging {
-//     query: any
-// }
+interface IPatientList extends Paging {
+    query: any
+}
 // /* 获取智护房间列表 */
-// export const patientList = (req: IPatientList) => {
-//     return http.post(SMART_API.patientList, req)
-// }
+export const patientList = (req: IPatientList) => {
+    return http.post(SMART_API.patientList, req)
+}
 
 
 interface ISaveOrUpdate {
@@ -40,7 +40,7 @@ export const patientLastData = (patientId: string) => {
 
 
 /* 删除房间 */
-export const patientDelete = (req:{code: string, patientIds: string[]}) => {
+export const patientDelete = (req: { code: string, patientIds: string[] }) => {
     return http.post(SMART_API.patientDelete, req)
 }
 
@@ -187,7 +187,7 @@ export const getLogDetail = (logId: string) => {
 }
 
 /* 设置通知配置 */
-export const setConfig = (req:any) => {
+export const setConfig = (req: any) => {
     return http.post(SMART_API.setConfig, req)
 }
 
@@ -217,6 +217,6 @@ export const productshowDetail = (id: string) => {
 }
 
 // es获取内容分类列表
-export const getEsContentList = async (req:any) => {
+export const getEsContentList = async (req: any) => {
     return http.post('api/search/v1/bc/public/es/content/list', req)
 }

@@ -151,17 +151,15 @@ const isLaint = computed (()=>{
     return props.orderInfo.actionableList.includes("complaint")
 })
 
-const isnotDel = computed (() => {
+const isnotDel = computed(() => {
     return !props.orderInfo.actionableList.includes("delete")
 })
 
 const bubbleOptions = computed(() => {
     const bubbleOptionslist = []
-    console.log('props.orderInfo.actionableList',props.orderInfo.actionableList);
-    
+
     if (props.orderInfo.actionableList.includes("cancel") || props.orderInfo.actionableList.includes("apply_refund")) {
-        console.log('props.orderInfo.actionableList.includes("cancel")',props.orderInfo.actionableList.includes("cancel"));
-        
+
         bubbleOptionslist.push({ text: '取消订单', id: 1 })
     }
     if (props.orderInfo.actionableList.includes("complaint")) {
@@ -172,7 +170,6 @@ const bubbleOptions = computed(() => {
 
 
 const cancelOrder = () => {
-    console.log('取消订单');
     emit('cancelOrder',props.orderInfo)
 }
 
@@ -400,7 +397,7 @@ const takeDelivery = () => {
         }
 
     }
-    
+
 }
 .order-botom {
     /* #ifndef APP-NVUE */

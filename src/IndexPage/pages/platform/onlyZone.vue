@@ -43,7 +43,7 @@
                 </view>
 
                 <!-- <view class="space_box"></view> -->
-                <view class="btns" v-if="detailData.couponIds">
+                <view class="btns" v-if="showBk.includes(17)">
                     <view class="btnItem" @click="tapArt(item, index)" :class="{ 'acticol': curret == index }"
                         v-for="(item, index) in couDatas" key="index">
                         <view class="zoneQuan">
@@ -56,29 +56,30 @@
                             <view class="lineDa"></view>
                             <view class="zonr2"></view>
                         </view>
-                        <view v-if="!item.status" class="goUse" @click="getQuCou(item)">领取</view>
+                        <view v-if="item.status == 10" class="goUse" @click="getQuCou(item)">领取</view>
                         <view class="alseUse" v-else @click="useCou">去使用</view>
                     </view>
                 </view>
 
-                <view class="cateListcs">
-                    <view class="cateText">住院陪护分类</view>
+                <view class="cateListcs" v-if="showBk.includes(18)">
+                    <!-- <view class="cateText">住院陪护分类</view> -->
                     <view class="cateUl">
-                        <view class="cateItem" v-for="(item, index) in jiaCate" :key="index">
+                        <view class="cateItem" v-for="(item, index) in tabsData" :key="index"
+                            @click="gotoColmDetail(index, item)">
                             <image class="cateIcon" :src="item.icon" mode="aspectFill" />
                             <view class="cateName">{{ item.name }}</view>
                         </view>
                     </view>
                 </view>
                 <view class="activeCon">
-                    <view class="activeConLeft">
+                    <view class="activeConLeft" v-if="dataObjTre.type">
                         <piaiList :dataObjTre="dataObjTre"></piaiList>
                     </view>
-                    <view class="activeConRight">
-                        <valGou :dataObjTre="dataObjTre"></valGou>
+                    <view class="activeConRight" v-if="dataObjTwo.type">
+                        <valGou :dataObjTwo="dataObjTwo"></valGou>
                     </view>
                 </view>
-                <view class="goodWu">
+                <view class="goodWu" v-if="showBk.includes(20)">
                     <view class="goodText">精选好物</view>
                     <!-- 列表 -->
                     <ListItem :wfList="moreGoodList" @waterItem="clickwaterItem"></ListItem>
@@ -102,74 +103,26 @@ import TnTabs from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue'
 import TnTabsItem from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue'
 import { onLoad } from "@dcloudio/uni-app"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
-import { columnDetail, productList, bannerList, zqCouList } from "@/api/setite-api"
+import { columnDetail, productList, bannerList, zqCouList, activeDetail, columnList } from "@/api/setite-api"
 import { PlatformManage } from "@bc/sys"
 import { gotoLogin } from "@/routes/public-routes"
 import { gotogoodsDetail } from '@/routes/goods-routes'
-import { gotoCateArrList } from '@/routes/active-routes'
+import { gotoCateArrList, gotoZone } from '@/routes/active-routes'
 import { recommendList } from "@/api/goods-api"
 import ListItem from "@/components/recommended/listItem.vue"
 const moreGoodList = ref([])
-const jiaCate = ref([
-    { name: '脑部疾病', icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
-    { name: '脑部疾病', icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
-    { name: '脑部疾病', icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
-    { name: '脑部疾病', icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
-    { name: '脑部疾病', icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
-])
-const dataObjTre = ref(
-    {
-        id: "1874725877488230401",
-        type: 3,
-        specificLocation: 3,
-        name: "优选好店",
-        title: "品质服务的首选",
-        desc: "优选好店推荐",
-        thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_test/life/care/service/thumb/202512391530824.png",
-        subsetList: [
-            {
-                id: "1730477844675891201",
-                name: "晓椿照护",
-                desc: "",
-                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
-                price: null,
-                minPrice: 0,
-                categoriesName: "居家照护",
-                categoriesId: "1"
-            },
-            {
-                id: "1730477844675891201",
-                name: "晓椿照护",
-                desc: "",
-                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
-                price: null,
-                minPrice: 0,
-                categoriesName: "居家照护",
-                categoriesId: "1"
-            },
-            {
-                id: "1730477844675891201",
-                name: "晓椿照护",
-                desc: "",
-                thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
-                price: null,
-                minPrice: 0,
-                categoriesName: "居家照护",
-                categoriesId: "1"
-            },
-        ]
-    }
-)
+const tabsData: any = ref([])
+const dataObjTre: any = ref({})
+const dataObjTwo: any = ref({})
+const showBk: any = ref([])
 const norList: any = ref([])
 const paging = ref()
 const swiperIndex = ref(0)
 const titleTop = ref(0)
 const titleRight = ref(0)
 const sBarHeight = ref(0)
-const swiperList: any = ref([
-    { icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' },
-    { icon: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/banner.png?v=1739433063142' }
-])
+const swiperList: any = ref([])
+const listCates = ref([])
 const detailData: any = ref({
     couponIds: {}
 })
@@ -178,25 +131,61 @@ onLoad((option: any) => {
     detailId.value = option.id
     columnDetail(option.id).then(res => {
         detailData.value = res
-        if (res.bannerIds) {
-            // 轮播图
-            getBannerList(res.bannerIds)
-        }
-        //类目产品
-        faList.value = res.categoryIds
-        if (faList.value.length > 0) {
-            faList.value.forEach((element: any) => {
-                // channeCatelList(element, element.categoryIds)
-            })
-        }
-        // 优惠券
-        getCouList(res.couponIds)
+        healthMyData(res.recordList)
+        // //类目产品
+        // faList.value = res.categoryIds
+        // if (faList.value.length > 0) {
+        //     faList.value.forEach((element: any) => {
+        //         // channeCatelList(element, element.categoryIds)
+        //     })
+        // }
+        // // 优惠券
+        // getCouList(res.couponIds)
 
     })
 })
+const healthMyData = (list: any) => {
+    showBk.value = []
+    if (list.length < 1) {
+        return
+    }
+    list.forEach((element: any) => {
+        // banner
+        showBk.value.push(element.moduleId)
+        if (element.moduleId == 1) {
+            getBannerList(element.dataIds)
+        }
+        // 优惠价
+        if (element.moduleId == 17) {
+            getCouList(element.dataIds)
+        }
+        // 快捷导航
+        if (element.moduleId == 18) {
+            kuaiRou(element.dataIds)
+        }
+        // 营销组件
+        if (element.moduleId == 19) {
+            element.dataIds.forEach(item => {
+                activeDetail(item).then(res => {
+                    if (res.type == 3) {
+                        dataObjTre.value = res
+                    }
+                    if (res.type == 4) {
+                        dataObjTwo.value = res
+                    }
+                })
+            })
+        }
+        //  个性化推荐
+        if (element.moduleId == 20) {
+            listCates.value = element.categoryIds
+            queryList(1, 6)
+        }
+    })
+}
 
 const noticeData = ref(['休闲/玩乐'])
-const couDatas: any = ref([{ typeName: 154, desc: 'sdda' }, { typeName: 154, desc: 'sdda' }])
+const couDatas: any = ref([])
 const getCouList = (cuoIds: any) => {
     const couData = {
         pageNumber: 1,
@@ -205,14 +194,33 @@ const getCouList = (cuoIds: any) => {
             ids: cuoIds
         }
     }
-
     zqCouList(couData).then(res => {
         couDatas.value = res.data
     })
 }
 
+const kuaiRou = (data: any) => {
+    const dares = {
+        ids: data
+    }
+    console.log(465456);
+
+    columnList(dares).then(res => {
+        tabsData.value = res
+    })
+}
+
 const tosearch = () => {
     gotosearch()
+}
+
+const gotoColmDetail = (index: any, item: any) => {
+    // 跳转微页面
+    return gotoZone(item.id, item.name)
+}
+
+const clickwaterItem = () => {
+
 }
 
 // 退出页面
@@ -289,8 +297,6 @@ onMounted(() => {
 
     titleRight.value = 8
     // #endif
-
-    queryList(1, 6)
 })
 
 const gotoDetail = (item: any) => {
@@ -314,11 +320,7 @@ const queryList = (pageNumber, pageSize) => {
         pageSize: pageSize,
         pageNumber: pageNumber,
         query: {
-            lat: null,
-            lng: null,
-            sortType: 7,
-            businessType: 2,
-            sourceType: 2
+            categoryIds: listCates.value
         }
     }).then((res: any) => {
         paging.value.complete(res.data)
@@ -333,7 +335,7 @@ const getQuCou = (item: any) => {
     takeCoupon({ couponId: item.id }).then(() => {
         uni.showToast({
             icon: 'none',
-            text: '领取成功'
+            title: '领取成功'
         })
         item.status = 1
     }).catch((err: any) => {

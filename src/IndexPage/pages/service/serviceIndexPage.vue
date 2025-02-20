@@ -27,7 +27,6 @@
                             <view class="appChat_text">客服</view>
                         </view>
                     </view>
-
                 </view>
 
                 <view class="top_box">
@@ -44,7 +43,6 @@
                                             mode="scaleToFill" />
                                     </view>
                                     <TnIcon name="search" color="#999999" size="32" bold></TnIcon>
-
                                 </view>
                                 <view class="inp_left">
                                     <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500"
@@ -61,9 +59,10 @@
                         </view>
                         <!-- 信息盒子 -->
                         <view class="top_left">
-                            <view class="more_icon" @click="changebubble">
-                                <TnIcon name="more-horizontal" color="#646464" size="54" bold></TnIcon>
-                            </view>
+                            <image @click="changebubble" class="messageIcom" :src="getAssetsUrl('/device/home/mesicon.svg')"
+                                mode="scaleToFill" />
+                            <TnBadge v-if="badge" bgColor="#FF2A2A" absolute type="danger" max="99" :value="badge"
+                                :offset="[-5, -10]"></TnBadge>
                         </view>
                     </view>
                 </view>
@@ -71,21 +70,12 @@
             </template>
 
             <view class="content_page">
-                <view class="live_swiper" v-if="swiperList.length > 0">
+                <view class="live_swiper" v-if="showBk.includes(1) && swiperList.length > 0">
                     <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
                         @change="liveswiperChange">
-                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id">
-                            <!-- @click="liveList(item)" -->
+                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id"
+                            @click="liveList(item)">
                             <image class="live_swiper_img" :src="item.icon" mode="aspectFill" />
-                            <view class="live_box">
-                                <view class="live_left_box">
-                                    <BarPlaying bgColor="#FFFFFF"></BarPlaying>
-                                    <view>直播中</view>
-                                </view>
-                                <view class="live_number_box" v-if="false">
-                                    {{ 111 }} 人观看
-                                </view>
-                            </view>
                         </swiper-item>
                     </swiper>
                     <view class="swiper_sign_box">
@@ -94,15 +84,11 @@
                     </view>
                 </view>
 
-                <view class="topMenu_box">
-                    <view class="Menu_itemList" :class="{ 'not_bootm': (index + 1) == data.topMenu.length }"
-                        v-for="(item, index) in data.topMenu" :key="index">
-                        <view class="topMenu_item" v-for="(sonItem, sonIndex) in item" :key="sonIndex"
-                            @click="changeTopMenu(sonItem, index)">
-                            <!-- :src="getAssetsUrl(sonItem.icon)" -->
-                            <image class="item_img" :src="sonItem.thumb" mode="scaleToFill" />
-                            <view class="item_text">{{ sonItem.name }}</view>
-                        </view>
+                <view class="deCionBox">
+                    <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index"
+                        @click="gotoColmDetail(index, item)">
+                        <image class="left_menu_img" :src="item.icon" mode="scaleToFill" />
+                        <view class="iconText">{{ item.name }}</view>
                     </view>
                 </view>
 
@@ -130,22 +116,6 @@
                         </view>
                     </view>
 
-                    <!-- <view class="activity_item" @tap="clickActivityList(3)">
-                        <view class="top_text_box">
-                            <text>保椿</text>
-                            <text class="red_text">点</text>
-                            <text>评</text>
-                        </view>
-                        <view class="item_text">排行榜单</view>
-                        <view class="activity_bottom">
-                            <image
-                                class="right_img"
-                                :src="getAssetsUrl('/leyou/goods/goodshop-icon.svg')"
-                                mode="scaleToFill"
-                            />
-                        </view>
-                    </view> -->
-
                     <view class="activity_item" @tap="clickActivityList(5)">
                         <view class="top_text_box">
                             <text class="red_text">讨论</text>
@@ -156,40 +126,66 @@
                             <image class="right_img" :src="getAssetsUrl('/leyou/goods/dp_icon.svg')" mode="scaleToFill" />
                         </view>
                     </view>
-
                 </view>
 
-                <!-- 新人福利 -->
-                <NewcomerWelfare :dataObj="dataObj"></NewcomerWelfare>
+                <!-- 甄选推荐 -->
+                <view v-if="showBk.includes(4)">
+                    <NewZhen :newZhen="zhenList"></NewZhen>
+                </view>
 
+                <!-- 专区 -->
+                <!-- <view v-if="showBk.includes(7)">
+                    <onlyFor :allInList="allInList"></onlyFor>
+                </view> -->
+
+                <!-- 新品 -->
+                <view v-if="showBk.includes(5)">
+                    <newGoods :newGoodList="newGoodList"></newGoods>
+                </view>
+
+                <!-- 爆品精选 -->
+                <view v-if="showBk.includes(6)">
+                    <crazy :orgSelect="orgSelect"></crazy>
+                </view>
+
+                <!-- tab -->
                 <view class="fliex_box">
                     <view class="Nav_box">
                         <view class="Nav_scoll_box">
-                            <view class="Nav_item" :class="{ 'have_right': data.NavList.length == (index + 1) }"
-                                v-for="(item, index) in data.NavList" :key="index" @click="changeNav(item)">
+                            <view class="Nav_item" :class="{ 'have_right': NavList.length == (index + 1) }"
+                                v-for="(item, index) in NavList" :key="index" @click="changeNav(item)">
                                 <view class="item_name">
                                     <view> {{ item.name }} </view>
-                                    <view class="isSelect" v-if="data.NavId == item.id"></view>
+                                    <view class="isSelect" v-if="NavId == item.id"></view>
                                 </view>
                             </view>
                         </view>
                     </view>
-                    <view class="more_icon">
+                    <view class="more_icon" @click="openBotMun">
                         <TnIcon name="down" size="32rpx" color="#333"></TnIcon>
                     </view>
                 </view>
 
-
+                <!-- 新人福利 -->
+                <view class="newPople" v-if="showBk.includes(3)">
+                    <!-- 活动1 -->
+                    <NewcomerWelfare v-if="dataObj.type !== 3" :dataObj="dataObj"></NewcomerWelfare>
+                    <!-- 活动2 -->
+                    <!-- <NewcomerTwo :dataObjTwo="dataObjTwo"></NewcomerTwo> -->
+                    <!-- 活动三 -->
+                    <NewcomerTre v-if="dataObj.type == 3" :dataObjTre="dataObj"></NewcomerTre>
+                </view>
 
                 <view class="content_right_list" :class="{ 'not_height': data.dataList.length == 0 }">
                     <!-- :navid="data.NavId" -->
-                    <WaterfallsFlow :wfList="data.dataList" :navid="data.NavId" @waterItem="clickwaterItem">
+                    <WaterfallsFlow :wfList="data.dataList" :navid="NavId" @waterItem="clickwaterItem">
                     </WaterfallsFlow>
                 </view>
 
             </view>
             <view class="page_bg"></view>
 
+            <BottomMenu @upCalik="upCalik" :NavList="NavList" :current="NavId" v-model="showBottomMenu"></BottomMenu>
 
             <BCNotify ref="bcNotify"></BCNotify>
 
@@ -199,50 +195,35 @@
 </template>
 
 <script setup lang="ts">
-import TnNavbar from '@tuniao/tnui-vue3-uniapp/components/navbar/src/navbar.vue'
+import TnBadge from '@tuniao/tnui-vue3-uniapp/components/badge/src/badge.vue'
+import NewcomerWelfare from '../platform/components/newcomerWelfare.vue'
+import NewcomerTre from '../platform/components/NewcomerTre.vue'
+import NewZhen from '../platform/components/NewZhen.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
-
+import newGoods from '../platform/components/newGoods.vue'
+import crazy from '../platform/components/crazy.vue'
+import BottomMenu from "../platform/components/channelSheet.vue"
+import onlyFor from '../platform/components/onlyFor.vue'
 import { ref, reactive, computed, onMounted } from 'vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
-
+import { moneyFilter } from "@/common/filters"
 import { getAssetsPic } from '@/common/setPicture'
-import { getcategoryList, servicePageChannel, categoryShow } from '@/api/service-api'
-import { productlist, getGoodsCartList, recommendList, goodsfavoriteList } from '@/api/goods-api'
 import BCNotify from '@/components/notify/index.vue'
-import WaterfallsFlow from './components/WaterfallsFlow.vue'
-import NewcomerWelfare from './components/newcomerWelfare.vue'
-import { gotoRegister, gotoShoppingCart } from '@/routes/goods-routes'
-import { GlobalEvents, addWEventsListener } from '@/events/event-registry'
+import WaterfallsFlow from '../platform/components/WaterfallsFlow.vue'
+import { gotoRegister, gotogoodsDetail, gotogoodsRanking } from '@/routes/goods-routes'
 import { gotoCitychange, invitationDetail } from '@/routes/user-routes'
 import { gotoServiceStore, toInnerPage, gotosearch, gotoShopDetail, gotoserviceLnnerPage, gotoServiceExpo, gotoLiveSelection } from '@/routes/service-routes'
-import { gotogoodsDetail, gotoGoodsPerferShop, gotoGoodsSort } from '@/routes/goods-routes'
 import { PlatformManage } from '@bc/sys'
-import { gotogoodsRanking } from '@/routes/goods-routes'
-import { healthContentList, followContentList } from "@/api/create-api"
-import { gotoarticledetails, gotovideoPreview, } from '@/routes/create-routes'
 import { gotoLogin } from "@/routes/public-routes"
-import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
+import { gotoZone, gotoallClassPage, gotoaNews } from "@/routes/active-routes"
 
 interface Data {
     titleTop: number
     titleRight: number
     sBarHeight: number
     dataList: any,
-    inputValue: string,
-    menuList: any,
-    menuIndex: number,
-    menuId: string,
-    categoryList: any,
-    topMenu: any,
     activityList: any,
-    NavList: any,
-    NavId: number,
-    screenIndex: number,
-    salesType: number,
-    priceType: number,
-    sortType: number,
-    shopCartNum: number,
     nowCity: string,
     noticeData: any,
     swiperIndex: number
@@ -254,57 +235,12 @@ const data = reactive<Data>({
     titleRight: 0,
     sBarHeight: 0,
     dataList: [],
-    inputValue: '',
-    menuList: [],
-    menuIndex: 0,
-    menuId: '',
-    categoryList: [],
-    topMenu: [
-        [
-            { id: 86, name: '适品购物', icon: '/leyou/goods/goods.svg' },
-            { id: 80, name: '兴趣学习', icon: '/leyou/goods/study.svg' },
-            { id: 85, name: '休闲玩乐', icon: '/leyou/goods/play.svg' },
-            { id: 81, name: '康旅文旅', icon: '/leyou/goods/travel.svg' },
-            { id: 82, name: '医学美容', icon: '/leyou/goods/cosmetology.svg' },
-        ],
-        [
-            // {id:89,name:'生活',icon:'/leyou/goods/life.svg'},
-            { id: 90, name: '康养服务', icon: '/leyou/goods/life.svg' },
-            { id: 87, name: '健康服务', icon: '/leyou/goods/health.svg' },
-            // {id:88,name:'照护',icon:'/leyou/goods/care.svg'},
-            { id: 91, name: '宠物服务', icon: '/leyou/goods/care.svg' },
-            { id: 83, name: '代办服务', icon: '/leyou/goods/handling.svg' },
-            { id: 84, name: '找工作', icon: '/leyou/goods/finjob.svg' },
-        ],
-    ],
     activityList: [
         { id: 1, name: '品牌馆/旗舰店', rightIcon: '/leyou/logo/leyou_logo.png', topimg: "/leyou/goods/laobo.svg" },
         { id: 2, name: '好逛', rightIcon: '/leyou/goods/liveicon.png', topimg: "/leyou/goods/livetitle.svg" },
         { id: 3, name: '排行榜单', rightIcon: '/leyou/goods/goodshop-icon.svg', topimg: "/leyou/goods/Comment.svg" },
         { id: 4, name: '新人福利', rightIcon: '/leyou/goods/Signin-icon.svg', topimg: "/leyou/goods/Signin.svg" },
     ],
-    NavList: [
-        { id: 11, name: '关注' },
-        { id: 22, name: '推荐' },
-        { id: 86, name: '购物' },
-        { id: 80, name: '学习' },
-        { id: 90, name: '康养' },
-        { id: 87, name: '健康' },
-        { id: 82, name: '美容' },
-        { id: 91, name: '宠物' },
-        { id: 85, name: '玩乐' },
-        { id: 81, name: '旅游' },
-        // {id:89,name:'生活'},
-        // {id:88,name:'照护'},
-        { id: 83, name: '代办' },
-        { id: 84, name: '找工作' },
-    ],
-    NavId: 22,
-    screenIndex: 1,
-    salesType: 0,
-    priceType: 0,
-    sortType: 1,
-    shopCartNum: 9,
     nowCity: "广州",
     noticeData: [
         '休闲/玩乐',
@@ -312,7 +248,19 @@ const data = reactive<Data>({
     swiperIndex: 0,
     swiperList: [],
 })
-
+const tabsData: any = ref([
+    { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 }
+])
+const badge = ref(0)
+const showBk: any = ref([])
+const zhenList: any = ref([])
+const orgSelect: any = ref([])
+const newGoodList: any = ref([])
+const showBottomMenu = ref(false)
+const NavList: any = ref([
+    { id: 1, name: '推荐' }
+])
+const NavId = ref(1)
 
 interface Events {
     (e: 'showServiceMenu'): void,
@@ -323,18 +271,68 @@ const emit = defineEmits<Events>()
 const swiperList: any = ref([])
 const dataObj: any = ref({})
 const bcNotify = ref()
+const openBotMun = () => {
+    showBottomMenu.value = !showBottomMenu.value
+}
 
-const listen = () => {
-    addWEventsListener(GlobalEvents.Refresh_ShoppingCart_Badge, () => {
-        goodsCartList()
+const upCalik = (item: any, index: number) => {
+    console.log(item.id, index)
+    NavId.value = item.id;
+    paging.value.reload()
+}
+
+const allInList: any = ref([])
+const getSetIds = (num: number) => {
+    setPageBank(num).then(res => {
+        allInList.value = res.recordList.filter((item: any) => item.moduleId == 7)
+        console.log(allInList.value, '等于7');
+        if (allInList.value.length > 0) {
+            allInList.value.forEach((element: any) => {
+                console.log(element);
+                // 业务模块专区
+                // channeCatelList(element, element.categoryIds)
+            })
+        }
+        if (!res.recordList) {
+            return
+        }
+        console.log(res.recordList, '所有的数组')
+        healthMyData(res.recordList)
+
     })
 }
 
-const goodsCartList = () => {
-    getGoodsCartList().then((res: any) => {
-        data.shopCartNum = res.reduce((accumulator: number, currentValue: any) => {
-            return accumulator + currentValue?.productList.length
-        }, 0)
+const liveList = (item: any) => {
+    console.log('item', item)
+    if (item.type == 1) {
+        gotoServiceStore({ itemId: item.dataId })
+    }
+    if (item.type == 2) {
+        gotogoodsDetail(item.dataId)
+    }
+}
+
+const gotoColmDetail = (index: any, item: any) => {
+    if (item.id == '360') {
+        gotoallClassPage(3)
+    } else {
+        // 跳转微页面
+        return gotoZone(item.id, item.name)
+    }
+}
+
+const channeCatelList = (item: any, id: any) => {
+    const sendda = {
+        pageNumber: 1,
+        pageSize: 10,
+        query: {
+            categoryIds: id
+        }
+    }
+    productList(sendda).then(res => {
+        console.log('专区', res)
+        item.dataList = res.data.length > 0 ? res.data.slice(0, 2) : res.data
+        console.log(allInList.value)
     })
 }
 
@@ -353,8 +351,6 @@ onMounted(() => {
     const top = 0
     // #endif
 
-
-
     // #ifdef MP-WEIXIN
     // 获取系统状态栏高度
     data.sBarHeight = uni.getSystemInfoSync().statusBarHeight!
@@ -365,8 +361,6 @@ onMounted(() => {
     data.titleRight = width + 8
     // #endif
 
-
-
     // #ifdef APP-PLUS || H5
     data.sBarHeight = 33
     const pageObj = uni.getSystemInfoSync() as any
@@ -376,48 +370,91 @@ onMounted(() => {
     // #endif
 
     console.log('7891011,data.titleRight', data.titleRight)
-
-
-    listen()
-    goodsCartList()
     getCity()
 
 })
 
-const getSetIds = (num: number) => {
-    setPageBank(num).then(res => {
-        if (!res.recordList) {
-            return
-        }
-        console.log(res.recordList, '所有的数组')
-        healthMyData(res.recordList)
-
-    })
-}
-
 const healthMyData = (list: any) => {
-    // showBk.value = []
+    showBk.value = []
     if (list.length < 1) {
         return
     }
     list.forEach((element: any) => {
-        // showBk.value.push(element.moduleId)
+        showBk.value.push(element.moduleId)
         // banner图
         if (element.moduleId == 1) {
             getBannerList(element.dataIds)
         }
         // 导航栏
         if (element.moduleId == 2) {
-            // getTabbar(element.dataIds)
+            getTabbar(element.dataIds)
         }
         // 新人活动
         if (element.moduleId == 3) {
             activeDetail(element.dataIds[0]).then(res => {
-                console.log('活动想去', res)
                 dataObj.value = res
-                console.log(dataObj.value, '活动想去', res)
             })
         }
+        // 产品推荐
+        if (element.moduleId == 4) {
+            channelList(element.dataIds, 4)
+        }
+        // 新品上市
+        if (element.moduleId == 5) {
+            channelList(element.dataIds, 5)
+        }
+        // 爆品精选
+        if (element.moduleId == 6) {
+            channelList(element.dataIds, 6)
+        }
+
+        // 文字导航
+        if (element.moduleId == 8) {
+            NavList.value = [
+                { id: 1, name: '推荐' },
+                ...element.navbarList
+            ]
+            getTextList(1)
+        }
+    })
+}
+
+// 请求第一个tab
+const getTextList = (cateIndex: number) => {
+    if (cateIndex == 1) {
+
+    } else {
+
+    }
+}
+
+const channelList = (id: any, num: number) => {
+    const sendda = {
+        pageNumber: 1,
+        pageSize: 10,
+        query: {
+            ids: id
+        }
+    }
+    productList(sendda).then(res => {
+        if (num == 4) {
+            zhenList.value = res.data
+        }
+        if (num == 5) {
+            newGoodList.value = res.data
+        }
+        if (num == 6) {
+            orgSelect.value = res.data
+        }
+    })
+}
+
+const getTabbar = (data: any) => {
+    const dares = {
+        ids: data
+    }
+    columnList(dares).then(res => {
+        tabsData.value.unshift(...res)
     })
 }
 
@@ -444,47 +481,28 @@ const getAssetsUrl = computed(() => (src: string) => {
 })
 
 
-const paging = ref(null)
+const paging = ref()
 
 const queryList = async (pageNumber: number, pageSize: number) => {
-    getList(pageNumber, pageSize)
-
+    const data = {
+        pageNumber,
+        pageSize: 10,
+        query: {
+            categoryIds: NavId.value == 1 ? [] : [NavId.value]
+        }
+    }
+    productList(data).then((res) => {
+        paging.value.complete(res.data)
+    })
 }
 
-
-// 顶部菜单切换
-const changeTopMenu = (item: any, index: number) => {
-
-    console.log('item', item.categoryId);
-    if (item.categoryId == 86) {
-        gotoGoodsSort()
-
-        console.log('适品入口');
-        return
-    }
-
-    if (item.categoryId == 90) {
-        gotoserviceLnnerPage({ id: 88 })
-        return
-    }
-
-    // if (item.id == 91) {
-
-    //     return
-    // }
-
-    toInnerPage({ id: item.categoryId, pageTitle: item.name })
-}
 
 const clickActivityList = (item: any) => {
     console.log('item1111', item);
-
     // 邀请好友
     // item.id == 1 && invitationDetail()
     // 优选店铺
     // item.id == 2 && gotoGoodsPerferShop()
-
-
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
             bcNotify.value.show('登录失效,请重新登录')
@@ -497,80 +515,11 @@ const clickActivityList = (item: any) => {
         item == 2 && gotoLiveSelection();
         item == 3 && gotogoodsRanking();
         item == 4 && gotoRegister();
-        item == 5 && gotodiscussListPage();
-
+        item == 5 && gotodiscussListPage()
     })
-
-
-}
-
-// 列表内容
-const getList = (pageNumber: number, pageSize: number) => {
-
-    if (pageNumber == 1) {
-        categoryShow({
-            id: 3
-        }).then((res: any) => {
-            console.log('类目', res);
-            data.NavList = [
-                { id: 11, name: '关注' },
-                { id: 22, name: '推荐' },
-                ...res
-            ]
-        })
-
-        servicePageChannel({}).then((res: any) => {
-            console.log('菜单类目', res);
-            let result = [] as any
-            for (let i = 0; i < res.length; i += 5) {
-                result.push(res.slice(i, i + 5));
-            }
-            data.topMenu = result
-
-
-            console.log('data.topMenu', data.topMenu);
-
-        })
-    }
-
-    if (data.NavId == 11) {
-        console.log('关注列表');
-        followContentList({
-            pageSize,
-            pageNumber,
-            query: {
-                happyType: 97
-            }
-        }).then((res: any) => {
-            (paging.value as any).complete(res.data)
-        })
-
-    } else {
-
-        PlatformManage.isRequireLogin().then((isRequireLogin) => {
-            healthContentList({
-                pageSize,
-                pageNumber,
-                query: {
-                    categoryIds: data.NavId == 22 ? [] : [data.NavId],
-                }
-            }, isRequireLogin).then((res: any) => {
-                (paging.value as any).complete(res.data)
-            })
-        })
-
-    }
-
-}
-
-
-// 购物车
-const clickShoppingCart = () => {
-    gotoShoppingCart()
 }
 
 const changeNav = (item: any) => {
-
     if (item.id == 11) {
         // 检查登录状态
         PlatformManage.isRequireLogin().then((isRequireLogin) => {
@@ -583,14 +532,12 @@ const changeNav = (item: any) => {
             }
         })
     }
-    data.NavId = item.id;
+    NavId.value = item.id;
     (paging.value as any).reload()
 }
 
 const changebubble = () => {
-    emit('showServiceMenu')
-    // data.showrightMenu = true
-    // data.showbubble = !data.showbubble
+    gotoaNews()
 }
 
 const changecity = () => {
@@ -600,9 +547,7 @@ const tosearch = () => {
     gotosearch()
 }
 
-
 const clickwaterItem = (item: any) => {
-
     console.log('item', item);
     // 检查登录状态
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
@@ -613,20 +558,8 @@ const clickwaterItem = (item: any) => {
             }, 1000)
             return
         }
-        if (item.type == 1 || item.type == 3) {
-            gotoarticledetails({ id: item.id })
-            return
-        }
-        if (item.type == 2) {
-            gotovideoPreview({ videoId: item.id, videoPagetype: 0 })
-            return
-        }
+        gotogoodsDetail(item.id)
     })
-
-
-    // 商品、店铺详情
-    // item.businessType == 2 && gotogoodsDetail(item.id)
-    // item.businessType == 3 && gotoServiceStore({shopId:item.id,isAd:0})
 }
 
 // 退出页面
@@ -636,10 +569,6 @@ const goback = () => {
 
 const liveswiperChange = (e: any) => {
     data.swiperIndex = e.detail.current
-}
-
-const liveList = (item: any) => {
-    console.log('item', item);
 }
 
 defineExpose({
@@ -656,7 +585,6 @@ defineExpose({
     // #endif
     .top_box {
         padding: 10rpx;
-
         padding-left: 24rpx;
         box-sizing: border-box;
         display: flex;
@@ -710,25 +638,6 @@ defineExpose({
         display: flex;
         align-items: center;
     }
-
-    .inp_box {
-        padding: 16rpx 24rpx;
-        box-sizing: border-box;
-        display: flex;
-        align-items: center;
-        background: #FFFFFF;
-        border-radius: 32rpx;
-
-        .inp_text {
-            font-size: 24rpx;
-            color: #666666;
-            margin-left: 6rpx;
-        }
-
-
-    }
-
-
 }
 
 .top {
@@ -741,8 +650,6 @@ defineExpose({
     box-sizing: border-box;
 
     .top_logo_img {
-        // width: 66rpx;
-        // height: 66rpx;
         width: 112rpx;
         height: 36rpx;
     }
@@ -766,16 +673,16 @@ defineExpose({
             display: flex;
             align-items: center;
             position: relative;
-        }
 
-        .more_icon {
-            // margin-left: 30rpx;
+            .messageIcom {
+                width: 52rpx;
+                height: 52rpx;
+            }
         }
 
         .inp_box {
             width: 490rpx;
             background: #fff;
-            border: 2rpx solid #F6CBCB;
             box-sizing: border-box;
             padding: 10rpx 20rpx;
             padding-right: 10rpx;
@@ -859,45 +766,6 @@ defineExpose({
     }
 }
 
-.topMenu_box {
-    padding: 30rpx;
-    box-sizing: border-box;
-    border-radius: 32rpx;
-    background: #fff;
-    margin-bottom: 20rpx;
-
-    .Menu_itemList {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 28rpx;
-
-        &.not_bootm {
-            margin-bottom: 0rpx;
-        }
-
-        .topMenu_item {
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            width: 100rpx;
-
-            .item_img {
-                width: 70rpx;
-                height: 70rpx;
-                margin-bottom: 8rpx;
-            }
-
-            .item_text {
-                font-size: 28rpx;
-                color: #333333;
-                font-weight: 400;
-                white-space: nowrap;
-            }
-        }
-    }
-}
-
 .activity_List {
     display: flex;
     align-items: center;
@@ -959,6 +827,7 @@ defineExpose({
 
 .fliex_box {
     position: relative;
+    margin-top: 30rpx;
 
     .Nav_box {
         box-sizing: border-box;
@@ -993,7 +862,7 @@ defineExpose({
                         bottom: -12rpx;
                         left: 50%;
                         transform: translate(-50%, 0);
-                        background: #EA3E1A;
+                        background: #29C86F;
                         height: 6rpx;
                         width: 36rpx;
                         border-radius: 6rpx;
@@ -1024,16 +893,6 @@ defineExpose({
     &.not_height {
         min-height: 0;
     }
-}
-
-.left_menu_bg {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #F8F8F8;
-    z-index: -1;
 }
 
 .page_bg {
@@ -1134,68 +993,39 @@ defineExpose({
 
     }
 
-    .activityswiper {
-        margin-bottom: 18rpx;
-    }
+}
 
-    .category_box {
-        margin-bottom: 20rpx;
-    }
+.deCionBox {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 20rpx 0;
+    background: #fff;
+    padding: 26rpx 20rpx;
+    border-radius: 16rpx;
 
-    .service_list_box {
-        margin-bottom: 20rpx;
-
-    }
-
-    .screen_box {
-        width: 100%;
+    .Tabs_deitem {
+        width: 20%;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        margin-bottom: 30rpx;
 
-        .screen_list {
-            display: flex;
-            align-items: center;
+        .left_menu_img {
+            width: 80rpx;
+            height: 80rpx;
+            margin-bottom: 20rpx;
+            border-radius: 50%;
+        }
 
-            .screen_item {
-                display: flex;
-                align-items: center;
-                margin-left: 32rpx;
-
-                .screen_text {
-                    color: #808080;
-                    font-size: 28rpx;
-                    font-weight: 400;
-
-                    &.is_screen_text {
-                        color: #EA3E1A;
-                    }
-                }
-
-                .state_box {
-                    margin-left: 4rpx;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-
-                    .state_img {
-                        width: 22rpx;
-                        height: 22rpx;
-                    }
-
-                    .change_state_img {
-                        width: 22rpx;
-                        height: 22rpx;
-
-                        &.is_down {
-                            transform: rotate(180deg);
-                        }
-                    }
-                }
-            }
+        .iconText {
+            font-size: 24rpx;
+            color: #333333;
         }
     }
+}
 
+.towPro {
+    height: 676rpx;
 }
 </style>

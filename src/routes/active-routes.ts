@@ -1,15 +1,16 @@
 import { pageController } from '@bc/uni-tools'
 
 // 新人特惠
-export const gotoNewActive = () => {
+export const gotoNewActive = (id: any) => {
     const route = {
-        path: '/IndexPage/pages/platform/newUser'
+        path: '/IndexPage/pages/platform/newUser',
+        query: { id }
     } as any
     return pageController.push(route)
 }
 
 // 专区
-export const gotoZone = (id:any, name:string) => {
+export const gotoZone = (id: any, name: string) => {
     const route = {
         path: '/IndexPage/pages/platform/onlyZone',
         query: { id, name }
@@ -26,7 +27,7 @@ export const roomAdd = () => {
 }
 
 // 添加设备
-export const deviceAdd = (id:string, roomId?: string) => {
+export const deviceAdd = (id: string, roomId?: string) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/deviceChoice',
         query: { id, roomId }
@@ -35,7 +36,7 @@ export const deviceAdd = (id:string, roomId?: string) => {
 }
 
 // 添加设备
-export const gotoDeviceCreate = (id:string, type: string, roomId?: any) => {
+export const gotoDeviceCreate = (id: string, type: string, roomId?: any) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/deviceCreate',
         query: { id, type, roomId }
@@ -58,21 +59,21 @@ interface IRouteFun {
 }
 const deviceDetailRoute = {} as Record<IModel, IRouteFun>
 /** 跳转到 血压 */
-interface IDeviceLinkQuery{
+interface IDeviceLinkQuery {
     deviceId: string
     deviceName: string
     status?: number
     sn?: string
 }
 
-export const gotoDeviceDetail = (query:IDeviceLinkQuery, model: IModel) => {
+export const gotoDeviceDetail = (query: IDeviceLinkQuery, model: IModel) => {
     const routeFun = deviceDetailRoute[model]
     if (routeFun) {
         return routeFun(query)
     }
 }
 
-export const gotoBooldYa = (query:IDeviceLinkQuery) => {
+export const gotoBooldYa = (query: IDeviceLinkQuery) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/bloodDev',
         query
@@ -80,7 +81,7 @@ export const gotoBooldYa = (query:IDeviceLinkQuery) => {
     return pageController.push(route)
 }
 /** 跳转到 睡眠检测详情 统一调用设备详情 gotoDeviceDetail */
-export const gotoSleepDetail = (query:IDeviceLinkQuery) => {
+export const gotoSleepDetail = (query: IDeviceLinkQuery) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/sleepDetail',
         query
@@ -89,7 +90,7 @@ export const gotoSleepDetail = (query:IDeviceLinkQuery) => {
 }
 
 /** 跳转到 SOS报警器/跌倒报警器 统一调用设备详情 gotoDeviceDetail */
-export const gotoAlarmDetail = (query:IDeviceLinkQuery) => {
+export const gotoAlarmDetail = (query: IDeviceLinkQuery) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/alarmDetail',
         // path: '/pagesTuya/pages/wisdom/deviceDetail',
@@ -122,7 +123,7 @@ export const gotoDeviceSetup = (query: any) => {
 }
 
 /** 跳转到 接警人 */
-export const gotoCaller = (id?:string) => {
+export const gotoCaller = (id?: string) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/caller',
         query: { id }
@@ -131,7 +132,7 @@ export const gotoCaller = (id?:string) => {
 }
 
 /** 跳转到 睡眠检测报告 */
-export const gotoSleepReport = (deviceId:string, time:any) => {
+export const gotoSleepReport = (deviceId: string, time: any) => {
     const route = {
         path: '/Create/pages/wisdom/sleepReport',
         query: { deviceId, time }
@@ -140,7 +141,7 @@ export const gotoSleepReport = (deviceId:string, time:any) => {
 }
 
 /** 跳转到 睡眠检测设置 */
-export const gotoSleepSetup = (query: {deviceId:string, devName: string}) => {
+export const gotoSleepSetup = (query: { deviceId: string, devName: string }) => {
     const route = {
         path: '/Mall/pages/wisdom/sleepSetup',
         query: query
@@ -161,7 +162,7 @@ export const gotoDeviceNet = (blueName: string) => {
 export const gotoSuccedLaya = (deviceId: string) => {
     const route = {
         path: '/Mall/pages/wisdom/addLayaDev',
-        query: {  }
+        query: {}
     } as any
     return pageController.replace(route)
 }
@@ -170,7 +171,7 @@ export const gotoSuccedLaya = (deviceId: string) => {
 export const gotoStartTepTow = (deviceId: string) => {
     const route = {
         path: '/Mall/pages/wisdom/startLiang',
-        query: {  }
+        query: {}
     } as any
     return pageController.replace(route)
 }
@@ -186,7 +187,7 @@ export const gotoResult = (tem: any) => {
 
 /** 跳转到 体温设备页 */
 export const gotoBodyTem = (deviceId: string) => {
-    const data =  encodeURIComponent(JSON.stringify(deviceId))
+    const data = encodeURIComponent(JSON.stringify(deviceId))
     const route = {
         path: '/Mall/pages/wisdom/bodyTem',
         query: { data }
@@ -196,7 +197,7 @@ export const gotoBodyTem = (deviceId: string) => {
 
 /** 跳转到 体温记录 */
 export const gotorecListTem = (mac: string) => {
-    const data =  encodeURIComponent(JSON.stringify(mac))
+    const data = encodeURIComponent(JSON.stringify(mac))
     const route = {
         path: '/Mall/pages/wisdom/recodeList',
         query: { data }
@@ -217,22 +218,22 @@ export const gotoRecodEcart = (tep: string, time: string, sdaMac: string) => {
 export const gotoStartTep = (deviceId: string) => {
     const route = {
         path: '/Mall/pages/wisdom/startLiang',
-        query: {  }
+        query: {}
     } as any
     return pageController.push(route)
 }
 
 /** 跳转到 设备联网 */
-export const gotoEzVideo = (deviceSerial: string, verifyCode:string) => {
+export const gotoEzVideo = (deviceSerial: string, verifyCode: string) => {
     const route = {
         path: '/Mall/pages/wisdom/ezviz_video',
-        query: { deviceSerial,verifyCode  }
+        query: { deviceSerial, verifyCode }
     } as any
     return pageController.push(route)
 }
 
 /** 跳转到 播放摄像 */
-export const gotoPlayVideo= (deviceSerial: string,verifyCode:string ) => {
+export const gotoPlayVideo = (deviceSerial: string, verifyCode: string) => {
     const route = {
         path: '/Mall/pages/wisdom/ezviz_video_player',
         query: { deviceSerial, verifyCode }
@@ -350,7 +351,7 @@ export const gotoAirList = (id: any) => {
 }
 
 // 跳转空调遥控器
-export const gotoAirIndex = (devId: any, ktId:any) => {
+export const gotoAirIndex = (devId: any, ktId: any) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/airSelect',
         query: { devId, ktId }
@@ -359,7 +360,7 @@ export const gotoAirIndex = (devId: any, ktId:any) => {
 }
 
 // 跳转空调遥控器
-export const gotoAirLook = (devId: any, hotId:any, ktId:any) => {
+export const gotoAirLook = (devId: any, hotId: any, ktId: any) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/airLook',
         query: { devId, hotId, ktId }
@@ -413,7 +414,7 @@ export const gotoExpendList = () => {
 }
 
 /** 跳转到 血压记录 */
-export const gotobooldLuc = (tep:any) => {
+export const gotobooldLuc = (tep: any) => {
     const route = {
         path: '/pagesCreate/pages/wisdom/bloodResult',
         query: { tep }
@@ -422,7 +423,7 @@ export const gotobooldLuc = (tep:any) => {
 }
 
 /** 跳转到 全部列表 */
-export const gotoCateList = (query:any) => {
+export const gotoCateList = (query: any) => {
     const route = {
         path: '/IndexPage/pages/platform/catesList',
         query: query
@@ -430,17 +431,8 @@ export const gotoCateList = (query:any) => {
     return pageController.replace(route)
 }
 
-/** 跳转到 全部列表 */
-export const gotoCateType = (query:any) => {
-    const route = {
-        path: '/IndexPage/pages/platform/catesList',
-        query: query
-    } as any
-    return pageController.push(route)
-}
-
 /** 跳转到 中转 */
-export const gotoCenterChanges = (id:any, name:string) => {
+export const gotoCenterChanges = (id: any, name: string) => {
     const route = {
         path: '/IndexPage/pages/platform/centerChanges',
         query: { id, name }
@@ -449,7 +441,7 @@ export const gotoCenterChanges = (id:any, name:string) => {
 }
 
 /** 跳转到 全部列表 */
-export const gotoCateArrList = (query:any) => {
+export const gotoCateArrList = (query: any) => {
     const route = {
         path: '/IndexPage/pages/platform/catesList',
         query: query
@@ -457,7 +449,7 @@ export const gotoCateArrList = (query:any) => {
     return pageController.push(route)
 }
 
-export const gotoEditName = ( id:any ) => {
+export const gotoEditName = (id: any) => {
     const route = {
         path: '/pagesTuya/pages/wisdom/editLightName',
         query: { id }
@@ -465,7 +457,7 @@ export const gotoEditName = ( id:any ) => {
     return pageController.push(route)
 }
 
-export const gotoPiMark = (id:any) => {
+export const gotoPiMark = (id: any) => {
     const route = {
         path: '/pagesMall/pages/activity/supervaluepage',
         query: { id }
@@ -474,10 +466,30 @@ export const gotoPiMark = (id:any) => {
 }
 
 // 品牌管
-export const gotoPingP = (id:any) => {
+export const gotoPingP = (id: any) => {
     const route = {
         path: '/pagesMall/pages/activity/brandpage',
         query: { id }
     } as any
     return pageController.push(route)
 }
+
+// 所有分类
+export const gotoallClassPage = (type: any) => {
+    const route = {
+        path: '/IndexPage/pages/classPage/allClassPage',
+        query: { type }
+    } as any
+    return pageController.push(route)
+}
+
+// 消息
+export const gotoaNews = () => {
+    const route = {
+        path: '/pagesMsg/pages/news/news',
+        query: {  }
+    } as any
+    return pageController.push(route)
+}
+
+// 

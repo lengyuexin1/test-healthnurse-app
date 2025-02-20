@@ -1,24 +1,28 @@
 <template>
-    <view class="newcomer_wrap">
+    <view class="newcomer_wrap" @tap="clickMore">
         <image class="icon-bg" :src="getAssetsUrl('/leyou/icon/newcomer-bg.png')" mode="scaleToFill" />
-        
+
         <view class="title tn-flex-center-between">
             <view class="left">限时专属红包 一键包邮</view>
-            <view class="right tn-flex-row" @tap="clickMore">更多<TnIcon name="right" /></view>
+            <view class="right tn-flex-row">更多
+                <TnIcon name="right" />
+            </view>
         </view>
         <view class="list tn-flex-center-around">
             <view class="coupon">
                 <image class="coupon-bg" :src="getAssetsUrl('/leyou/icon/coupon-bg.png')" mode="scaleToFill" />
                 <view class="content">
-                    <view class="price tn-text-bold"><text class="unit">￥</text>8</view>
-                    <view class="time"><TnCountDown show-day :time="dataObj.utcEnd - dataObj.utcStart" text-color="#F46603" separator-color="#F46603" /></view>
-                    <view class="txt">后失效</view>
+                    <view class="price tn-text-bold">
+                        <text class="unit">￥</text>
+                        {{ moneyFilter(dataObj.couponCfgTotal) }}
+                        <view class="txt">{{ dataObj.couponDesc }}</view>
+                    </view>
                     <view class="btn tn-text-bold">去使用</view>
                 </view>
             </view>
             <view class="wrap tn-flex-column" v-for="(item, index) in dataObj.itemList" :key="index">
                 <image class="img" :src="item.thumb" mode="scaleToFill" />
-                <text class="txt">劵后￥{{ moneyFilter(item.fakePrice) }}元</text>
+                <text class="txt">劵后￥{{ moneyFilter(item.couponPrice) }}元</text>
             </view>
         </view>
     </view>
@@ -30,6 +34,7 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/count-down.vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { moneyFilter } from "@/common/filters"
+import { gotoNewActive } from '@/routes/active-routes'
 // import { gotoNewcomerWelfare } from '@/routes/goods-routes'
 
 interface Props {
@@ -38,13 +43,13 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 
 // 更多
 const clickMore = () => {
-    gotoNewcomerWelfare()
+    gotoNewActive(props.dataObj.id)
 }
 
 </script>
@@ -58,6 +63,7 @@ const clickMore = () => {
         width: 100%;
         height: 314rpx;
     }
+
     .title {
         width: 100%;
         position: absolute;
@@ -69,11 +75,12 @@ const clickMore = () => {
         .left {
             font-size: 26rpx;
         }
+
         .right {
             font-size: 22rpx;
         }
     }
-    
+
     .list {
         width: 100%;
         height: 180rpx;
@@ -89,10 +96,12 @@ const clickMore = () => {
             width: 156rpx;
             height: 180rpx;
         }
+
         .coupon-bg {
             width: 156rpx;
             height: 180rpx;
         }
+
         .content {
             position: absolute;
             left: 0;
@@ -107,16 +116,21 @@ const clickMore = () => {
             .txt {
                 font-size: 20rpx;
                 font-weight: 400;
+                margin-top: 10rpx;
             }
+
             .price {
                 font-size: 40rpx;
+                height: 106rpx;
+                overflow: hidden;
             }
+
             .btn {
                 margin-top: 28rpx;
                 font-size: 24rpx;
             }
         }
-        
+
         .wrap {
             background: #FFFFFF;
             border-radius: 12rpx;
@@ -127,6 +141,7 @@ const clickMore = () => {
                 height: 122rpx;
                 border-radius: 12rpx 12rpx 0 0;
             }
+
             .txt {
                 text-align: center;
                 font-size: 22rpx;

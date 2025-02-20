@@ -1,5 +1,13 @@
-import { openHttp, http } from "@bc/api"
-import type { _v1_bc_app_kuaidi_express_realtimeLookExpress_post_req, _v1_bc_app_kuaidi_realtime_order_view_get_req, _v1_bc_app_order_purchase_view_get_req, _v1_bc_app_product_detail_get_req, _v1_bc_app_product_option_option_detail_get_req, _v1_product_app_cart_create_post_req, _v1_product_app_cart_purchase_view_get_req, _v1_product_app_order_purchase_view_get_req } from "@bc/api/types/order/api-types"
+import { http, openHttp } from "@bc/api"
+import type {
+    _v1_bc_app_kuaidi_express_realtimeLookExpress_post_req,
+    _v1_bc_app_kuaidi_realtime_order_view_get_req,
+    _v1_bc_app_product_detail_get_req,
+    _v1_bc_app_product_option_option_detail_get_req,
+    _v1_product_app_cart_create_post_req,
+    _v1_product_app_cart_purchase_view_get_req,
+    _v1_product_app_order_purchase_view_get_req
+} from "@bc/api/types/order/api-types"
 
 /**
  * 适品相关api
@@ -36,7 +44,6 @@ export const editAddress = async (req: _v1_bc_app_address_edit_post_req) => {
 }
 
 
-
 /** 适品详情 */
 export const goodsDetail = (req: _v1_bc_app_product_detail_get_req) => {
     return openHttp.order.get('/v1/bc/public/app/product/detail', req)
@@ -60,6 +67,19 @@ export const goodsPurchase = (req: _v1_product_app_order_purchase_view_get_req) 
 /** 商品购物车下单所需参数 */
 export const cartPurchase = (req: _v1_product_app_cart_purchase_view_get_req) => {
     return http.order.get('/v1/product/app/cart/purchase/view', req)
+}
+
+/**
+ * 新品列表
+ * */
+export const getCateNewList = (req: any) => {
+    return http.order.post('api/order/v1/bc/public/app/product/recommend/list', req)
+}
+/**
+ * 适品囤
+ * */
+export const getUsercaseList1 = (req: any) => {
+    return http.order.post('api/search/v1/bc/public/app/category_show/product/list', req)
 }
 
 
@@ -192,7 +212,7 @@ export const smartOrderCreate = async (optionId: string) => {
 }
 
 /* 智护-唤起支付 */
-export const smartPlatformPay = async (query: {orderId:string, openid?: string}) => {
+export const smartPlatformPay = async (query: { orderId: string, openid?: string }) => {
     // #ifdef APP-PLUS
     return http.post('api/user/v1/bc/app/payment/wechat/platform_pay', query)
     // #endif

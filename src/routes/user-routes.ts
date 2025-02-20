@@ -226,7 +226,8 @@ export const gotoMemberList = (query: any) => {
 }
 
 /** 跳转到 卡券/红包 */
-export const gotoCouponList = (type: string) => {
+export const gotoCouponList = (type: string | number) => {
+    console.log('类型', type)
     const route = {
         path: "/pagesUser/pages/coupon/coupon",
         query: { type }
@@ -774,7 +775,16 @@ export const gotoBusinessAuth = (isReplace?: boolean) => {
 /* 找机构 */
 export const gotoAgency = (query: any) => {
     const route = {
-        path: '/pages/agency/agency',
+        path: '/IndexPage/pages/agency/agency',
+        query
+    }
+    return pageController.push(route)
+}
+
+/* 平台资质 */
+export const gotoPlatformQualification = (query: any) => {
+    const route = {
+        path: '/pagesUser/pages/credential/credential',
         query
     }
     return pageController.push(route)

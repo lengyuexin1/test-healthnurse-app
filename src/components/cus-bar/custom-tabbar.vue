@@ -141,8 +141,6 @@ const tabbatMenu = (item:any) => {
 }
 
 const hideTop = (val:boolean) => {
-    console.log('val22',val);
-    
     data.showMenu = val
 }
 

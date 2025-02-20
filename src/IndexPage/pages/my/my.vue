@@ -1,7 +1,8 @@
 <template>
     <view class="container">
         <z-paging ref="paging" v-model="data.dataList" :auto="true" :auto-scroll-to-top-when-reload="false"
-            :auto-show-system-loading="true" :defaultPageSize="10" :fixed="true" :hide-empty-view="true" @query="queryList">
+                  :auto-show-system-loading="true" :defaultPageSize="10" :fixed="true" :hide-empty-view="true"
+                  @query="queryList">
             <template #top>
                 <bc-page-navbar :bgColor="'#56CC7D'" :textColor="'#ffffff'" :title="'我的'">
                     <template #back>
@@ -16,28 +17,31 @@
                         <view class="avatar_box_top">
                             <view class="avatar_box_left" @click="toEditProfile">
                                 <view class="avatar_img_box">
-                                    <image :src="data.userinfo.avatar" class="avatar_img" mode="aspectFill" />
+                                    <image :src="data.userinfo.avatar" class="avatar_img" mode="aspectFill"/>
                                 </view>
                                 <view class="user_text_box">
                                     <view class="user_namr">{{ data.userinfo.nickname }}</view>
                                     <view class="user_bcId_box">
                                         <view class="user_bcId">账号名: {{
-                                            data.homeObj.regCode ? data.homeObj.regCode :
-                                            'ABCDEF'
-                                        }}
+                                                data.homeObj.regCode ? data.homeObj.regCode :
+                                                      'ABCDEF'
+                                            }}
                                         </view>
                                     </view>
                                 </view>
                             </view>
                             <view class="row i-center j-center">
-                                <view class="set_li">
-                                    <image :src="getAssetsUrl('/mine/v1/my_set_xx.svg')" class="top_menu_right_icon share"
-                                        mode="scaleToFill" @click.stop="toSetting" />
+                                <view class="set_li" style="position: relative;">
+                                    <image :src="getAssetsUrl('/mine/v1/my_set_xx.svg')"
+                                           class="top_menu_right_icon share"
+                                           mode="scaleToFill" @click.stop="toSetting"/>
                                     <view class="txt">消息</view>
+                                    <!--                                    <TnBadge value="99" type="primary" absolute bg-color="#FF2A2A"/>-->
                                 </view>
                                 <view class="set_li">
-                                    <image :src="getAssetsUrl('/mine/v1/my_set_sz.svg')" class="top_menu_right_icon share"
-                                        mode="scaleToFill" @click.stop="toSetting" />
+                                    <image :src="getAssetsUrl('/mine/v1/my_set_sz.svg')"
+                                           class="top_menu_right_icon share"
+                                           mode="scaleToFill" @click.stop="toSetting"/>
                                     <view class="txt">设置</view>
                                 </view>
                             </view>
@@ -45,7 +49,7 @@
                     </view>
                     <view v-else class="tologin" @click="toLogin">
                         <image :src="getAssetsUrl('/leyou/static/default_avatar.png')" class="avatar_img"
-                            mode="aspectFill" />
+                               mode="aspectFill"/>
                         <view class="tologin_text">
                             点击头像登录
                         </view>
@@ -58,15 +62,15 @@
                                 {{ data.homeObj.cntFollow ? data.homeObj.cntFollow : '--' }}
                             </view>
                             <view class="data_text">我的关注
-                                <TnIcon color="#ffffff" name="right" size="28" />
+                                <TnIcon color="#ffffff" name="right" size="28"/>
                             </view>
                         </view>
-                        <view class="operate_data_item haveborder" @click="todataManage(2)">
+                        <view class="operate_data_item" @click="todataManage(2)">
                             <view class="data_number">
                                 {{ data.homeObj.totalFans ? data.homeObj.totalFans : '--' }}
                             </view>
                             <view class="data_text">我的粉丝
-                                <TnIcon color="#ffffff" name="right" size="28" />
+                                <TnIcon color="#ffffff" name="right" size="28"/>
                             </view>
                         </view>
                         <view class="operate_data_item">
@@ -74,40 +78,42 @@
                                 {{ data.homeObj.cntLike ? data.homeObj.cntLike : '--' }}
                             </view>
                             <view class="data_text">获赞数
-                                <!--                                <TnIcon name="right" color="#ffffff" size="28"/>-->
+                                <TnIcon name="right" color="#ffffff" size="28"/>
                             </view>
                         </view>
                     </view>
                 </view>
 
                 <view class="my_functionMuen">
-                    <TnTabs v-model="data.currentTabIndex" :bottom-shadow="false" active-font-size="32rpx"
-                        bar-color="#56cc7d" class="my_functionTabs" font-size="30rpx">
+                    <TnTabs v-model="data.currentTabIndex" :bottom-shadow="false" active-font-size="33rpx"
+                            bar-color="#56cc7d" class="my_functionTabs" font-size="32rpx">
                         <TnTabsItem v-for="item  in data.tabsData" :key="item.id" :title="item.name" active-color="#000"
-                            color="#666666" />
+                                    color="#666666" :badge-config="item.badgeConfig"/>
                     </TnTabs>
                     <view class="top_left" @click="toFunctionPage">
                         <view>查看全部</view>
-                        <TnIcon color="#999999" name="right" size="28" />
+                        <TnIcon color="#999999" name="right" size="28"/>
                     </view>
                     <view class="item" style="padding: 0 30rpx 30rpx 30rpx;">
                         <template v-if="data.currentTabIndex == 0">
                             <block v-for="(item, index) in data.serviceList" :key="index">
-                                <view class="flex" style="position: relative" @click="goOder(item.inds, item.taborIndex)">
+                                <view class="flex" style="position: relative ;width:max-content;"
+                                      @click="goOder(item.inds, item.taborIndex)">
                                     <image :src="item.icon" class="item_img" mode="aspectFit"></image>
                                     <text class="item_name">{{ item.name }}</text>
-                                    <!-- <u-badge :offset="[-5,15]" :value="item.badge" absolute bgColor="#FF2A2A" max="99"
-                                             type="error"></u-badge> -->
+                                    <TnBadge v-if="item.badge > 0" :value="item.badge" absolute bg-color="#FF2A2A"
+                                             max="99"></TnBadge>
                                 </view>
                             </block>
                         </template>
                         <template v-if="data.currentTabIndex == 1">
                             <block v-for="(item, index) in data.productList" :key="index">
-                                <view class="flex" style="position: relative" @click="goOder(item.inds, item.taborIndex)">
+                                <view class="flex" style="position: relative"
+                                      @click="goOder(item.inds, item.taborIndex)">
                                     <image :src="item.icon" class="item_img" mode="aspectFit"></image>
                                     <text class="item_name">{{ item.name }}</text>
-                                    <!-- <u-badge :offset="[-5,15]" :value="item.badge" absolute bgColor="#FF2A2A" max="99"
-                                             type="error"></u-badge> -->
+                                    <TnBadge v-if="item.badge > 0" :value="item.badge" absolute bg-color="#FF2A2A"
+                                             max="99"></TnBadge>
                                 </view>
                             </block>
                         </template>
@@ -137,15 +143,16 @@
                         </view>
                     </view>
                     <TnScrollList :indicator-block-color="'rgba(0, 216, 134,1)'" :indicator-block-width="15"
-                        :indicator-width="30" class="server_scroll" indicator-color="rgba(150, 243, 222,0.8)">
+                                  :indicator-width="30" class="server_scroll" indicator-color="rgba(150, 243, 222,0.8)">
                         <view class="scroll-list">
                             <view v-for="(item, index) in newmenu" :key="index" class="scroll-list__line">
                                 <block v-for="(item1, index1) in item" :key="index1">
                                     <view @click="listClick(item1)">
                                         <view
-                                            :class="[(index1 === item.length - 1) && 'scroll-list__line__item--no-margin-right']"
-                                            class="scroll-list__line__item">
-                                            <image :src="item1.img" class="scroll-list__line__item__image" mode=""></image>
+                                              :class="[(index1 === item.length - 1) && 'scroll-list__line__item--no-margin-right']"
+                                              class="scroll-list__line__item">
+                                            <image :src="item1.img" class="scroll-list__line__item__image"
+                                                   mode=""></image>
                                             <text class="scroll-list__line__item__text">{{ item1.title }}</text>
                                         </view>
                                     </view>
@@ -204,26 +211,25 @@ import { Debounce } from '@/libs/antivibthrot'
 import BCNotify from '@/components/notify/index.vue'
 import { PlatformManage } from "@bc/sys"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
+import TnBadge from '@tuniao/tnui-vue3-uniapp/components/badge/src/badge.vue'
 import { gotoLogin, gotoSetting } from "@/routes/public-routes"
 import { gotoInvoiceHistory, gotoorderList } from "@/routes/order-routes"
 import {
+    gotoAddressList,
     gotoAftersalesList,
-    gotoAnchorCenter,
     gotoAuth,
     gotoCollectLists,
     gotoCommentList,
-    gotoCouponHistory,
+    gotoCouponList,
     gotoEditProfile,
-    gotoelderlyFiles,
     gotoFeedback,
+    gotoPlatformQualification,
     gotoshareQR,
     gotoTrackList,
-    gotoWallet,
-    gotoWatchHistory
+    gotoWallet
 } from '@/routes/user-routes'
 import {
     gotoarticledetails,
-    gotocourseList,
     gotocreationPage,
     gotodataManage,
     gotoenjoyRecord,
@@ -233,15 +239,18 @@ import {
 import { getAssetsPic } from '@/common/setPicture'
 import { enjoydetail, getnewContentList, homePage } from '@/api/create-api'
 import { authDetail, favoriteList, likeLists } from '@/api/user-api'
-import { gotointegralMallGoods, gotoShoppingCart } from '@/routes/goods-routes'
+import { gotoShoppingCart } from '@/routes/goods-routes'
 import { gotosearch } from "@/routes/service-routes"
 import { getQRPage } from '@/api/open-api'
 import TnTabs from "@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue"
 import TnTabsItem from "@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue"
 import TnScrollList from '@tuniao/tnui-vue3-uniapp/components/scroll-list/src/scroll-list.vue'
 import { gotoDeviceManag, gotoDeviceSetup } from "@/routes/active-routes"
-import { gotoCoupon } from "@/routes/care-routes"
+import { gotoPatientEdit } from "@/routes/care-routes"
 import { gotoRoomManag, gotoScenServer } from "@/routes/wisdom-routes"
+import { getordercount } from '@/api/order-api'
+import { createTeam } from "@/api/nim-api"
+import { gotoChatPage } from "@/routes/nim-routes"
 
 interface tabulation {
     id: number,
@@ -257,7 +266,8 @@ interface transaction {
 
 interface tabsType {
     id: number,
-    name: string
+    name: string,
+    badgeConfig: any
 }
 
 
@@ -290,8 +300,8 @@ const data = reactive<Data>({
     authInfo: {},
     safeBotomHeight: 0,
     tabsData: [
-        { id: 1, name: '服务订单' },
-        { id: 2, name: '商品订单' }
+        { id: 1, name: '服务订单', badgeConfig: { value: 0 } },
+        { id: 2, name: '商品订单', badgeConfig: { value: 0 } }
     ],
     serviceList: [
         { name: '待支付', icon: getAssetsPic("/mine/v1/my_wp.svg"), inds: 0, taborIndex: 1, badge: 0 },
@@ -310,15 +320,15 @@ const data = reactive<Data>({
             name: 'youhuiquan',
             title: '优惠券',
             icon: getAssetsPic("/mine/v1/my_wall_6.png"),
-            url: gotoCouponHistory,
-            param: { sub: 0 }
+            url: gotoCouponList,
+            param: { type: '0' }
         },
         {
-            name: 'youhuiquan',
+            name: 'hongbao',
             title: '红包',
             icon: getAssetsPic("/mine/v1/my_wall_7.png"),
-            url: gotoCouponHistory,
-            param: { sub: 1 }
+            url: gotoCouponList,
+            param: { type: '1' }
         },
         {
             name: 'myWallet',
@@ -418,13 +428,13 @@ const data = reactive<Data>({
             title: "质量公告",
             img: getAssetsPic("/mine/v1/my_list_zz.svg"),
             affair_id: 0
-        }
-        /* {
-            name: "hetong",
-            title: "合同管理",
+        },
+        {
+            name: "zizhi",
+            title: "平台资质",
             img: getAssetsPic("/mine/my_icon_hetong.png"),
-            affair_id: 63,
-        }, */
+            affair_id: 0
+        }
         /* {
             name: "kefu",
             title: "致电客服",
@@ -472,10 +482,33 @@ onMounted(() => {
     })
 
     getuserInfo()
+    getOrderCount(data.currentTabIndex + 1)
+    getOrderCount(data.currentTabIndex + 2)
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         data.isRequireLogin = isRequireLogin
     })
 })
+
+const getOrderCount = (kind) => {
+    getordercount(kind).then((res: any) => {
+        if (kind == 1) { // 服务订单
+            data.serviceList[0].badge = res[65537]
+            data.serviceList[1].badge = res[131076]
+            data.serviceList[2].badge = res[131077]
+            data.serviceList[3].badge = res[-3]
+
+            data.tabsData[0].badgeConfig.value = data.serviceList.reduce((a: any, b: any) => a + Number(b.badge), 0)
+        }
+        else if (kind == 2) { // 商品订单
+            data.productList[0].badge = res[65537]
+            data.productList[1].badge = res[131074]
+            data.productList[2].badge = res[131075]
+            data.productList[3].badge = res[-3]
+
+            data.tabsData[1].badgeConfig.value = data.productList.reduce((a: any, b: any) => a + Number(b.badge), 0)
+        }
+    })
+}
 
 const toCreation = () => {
     if (!data.isRequireLogin) {
@@ -486,8 +519,8 @@ const toCreation = () => {
     }
 }
 
-
 const paging = ref()
+
 const queryList = (pageNumber: number, pageSize: number) => {
 
     // 检查登录状态
@@ -536,24 +569,42 @@ const changeType = (item: any) => {
     data.istag = item.id;
     (paging.value as any).reload()
 }
+const navUrl = () => {
+    PlatformManage.getToken().then((token: any) => {
+        createTeam({
+            userId: token?.id,
+            userName: token?.nickname,
+            userThumb: token?.avatar,
+            flag: 1, //1小程序用户，2服务人员
+            shopId: token?.shopId ?? 0,
+            type: 1 // 1平台，2店铺
+        }).then((res) => {
+            gotoChatPage({
+                to: res.tid,
+                scene: 'customer',
+                originPage: 'pagesMall/pages/intellect/home'
+            })
+        }).catch((err) => {
+            uni.showToast({
+                title: err.message,
+                icon: 'none'
+            })
+        })
+    })
+}
 
 const listClick = (item) => {
     console.log(item)
     Debounce(() => {
         switch (item.name) {
-            case "kefu":
-                // uni.makePhoneCall({
-                //     phoneNumber: this.$store.state.about.emergencyContact
-                // })
-                break
             case "serve":
-                // gotoIMSessionChat({ type: 1 })
+                navUrl()
                 break
             case "qualification_list":
-                // gotoUserQuality({ type: item.name })
+                gotoPlatformQualification(item)
                 break
             case "quality_announcement":
-                // gotoUserQuality({ type: item.name })
+                gotoPlatformQualification(item)
                 break
             case 'shoucang':
                 gotoCollectLists()
@@ -577,13 +628,28 @@ const listClick = (item) => {
                 gotoFeedback()
                 break
             case 'youhuiquan':
-                gotoCoupon()
+                item.url(item.param.type)
+                break
+            case 'hongbao':
+                item.url(item.param.type)
+                break
+            case 'myWallet':
+                item.url()
                 break
             case 'cart':
                 gotoShoppingCart()
                 break
+            case 'zizhi':
+                gotoPlatformQualification({ name: 'zizhi', title: '平台资质' })
+                break
+            case 'dizhi':
+                gotoAddressList()
+                break
+            case 'dangan':
+                gotoPatientEdit()
+                break
             default:
-                item.url()
+
         }
     }, 1000)
 }
@@ -591,7 +657,6 @@ const listClick = (item) => {
 const getuserInfo = () => {
     PlatformManage.getToken().then((res: any) => {
         data.userinfo = res
-        console.log('获取info', data.userinfo)
     })
     homePage({}).then((res) => {
         data.homeObj = res
@@ -609,7 +674,6 @@ const toSetting = () => {
 }
 
 const todataManage = (type: number) => {
-    console.log(type)
     gotodataManage({ type, isuser: 1 })
 }
 
@@ -628,13 +692,12 @@ const toenjoy = () => {
 
 const scanCode = () => {
     uni.scanCode({
-        success: function (res) {
+        success: function(res) {
 
             const [path, str] = res.path.split('?')
             const [type, scene] = str.split('=')
 
             getQRPage({ scene }).then((page) => {
-                console.log('page', page)
                 uni.navigateTo({
                     url: decodeURIComponent(page)
                 })
@@ -664,9 +727,6 @@ const toshareQR = () => {
 }
 
 const allwaterItem = (item: any) => {
-    console.log('data.topNavIndex', data.topNavIndex)
-
-    console.log('item', item)
 
     // 跳转发布作品列表详情
     if (data.topNavIndex == 0) {
@@ -699,25 +759,6 @@ const gotocarrySearch = () => {
     gotosearch({})
 }
 
-const functionMenu = (item: any) => {
-    PlatformManage.isRequireLogin().then((isRequireLogin) => {
-        if (isRequireLogin) {
-            bcNotify.value.show('请先登录')
-            setTimeout(() => {
-                gotoLogin({})
-            }, 1000)
-            return
-        }
-        item.id == 1 && gotoShoppingCart()
-        item.id == 2 && gotoorderList()
-        item.id == 3 && gotointegralMallGoods()
-        item.id == 4 && gotoAnchorCenter()
-        item.id == 5 && gotoWatchHistory('')
-        item.id == 6 && gotocourseList({})
-        item.id == 7 && gotocreationPage()
-        item.id == 8 && toenjoy()
-    })
-}
 
 const gotoPersonnel = (item, inds) => {
     PlatformManage.isRequireLogin().then(isRequireLogin => {
@@ -746,14 +787,23 @@ const toFunctionPage = () => {
             }, 1000)
             return
         }
-        gotoorderList()
+        gotoorderList({ sub: 0, taborIndex: 0 })
     })
 
 }
 
 // 订单/售后
 const goOder = (sub = 0, taborIndex = 0) => {
-    gotoorderList(sub)
+    PlatformManage.isRequireLogin().then((isRequireLogin) => {
+        if (isRequireLogin) {
+            bcNotify.value.show('请先登录')
+            setTimeout(() => {
+                gotoLogin({})
+            }, 1000)
+            return
+        }
+        gotoorderList({ sub, taborIndex })
+    })
 }
 
 const changetabs = (item: any, index: number) => {
@@ -766,7 +816,6 @@ const changeNav = (item: any, index: number) => {
     }
     data.topNavIndex = index;
     (paging.value as any).reload()
-    console.log(item)
 }
 
 defineExpose({
@@ -792,7 +841,7 @@ defineExpose({
 
 
 .my-bg-top {
-    height: 470rpx;
+    height: 500rpx;
     width: 100%;
     padding: 30rpx;
     background: #56CC7D;
@@ -1048,7 +1097,7 @@ defineExpose({
         display: flex;
         align-items: center;
         color: #ABABAB;
-        font-size: 26rpx;
+        font-size: 30rpx;
         position: absolute;
         right: 20rpx;
         top: 20rpx;
@@ -1056,8 +1105,8 @@ defineExpose({
 
     .item {
         color: #333333;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        display: flex;
+        justify-content: space-around;
         position: relative;
 
         .flex {

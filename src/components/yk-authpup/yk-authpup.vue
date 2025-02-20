@@ -19,7 +19,7 @@ interface Props {
     // 开启动画
     animation: boolean
     type: string
-    show: boolean
+    // show: boolean
     //是否是原生头部
     isNativeHead: boolean
     permissionID: string | number

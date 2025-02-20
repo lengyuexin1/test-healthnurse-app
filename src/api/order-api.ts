@@ -1,5 +1,35 @@
-import { openHttp, http } from "@bc/api"
-import type { _v1_bc_api_aftersale_afterConsent_post_req, _v1_bc_api_aftersale_applyRefund_post_req, _v1_bc_api_aftersale_close_post_req, _v1_bc_api_aftersale_reason_list_get_req, _v1_bc_api_aftersale_record_list_get_req, _v1_bc_api_aftersale_sptApiDetails_get_req, _v1_bc_api_aftersale_sptApiList_post_req, _v1_bc_api_aftersale_sptApplyFor_arbitration_post_req, _v1_bc_api_aftersale_spt_addExpress_post_req, _v1_bc_api_aftersale_spt_add_post_req, _v1_bc_api_aftersale_spt_againAdd_post_req, _v1_bc_app_cart_purchase_view_get_req, _v1_bc_app_coupon_check_post_req, _v1_bc_app_coupon_collect_post_req, _v1_bc_app_coupon_use_list_post_req, _v1_bc_app_coupon_use_platform_post_req, _v1_bc_app_kuaidi_express_company_list_get_req, _v1_bc_app_order_after_saleable_list_post_req, _v1_bc_app_order_cancel_post_req, _v1_bc_app_order_cardRefund_post_req, _v1_bc_app_order_create_post_req, _v1_bc_app_order_detail_get_req, _v1_bc_app_order_list_post_req, _v1_bc_app_order_purchase_view_get_req, _v1_bc_app_payment_check_pay_result_post_req, _v1_bc_app_payment_cpcn_wechat_app_pay_post_req, _v1_bc_app_payment_cpcn_wechat_pay_post_req, _v1_bc_app_payment_wechat_app_pay_post_req, _v1_bc_app_payment_wechat_pay_post_req, _v1_product_app_cart_purchase_view_get_req, _v1_product_app_order_confirm_receive_post_req, _v1_product_app_order_create_post_req, _v1_product_app_order_delay_receive_post_req, _v1_product_app_order_modify_post_req, _v1_product_app_order_price_calculation_post_req, _v1_product_app_order_purchase_view_get_req } from "@bc/api/types/order/api-types"
+import { http } from "@bc/api"
+import type {
+    _v1_bc_api_aftersale_afterConsent_post_req,
+    _v1_bc_api_aftersale_applyRefund_post_req,
+    _v1_bc_api_aftersale_close_post_req,
+    _v1_bc_api_aftersale_reason_list_get_req,
+    _v1_bc_api_aftersale_record_list_get_req,
+    _v1_bc_api_aftersale_spt_add_post_req,
+    _v1_bc_api_aftersale_spt_addExpress_post_req,
+    _v1_bc_api_aftersale_spt_againAdd_post_req,
+    _v1_bc_api_aftersale_sptApiDetails_get_req,
+    _v1_bc_api_aftersale_sptApiList_post_req,
+    _v1_bc_api_aftersale_sptApplyFor_arbitration_post_req,
+    _v1_bc_app_cart_purchase_view_get_req,
+    _v1_bc_app_coupon_collect_post_req,
+    _v1_bc_app_coupon_use_list_post_req,
+    _v1_bc_app_coupon_use_platform_post_req,
+    _v1_bc_app_kuaidi_express_company_list_get_req,
+    _v1_bc_app_order_after_saleable_list_post_req,
+    _v1_bc_app_order_cancel_post_req,
+    _v1_bc_app_order_cardRefund_post_req,
+    _v1_bc_app_order_create_post_req,
+    _v1_bc_app_order_detail_get_req,
+    _v1_bc_app_order_list_post_req,
+    _v1_bc_app_order_purchase_view_get_req,
+    _v1_bc_app_payment_check_pay_result_post_req,
+    _v1_product_app_order_confirm_receive_post_req,
+    _v1_product_app_order_create_post_req,
+    _v1_product_app_order_delay_receive_post_req,
+    _v1_product_app_order_modify_post_req,
+    _v1_product_app_order_price_calculation_post_req
+} from "@bc/api/types/order/api-types"
 import type { _v1_bc_app_shop_getBaseInfo_get_req } from "@bc/api/types/user/api-types"
 
 const WEB_ENV: TEnv = import.meta.env.VITE_WEB_ENV as TEnv
@@ -9,6 +39,13 @@ const WEB_ENV: TEnv = import.meta.env.VITE_WEB_ENV as TEnv
  * 订单类型api
  *
  */
+
+/**
+ * 服务订单、商品订单数量
+ * */
+export const getordercount = (kind: string) => {
+    return http.order.get('/v1/bc/app/order/count', { kind })
+}
 
 export const getserviceOrderList = (req:_v1_bc_app_order_list_post_req) => {
     return http.order.post('/v1/bc/app/order/list', req)

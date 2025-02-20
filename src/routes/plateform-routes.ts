@@ -31,7 +31,7 @@ export const gotoArticledetails = (itemId: any, content: string | null = null, t
     if (!content) {
         console.log('保存历史记录')
 
-        return pageController.isTokenPush(route)
+        return pageController.push(route)
     }
     else {
         console.log('不保存历史记录')
@@ -132,11 +132,11 @@ export const gotoimgdetails = (itemId: any) => {
 /** 康养详情 */
 export const gotohealthDetails = (itemId: any, isAd: any = 0, tologin = false) => {
     const route = {
-        path: '/Channel/pages/orderConfirm/healthDetails',
+        path: '/pagesService/pages/Servicestore/ServicestoreDetail',
         query: { itemId, isAd }
     } as any
     if (!tologin) {
-        return pageController.isTokenPush(route)
+        return pageController.push(route)
     }
     return pageController.isTokenPush(route)
 }
@@ -186,7 +186,7 @@ export const reLaunchIndex = () => {
 /** 跳转到 搜索 */
 export const gotoSearch = (key?: string, type?: number) => {
     const route = {
-        path: '/Mall/pages/search/search',
+        path: '/IndexPage/pages/search/search',
         query: {
             key: key,
             type: type //1 直接搜索 ，null 待搜索

@@ -229,6 +229,9 @@ export const waiCommentList = (req: _v1_bc_app_order_list_post_req) => {
 export const myCommentList = (req: _v1_bc_api_comment_commodity_view_post_req) => {
     return http.user.post('/v1/bc/api/comment/commodity/view', req)
 }
+export const getCommentTag = (req: _v1_bc_api_comment_commodity_view_post_req) => {
+    return http.user.get('/v1/bc/api/comment/tags', req)
+}
 
 /** 删除评论 */
 export const deleteComment = (req: _v1_bc_api_comment_delete_post_req) => {
@@ -653,4 +656,9 @@ export const authShopVerifyBinding = (req: any) => {
 /** 用户解绑商家 */
 export const authUnbindShop = () => {
     return http.user.post('/v1/bc/app/user/shopBinding/unbind')
+}
+
+/* 资质 */
+export const getLicence = (req: any) => {
+    return http.user.get('/v1/bc/public/app/public/licence/content', req)
 }
