@@ -99,7 +99,6 @@ const readyProvider = new DataProvider<string>()
 const initEvent = (instance: NIM | any) => {
     eventList.forEach((key) => {
         instance.on(key, (res: any) => {
-            console.log(`收到消息了${key}`, res)
 
             /** 成功登录 */
             key === 'logined' && serviceEmitter.emit("IM__LoginDone")
@@ -131,8 +130,7 @@ const initEvent = (instance: NIM | any) => {
             /** 收到新消息 */
             if (key === 'msg') {
                 if (res.type === 'notification') {
-                    console.log(res);
-                    
+
                     if (["addTeamMembers", "leaveTeam", "removeTeamMembers"].includes(res.attach.type)) {
                         serviceEmitter.emit("IM__OnTeamMsgAddOrLeaveMembers", res)
                     }

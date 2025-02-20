@@ -4,11 +4,11 @@
             <view class="order_shop">
                 <view class="order_shop_box">
                     <image
-                        class="shop_img"
-                        :src="shopItem.shopIcon"
-                        mode="aspectFill"
+                          class="shop_img"
+                          :src="shopItem.shopIcon"
+                          mode="aspectFill"
                     />
-                    <view class="shopName" >
+                    <view class="shopName">
                         {{ shopItem.shopName }}
                     </view>
                 </view>
@@ -18,9 +18,9 @@
             <view class="entity_box" v-for="entityItem in shopItem.entityList" :key="entityItem.entityId">
                 <view class="entity_good">
                     <image
-                        class="entity_good_img"
-                        :src="entityItem.image"
-                        mode="aspectFill"
+                          class="entity_good_img"
+                          :src="entityItem.image"
+                          mode="aspectFill"
                     />
                     <view class="entity_good_text">
                         <view class="entity_good_text_top">
@@ -37,71 +37,87 @@
                     </view>
                 </view>
                 <view v-if="props.orderInfo.isOrderPackage == 0">
-					<view class="order-time"
-                    v-if="props.orderInfo.utcVisitStart && props.orderInfo.kind != 3">
+                    <view class="order-time"
+                          v-if="props.orderInfo.utcVisitStart && props.orderInfo.kind != 3">
                         服务时间：{{ date(props.orderInfo.utcVisitStart) }}
-                        <text v-if="props.orderInfo.utcVisitEnd && showVisitEnd">至 {{ date(props.orderInfo.utcVisitEnd) }}</text>
+                        <text v-if="props.orderInfo.utcVisitEnd && showVisitEnd">至 {{
+                                date(props.orderInfo.utcVisitEnd)
+                            }}
+                        </text>
                     </view>
-					<view class="order-time" v-else>
-						下单时间：{{ date(props.orderInfo.utcCreated)}}
-					</view>
-				</view>
+                    <view class="order-time" v-else>
+                        下单时间：{{ date(props.orderInfo.utcCreated) }}
+                    </view>
+                </view>
                 <view class="order_type">
                     <view class="order-tpe-lef">
-						<view class="order-tpe-tex">{{props.orderInfo.statusName}}</view>
-					</view>
-                    <view class="order_type_text" v-if="props.orderInfo.statusName == '待付款'">
-						<text class="typetex" v-if="props.orderInfo.statusDetailIntro <= 0">{{ isNaN(props.orderInfo.statusDetailIntro) ? props.orderInfo.statusDetailIntro : '请支付' }}</text>
-                        <template v-else>
-							<text class="typetex">您的订单还有</text>
-                            <TnCountDown separator-color="#666666" size="24" :time="props.orderInfo.statusDetailIntro" :show-hour="false" separator-mode="cn"/>
-							<text class="typetex texmgin">过期，请尽快支付</text>
-						</template>
+                        <view class="order-tpe-tex">{{ props.orderInfo.statusName }}</view>
                     </view>
-                    <text class="typetex" v-else>{{props.orderInfo.statusDetailIntro || ''}}</text>
+                    <view class="order_type_text" v-if="props.orderInfo.statusName == '待付款'">
+                        <text class="typetex" v-if="props.orderInfo.statusDetailIntro <= 0">{{
+                                isNaN(props.orderInfo.statusDetailIntro) ? props.orderInfo.statusDetailIntro : '请支付'
+                            }}
+                        </text>
+                        <template v-else>
+                            <text class="typetex">您的订单还有</text>
+                            <TnCountDown separator-color="#666666" size="24" :time="props.orderInfo.statusDetailIntro"
+                                         :show-hour="false" separator-mode="cn"/>
+                            <text class="typetex texmgin">过期，请尽快支付</text>
+                        </template>
+                    </view>
+                    <text class="typetex" v-else>{{ props.orderInfo.statusDetailIntro || '' }}</text>
 
-					<text class="typetex retreat" v-if="props.orderInfo.cancelRefund">退款金额￥{{props.orderInfo.cancelRefund / 100}}</text>
+                    <text class="typetex retreat" v-if="props.orderInfo.cancelRefund">
+                        退款金额￥{{ props.orderInfo.cancelRefund / 100 }}
+                    </text>
 
                 </view>
 
                 <view class="order-botom" v-if="isCancel || isLaint">
                     <!--  width="118" height="60" -->
-                    <TnBubbleBox @click="BubbleBtn" :options="bubbleOptions" option-item-padding="12rpx" >
+                    <TnBubbleBox @click="BubbleBtn" :options="bubbleOptions" option-item-padding="12rpx">
                         <view class="BubbleBox">更多</view>
                     </TnBubbleBox>
                     <view class="order-allbtn">
-						<view class="order-allbtn-contact btn-border-green" v-if="![65796].includes(props.orderInfo.templateCodeId) && props.orderInfo.actionableList.includes('show_qrcode')"
-							>
-							<text class="order-allbtn-contact-text">出示二维码</text>
-						</view>
+                        <view class="order-allbtn-contact btn-border-green"
+                              v-if="![65796].includes(props.orderInfo.templateCodeId) && props.orderInfo.actionableList.includes('show_qrcode')"
+                        >
+                            <text class="order-allbtn-contact-text">出示二维码</text>
+                        </view>
 
-						<view class="order-allbtn-contact btn-border-grey" v-if="props.orderInfo.actionableList.includes('edit') && props.orderInfo.kind != 3"
-							>
-							<text class="order-allbtn-contact-text">修改订单</text>
-						</view>
-						<view class="order-allbtn-contact btn-border-grey" v-if="props.orderInfo.actionableList.includes('after_sale')"
-							>
-							<text class="order-allbtn-contact-text">申请售后</text>
-						</view>
+                        <view class="order-allbtn-contact btn-border-grey"
+                              v-if="props.orderInfo.actionableList.includes('edit') && props.orderInfo.kind != 3"
+                        >
+                            <text class="order-allbtn-contact-text">修改订单</text>
+                        </view>
+                        <view class="order-allbtn-contact btn-border-grey"
+                              v-if="props.orderInfo.actionableList.includes('after_sale')"
+                        >
+                            <text class="order-allbtn-contact-text">申请售后</text>
+                        </view>
 
-						<view class="order-allbtn-contact btn-border-green" v-if="props.orderInfo.actionableList.includes('pay')" >
-							<text class="order-allbtn-contact-text">去支付</text>
-						</view>
+                        <view class="order-allbtn-contact btn-border-green"
+                              v-if="props.orderInfo.actionableList.includes('pay')">
+                            <text class="order-allbtn-contact-text">去支付</text>
+                        </view>
 
-						<view class="order-allbtn-contact btn-border-green" v-if="props.orderInfo.actionableList.includes('show_card')" >
-							<text class="order-allbtn-contact-text">查看使用码</text>
-						</view>
+                        <view class="order-allbtn-contact btn-border-green"
+                              v-if="props.orderInfo.actionableList.includes('show_card')">
+                            <text class="order-allbtn-contact-text">查看使用码</text>
+                        </view>
 
-						<view class="order-allbtn-contact btn-border-green" v-if="props.orderInfo.actionableList.includes('use_now')">
-							<text class="order-allbtn-contact-text">立即使用</text>
-						</view>
+                        <view class="order-allbtn-contact btn-border-green"
+                              v-if="props.orderInfo.actionableList.includes('use_now')">
+                            <text class="order-allbtn-contact-text">立即使用</text>
+                        </view>
 
-						<view class="order-allbtn-contact btn-border-kong" v-if="props.orderInfo.actionableList.includes('comment')"
-						>
-							<text class="order-allbtn-contact-text">去评价</text>
-						</view>
+                        <view class="order-allbtn-contact btn-border-kong"
+                              v-if="props.orderInfo.actionableList.includes('comment')"
+                        >
+                            <text class="order-allbtn-contact-text">去评价</text>
+                        </view>
 
-					</view>
+                    </view>
                 </view>
 
             </view>
@@ -113,7 +129,7 @@
 
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/count-down.vue'
 import TnBubbleBox from '@tuniao/tnui-vue3-uniapp/components/bubble-box/src/bubble-box.vue'
 
@@ -122,28 +138,33 @@ import { gotoOrderDetail } from "@/routes/order-routes"
 
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
+
 dayjs.locale('zh-cn')
 
 
 interface Props {
-    orderInfo:any
+    orderInfo: any
 }
 
 const props = defineProps<Props>()
+onMounted(() => {
+    console.log('props.orderInfo', props.orderInfo)
+})
 
 interface Events {
     (e: "cancelOrder", obj: any): void
 }
+
 const emit = defineEmits<Events>()
 
 
 interface data {
 }
-const data = reactive<data>({
-})
+
+const data = reactive<data>({})
 
 
-const date = computed(() => (tiem:number) => {
+const date = computed(() => (tiem: number) => {
     return dayjs(tiem * 1000).format('YYYY-MM-DD HH:mm:ss')
 })
 
@@ -162,7 +183,6 @@ const isLaint = computed(() => {
 const bubbleOptions = computed(() => {
     // {text:'test',id:1}
     const bubbleOptionslist = []
-    console.log('props.orderInfo.actionableList', props.orderInfo.actionableList)
 
     if (props.orderInfo.actionableList.includes("cancel") || props.orderInfo.actionableList.includes("apply_refund")) {
         bubbleOptionslist.push({ text: '取消订单', id: 1 })
@@ -174,11 +194,10 @@ const bubbleOptions = computed(() => {
 })
 
 const cancelOrder = () => {
-    console.log('取消订单')
     emit('cancelOrder', props.orderInfo)
 }
 
-const BubbleBtn = (index:number) => {
+const BubbleBtn = (index: number) => {
     if (bubbleOptions.value[index].id == 1) {
         cancelOrder()
     }
@@ -198,108 +217,128 @@ const toOrderDetail = () => {
 :deep(.text) {
     font-size: 20rpx;
 }
+
 :global(.text) {
     font-size: 20rpx;
 }
-:deep(.tn-bubble-box__option-item){
+
+:deep(.tn-bubble-box__option-item) {
     padding: 16rpx 20rpx !important;
 }
-:global(.tn-bubble-box__option-item){
+
+:global(.tn-bubble-box__option-item) {
     padding: 16rpx 20rpx !important;
 }
 </style>
 
 <style lang="scss" scoped>
-.container{
+.container {
     width: 100%;
     background: #fff;
     border-radius: 24rpx;
     padding: 24rpx 30rpx;
     box-sizing: border-box;
     margin-bottom: 20rpx;
-    .order_shop{
+
+    .order_shop {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-bottom: 22rpx;
-        .order_shop_box{
+
+        .order_shop_box {
             display: flex;
             align-items: center;
-            .shop_img{
+
+            .shop_img {
                 width: 40rpx;
                 height: 40rpx;
                 border-radius: 50%;
                 margin-right: 8rpx;
             }
-            .shopName{
+
+            .shopName {
                 font-size: 24rpx;
                 color: #666666;
             }
         }
 
     }
-    .entity_box{
-        .entity_good{
+
+    .entity_box {
+        .entity_good {
             display: flex;
             justify-content: space-between;
             margin-bottom: 16rpx;
-            .entity_good_img{
+
+            .entity_good_img {
                 width: 160rpx;
                 height: 160rpx;
                 border-radius: 16rpx;
                 margin-right: 20rpx;
             }
-            .entity_good_text{
+
+            .entity_good_text {
                 width: 368rpx;
                 height: 160rpx;
                 margin-right: 18rpx;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                .entity_good_text_top{
-                    .entity_good_name{
+
+                .entity_good_text_top {
+                    .entity_good_name {
                         color: #333333;
                         font-size: 30rpx;
                     }
-                    .entity_good_subtitle{
+
+                    .entity_good_subtitle {
                         color: #999999;
                         font-size: 26rpx;
                     }
                 }
-                .entity_good_text_bottom{
+
+                .entity_good_text_bottom {
                     display: flex;
                     align-items: center;
-                    .price_text{
+
+                    .price_text {
                         color: #333333;
                         font-size: 24rpx;
                     }
-                    .price_number{
+
+                    .price_number {
                         font-size: 28rpx;
                         color: #FF1010;
                     }
                 }
             }
-            .entity_good_price{
+
+            .entity_good_price {
                 color: #666666;
                 font-size: 28rpx;
             }
         }
-        .order-time{
+
+        .order-time {
             font-size: 24rpx;
             color: #999999;
             margin-bottom: 20rpx;
         }
-        .order_type{
+
+        .order_type {
             background-color: #f5f5f5;
             height: 54rpx;
             border-radius: 6rpx;
             display: flex;
             align-items: center;
             margin-bottom: 24rpx;
-            .order_type_text{
+
+            .order_type_text {
                 display: flex;
                 align-items: center;
             }
+
             .order-tpe-lef {
                 position: relative;
                 padding: 0 72rpx 0 20rpx;
@@ -309,17 +348,16 @@ const toOrderDetail = () => {
                             transparent 22px,
                             #e5c6b4 22px,
                             #fbe8d3 100%
-                        )
-                        top right,
-                    linear-gradient(
+                ) top right,
+                linear-gradient(
                             -45deg,
                             transparent 22px,
                             #e5c6b4 22px,
                             #fbe8d3 100%
-                        )
-                        bottom right;
+                ) bottom right;
                 background-size: 100% 50%;
                 background-repeat: no-repeat;
+
                 .order-tpe-tex {
                     font-size: 24rpx;
                     font-weight: bold;
@@ -330,6 +368,7 @@ const toOrderDetail = () => {
                 }
             }
         }
+
         .order-botom {
             /* #ifndef APP-NVUE */
             display: flex;
@@ -344,10 +383,12 @@ const toOrderDetail = () => {
             box-sizing: border-box;
 
         }
-        .BubbleBox{
+
+        .BubbleBox {
             font-size: 24rpx;
             color: #919191;
         }
+
         .order-allbtn {
             /* #ifndef APP-NVUE */
             display: flex;
@@ -382,7 +423,8 @@ const toOrderDetail = () => {
                 justify-content: center;
                 align-items: center;
                 margin-left: 20rpx;
-                width: 150rpx;
+                //width: 190rpx;
+                padding: 0 20rpx;
                 height: 60rpx;
                 border-radius: 30rpx;
 
@@ -427,6 +469,7 @@ const toOrderDetail = () => {
                     opacity: 0;
                     display: none;
                 }
+
                 .order-allbtn-opt {
                     // position: absolute;
                     position: relative;
@@ -445,6 +488,7 @@ const toOrderDetail = () => {
             padding: 8rpx 14rpx;
             border-radius: 32rpx;
             white-space: nowrap;
+
             .order-allbtn-contact-text {
                 color: #ffffff;
             }
@@ -467,15 +511,18 @@ const toOrderDetail = () => {
         }
     }
 }
+
 .typetex {
     font-size: 24rpx;
     font-weight: 400;
     color: #666666;
     margin-left: -16rpx;
+
     &.retreat {
         margin-left: 4rpx;
         color: #29c86f;
     }
+
     &.texmgin {
         margin-left: 0rpx;
     }

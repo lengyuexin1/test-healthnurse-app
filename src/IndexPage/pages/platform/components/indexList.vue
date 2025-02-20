@@ -1,17 +1,18 @@
 <template>
     <z-paging ref="paging" v-model="data.dataList" :auto="true" :fixed="false" @query="queryList" @scroll="scrollPage"
-        :defaultPageSize="6" :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="还没有数据哦~"
-        :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true"
-        back-to-top-bottom="180rpx" :back-to-top-img="getAssetsUrl('/leyou/home/page_Topup.svg')"
-        :back-to-top-style="{ width: '80rpx', height: '80rpx', padding: '18rpx', background: '#fff', borderRadius: '50%' }">
+              :defaultPageSize="6" :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
+              empty-view-text="还没有数据哦~"
+              :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true"
+              back-to-top-bottom="180rpx" :back-to-top-img="getAssetsUrl('/leyou/home/page_Topup.svg')"
+              :back-to-top-style="{ width: '80rpx', height: '80rpx', padding: '18rpx', background: '#fff', borderRadius: '50%' }">
 
         <template #top>
             <view class="author" v-if="(props.channelId == 1 && data.attentionList.length != 0)">
                 <view class="author_item" v-for="item in data.attentionList" :key="item.followId">
                     <view class="author_img_box" @click="clickauthor(item)">
                         <image class="author_img"
-                            :src="item.accountId == 999 ? getAssetsUrl(item.followImage) : item.followImage"
-                            mode="scaleToFill" />
+                               :src="item.accountId == 999 ? getAssetsUrl(item.followImage) : item.followImage"
+                               mode="scaleToFill"/>
                     </view>
                     <view class="author_text">
                         {{ item.followName }}
@@ -24,13 +25,13 @@
         <view class="top_bg_box">
             <view class="live_swiper" v-if="swiperList.length != 0">
                 <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
-                    @change="liveswiperChange">
+                        @change="liveswiperChange">
 
                     <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id">
-                        <image class="live_swiper_img" :src="item.icon" mode="scaleToFill" @click="liveList(item)" />
+                        <image class="live_swiper_img" :src="item.icon" mode="scaleToFill" @click="liveList(item)"/>
                         <!-- index == 0 -->
                         <view class="live_box"
-                            v-if="((item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon))">
+                              v-if="((item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon))">
                             <view class="live_left_box">
                                 <BarPlaying bgColor="#FFFFFF"></BarPlaying>
                                 <view>直播中</view>
@@ -43,14 +44,15 @@
                 </swiper>
                 <view class="swiper_sign_box">
                     <view class="sign_item" :class="{ 'is_sign': signIndex == data.swiperIndex }"
-                        v-for="(signItem, signIndex) in swiperList.length" :key="signIndex"></view>
+                          v-for="(signItem, signIndex) in swiperList.length" :key="signIndex"></view>
                 </view>
             </view>
         </view>
         <!-- 首页列表 -->
         <view class="deCionBox">
-            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index" @click="gotoColmDetail(index, item)">
-                <image class="left_menu_img" :src="item.icon" mode="scaleToFill" />
+            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index"
+                  @click="gotoColmDetail(index, item)">
+                <image class="left_menu_img" :src="item.icon" mode="scaleToFill"/>
                 <view class="iconText">{{ item.name }}</view>
             </view>
         </view>
@@ -60,16 +62,16 @@
         </view>
 
         <!-- 专区 -->
-        <!-- <view v-if="showBk.includes(7)">
+        <view v-if="showBk.includes(7)">
             <onlyFor :allInList="allInList"></onlyFor>
-        </view> -->
+        </view>
 
         <!-- 新品 -->
         <view class="neds" v-if="showBk.includes(5)">
             <view class="newTitle">新品上市</view>
             <view class="newUp">
                 <view class="everyItem" v-for="(item, index) in newGoodList" :key="index">
-                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
+                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill"/>
                     <view class="img_right">
                         <view>
                             <view class="text_tit">{{ item.name }}</view>
@@ -96,7 +98,7 @@
             <view class="Nav_box">
                 <view class="Nav_scoll_box">
                     <view class="Nav_item" :class="{ 'have_right': NavList.length == (index + 1) }"
-                        v-for="(item, index) in NavList" :key="index" @click="changeNav(item)">
+                          v-for="(item, index) in NavList" :key="index" @click="changeNav(item)">
                         <view class="item_name">
                             <view> {{ item.name }}</view>
                             <view class="isSelect" v-if="NavId == item.id"></view>
@@ -141,20 +143,18 @@ import { getAssetsPic } from '@/common/setPicture'
 import { PlatformManage } from "@bc/sys"
 import NewZhen from './NewZhen.vue'
 import NewcomerWelfare from './newcomerWelfare.vue'
-import NewcomerTre from './NewcomerTre.vue'
 import BCNotify from '@/components/notify/index.vue'
 import WaterfallsFlow from './WaterfallsFlow.vue'
 import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { gotoLogin } from "@/routes/public-routes"
-import { gotoChannel, gotoChannelFollow } from '@/routes/create-routes'
-import { gotoLiveList } from '@/routes/user-routes'
+import { gotoChannelFollow } from '@/routes/create-routes'
+import { gotoAgency, gotoLiveList } from '@/routes/user-routes'
 import { activeDetail, bannerList, columnList, setPageBank } from "@/api/setite-api"
 import { gotoServiceStore } from '@/routes/service-routes'
 import { gotoallClassPage, gotoCenterChanges, gotoZone } from '@/routes/active-routes'
 import BottomMenu from "./channelSheet.vue"
 import { gotogoodsDetail } from '@/routes/goods-routes'
 import { gotoPersonnel } from "@/routes/wisdom-routes"
-import NewcomerTwo from './NewcomerTwo.vue'
 
 interface Data {
     dataList: any,
@@ -220,7 +220,6 @@ const upCalik = (item: any, index: number) => {
 }
 
 const gotoColmDetail = (index: any, item: any) => {
-    console.log(index, item)
     if (item.flagCode) {
         switch (item.id) {
             case '360':

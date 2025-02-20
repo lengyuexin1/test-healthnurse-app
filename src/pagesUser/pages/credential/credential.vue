@@ -1,9 +1,11 @@
 <template>
     <view class="container">
         <bc-page-navbar title="资质规则公示"></bc-page-navbar>
+        <!--        <customNavbar pageTitle="资质规则公示" colorCs="#f2f4f5"></customNavbar>-->
         <view class="article_parse">
-            <!--            <rich-text :nodes="data.articledetailsObj.content" ></rich-text>-->
-            <view class="content" v-html="data.articledetailsObj.content"></view>
+
+            <rich-text class="rich-text" :nodes="data.articledetailsObj.content" @itemclick="seeImg"></rich-text>
+
         </view>
         <!-- <view class="content">
             <view class="credtit">平台资质</view>
@@ -32,7 +34,7 @@
 
 <script lang="ts" setup>
 import { getLicence } from '@/api/user-api'
-import { reactive, ref } from "vue"
+import { onMounted, reactive, ref } from "vue"
 import { onLoad } from "@dcloudio/uni-app"
 import BCNotify from "@/components/notify/index.vue"
 
@@ -57,17 +59,30 @@ onLoad((options) => {
     data.templateCode = options.code
     getlicence()
 })
+onMounted(() => {
+
+})
 const seeImg = (url) => {
-    uni.previewImage({
-        content: url,
-        urls: [url]
+    console.log(url)
+    const { attrs } = url.detail.node
+    return uni.previewImage({
+        content: attrs.src,
+        urls: [attrs.src],
+        success: () => {
+        }
     })
 }
 
 const getlicence = () => {
     getLicence().then((res: any) => {
-        console.log(res)
-        data.articledetailsObj = res
+        const prese = res
+        // 删除宽高属性
+        const cleanedHtmlString = prese.content.replace(/ (width|height)="[^"]*"/g, '')
+        // 添加自定义宽高
+        const customWidth = "100%"
+        const customHeight = "auto"
+        prese.content = cleanedHtmlString.replace(/<img/g, `<img style="width: ${customWidth}; height: ${customHeight};" id="image"`)
+        data.articledetailsObj = prese
     }).catch(err => {
         bcNotify.value.error(err.message)
     })
@@ -75,6 +90,18 @@ const getlicence = () => {
 </script>
 
 <style lang="scss" scoped>
+/* H5 和 App 样式 */
+img {
+    width: 100%;
+    height: auto;
+}
+
+/* 微信小程序 rich-text 样式 */
+.rich-text img {
+    max-width: 100%;
+    height: auto;
+}
+
 .container {
     background: #ffffff;
 }
