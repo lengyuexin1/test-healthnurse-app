@@ -150,7 +150,7 @@ const tochoiceDetails = (item) => {
     }
     else {
         //上门详情
-        gotoserviceDetail(item.id)
+        gotoServiceStore({ itemId: item.id })
     }
 }
 
