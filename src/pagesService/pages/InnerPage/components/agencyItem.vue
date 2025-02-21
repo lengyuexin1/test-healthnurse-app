@@ -112,10 +112,10 @@ const getdistance = computed(() => (lat, lng) => {
     }
     // Calculate distance
     const distance = getDistances(
-        props.coordinate.lat,
-        props.coordinate.lng,
-        lat,
-        lng
+          props.coordinate.lat,
+          props.coordinate.lng,
+          lat,
+          lng
     )
     return distance + 'km'
 })
@@ -149,8 +149,8 @@ const tochoiceDetails = (item) => {
         gotoServiceOrg(item.id)
     }
     else {
-        //上门详情
-        gotoserviceDetail(item.id)
+        // 上门服务详情
+        gotoserviceDetail(item.id, item.isAd)
     }
 }
 

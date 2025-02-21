@@ -225,7 +225,7 @@
           }
         },
         {
-          "path": "pages/serviceComment/serviceComment",
+          "path": "pages/Servicestore/serviceComment",
           "style": {
             "navigationBarTitleText": "评论列表",
             "navigationStyle": "custom",
