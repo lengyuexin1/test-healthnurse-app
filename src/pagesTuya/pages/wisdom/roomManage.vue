@@ -37,7 +37,7 @@
                         </view>
                         <view class="romnagbtn btn">
                             <TnButton width="100%" height="90" text-color="#fff" font-size="32rpx" bg-color="#29C86F"
-                                border-color="#E3E3E3">扫码登录</TnButton>
+                                border-color="#E3E3E3" @click="handleClick">扫码登录</TnButton>
                         </view>
                     </view>
                     <view class="romnagboxs row i-center j-between" v-if="delShow">
@@ -83,6 +83,7 @@
                 </view>
             </view>
         </TnPopup>
+        <yk-authpup ref="authpup" :isNativeHead="false" type="top" @changeAuth="scanCode" permissionID="CAMERA"></yk-authpup>
         <BCNotify ref="bcNotify" v-if="!data.createShow"></BCNotify>
     </view>
 </template>
@@ -98,7 +99,8 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { gotoRoomDetail, gotoTuYa } from "@/routes/wisdom-routes"
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
-import { creatRoom, allRoomList, patientDelete } from "@/api/room-api"
+import { creatRoom, allRoomList, patientDelete, auditLoginCode } from "@/api/room-api"
+import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
 interface Data {
     dataList: any
     createShow: boolean
@@ -107,6 +109,7 @@ const data = reactive<Data>({
     dataList: [],
     createShow: false
 })
+const authpup = ref()
 const bcNotify = ref()
 const removeShow = ref(false)
 const paging = ref()
@@ -146,10 +149,10 @@ const linkDeviceManag = (item: any) => {
             loginCode: loginCode.value,
             patientId: item.id
         }).then(() => {
-            // uni.$u.toast('登录成功，请前往pad端查看')
+            bcNotify.value.show('登录成功，请前往pad端查看')
             loginCode.value = ''
-        }).catch((err:any) => {
-           console.log(err.message)
+        }).catch((err: any) => {
+            console.log(err.message)
         })
         return
     }
@@ -191,6 +194,37 @@ const addRoom = () => {
 
     })
 }
+
+const handleClick = () => {
+    // #ifdef APP-PLUS
+    authpup.value.open()
+    // #endif
+    // #ifndef APP-PLUS
+    padLogin()
+    // #endif
+}
+
+// 扫码登录pad
+const padLogin = () => {
+    uni.scanCode({
+        onlyFromCamera: true,
+        success: (res) => {
+            console.log("res", res)
+            if (res.result === "*") {
+                bcNotify.value.show("请扫描正确二维码")
+                return false
+            }
+            loginCode.value = res.result
+            bcNotify.value.show("扫码成功，请选择房间")
+            
+        },
+        fail: (err) => {
+            console.log("err", err)
+            bcNotify.value.show("扫码失败，请重试")
+        }
+    })
+}
+
 const openRemove = () => {
     if (delRimId.value.length <= 0) {
         bcNotify.value.show("请选择需要删除的房间")

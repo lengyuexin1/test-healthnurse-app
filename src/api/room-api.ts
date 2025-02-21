@@ -146,8 +146,13 @@ export const createTuyaHome = (req: any) => {
 }
 
 // 获取空调索引列表
-export const getIndexKt = (req: any, data:any) => {
-    return http.get('api/smart/v1/bc/app/tuya/getRemoteIndexArray', { infraredId: req, brandId:data })
+export const getIndexKt = (req: any, data: any) => {
+    return http.get('api/smart/v1/bc/app/tuya/getRemoteIndexArray', { infraredId: req, brandId: data })
+}
+
+// 扫码登录Ipad
+export const auditLoginCode = (req: any) => {
+    return http.post('api/smart/v1/bc/app/account/qrCodeLogin', req)
 }
 
 // 下发命令(配对)
