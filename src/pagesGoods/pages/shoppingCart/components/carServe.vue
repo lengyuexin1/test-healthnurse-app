@@ -115,7 +115,6 @@ import { GlobalEvents, dispatchWEvent } from "@/events/event-registry"
 import { TempStorage } from "@bc/base"
 import { gotoBalanceOrder } from '@/routes/order-routes'
 import { priceFormat } from '@/common/price-format'
-import { gotogoodsDetail } from "@/routes/goods-routes"
 import { PlatformManage } from "@bc/sys"
 
 interface Data {
