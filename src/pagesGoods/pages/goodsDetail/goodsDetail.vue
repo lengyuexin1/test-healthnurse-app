@@ -47,6 +47,7 @@
                             />
                         </TnTabs>
                     </div>
+
                 </view>
             </template>
 
@@ -101,14 +102,14 @@
                             <view class="serve-opt-li column i-center j-center" @click="setcollect">
                                 <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
                                     <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
-                                        <image width="36rpx" height="36rpx" :src="favoriteImg" mode="aspectFill"></image>
+                                        <image style="width: 36rpx;height: 36rpx;" :src="favoriteImg" mode="aspectFill"></image>
                                     </view>
                                 </view>
                                 <text :style="{ color: isFavorite ? '#ffae21' : '' }">收藏</text>
                             </view>
                             <view class="serve-opt-li column i-center j-center" @click="share">
                                 <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
-                                    <image width="36rpx" height="36rpx" :src="getAssetsUrl('/default/v1/share.svg')" mode="aspectFill"></image>
+                                    <image style="width: 36rpx;height: 36rpx;"  :src="getAssetsUrl('/default/v1/share.svg')" mode="aspectFill"></image>
                                 </view>
                                 <text>分享</text>
                             </view>
@@ -177,8 +178,7 @@
                     <image
                     @click="preImage(index,orderObj.productExt.detailImage)"
                     :src="item"
-                    width="750rpx"
-                    height="auto"
+                    style="width: 750rpx;height:auto;"
                     mode="widthFix"></image>
                 </block>
             </view>
@@ -228,8 +228,8 @@
 // import couponGet from "@/components/receiveCoupon/couponGet.vue"
 // import receiveCoupon from "@/components/receiveCoupon/receiveCoupon.vue"
 
-import couponGet from "@/Goods/components/receiveCoupon/couponGet.vue"
-import receiveCoupon from "@/Goods/components/receiveCoupon/receiveCoupon.vue"
+import couponGet from "@/pagesGoods/components/receiveCoupon/couponGet.vue"
+import receiveCoupon from "@/pagesGoods/components/receiveCoupon/receiveCoupon.vue"
 
 import { onLoad, onReady, onShareAppMessage } from '@dcloudio/uni-app'
 
@@ -250,7 +250,7 @@ import { pageController } from '@bc/uni-tools'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import tabbar from "./components/detailTabbar/detailTabbar.vue"
 
-import shareView from '@/Goods/components/shareView/shareView.vue'
+import shareView from '@/pagesGoods/components/shareView/shareView.vue'
 
 import optionSelect from './components/optionSelect/optionSelect.vue'
 import commentView from "./components/discuss-view/commentView.vue"

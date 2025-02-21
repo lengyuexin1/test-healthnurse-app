@@ -149,6 +149,7 @@ interface Data {
     orderDetail: any
     shopInfo: any
     dataLists: any
+    is_satisfied:any
     fileList: any
     allRate: number
     taskId: string
@@ -247,7 +248,6 @@ const submit = () => {
         submitComment({
             score: JSON.stringify(scoreOjb),
             tags: JSON.stringify(tags),
-            applyId: data.kind == 3 ? 13 : 2,
             anonymity: false,
             taskId: data.taskId,
             applyId: data.shopInfo.applyId,

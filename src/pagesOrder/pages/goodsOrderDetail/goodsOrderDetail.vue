@@ -11,7 +11,7 @@ import { ref, reactive, nextTick } from 'vue'
 import { onLoad, onShow, onReady, onShareAppMessage } from '@dcloudio/uni-app'
 
 import goodsOrderDetailPage from './components/goodsOrderDetailPage'
-import verifyAccount from '@/Order/components/verifyAccount.vue'
+import verifyAccount from '@/pagesOrder/components/verifyAccount.vue'
 
 
 interface Data {
@@ -20,33 +20,33 @@ interface Data {
     userId: string
 }
 const data = reactive<Data>({
-    orderId:'',
+    orderId: '',
     isAppOpen: false,
-    userId: '',
+    userId: ''
 })
 
 
-onLoad((option:any)=>{
+onLoad((option:any) => {
     data.orderId = option.itemId ? option.itemId : null
 
     if (!data.orderId) {
         data.userId = option.userId
 
-        let payJSON = option.payJSON.replace(/\\/g, "");
-        payJSON = JSON.parse(payJSON);
+        let payJSON = option.payJSON.replace(/\\/g, "")
+        payJSON = JSON.parse(payJSON)
 
         data.orderId = payJSON.itemId
         data.isAppOpen = payJSON.isAppOpen
 
-        
 
-        console.log('payJSON',payJSON);
-        console.log('data.isAppOpen',data.isAppOpen);
-        
+
+        console.log('payJSON', payJSON)
+        console.log('data.isAppOpen', data.isAppOpen)
+
 
     }
 
-    console.log(data.orderId);
+    console.log(data.orderId)
 })
 
 const orderDetail = ref()
@@ -55,23 +55,23 @@ onShow(() => {
 })
 
 const accountUserRef = ref()
-onReady(()=>{
-    if(data.userId){
+onReady(() => {
+    if (data.userId) {
         // app校验小程序登录账号是否与app登录的账号一致
-        nextTick(()=>{
+        nextTick(() => {
             // (accountUserRef.value as any).checkUser(data.userId)
             (accountUserRef.value as any).checkUser(data.userId)
-            
+
         })
     }
 })
 
 //#ifdef MP-WEIXIN
-onShareAppMessage((res:any)=>{
+onShareAppMessage((res:any) => {
     const orderObj = res.target.dataset.object.shopList[0].entityList[0]
     const collageRecordId = res.target.dataset.object.collageRecordId
 
-    
+
     return {
         title: '超优惠！快来和我一起拼团',
         path: `/Order/pages/groupSplit/groupSplit?id=${orderObj.itemId}&collage_id=${collageRecordId}`,
@@ -87,7 +87,7 @@ onShareAppMessage((res:any)=>{
 .bottom_btn{
     background: #fff;
     height: 120rpx;
-    
+
 }
 </style>
 <style>

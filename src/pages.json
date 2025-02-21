@@ -225,7 +225,7 @@
           }
         },
         {
-          "path": "pages/serviceComment/serviceComment",
+          "path": "pages/Servicestore/serviceComment",
           "style": {
             "navigationBarTitleText": "评论列表",
             "navigationStyle": "custom",
@@ -1076,14 +1076,14 @@
             "enablePullDownRefresh": false
           }
         },
-        {
-          "path": "pages/goodsOrderDetail/goodsOrderDetail",
-          "style": {
-            "navigationBarTitleText": "适品订单详情",
-            "navigationStyle": "custom",
-            "enablePullDownRefresh": false
-          }
-        },
+//        {
+//          "path": "pages/goodsOrderDetail/goodsOrderDetail",
+//          "style": {
+//            "navigationBarTitleText": "适品订单详情",
+//            "navigationStyle": "custom",
+//            "enablePullDownRefresh": false
+//          }
+//        },
         {
           "path": "pages/balanceOrder/balanceOrder",
           "style": {

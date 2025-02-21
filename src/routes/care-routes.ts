@@ -1,5 +1,5 @@
 import { pageController } from '@bc/uni-tools'
-import { gotoserviceDetail, gotoShopDetail } from '@/routes/service-routes'
+import { gotoServiceStore, gotoShopDetail } from '@/routes/service-routes'
 
 
 interface ICommentListQuery {
@@ -329,23 +329,17 @@ const serviceCode = [2, 13, 12]
 export const gotoAttendShop = (id: string, applyId?: TShopApply) => {
     console.log('applyId', applyId)
     // return
-    if (serviceCode.includes(applyId)) {
-        return gotoserviceDetail(id)
-    }
-    if (applyId === 3) {
+    if (applyId === 2 || applyId === 3) {
         return gotoShopDetail(id)
     }
-    // if (applyId === 12) {
-    //     return gotoserviceDetail({ id })
+
+    return gotoServiceStore({ itemId: id })
+
+    // const route = {
+    //     path: '/pagesMall/pages/shop/shopDetail',
+    //     query: { id }
     // }
-    // if (applyId === 13) {
-    //     return gotoserviceDetail(id)
-    // }
-    const route = {
-        path: '/pagesMall/pages/shop/shopDetail',
-        query: { id }
-    }
-    return pageController.push(route)
+    // return pageController.push(route)
 }
 
 

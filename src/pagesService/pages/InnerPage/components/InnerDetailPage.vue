@@ -28,7 +28,7 @@
                             :src="item.showregion ? getAssetsUrl('/channel/icon_down_highlig.png') : getAssetsUrl('/channel/icon_down.png')"
                             mode="scaleToFill" />
                     </div>
-                </div>
+            </div>
             <view class="top_icon_list">
                 <view class="top_scrool">
                     <view
@@ -46,11 +46,11 @@
                     </view>
                 </view>
             </view>
-            <view class="screen_box" v-if="data.dataList.length">
-                <!-- 列表 -->
-                <agencyItem :agencyList="data.dataList" :coordinate="coordinate" :positioning="positioning" />
-            </view>
         </template>
+        <view class="screen_box" v-if="data.dataList.length">
+            <!-- 列表 -->
+            <agencyItem :agencyList="data.dataList" :coordinate="coordinate" :positioning="positioning" />
+        </view>
         <!-- <institutionList :dataList="data.dataList"></institutionList> -->
 
         <BCNotify ref="bcNotify"></BCNotify>
@@ -110,11 +110,13 @@
                     </div>
                 </div>
             </TnPopup>
+            <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="getLocation"
+            permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, defineExpose } from 'vue'
-
+import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
 import agencyItem from "../components/agencyItem.vue"
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import { getAssetsPic, setPriceVer } from '@/common/setPicture'
@@ -493,7 +495,7 @@ defineExpose({
     background: linear-gradient(180deg, #dff7ef -190%, #f8f9f9 110%);
     display: flex;
     justify-content: center;
-    z-index: 9;
+    z-index: 9999999;
 
     .menu_item {
         width: 33%;

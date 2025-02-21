@@ -106,7 +106,7 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import BCNotify from '@/components/notify/index.vue'
-import institutionList from './institutionList.vue'
+import institutionList from './components/institutionList.vue'
 import { getcategoryList } from '@/api/service-api'
 import { servicelist } from "@/api/goods-api"
 import { gotosearch } from '@/routes/service-routes'

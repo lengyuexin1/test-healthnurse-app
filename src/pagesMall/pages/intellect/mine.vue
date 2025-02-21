@@ -1,6 +1,5 @@
 <template>
     <view class="content">
-        <!--        <customNavbar bgColor="#F7F7F7" pageTitle="我的" leftIcon=" "></customNavbar>-->
         <bc-page-navbar title="我的">
             <template #back>
                 <view></view>
@@ -10,21 +9,20 @@
             <view class="row i-center j-between">
                 <view class="myInfo_detail" @tap="editInfo">
                     <view class="myInfo_pic">
-                        <image :src="data.userinfo && data.userinfo.avatar || '/static/default_avatar.png'"
+                        <image v-if="Object.keys(data.userinfo).length > 0" :src="data.userinfo && data.userinfo.avatar || '/static/default_avatar.png'"
                                mode="aspectFill" style="width: 110rpx;height: 110rpx; border-radius: 50%;">
-                            <template #error>
-                                <image class="avatar" src="/static/default_avatar.png" mode="aspectFill">
-                                </image>
-                            </template>
+                        </image>
+                        <image v-else class="avatar" :src="getAssetsUrl('/leyou/static/default_avatar.png')" mode="aspectFill"
+                               style="width: 110rpx;height: 110rpx; border-radius: 50%;">
                         </image>
                     </view>
-                    <view class="column" v-if="data.userinfo">
+                    <view class="column" v-if="Object.keys(data.userinfo).length > 0">
                         <text class="name u-line-1">{{ data.userinfo.mobile }}</text>
                         <view class="grade">
                             <text class="grde-tex">账号名：{{ data.userinfo.regCode || '' }}</text>
                         </view>
                     </view>
-                    <text class="name" v-else>点击头像登录</text>
+                    <text class="name" v-else>点击登录</text>
                 </view>
                 <view class="myInfo_set row i-center j-between">
                     <view class="set_li" @click="navUrl(0)">
@@ -34,7 +32,7 @@
                     <view class="set_li" @click="gotoMessage" style="position: relative;">
                         <image :src="getAssetsUrl('/zhihu/zh-xx.svg')" style="width: 56rpx;height: 56rpx;"></image>
                         <view class="txt">消息</view>
-                        <TnBadge bgColor="#FF2A2A" absolute type="danger" max="99" :value="data.badge"
+                        <TnBadge bg-color="#FF2A2A" absolute type="danger" max="99" :value="data.badge"
                                  :offset="[-5, -10]"></TnBadge>
                     </view>
                 </view>
@@ -68,7 +66,7 @@ import TnBadge from '@tuniao/tnui-vue3-uniapp/components/badge/src/badge.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import { gotoEditProfile } from "@/routes/user-routes"
 import { gotoLogin } from "@/routes/public-routes"
-import { gotoChatPage, gotoNoticeList } from "@/routes/nim-routes"
+import { gotoChatPage } from "@/routes/nim-routes"
 import { getAssetsPic } from "@/common/setPicture"
 import { gotoKnowledge } from "@/routes/wisdom-routes"
 import { gotoScienceAssort } from "@/routes/care-routes"
@@ -78,15 +76,16 @@ import { appLogins } from "@/libs/appLogin" //阿里云一键登录sdk
 import { computed, onMounted, reactive } from 'vue'
 import { PlatformManage } from "@bc/sys"
 import { createTeam } from "@/api/nim-api"
+import { onLoad } from "@dcloudio/uni-app"
 
-interface celList {
+interface cellist {
     id: string;
     name: string;
     img: string;
 }
 
 interface Data {
-    celList: celList[];
+    celList: cellist[];
     badge: number;
     userinfo: any;
 }
@@ -102,7 +101,10 @@ const data = reactive<Data>({
     userinfo: {}
 })
 onMounted(() => {
+})
+onLoad(() => {
     PlatformManage.getToken().then((res: any) => {
+        console.log(res)
         data.userinfo = res
     })
 })
@@ -121,7 +123,7 @@ const editInfo = async () => {
             })
             // #endif
             // #ifdef MP-WEIXIN || H5
-            gotoLogin()
+            gotoLogin({})
             // #endif
 
             return
@@ -154,7 +156,7 @@ const navUrl = () => {
     })
 }
 const gotoMessage = () => {
-    gotoNoticeList()
+    // gotoNoticeList()
 }
 const gotoCell = (item) => {
     console.log(item.name)
