@@ -1,7 +1,8 @@
 <template>
     <view class="wrap" style="height: 100vh" v-if="showPage">
-        <z-paging ref="paging" v-model="dataList" @query="queryList" :defaultPageSize="10" empty-view-text="还没有数据哦~"
-            :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" @scroll="pagingScroll">
+        <z-paging ref="paging" v-model="dataList" @query="queryList" :defaultPageSize="10"
+                  empty-view-text="还没有数据哦~"
+                  :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" @scroll="pagingScroll">
             <template #top>
                 <!-- <PageTopbg></PageTopbg> -->
 
@@ -9,7 +10,7 @@
                     <view class="navbar_box" :style="{ paddingTop: titleTop + 'px', paddingRight: titleRight + 'px' }">
                         <view class="top_box" :style="{ height: sBarHeight + 'px' }">
                             <view @click="goback">
-                                <TnIcon name="left" color="#333333" size="38" :bold="true" />
+                                <TnIcon name="left" color="#333333" size="38" :bold="true"/>
                             </view>
                             <view class="title_text">详情</view>
 
@@ -22,10 +23,10 @@
 
                     <div class="tab_box">
                         <TnTabs v-model="tabCurrent" color="#fff" :scroll="false" bg-color="#fff" bar-color="#29C86F"
-                            :bottom-shadow="false">
+                                :bottom-shadow="false">
                             <TnTabsItem v-for="(item, index) in tabList" :key="index" :title="item.name"
-                                font-size="28rpx" active-color="#333333" color="#999999"
-                                @click="changeTab(item, index)" />
+                                        font-size="28rpx" active-color="#333333" color="#999999"
+                                        @click="changeTab(item, index)"/>
                         </TnTabs>
                     </div>
 
@@ -33,22 +34,22 @@
             </template>
 
             <view class="back_icon" v-if="!showtab" @click="goback">
-                <TnIcon name="left" color="#fff" size="38" :bold="true" />
+                <TnIcon name="left" color="#fff" size="38" :bold="true"/>
             </view>
 
             <div class="head_box" id="toView1">
                 <swiper class="swiper_box" autoplay circular :current="currentSwiperIndex" @change="changeSwiper">
                     <swiper-item class="swiper_item" v-for="(item, index) in orderObj.multimedia" :key="index">
                         <image class="image" :src="item" mode="aspectFill"
-                            @click="preImage(currentSwiperIndex, orderObj.multimedia)" />
+                               @click="preImage(currentSwiperIndex, orderObj.multimedia)"/>
                     </swiper-item>
                 </swiper>
                 <view class="indicator_box">
                     <view class="indicator_item" :class="{ 'is_Selected': index == currentSwiperIndex }"
-                        v-for="(item, index) in orderObj.multimedia" :key="index"></view>
+                          v-for="(item, index) in orderObj.multimedia" :key="index"></view>
                 </view>
             </div>
-            <couponGet v-if="couparr.length" @getCoupon="getCoupon" />
+            <couponGet v-if="couparr.length" @getCoupon="getCoupon"/>
 
             <view class="servebox" id="serveBox">
                 <view class="serve-info">
@@ -57,8 +58,9 @@
                             <view class="serve-abt">
                                 <view class="goods-up">
                                     <text class="goods-title u-line-2 u-font-xl">{{
-                                        orderObj.name
-                                        }}</text>
+                                            orderObj.name
+                                        }}
+                                    </text>
                                 </view>
                                 <view class="servebat row i-center u-line-1">
                                     <text class="servebatli">{{ orderObj.desc }}</text>
@@ -74,7 +76,7 @@
                                 <view class="serve-opt-li column i-center j-center" @click="share">
                                     <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
                                         <image width="36rpx" height="36rpx"
-                                            :src="getAssetsUrl('/default/v1/share.svg')"></image>
+                                               :src="getAssetsUrl('/default/v1/share.svg')"></image>
                                     </view>
                                     <text>分享</text>
                                 </view>
@@ -82,20 +84,28 @@
                         </view>
 
                         <view class="servemore row i-center j-between">
-                            <view class="serveprice" v-if="optionList.length">￥{{ moneyFilter(monovalent)
-                                }}<text>/{{ optionList[0].extend.serviceWorkingHours.unitName }}起</text></view>
-                            <view class="servenum">已服务<text>{{ orderObj.saleVolume || 0 }}</text>位客户</view>
+                            <view class="serveprice" v-if="optionList.length">￥{{
+                                    moneyFilter(monovalent)
+                                }}
+                                <text>/{{ optionList[0].extend.serviceWorkingHours.unitName }}起</text>
+                            </view>
+                            <view class="servenum">已服务
+                                <text>{{ orderObj.saleVolume || 0 }}</text>
+                                位客户
+                            </view>
                         </view>
 
                         <view class="hospital row" v-if="hospital.name">
-                            所属医院：<view class="name">{{ hospital.name }}</view>
+                            所属医院：
+                            <view class="name">{{ hospital.name }}</view>
                         </view>
 
                         <!-- 服务提示 -->
                         <view class="servernote" v-if="orderObj.note">
                             <view class="notetit">服务提示：</view>
                             <view>
-                                <expandable :lineHeight="48" expandText="查看更多" :longText="orderObj.note"></expandable>
+                                <expandable :lineHeight="48" expandText="查看更多"
+                                            :longText="orderObj.note"></expandable>
                             </view>
                         </view>
                     </view>
@@ -105,7 +115,9 @@
                     <view class="goodssel row i-center j-between" @click="openSelect(false)">
                         <view class="godsellef row i-center" v-if="optionInfo.id">
                             <text class="godseltip">服务套餐：</text>
-                            <view class="u-line-1"><text class="godseltion">{{ optionInfo.name }}</text></view>
+                            <view class="u-line-1">
+                                <text class="godseltion">{{ optionInfo.name }}</text>
+                            </view>
                             <text class="godselprice">￥{{ moneyFilter(optionInfo.price) }}</text>
                         </view>
                         <view class="godsellef row i-center" v-else>
@@ -131,8 +143,9 @@
             <!-- 长图片详情 -->
             <view id="toView3">
                 <block v-for="(item, index) in orderObj.noticeMultimedia" :key="index">
-                    <image @click="preImage(index, orderObj.noticeMultimedia)" :src="item" style="width:750rpx ;height: auto;"
-                        mode="widthFix"></image>
+                    <image @click="preImage(index, orderObj.noticeMultimedia)" :src="item"
+                           style="width:750rpx ;height: auto;"
+                           mode="widthFix"></image>
                 </block>
             </view>
 
@@ -143,10 +156,11 @@
             </view>
 
             <image class="shop-service" :src="getAssetsUrl('/leyou/icon/customer_service.png')" mode="scaleToFill"
-                @tap="clickCustomerService" />
+                   @tap="clickCustomerService"/>
             <template #bottom>
                 <!--  @linkShop="linkAttendShop" @openCoupon="getCoupon"  @formBtn="openSelect" @goCart="linkCart" -->
-                <tabbar @clickTab="clickTab" :btnTxt="couparr.length && couparr[0].length ? '领券购买' : '立即下单'"></tabbar>
+                <tabbar @clickTab="clickTab"
+                        :btnTxt="couparr.length && couparr[0].length ? '领券购买' : '立即下单'"></tabbar>
             </template>
         </z-paging>
 
@@ -155,17 +169,17 @@
 
     <!-- 选择规格 -->
     <optionSelect ref="optSel" @getOptionItem="setOption" :type="1" :info="orderObj" :list="optionList"
-        :baseName="shareData.baseInfo.name" :btnTxt="couparr.length && couparr[0].length ? '领券购买' : '立即下单'" />
+                  :baseName="shareData.baseInfo.name"
+                  :btnTxt="couparr.length && couparr[0].length ? '领券购买' : '立即下单'"/>
 
     <!-- 优惠券 coupon-->
-    <receiveCoupon ref="refCoup" :list="couparr" @openSkunotice="openSkunotice" />
+    <receiveCoupon ref="refCoup" :list="couparr" @openSkunotice="openSkunotice"/>
 
     <!-- 分享 -->
     <shareView ref="shareBox" @sharePage="sharePage" @sharePoster="sharePoster" :status="status" :imgUrl="shareimgUrl">
     </shareView>
     <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="254" height="344"
-        style="width:254px; height:344px"></canvas>
-
+            style="width:254px; height:344px"></canvas>
 
 
 </template>
@@ -173,12 +187,13 @@
 <script setup lang="ts">
 // import couponGet from "@/components/receiveCoupon/couponGet.vue"
 // import receiveCoupon from "@/components/receiveCoupon/receiveCoupon.vue"
+import { computed, getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue'
+import BCNotify from '@/components/notify/index.vue'
 
 import couponGet from "@/pagesGoods/components/receiveCoupon/couponGet.vue"
 import receiveCoupon from "@/pagesGoods/components/receiveCoupon/receiveCoupon.vue"
 import { onLoad, onReady, onShareAppMessage } from '@dcloudio/uni-app'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
-import TnSwiper from '@tuniao/tnui-vue3-uniapp/components/swiper/src/swiper.vue'
 import TnTabs from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue'
 import TnTabsItem from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue'
 import expandable from './components/expandable-text.vue'
@@ -191,15 +206,12 @@ import { recommendList } from '@/api/goods-api'
 //     cancelCollect,
 //     getFavoriteItem
 // } from "@/api/care-api"
-import { getServeDetail, collectService, cancelCollect, itemCouponList, addItemBrowerHistory } from "@/api/service-api"
-import { isFavoriteItem } from '@/api/user-api'
-import recommend from '@/libs/recommend'
+import { addItemBrowerHistory, cancelCollect, collectService, getServeDetail, itemCouponList } from "@/api/service-api"
+import { getQrcode, isFavoriteItem } from '@/api/user-api'
 import { moneyFilter } from "@/common/filters"
-import { ref, reactive, toRefs, computed, nextTick, getCurrentInstance, onMounted } from 'vue'
 import { PlatformManage } from "@bc/sys"
 import { getAssetsPic } from "@/common/setPicture"
 import { pageController } from '@bc/uni-tools'
-import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import tabbar from "./components/detailTabbar/detailTabbar.vue"
 
 import shareView from '@/pagesGoods/components/shareView/shareView.vue'
@@ -207,12 +219,10 @@ import shareView from '@/pagesGoods/components/shareView/shareView.vue'
 import optionSelect from './components/optionSelect/optionSelect.vue'
 import commentView from "./components/discuss-view/commentView.vue"
 import shopView from "./components/shopView/shopView.vue"
-import BCNotify from '@/components/notify/index.vue'
-import { gotoShoppingCart, gotogoodsDetail } from '@/routes/goods-routes'
-import { gotoServiceStore, gotoShopDetail } from "@/routes/service-routes"
+import { gotogoodsDetail, gotoShoppingCart } from '@/routes/goods-routes'
+import { gotoShopDetail } from "@/routes/service-routes"
 import { gotoIndex, gotoLogin } from "@/routes/public-routes"
 import { drawBGIMG } from '@/libs/canvas-tools'
-import { getQrcode } from "@/api/user-api"
 import WaterfallsFlow from './components/WaterfallsFlow.vue'
 import { createTeam } from "@/api/nim-api"
 import { gotoChatPage } from "@/routes/nim-routes"
@@ -230,6 +240,7 @@ const props = defineProps({
 })
 const livePlayId = ref('')
 const paging = ref()
+const bcNotify = ref()
 const shaView = ref()
 const refCoup = ref()
 const optSel = ref()
@@ -262,7 +273,6 @@ const shareData = reactive<any>({
     isshow: false,
     baseInfo: {}
 })
-const bcNotify = ref()
 
 const orderObj = ref()
 
@@ -314,7 +324,6 @@ onMounted(async () => {
     // #endif
 
 
-
     // #ifdef MP-WEIXIN
     // 获取系统状态栏高度
     sBarHeight.value = uni.getSystemInfoSync().statusBarHeight!
@@ -324,7 +333,6 @@ onMounted(async () => {
     // 计算顶部右侧偏移量
     titleRight.value = width + 8
     // #endif
-
 
 
     // #ifdef APP-PLUS || H5
@@ -343,7 +351,6 @@ const getDetail = (id: any) => {
     getServeDetail({
         id
     }).then((res: any) => {
-
         orderObj.value = {
             id: res.item.id,
             thumb: res.item.thumb,
@@ -364,9 +371,9 @@ const getDetail = (id: any) => {
         getOptionItem(res.optionList[0])
         // getElementTop()
         showPage.value = true
-    }).catch((err) => {
-        throw new Error(err.message)
-        bcNotify.value.error(err.message)
+    }).catch((err: any) => {
+        console.log(err)
+        bcNotify.value.error('请求错误')
     })
 }
 
@@ -438,7 +445,9 @@ const getCoupList = () => {
         itemId: itemId.value
     }
     itemCouponList(data).then((res) => {
-        if (res.length <= 0) { return }
+        if (res.length <= 0) {
+            return
+        }
         const arr1: any = []
         const arr2: any = []
         res.map((x: any) => {
@@ -450,10 +459,17 @@ const getCoupList = () => {
             }
         })
         shareInfo.couparr = [arr1, arr2]
-    })
-        .catch((err) => {
-            bcNotify.value.error(err.message)
+    }).catch((err) => {
+        uni.showToast({
+            icon: 'none',
+            title: err.message,
+            duration: 1000
         })
+        setTimeout(() => {
+            uni.navigateBack()
+        }, 1500)
+        throw Error(err)
+    })
 }
 
 // 收藏
@@ -463,13 +479,13 @@ const setcoll = () => {
         itemId: itemId.value
     }
     collectService(datas)
-        .then(() => {
-            isFavorite.value = true
-            bcNotify.value.show('收藏成功')
-        })
-        .catch((err: any) => {
-            bcNotify.value.error(err.message)
-        })
+          .then(() => {
+              isFavorite.value = true
+              bcNotify.value.show('收藏成功')
+          })
+          .catch((err: any) => {
+              bcNotify.value.error(err.message)
+          })
 }
 //取消收藏
 const celcoll = () => {
@@ -477,13 +493,13 @@ const celcoll = () => {
         itemIds: [itemId.value]
     }
     cancelCollect(datas)
-        .then(() => {
-            isFavorite.value = false
-            bcNotify.value.show('取消收藏')
-        })
-        .catch((err: any) => {
-            bcNotify.value.error(err.message)
-        })
+          .then(() => {
+              isFavorite.value = false
+              bcNotify.value.show('取消收藏')
+          })
+          .catch((err: any) => {
+              bcNotify.value.error(err.message)
+          })
 }
 
 const setOption = (str: string) => {
@@ -492,10 +508,10 @@ const setOption = (str: string) => {
 
 // 店铺详情
 const linkAttendShop = () => {
-    let id = baseId.value
+    const id = baseId.value
     // console.log(shareData.baseInfo)
     // return
-    gotoServiceStore({ id: shareData.baseInfo.id })
+    gotoShopDetail(shareData.baseInfo.id)
 }
 const getBaseInfo = (data: any) => {
     if (data.message || !data.id) {
@@ -543,7 +559,6 @@ const opengetAllCoupon = () => {
 const openSkunotice = () => {
     optSel.value.opennotifyRef()
 }
-
 
 
 // const { orderObj, infoData } = toRefs(dataAll)
@@ -716,28 +731,28 @@ const sharePoster = async () => {
     context.restore()
 
     context.draw(
-        false,
-        setTimeout(async () => {
-            uni.canvasToTempFilePath({
-                canvasId: 'mycanvas',
-                success: (res: any) => {
-                    shareimgUrl.value = res.tempFilePath
-                    status.value = 2
-                    title = ''
-                },
-                fail: err => {
-                    console.log(err)
-                    uni.showToast({
-                        icon: 'none',
-                        title: '生成失败,请稍后重试'
-                    })
-                },
-                complete: (ret) => {
-                    console.log('生成中....')
-                    uni.hideLoading()
-                }
-            }, instance)
-        }, 3000)
+          false,
+          setTimeout(async () => {
+              uni.canvasToTempFilePath({
+                  canvasId: 'mycanvas',
+                  success: (res: any) => {
+                      shareimgUrl.value = res.tempFilePath
+                      status.value = 2
+                      title = ''
+                  },
+                  fail: err => {
+                      console.log(err)
+                      uni.showToast({
+                          icon: 'none',
+                          title: '生成失败,请稍后重试'
+                      })
+                  },
+                  complete: (ret) => {
+                      console.log('生成中....')
+                      uni.hideLoading()
+                  }
+              }, instance)
+          }, 3000)
     )
 
 
@@ -816,7 +831,6 @@ defineExpose({
             display: flex;
             align-items: center;
             justify-content: space-between;
-
 
 
             // #ifdef APP-PLUS || H5
