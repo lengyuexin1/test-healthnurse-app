@@ -140,13 +140,16 @@ onMounted(() => {
 const tochoiceDetails = (item) => {
     console.log(item)
     if (props.templateId === 122) {
+        // 到店服务详情
         gotoServiceStore({ itemId: item.id })
         return
     }
     if (item.businessType === 4) {
+        // 机构详情
         gotoServiceOrg(item.id)
     }
     else {
+        // 上门服务详情
         gotohealthDetails(item.id, item.isAd)
     }
 }

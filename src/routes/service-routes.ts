@@ -7,7 +7,7 @@ import { pageController } from '@bc/uni-tools'
  */
 
 //上门服务详情
-export const gotoserviceDetail = (itemId: string) => {
+    export const gotoserviceDetail = (itemId: string) => {
     console.log('没有服务详情界面')
     const route = {
         path: '/pagesService/pages/serviceDetail/serviceDetail',
@@ -20,7 +20,7 @@ export const gotoserviceDetail = (itemId: string) => {
 // 到店服务详情
 export const gotoServiceStore = (query: any) => {
     const route = {
-        path: '/pagesService/pages/serviceDetail/serviceDetail',
+        path: '/pagesService/pages/Servicestore/ServicestoreDetail',
         query
     } as any
     return pageController.push(route)

@@ -187,6 +187,8 @@
 <script setup lang="ts">
 // import couponGet from "@/components/receiveCoupon/couponGet.vue"
 // import receiveCoupon from "@/components/receiveCoupon/receiveCoupon.vue"
+import { computed, getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue'
+import BCNotify from '@/components/notify/index.vue'
 
 import couponGet from "@/pagesGoods/components/receiveCoupon/couponGet.vue"
 import receiveCoupon from "@/pagesGoods/components/receiveCoupon/receiveCoupon.vue"
@@ -207,7 +209,6 @@ import { recommendList } from '@/api/goods-api'
 import { addItemBrowerHistory, cancelCollect, collectService, getServeDetail, itemCouponList } from "@/api/service-api"
 import { getQrcode, isFavoriteItem } from '@/api/user-api'
 import { moneyFilter } from "@/common/filters"
-import { computed, getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue'
 import { PlatformManage } from "@bc/sys"
 import { getAssetsPic } from "@/common/setPicture"
 import { pageController } from '@bc/uni-tools'
@@ -218,7 +219,6 @@ import shareView from '@/pagesGoods/components/shareView/shareView.vue'
 import optionSelect from './components/optionSelect/optionSelect.vue'
 import commentView from "./components/discuss-view/commentView.vue"
 import shopView from "./components/shopView/shopView.vue"
-import BCNotify from '@/components/notify/index.vue'
 import { gotogoodsDetail, gotoShoppingCart } from '@/routes/goods-routes'
 import { gotoShopDetail } from "@/routes/service-routes"
 import { gotoIndex, gotoLogin } from "@/routes/public-routes"
@@ -240,6 +240,7 @@ const props = defineProps({
 })
 const livePlayId = ref('')
 const paging = ref()
+const bcNotify = ref()
 const shaView = ref()
 const refCoup = ref()
 const optSel = ref()
@@ -272,7 +273,6 @@ const shareData = reactive<any>({
     isshow: false,
     baseInfo: {}
 })
-const bcNotify = ref()
 
 const orderObj = ref()
 
@@ -351,7 +351,6 @@ const getDetail = (id: any) => {
     getServeDetail({
         id
     }).then((res: any) => {
-
         orderObj.value = {
             id: res.item.id,
             thumb: res.item.thumb,
@@ -372,9 +371,9 @@ const getDetail = (id: any) => {
         getOptionItem(res.optionList[0])
         // getElementTop()
         showPage.value = true
-    }).catch((err) => {
-        throw new Error(err.message)
-        bcNotify.value.error(err.message)
+    }).catch((err: any) => {
+        console.log(err)
+        bcNotify.value.error('请求错误')
     })
 }
 
@@ -460,10 +459,17 @@ const getCoupList = () => {
             }
         })
         shareInfo.couparr = [arr1, arr2]
+    }).catch((err) => {
+        uni.showToast({
+            icon: 'none',
+            title: err.message,
+            duration: 1000
+        })
+        setTimeout(() => {
+            uni.navigateBack()
+        }, 1500)
+        throw Error(err)
     })
-          .catch((err) => {
-              bcNotify.value.error(err.message)
-          })
 }
 
 // 收藏
@@ -502,7 +508,7 @@ const setOption = (str: string) => {
 
 // 店铺详情
 const linkAttendShop = () => {
-    let id = baseId.value
+    const id = baseId.value
     // console.log(shareData.baseInfo)
     // return
     gotoShopDetail(shareData.baseInfo.id)
