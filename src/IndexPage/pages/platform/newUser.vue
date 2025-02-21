@@ -28,7 +28,7 @@
                                 </view>
                             </view>
                             <view class="noget" v-if="item.isUse == 1" @click="getUp(item)">领取</view>
-                            <view class="noget alseUse" v-else @click="gotoUse(item)">去使用</view>
+                            <view class="noget alseUse" v-else @click="gotoUse(item)">已领取</view>
                         </view>
                     </view>
 
