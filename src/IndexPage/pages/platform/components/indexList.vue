@@ -200,7 +200,7 @@ const dataObj: any = ref({})
 const dataObjTwo: any = ref({})
 const tabsData: any = ref([
     { id: '88', icon: getAssetsPic('/fare/v2/zhihui.png'), name: '智慧康护', flagCode: 1, textImg: getAssetsPic('/fare/v2/zhtext.svg') },
-    { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康', flagCode: 1 },
+    // { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康', flagCode: 1 },
     { id: '5', icon: getAssetsPic('/fare/v2/gre-cai.png'), name: '到店健康', flagCode: 1 },
     { id: '8', icon: getAssetsPic('/fare/v2/home_icon_jigou.png'), name: '找机构', flagCode: 1 },
     { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 }
