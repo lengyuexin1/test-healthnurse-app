@@ -12,7 +12,8 @@
             </template>
 
             <view class="corbox">
-                <u-gap height="16" bgColor="rgba(0,0,0,0)"></u-gap>
+                <!--                <u-gap height="16" bgColor="rgba(0,0,0,0)"></u-gap>-->
+                <view style="width: 100%;height: 16rpx;"></view>
                 <block v-for="(item,index) in data.hisList" :key="index">
                     <view class="vocetit">
                         <text class="text">{{ item.month }}</text>
@@ -41,12 +42,12 @@
                                     {{ stateList[ele.status].text }}
                                 </text>
                                 <text v-else :style="{ color: '#ff3366' }">开票失败</text>
-                                <u-icon name="arrow-right" size="28rpx" color="#BEBEBE"></u-icon>
+                                <TnIcon name="right" size="28rpx" color="#BEBEBE"></TnIcon>
                             </view>
                         </view>
                     </view>
                 </block>
-                <u-safe-bottom></u-safe-bottom>
+                <!--                <u-safe-bottom></u-safe-bottom>-->
             </view>
         </z-paging>
     </view>
@@ -58,6 +59,7 @@ import { invoiceList } from '@/api/care-api'
 import { computed, reactive, ref, watch } from "vue"
 import { getAssetsPic } from "@/common/setPicture"
 import { pagination } from '@/common/sneakInto'
+import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 
 interface Data {
     params: object,

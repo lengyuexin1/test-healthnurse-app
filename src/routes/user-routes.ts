@@ -226,7 +226,8 @@ export const gotoMemberList = (query: any) => {
 }
 
 /** 跳转到 卡券/红包 */
-export const gotoCouponList = (type: string) => {
+export const gotoCouponList = (type: string | number) => {
+    console.log('类型', type)
     const route = {
         path: "/pagesUser/pages/coupon/coupon",
         query: { type }

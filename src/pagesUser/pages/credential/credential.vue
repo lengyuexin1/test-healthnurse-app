@@ -1,6 +1,6 @@
 <template>
     <view class="container">
-        <bc-page-navbar title="资质规则公示"></bc-page-navbar>
+        <bc-page-navbar :title="data.pageTitle"></bc-page-navbar>
         <!--        <customNavbar pageTitle="资质规则公示" colorCs="#f2f4f5"></customNavbar>-->
         <view class="article_parse">
 
@@ -37,11 +37,13 @@ import { getLicence } from '@/api/user-api'
 import { onMounted, reactive, ref } from "vue"
 import { onLoad } from "@dcloudio/uni-app"
 import BCNotify from "@/components/notify/index.vue"
+import { articleDetail } from "@/api/room-api"
 
 interface Data {
     articledetailsObj: any,
     templateCode: string,
-    pStyle: any
+    pStyle: any,
+    pageTitle: string
 }
 
 const bcNotify = ref()
@@ -53,11 +55,29 @@ const data = reactive<Data>({
         p: 'opacity: 1;margin:28rpx 0 28rpx 0;line-height: 56rpx;font-size:32rpx!important;color: #333333;display: block;',
         span: 'opacity: 1;margin:28rpx 0 28rpx 0;line-height: 56rpx;font-size:32rpx!important;color: #333333;display: block;',
         img: 'width: 100%!important; height: auto;'
-    }
+    },
+    pageTitle: ''
 })
 onLoad((options) => {
-    data.templateCode = options.code
-    getlicence()
+    switch (options.name) {
+        case 'qualification_list':
+            data.pageTitle = options.title
+            articleDetail(options.name).then((res: any) => {
+                data.articledetailsObj = res
+            })
+            break
+        case 'quality_announcement':
+            data.pageTitle = options.title
+            articleDetail(options.name).then((res: any) => {
+                data.articledetailsObj = res
+            })
+            break
+        case 'zizhi':
+            data.pageTitle = options.title
+            data.templateCode = options.code
+            getlicence()
+            break
+    }
 })
 onMounted(() => {
 

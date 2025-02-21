@@ -225,7 +225,7 @@
           }
         },
         {
-          "path": "pages/Servicestore/serviceComment",
+          "path": "pages/serviceComment/serviceComment",
           "style": {
             "navigationBarTitleText": "评论列表",
             "navigationStyle": "custom",
@@ -236,6 +236,14 @@
           "path": "pages/Servicestore/imgInstitution",
           "style": {
             "navigationBarTitleText": "图集列表",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/InnerPage/organizationPage",
+          "style": {
+            "navigationBarTitleText": "服务列表内页",
             "navigationStyle": "custom",
             "enablePullDownRefresh": false
           }
@@ -1155,7 +1163,13 @@
             "enablePullDownRefresh": false,
             "navigationStyle": "custom"
           }
-        }
+        },
+        {
+					"path": "pages/groupSplit/groupSplit",
+					"style": {
+                        "navigationBarTitleText": "拼团分享"
+                    }
+				}
       ]
     },
     {

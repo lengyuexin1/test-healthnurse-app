@@ -22,7 +22,7 @@
             </div>
             <div class="mation row j-between">
                 <div class="mattit">订单邮费</div>
-                <div class="mattip">包邮</div>
+                <div class="mattip">{{ isShippingFree }}</div>
             </div>
             <div class="mation row j-between">
                 <div class="mattit">已优惠</div>
@@ -103,6 +103,14 @@ const sumPrice = computed(()=>(key:string)=>{
     })
     return sum
 
+})
+
+/** @return {string|number} 是否包邮 */
+const isShippingFree = computed(() => {
+    if (props.serviceInfo.priceInfo.postalAmount == 0) {
+        return '包邮'
+    }
+    return '￥' + props.serviceInfo.priceInfo.postalAmount / 100
 })
 
 const copy = (str:string)=> {

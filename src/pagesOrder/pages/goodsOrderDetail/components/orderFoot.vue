@@ -11,7 +11,7 @@
 				</div>
 				
 				<div class="fotbtn commentbtn" v-if="actionList.includes('edit') " @click="operate('edit')">
-                    <navigator url="/pagesUser/pages/address/goodsSiteList" hover-class="none">
+                    <navigator url="/User/pages/address/goodsSiteList" hover-class="none">
                         <view >修改地址</view>
                     </navigator>
 				</div>

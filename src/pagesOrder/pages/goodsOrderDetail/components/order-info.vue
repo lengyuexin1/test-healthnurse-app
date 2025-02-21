@@ -114,7 +114,8 @@ onMounted(()=>{
 const gotorefund = (item:any) => {
     // 申请退款
     const refundDetail = TempStorage.savewx({
-        ...item
+        ...item,
+        priceInfo: props.serviceInfo.priceInfo
     })
 
     gotorefundShopOrder({refundDetail})

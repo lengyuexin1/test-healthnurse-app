@@ -23,7 +23,6 @@
             </template>
 
             <view id="navbarTop"></view>
-
             <TnPopup v-model="showPopup" :overlay-opacity="0" open-direction="top" :style="'margin-top:' + navbarTop + 'px'">
                 <div class="menu_show_box">
                     <!-- 区域菜单 -->

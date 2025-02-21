@@ -148,9 +148,10 @@ import WaterfallsFlow from './WaterfallsFlow.vue'
 import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { gotoLogin } from "@/routes/public-routes"
 import { gotoChannelFollow } from '@/routes/create-routes'
+
 import { gotoAgency, gotoLiveList } from '@/routes/user-routes'
 import { activeDetail, bannerList, columnList, setPageBank } from "@/api/setite-api"
-import { gotoServiceStore } from '@/routes/service-routes'
+import { gotoServiceStore, toInnerPage } from '@/routes/service-routes'
 import { gotoallClassPage, gotoCenterChanges, gotoZone } from '@/routes/active-routes'
 import BottomMenu from "./channelSheet.vue"
 import { gotogoodsDetail } from '@/routes/goods-routes'
@@ -231,6 +232,9 @@ const gotoColmDetail = (index: any, item: any) => {
             case '5':
                 gotoAgency()
                 break
+            case '8':
+                toInnerPage(item.id)
+                break
             default:
                 break
         }
@@ -310,9 +314,9 @@ const changeNav = (item: any) => {
             }
         })
     }
-    NavId.value = item.id;
+    NavId.value = item.id
     // (paging.value as any).reload()
-    queryList(1,6)
+    queryList(1, 6)
 }
 
 const allInList: any = ref([])
