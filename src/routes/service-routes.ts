@@ -10,7 +10,7 @@ import { pageController } from '@bc/uni-tools'
 export const gotoserviceDetail = (itemId: string) => {
     console.log('没有服务详情界面')
     const route = {
-        path: '/pagesService/pages/Servicestore/ServicestoreDetail',
+        path: '/pagesService/pages/serviceDetail/serviceDetail',
         // path: '/pagesService/pages/Servicestore/healthproductDetails',
         query: { itemId }
     } as any

@@ -61,6 +61,8 @@ const gotoDetail = (item: any) => {
             }, 1000)
             return
         }
+        console.log(item)
+        // return
         if (item.businessType == 1) {
             gotoserviceDetail(item.id)
         }

@@ -3,16 +3,22 @@
         <view class="list_box">
             <!-- <div class="recommend_title" >为您推荐</div> -->
             <div class="list_item" v-for="item in agencyList" :key="item.id" @click="tochoiceDetails(item)">
-                <image class="item_img" :src="item.thumb" mode="aspectFill" />
+                <image class="item_img" :src="item.thumb" mode="aspectFill"/>
                 <div class="item_text_box">
                     <div>
                         <div class="item_text_title">{{ item.name }}</div>
                         <div class="descCs" v-if="templateId == 122">{{ item.desc }}</div>
-                        <text class="item-info-pric" v-if="templateId == 122">￥{{ (item.price / item.quantity) |
-                            moneyFilter }}</text>
+                        <text class="item-info-pric" v-if="templateId == 122">￥{{
+                                (item.price / item.quantity) |
+                                      moneyFilter
+                            }}
+                        </text>
                         <text class="item-info-optionName" v-if="templateId == 122">/起</text>
-                        <text class="item-info-fakePrice" v-if="item.fakePrice">￥{{ (item.fakePrice / item.quantity) |
-                            moneyFilter }}</text>
+                        <text class="item-info-fakePrice" v-if="item.fakePrice">￥{{
+                                (item.fakePrice / item.quantity) |
+                                      moneyFilter
+                            }}
+                        </text>
 
                         <view class="customer row i-center j-center" v-if="templateId == 122">
                             <u-image src="/static/custip.svg" width="22rpx" height="22rpx" mode="aspectFill"></u-image>
@@ -20,29 +26,40 @@
                         </view>
 
                         <view class="seller row i-center" @click="navShopDetail" v-if="templateId == 122">
-                            <u-image v-if="item.shopThumb" :src="getShopPic(item.shopThumb) || ''" errorIcon="error-circle"
-                                width="30rpx" height="30rpx" radius="20" mode="aspectFill"></u-image>
+                            <u-image v-if="item.shopThumb" :src="getShopPic(item.shopThumb) || ''"
+                                     errorIcon="error-circle"
+                                     width="30rpx" height="30rpx" radius="20" mode="aspectFill"></u-image>
                             <view class="sel-tit u-line-1">{{ item.shopName || '' }}</view>
                         </view>
 
                         <div class="item_rate" v-if="isKangyang(item)">
                             <!-- 康养评分 -->
                             <u-rate :count="5" v-model="item.score" inactive-icon="star-fill" inactiveColor="#EBEBEB"
-                                activeColor="#FF983D" gutter="1" :readonly="true"></u-rate>
+                                    activeColor="#FF983D" gutter="1" :readonly="true"></u-rate>
                             <text class="rate_num">{{ item.score }}</text>
-                            <text class="comment_text">{{ item.commentCnt ? (item.commentCnt + '条') : '暂无评论' }}</text>
+                            <text class="comment_text">{{
+                                    item.commentCnt ? (item.commentCnt + '条') : '暂无评论'
+                                }}
+                            </text>
                         </div>
                         <div class="item_text_deca">
-                            <text class="item_text_institution" v-if="item.categoryNames">{{ item.categoryNames[0] }}</text>
+                            <text class="item_text_institution" v-if="item.categoryNames">{{
+                                    item.categoryNames[0]
+                                }}
+                            </text>
                             <text class="item_text_area">{{ getAreaName(item.districtName) }}</text>
                         </div>
                     </div>
                     <div>
-                        <div class="item_text_price_box" v-if="templateId !== 122" :class="{ have_price: isKangyang(item) }">
+                        <div class="item_text_price_box" v-if="templateId !== 122"
+                             :class="{ have_price: isKangyang(item) }">
                             <div class="item_text_price" v-if="(item.minPrice || item.maxPrice) && item.applyId != 13">
                                 ￥
-                                <div class="item_text_pricenumber">{{ item.minPrice ? item.minPrice : item.maxPrice |
-                                    moneyFilter }}</div>
+                                <div class="item_text_pricenumber">{{
+                                        item.minPrice ? item.minPrice : item.maxPrice |
+                                              moneyFilter
+                                    }}
+                                </div>
                                 <div class="item_text_extend">/月</div>
                             </div>
                             <div class="item_distance" v-if="positioning">{{ getdistance(item.lat, item.lng) }}</div>
@@ -64,12 +81,11 @@
 
 <script setup lang="ts">
 import { getAreaDict } from "@/api/care-api"
-import { ref, computed, reactive, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { setPriceVer } from '@/common/setPicture'
-import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
-import { gotoserviceDetail, gotoServiceStore, gotoServiceOrg } from '@/routes/service-routes'
+import { gotoServiceOrg, gotoServiceStore } from '@/routes/service-routes'
 import { getDistances } from '@/utils/distance'
-import { gotogoodsDetail } from '@/routes/goods-routes'
+import { gotohealthDetails } from "@/routes/plateform-routes"
 
 const props = defineProps({
     templateId: Number,
@@ -91,13 +107,15 @@ const getShopPic = computed(() => (str) => {
 })
 
 const getdistance = computed(() => (lat, lng) => {
-    if (!props.coordinate.lat) { return '' }
+    if (!props.coordinate.lat) {
+        return ''
+    }
     // Calculate distance
     const distance = getDistances(
-        props.coordinate.lat,
-        props.coordinate.lng,
-        lat,
-        lng
+          props.coordinate.lat,
+          props.coordinate.lng,
+          lat,
+          lng
     )
     return distance + 'km'
 })
@@ -120,6 +138,7 @@ onMounted(() => {
 
 // Methods
 const tochoiceDetails = (item) => {
+    console.log(item)
     if (props.templateId === 122) {
         gotoServiceStore({ itemId: item.id })
         return
@@ -128,7 +147,7 @@ const tochoiceDetails = (item) => {
         gotoServiceOrg(item.id)
     }
     else {
-        gotoserviceDetail(item.id)
+        gotohealthDetails(item.id, item.isAd)
     }
 }
 
@@ -185,6 +204,7 @@ const hasAreaList = () => {
     // padding:0 20rpx 20rpx 20rpx;
     box-sizing: border-box;
     width: 100%;
+
     .list_item {
         padding: 24rpx;
         box-sizing: border-box;

@@ -102,14 +102,14 @@
                             <view class="serve-opt-li column i-center j-center" @click="setcollect">
                                 <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
                                     <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
-                                        <image width="36rpx" height="36rpx" :src="favoriteImg" mode="aspectFill"></image>
+                                        <image style="width: 36rpx;height: 36rpx;" :src="favoriteImg" mode="aspectFill"></image>
                                     </view>
                                 </view>
                                 <text :style="{ color: isFavorite ? '#ffae21' : '' }">收藏</text>
                             </view>
                             <view class="serve-opt-li column i-center j-center" @click="share">
                                 <view class="row i-center j-center" style="width:46rpx;height:46rpx;">
-                                    <image width="36rpx" height="36rpx" :src="getAssetsUrl('/default/v1/share.svg')" mode="aspectFill"></image>
+                                    <image style="width: 36rpx;height: 36rpx;"  :src="getAssetsUrl('/default/v1/share.svg')" mode="aspectFill"></image>
                                 </view>
                                 <text>分享</text>
                             </view>
@@ -178,8 +178,7 @@
                     <image
                     @click="preImage(index,orderObj.productExt.detailImage)"
                     :src="item"
-                    width="750rpx"
-                    height="auto"
+                    style="width: 750rpx;height:auto;"
                     mode="widthFix"></image>
                 </block>
             </view>
