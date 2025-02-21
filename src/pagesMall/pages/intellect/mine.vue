@@ -154,7 +154,7 @@ const navUrl = () => {
     })
 }
 const gotoMessage = () => {
-    gotoNoticeList()
+    // gotoNoticeList()
 }
 const gotoCell = (item) => {
     console.log(item.name)

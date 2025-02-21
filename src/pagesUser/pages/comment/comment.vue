@@ -149,6 +149,7 @@ interface Data {
     orderDetail: any
     shopInfo: any
     dataLists: any
+    is_satisfied:any
     fileList: any
     allRate: number
     taskId: string

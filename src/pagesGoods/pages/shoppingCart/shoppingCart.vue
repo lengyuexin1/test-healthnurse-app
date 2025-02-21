@@ -1,5 +1,5 @@
 <template>
-    <pageContainer :loading="data.pageLoading">
+    <!-- <pageContainer :loading="data.pageLoading"> -->
     <view class="contraner">
         <z-paging ref="paging"  @query="queryList" v-model="data.dataList":defaultPageSize="10" :refresher-enabled="false" :hide-empty-view="true">
             <template #top>
@@ -22,7 +22,7 @@
         <BCNotify ref="bcNotify"></BCNotify>
         </z-paging>
     </view>
-    </pageContainer>
+    <!-- </pageContainer> -->
 
 </template>
 
