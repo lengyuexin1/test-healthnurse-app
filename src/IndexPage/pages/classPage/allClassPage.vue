@@ -5,17 +5,16 @@
             :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true">
             <template #top>
 
-                <PageTopbg :zIndex="-1" :addheight="250"
+                <PageTopbg :zIndex="-1" :addheight="160"
                     :bgstyle="'background: linear-gradient( 180deg, #e4f6f0 0%, #dff7ef 100%);'"></PageTopbg>
                 <bc-page-navbar :title="'全部分类'"></bc-page-navbar>
             </template>
 
-            <view class="menu_list" v-if="dataListTwo.length > 0">
-                <view class="menu_item">
-                    <!-- v-for="(item) in dataListTwo" :key="item.id" -->
-                    <!-- <view class="menu_title">{{ item.name }}</view> -->
+            <view class="menu_list" v-if="showList">
+                <view class="menu_item" v-for="(item, index) in dataListTwo" :key="index">
+                    <view class="menu_title">{{ item.name }}</view>
                     <view class="icon_list">
-                        <view class="icon_item" v-for="(sonItem) in dataListTwo" :key="sonItem.id"
+                        <view class="icon_item" v-for="(sonItem, ind) in item.sonList" :key="ind"
                             @click="toClassPage(sonItem, sonItem)">
                             <image class="item_img" :src="sonItem.icon" mode="scaleToFill" />
                             <view class="item_text">{{ sonItem.name }}</view>
@@ -23,9 +22,9 @@
                     </view>
                 </view>
             </view>
-
-            <BCNotify ref="bcNotify"></BCNotify>
-
+            <view class="noneData" v-else>
+                <image class="imgBox" :src="getAssetsUrl('/empty/empty_icon_data.png')"></image>
+            </view>
         </z-paging>
 
     </view>
@@ -36,7 +35,6 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getAssetsPic } from '@/common/setPicture'
-import BCNotify from '@/components/notify/index.vue'
 import { allColm, setPageBank } from "@/api/setite-api"
 import { gotoZone } from "@/routes/active-routes"
 
@@ -48,9 +46,7 @@ const data = reactive<Data>({
 })
 
 const dataListTwo: any = ref([])
-
-
-const bcNotify = ref()
+const showList = ref(false)
 
 onMounted(async () => {
 
@@ -74,6 +70,7 @@ const getData = (num: number) => {
             }
             allColm(sendData).then(res => {
                 dataListTwo.value = res
+                showList.value = res.some(item => item.sonList.length > 0)
             })
         }
     })
@@ -92,6 +89,16 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
+
+.noneData {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.imgBox {
+    width: 600rpx;
+    height: 500rpx;
+}
 .menu_list {
     padding: 20rpx 0rpx;
     box-sizing: border-box;
