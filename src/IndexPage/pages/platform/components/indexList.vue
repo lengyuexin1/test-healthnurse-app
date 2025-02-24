@@ -152,7 +152,7 @@ import { gotoChannelFollow } from '@/routes/create-routes'
 
 import { gotoAgency, gotoLiveList } from '@/routes/user-routes'
 import { activeDetail, bannerList, columnList, setPageBank } from "@/api/setite-api"
-import { gotoServiceStore, toInnerPage } from '@/routes/service-routes'
+import { gotoServiceStore,gotoserviceDetail, toInnerPage } from '@/routes/service-routes'
 import { gotoallClassPage, gotoCenterChanges, gotoZone } from '@/routes/active-routes'
 import BottomMenu from "./channelSheet.vue"
 import { gotogoodsDetail } from '@/routes/goods-routes'
@@ -219,6 +219,8 @@ const upCalik = (item: any, index: number) => {
     console.log(item.id, index)
     NavId.value = item.id
     paging.value.reload()
+    tabCats.value = item.categoryIds
+    queryList(1, 6)
 }
 
 const gotoColmDetail = (index: any, item: any) => {
@@ -264,7 +266,7 @@ const gotoDetail = (item: any) => {
             }, 1000)
             return
         }
-        gotoServiceStore({ itemId: item.id })
+        gotoserviceDetail( item.id )
     })
 }
 
@@ -294,7 +296,7 @@ const queryList = (pageNumber: number, pageSize: number) => {
         pageNumber,
         pageSize: 10,
         query: {
-            categoryIds: NavId.value == 1 ? [] : [NavId.value]
+            categoryIds: NavId.value == 1 ? [] : tabCats.value
         }
     }
     recomLikeList(data).then((res) => {
@@ -302,7 +304,9 @@ const queryList = (pageNumber: number, pageSize: number) => {
     })
 }
 
+const tabCats = ref([])
 const changeNav = (item: any) => {
+    tabCats.value = []
     if (item.id == 11) {
         // 检查登录状态
         PlatformManage.isRequireLogin().then((isRequireLogin) => {
@@ -315,7 +319,10 @@ const changeNav = (item: any) => {
             }
         })
     }
+    console.log(item)
+    
     NavId.value = item.id
+    tabCats.value = item.categoryIds
     // (paging.value as any).reload()
     queryList(1, 6)
 }
@@ -486,7 +493,7 @@ const clickwaterItem = (item: any) => {
             }, 1000)
             return
         }
-        gotoServiceStore({ itemId: item.id })
+        gotoserviceDetail(item.id)
         // item.type == 3 && gotoarticledetails({
         //     id: item.id
         // })
@@ -503,7 +510,7 @@ const liveswiperChange = (e: any) => {
 const liveList = (item: any) => {
     console.log('item', item)
     if (item.type == 1) {
-        gotoServiceStore({ itemId: item.dataId })
+        gotoserviceDetail( item.dataId )
     }
     if (item.type == 2) {
         gotogoodsDetail(item.dataId)
