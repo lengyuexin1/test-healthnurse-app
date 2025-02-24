@@ -1,18 +1,17 @@
 <template>
     <z-paging ref="paging" v-model="data.dataList" :auto="true" :fixed="false" @query="queryList" @scroll="scrollPage"
-              :defaultPageSize="6" :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
-              empty-view-text="还没有数据哦~"
-              :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true"
-              back-to-top-bottom="180rpx" :back-to-top-img="getAssetsUrl('/leyou/home/page_Topup.svg')"
-              :back-to-top-style="{ width: '80rpx', height: '80rpx', padding: '18rpx', background: '#fff', borderRadius: '50%' }">
+        :defaultPageSize="6" :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="还没有数据哦~"
+        :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true"
+        back-to-top-bottom="180rpx" :back-to-top-img="getAssetsUrl('/leyou/home/page_Topup.svg')"
+        :back-to-top-style="{ width: '80rpx', height: '80rpx', padding: '18rpx', background: '#fff', borderRadius: '50%' }">
 
         <template #top>
             <view class="author" v-if="(props.channelId == 1 && data.attentionList.length != 0)">
                 <view class="author_item" v-for="item in data.attentionList" :key="item.followId">
                     <view class="author_img_box" @click="clickauthor(item)">
                         <image class="author_img"
-                               :src="item.accountId == 999 ? getAssetsUrl(item.followImage) : item.followImage"
-                               mode="scaleToFill"/>
+                            :src="item.accountId == 999 ? getAssetsUrl(item.followImage) : item.followImage"
+                            mode="scaleToFill" />
                     </view>
                     <view class="author_text">
                         {{ item.followName }}
@@ -25,13 +24,13 @@
         <view class="top_bg_box">
             <view class="live_swiper" v-if="swiperList.length != 0">
                 <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
-                        @change="liveswiperChange">
+                    @change="liveswiperChange">
 
                     <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id">
-                        <image class="live_swiper_img" :src="item.icon" mode="scaleToFill" @click="liveList(item)"/>
+                        <image class="live_swiper_img" :src="item.icon" mode="scaleToFill" @click="liveList(item)" />
                         <!-- index == 0 -->
                         <view class="live_box"
-                              v-if="((item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon))">
+                            v-if="((item.moduleType == 1 && liveType.channel) || (item.moduleType == 2 && liveType.course) || (item.moduleType == 3 && liveType.salon))">
                             <view class="live_left_box">
                                 <BarPlaying bgColor="#FFFFFF"></BarPlaying>
                                 <view>直播中</view>
@@ -44,16 +43,18 @@
                 </swiper>
                 <view class="swiper_sign_box">
                     <view class="sign_item" :class="{ 'is_sign': signIndex == data.swiperIndex }"
-                          v-for="(signItem, signIndex) in swiperList.length" :key="signIndex"></view>
+                        v-for="(signItem, signIndex) in swiperList.length" :key="signIndex"></view>
                 </view>
             </view>
         </view>
         <!-- 首页列表 -->
         <view class="deCionBox">
-            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index"
-                  @click="gotoColmDetail(index, item)">
-                <image class="left_menu_img" :src="item.icon" mode="scaleToFill"/>
-                <view class="iconText">{{ item.name }}</view>
+            <view class="Tabs_deitem" v-for="(item, index) in tabsData" :key="index" @click="gotoColmDetail(index, item)">
+                <image class="left_menu_img" :src="item.icon" mode="scaleToFill" />
+                <view v-if="item.textImg">
+                    <image class="left_text_img" :src="item.textImg" mode="scaleToFill"></image>
+                </view>
+                <view v-else class="iconText">{{ item.name }}</view>
             </view>
         </view>
         <!-- 甄选推荐 -->
@@ -71,7 +72,7 @@
             <view class="newTitle">新品上市</view>
             <view class="newUp">
                 <view class="everyItem" v-for="(item, index) in newGoodList" :key="index">
-                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill"/>
+                    <image class="towPro_img" :src="item.thumb" mode="scaleToFill" />
                     <view class="img_right">
                         <view>
                             <view class="text_tit">{{ item.name }}</view>
@@ -98,7 +99,7 @@
             <view class="Nav_box">
                 <view class="Nav_scoll_box">
                     <view class="Nav_item" :class="{ 'have_right': NavList.length == (index + 1) }"
-                          v-for="(item, index) in NavList" :key="index" @click="changeNav(item)">
+                        v-for="(item, index) in NavList" :key="index" @click="changeNav(item)">
                         <view class="item_name">
                             <view> {{ item.name }}</view>
                             <view class="isSelect" v-if="NavId == item.id"></view>
@@ -198,8 +199,8 @@ const NavId = ref(1)
 const dataObj: any = ref({})
 const dataObjTwo: any = ref({})
 const tabsData: any = ref([
-    { id: '88', icon: getAssetsPic('/fare/v2/zhihui.png'), name: '智慧康护', flagCode: 1 },
-    { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康', flagCode: 1 },
+    { id: '88', icon: getAssetsPic('/fare/v2/zhihui.png'), name: '智慧康护', flagCode: 1, textImg: getAssetsPic('/fare/v2/zhtext.svg') },
+    // { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康', flagCode: 1 },
     { id: '5', icon: getAssetsPic('/fare/v2/gre-cai.png'), name: '到店健康', flagCode: 1 },
     { id: '8', icon: getAssetsPic('/fare/v2/home_icon_jigou.png'), name: '找机构', flagCode: 1 },
     { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 }
@@ -699,6 +700,11 @@ defineExpose({
         .iconText {
             font-size: 24rpx;
             color: #333333;
+        }
+        .left_text_img {
+            width: 100rpx;
+            height: 26rpx;
+            margin-bottom: -2rpx;
         }
     }
 }
