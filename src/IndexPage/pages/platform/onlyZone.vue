@@ -31,8 +31,7 @@
                 <view class="live_swiper" v-if="swiperList.length > 0">
                     <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
                         @change="liveswiperChange">
-                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id">
-                            <!-- @click="liveList(item)" -->
+                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id" @click="liveList(item)">
                             <image class="live_swiper_img" :src="item.icon" mode="aspectFill" />
                         </swiper-item>
                     </swiper>
@@ -109,6 +108,7 @@ import { gotoLogin } from "@/routes/public-routes"
 import { gotogoodsDetail } from '@/routes/goods-routes'
 import { gotoCateArrList, gotoZone } from '@/routes/active-routes'
 import { recommendList } from "@/api/goods-api"
+import { gotoSellerList } from "@/routes/service-routes"
 import ListItem from "@/components/recommended/listItem.vue"
 const moreGoodList = ref([])
 const tabsData: any = ref([])
@@ -216,11 +216,24 @@ const tosearch = () => {
 
 const gotoColmDetail = (index: any, item: any) => {
     // 跳转微页面
-    return gotoZone(item.id, item.name)
+    console.log(item)
+    
+    return gotoSellerList({id: item.id, name: item.name})
+    // return gotoZone(item.id, item.name)
 }
 
 const clickwaterItem = () => {
 
+}
+
+const liveList = (item: any) => {
+    console.log('item', item)
+    if (item.type == 1) {
+        gotoserviceDetail( item.dataId )
+    }
+    if (item.type == 2) {
+        gotogoodsDetail(item.dataId)
+    }
 }
 
 // 退出页面

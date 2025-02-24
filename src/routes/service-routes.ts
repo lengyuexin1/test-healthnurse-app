@@ -203,3 +203,12 @@ export const gotoserviceIndexPage = () => {
     return pageController.push(route)
 }
 
+
+/** 跳转到 照护店铺列表 */
+export const gotoSellerList = (query: any) => {
+    const route = {
+        path: '/pagesService/pages/serviceList/serviceList',
+        query
+    }
+    return pageController.push(route)
+}
