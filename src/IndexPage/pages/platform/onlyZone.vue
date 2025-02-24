@@ -31,7 +31,8 @@
                 <view class="live_swiper" v-if="swiperList.length > 0">
                     <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
                         @change="liveswiperChange">
-                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id" @click="liveList(item)">
+                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id"
+                            @click="liveList(item)">
                             <image class="live_swiper_img" :src="item.icon" mode="aspectFill" />
                         </swiper-item>
                     </swiper>
@@ -71,11 +72,11 @@
                     </view>
                 </view>
                 <view class="activeCon">
-                    <view class="activeConLeft" v-if="dataObjTre.type">
-                        <piaiList :dataObjTre="dataObjTre"></piaiList>
+                    <view class="activeConLeft" v-if="dataObjTre.length > 0" v-for="(item, index) in dataObjTre">
+                        <piaiList :dataObjTre="item"></piaiList>
                     </view>
-                    <view class="activeConRight" v-if="dataObjTwo.type">
-                        <valGou :dataObjTwo="dataObjTwo"></valGou>
+                    <view class="activeConRight" v-if="dataObjTwo.length > 0" v-for="(item, index) in dataObjTwo">
+                        <valGou :dataObjTwo="item"></valGou>
                     </view>
                 </view>
                 <view class="goodWu" v-if="showBk.includes(20)">
@@ -112,8 +113,8 @@ import { gotoSellerList, gotoserviceDetail } from "@/routes/service-routes"
 import ListItem from "@/components/recommended/listItem.vue"
 const moreGoodList = ref([])
 const tabsData: any = ref([])
-const dataObjTre: any = ref({})
-const dataObjTwo: any = ref({})
+const dataObjTre: any = ref([])
+const dataObjTwo: any = ref([])
 const showBk: any = ref([])
 const norList: any = ref([])
 const paging = ref()
@@ -122,7 +123,8 @@ const titleTop = ref(0)
 const titleRight = ref(0)
 const sBarHeight = ref(0)
 const swiperList: any = ref([])
-const listCates = ref([])
+const listCates: any = ref([])
+const conApi = ref(false)
 const kjName = ref('')
 const detailData: any = ref({
     couponIds: {}
@@ -170,18 +172,30 @@ const healthMyData = (list: any) => {
             element.dataIds.forEach(item => {
                 activeDetail(item).then(res => {
                     if (res.type == 3) {
-                        dataObjTre.value = res
+                        dataObjTre.value.push(res)
                     }
                     else {
-                        dataObjTwo.value = res
+                        dataObjTwo.value.push(res)
+                        console.log(dataObjTwo.value)
                     }
                 })
             })
         }
         //  个性化推荐
         if (element.moduleId == 20) {
-            listCates.value = element.categoryIds
-            queryList(1, 6)
+            const dares = {
+                ids: element.dataIds
+            }
+            columnList(dares).then(res => {
+                if (res.length > 0) {
+                    res.forEach((ins: any, ids) => {
+                        listCates.value = [...listCates.value, ...ins.categoryIds]
+                    })
+                }
+                console.log(listCates.value)
+                conApi.value = true
+                queryList(1, 6)
+            })
         }
     })
 }
@@ -219,8 +233,8 @@ const tosearch = () => {
 const gotoColmDetail = (index: any, item: any) => {
     // 跳转微页面
     console.log(item)
-    
-    return gotoSellerList({id: item.id, name: item.name})
+
+    return gotoSellerList({ id: item.id, name: item.name })
     // return gotoZone(item.id, item.name)
 }
 
@@ -231,7 +245,7 @@ const clickwaterItem = () => {
 const liveList = (item: any) => {
     console.log('item', item)
     if (item.type == 1) {
-        gotoserviceDetail( item.dataId )
+        gotoserviceDetail(item.dataId)
     }
     if (item.type == 2) {
         gotogoodsDetail(item.dataId)
@@ -331,6 +345,9 @@ const gotoDetail = (item: any) => {
 }
 
 const queryList = (pageNumber, pageSize) => {
+    if (!conApi.value) {
+        return false
+    }
     recommendList({
         pageSize: pageSize,
         pageNumber: pageNumber,
