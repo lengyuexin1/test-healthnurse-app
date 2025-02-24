@@ -51,15 +51,16 @@
                             {{ item.desc }}
                         </div>
                         <div class="shoppic">
-                            <text class="shopmon">￥{{ moneyFilter(item.price / item.quantity) }}</text>
-                            <text class="shopmon left">/{{ item.unitName + "起" }}</text>
+                            <text class="shopmon">￥{{ moneyFilter(item.price) }}</text>
+                            <!-- moneyFilter(item.price / item.quantity) -->
+                            <text class="shopmon left">/{{ "起" }}</text>
+                            <!-- item.unitName + -->
                             <text class="shopdel" v-if="item.fakePrice">￥{{ moneyFilter(item.fakePrice / item.quantity)
                             }}</text>
                         </div>
                         <div class="shopjudge row i-center">
                             <view style="display:flex;">
-                                <image :src="setShopPic(item.shopThumb)" class="shopIcon"
-                                    radius="30rpx"></image>
+                                <image :src="setShopPic(item.shopThumb)" class="shopIcon" radius="30rpx"></image>
                                 <text class=" u-line-1">{{ item.shopName || '' }}</text>
                             </view>
                             <view v-if="false" class="Learn_more" @click.stop="Learnmore(item.id)">
@@ -151,9 +152,9 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 // #ifdef APP-PLUS
 //阿里云一键登录sdk
 // #endif
-import {  columnList } from "@/api/setite-api"
+import { columnList } from "@/api/setite-api"
 import { gotoserviceDetail } from '@/routes/service-routes'
-import { recomLikeList } from "@/api/goods-api"
+import { recomLikeList, recommendList } from "@/api/goods-api"
 import { gotoLogin } from "@/routes/public-routes"
 import listItem from "./listItem/listItem.vue"
 import { computed, onMounted, reactive, ref, watch } from "vue"
@@ -235,6 +236,9 @@ const data = reactive<Data>({
     priceId: 0,
     priceIndex: null
 })
+
+const conApi = ref(false)
+
 const getAssetsUrl = computed(() => {
     return (str: string) => {
         return getAssetsPic(str)
@@ -268,8 +272,9 @@ const kuaiRou = (data: any) => {
     }
     columnList(dares).then(res => {
         console.log(res[0].categoryIds)
+        conApi.value = true
         dataCates.value = res[0].categoryIds
-        // queryList(1,10)
+        queryList(1,10)
     })
 }
 
@@ -387,7 +392,10 @@ const getLocation = () => {
     })
 }
 const queryList = (pageNumber, pageSize) => {
-    recomLikeList({
+    if (!conApi.value) {
+        return false
+    }
+    recommendList({
         pageNumber,
         pageSize,
         query: {
@@ -838,6 +846,7 @@ const tochoiceDetails = (item) => {
             .shopjudge {
                 margin-top: 14rpx;
                 justify-content: space-between;
+
                 .shopIcon {
                     width: 30rpx;
                     height: 30rpx;

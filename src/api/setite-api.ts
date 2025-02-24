@@ -32,7 +32,7 @@ export const activeDetail = (req: any) => {
 
 // 优惠券
 export const zqCouList = (req: any) => {
-    return openHttp.post('api/order/v1/bc/app/coupon/list', req)
+    return http.post('api/order/v1/bc/app/coupon/list', req)
 }
 
 // 所有栏目

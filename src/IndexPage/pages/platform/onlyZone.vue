@@ -57,7 +57,7 @@
                             <view class="zonr2"></view>
                         </view>
                         <view v-if="item.status == 10" class="goUse" @click="getQuCou(item)">领取</view>
-                        <view class="alseUse" v-else @click="useCou">去使用</view>
+                        <view class="alseUse" v-else @click="useCou">已领取</view>
                     </view>
                 </view>
 
@@ -388,7 +388,7 @@ const getBannerList = (data: any) => {
 const useCou = () => {
     // diajCou.value = false
     // cateList.value = []
-    gotoCateArrList({ type: 1, id: detailId.value })
+    // gotoCateArrList({ type: 1, id: detailId.value })
 }
 const seeMonr = (item: any) => {
     console.log(item);
