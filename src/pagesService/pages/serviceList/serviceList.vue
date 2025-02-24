@@ -42,7 +42,7 @@
                                 <view slot="error"></view>
                             </u-image>
                         </view> -->
-                        <image :src="item.thumb" class="dxImg" radius="12rpx"></image>
+                        <image :src="item.thumb" class="dxImg"></image>
                     </div>
                     <div class="shoprig">
                         <div class="shoptit u-line-1">{{ item.name }}</div><!-- -{{item.optionName}} -->
@@ -58,8 +58,8 @@
                         </div>
                         <div class="shopjudge row i-center">
                             <view style="display:flex;">
-                                <u-image :src="setShopPic(item.shopThumb)" width="30rpx" height="30rpx"
-                                    radius="30rpx"></u-image>
+                                <image :src="setShopPic(item.shopThumb)" class="shopIcon"
+                                    radius="30rpx"></image>
                                 <text class=" u-line-1">{{ item.shopName || '' }}</text>
                             </view>
                             <view v-if="false" class="Learn_more" @click.stop="Learnmore(item.id)">
@@ -151,6 +151,7 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 // #ifdef APP-PLUS
 //阿里云一键登录sdk
 // #endif
+import {  columnList } from "@/api/setite-api"
 import { gotoserviceDetail } from '@/routes/service-routes'
 import { recomLikeList } from "@/api/goods-api"
 import { gotoLogin } from "@/routes/public-routes"
@@ -258,9 +259,19 @@ const baseGrade = computed(() => {
 const dataCates = ref('')
 onLoad((options: any) => {
     titleName.value = options.name
-    dataCates.value = options.id
-    // queryList(1,10)
+    kuaiRou(options.id)
 })
+
+const kuaiRou = (data: any) => {
+    const dares = {
+        ids: [data]
+    }
+    columnList(dares).then(res => {
+        console.log(res[0].categoryIds)
+        dataCates.value = res[0].categoryIds
+        // queryList(1,10)
+    })
+}
 
 const showprice = computed(() => {
     return (min: number, max: number) => {
@@ -300,15 +311,15 @@ const priceText = computed(() => {
     }
 })
 
-const linkinfo = (item:any) => {
+const linkinfo = (item: any) => {
     console.log(item)
     if (item.businessType == 1) {
-        return  gotoserviceDetail( item.id )
+        return gotoserviceDetail(item.id)
     }
     if (item.businessType == 2) {
         return gotogoodsDetail(item.id)
     }
-    
+
 }
 
 // watch(() => data.templateId, (newVal) => {
@@ -380,7 +391,7 @@ const queryList = (pageNumber, pageSize) => {
         pageNumber,
         pageSize,
         query: {
-            categoryIds: [dataCates.value]
+            categoryIds: dataCates.value
         }
     }).then(res => {
         paging.value.complete(res.data)
@@ -798,6 +809,7 @@ const tochoiceDetails = (item) => {
             .dxImg {
                 width: 210rpx;
                 height: 210rpx;
+                border-radius: 12rpx;
             }
 
             .shopgrade {
@@ -826,6 +838,11 @@ const tochoiceDetails = (item) => {
             .shopjudge {
                 margin-top: 14rpx;
                 justify-content: space-between;
+                .shopIcon {
+                    width: 30rpx;
+                    height: 30rpx;
+                    border-radius: 50%;
+                }
 
                 text {
                     margin-left: 12rpx;
@@ -881,4 +898,5 @@ const tochoiceDetails = (item) => {
             }
         }
     }
-}</style>
+}
+</style>

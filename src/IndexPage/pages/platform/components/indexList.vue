@@ -152,7 +152,7 @@ import { gotoChannelFollow } from '@/routes/create-routes'
 
 import { gotoAgency, gotoLiveList } from '@/routes/user-routes'
 import { activeDetail, bannerList, columnList, setPageBank } from "@/api/setite-api"
-import { gotoServiceStore,gotoserviceDetail, toInnerPage } from '@/routes/service-routes'
+import { gotoServiceStore, gotoserviceDetail, toInnerPage } from '@/routes/service-routes'
 import { gotoallClassPage, gotoCenterChanges, gotoZone } from '@/routes/active-routes'
 import BottomMenu from "./channelSheet.vue"
 import { gotogoodsDetail } from '@/routes/goods-routes'
@@ -266,7 +266,7 @@ const gotoDetail = (item: any) => {
             }, 1000)
             return
         }
-        gotoserviceDetail( item.id )
+        gotoserviceDetail(item.id)
     })
 }
 
@@ -320,7 +320,7 @@ const changeNav = (item: any) => {
         })
     }
     console.log(item)
-    
+
     NavId.value = item.id
     tabCats.value = item.categoryIds
     // (paging.value as any).reload()
@@ -510,10 +510,14 @@ const liveswiperChange = (e: any) => {
 const liveList = (item: any) => {
     console.log('item', item)
     if (item.type == 1) {
-        gotoserviceDetail( item.dataId )
+        gotoserviceDetail(item.dataId)
     }
     if (item.type == 2) {
         gotogoodsDetail(item.dataId)
+    } else {
+        uni.navigateTo({
+            url: item.dataUrl
+        })
     }
 }
 
@@ -708,6 +712,7 @@ defineExpose({
             font-size: 24rpx;
             color: #333333;
         }
+
         .left_text_img {
             width: 100rpx;
             height: 26rpx;

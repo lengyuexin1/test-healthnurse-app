@@ -61,7 +61,7 @@
                 </view>
 
                 <view class="cateListcs" v-if="showBk.includes(18)">
-                    <!-- <view class="cateText">住院陪护分类</view> -->
+                    <view class="cateText"> {{ kjName }}</view>
                     <view class="cateUl">
                         <view class="cateItem" v-for="(item, index) in tabsData" :key="index"
                             @click="gotoColmDetail(index, item)">
@@ -108,7 +108,7 @@ import { gotoLogin } from "@/routes/public-routes"
 import { gotogoodsDetail } from '@/routes/goods-routes'
 import { gotoCateArrList, gotoZone } from '@/routes/active-routes'
 import { recommendList } from "@/api/goods-api"
-import { gotoSellerList } from "@/routes/service-routes"
+import { gotoSellerList, gotoserviceDetail } from "@/routes/service-routes"
 import ListItem from "@/components/recommended/listItem.vue"
 const moreGoodList = ref([])
 const tabsData: any = ref([])
@@ -123,6 +123,7 @@ const titleRight = ref(0)
 const sBarHeight = ref(0)
 const swiperList: any = ref([])
 const listCates = ref([])
+const kjName = ref('')
 const detailData: any = ref({
     couponIds: {}
 })
@@ -161,6 +162,7 @@ const healthMyData = (list: any) => {
         }
         // 快捷导航
         if (element.moduleId == 18) {
+            kjName.value = element.name
             kuaiRou(element.dataIds)
         }
         // 营销组件
@@ -170,7 +172,7 @@ const healthMyData = (list: any) => {
                     if (res.type == 3) {
                         dataObjTre.value = res
                     }
-                    if (res.type == 4) {
+                    else {
                         dataObjTwo.value = res
                     }
                 })
