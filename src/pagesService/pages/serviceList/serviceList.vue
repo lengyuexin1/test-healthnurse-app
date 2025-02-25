@@ -50,7 +50,7 @@
                             <!-- <text v-for="(item,index) in 13" :key="index">可按天</text> -->
                             {{ item.desc }}
                         </div>
-                        <div class="shoppic">
+                        <div class="shoppic" v-if="item.businessType !== 4">
                             <text class="shopmon">￥{{ moneyFilter(item.price) }}</text>
                             <!-- moneyFilter(item.price / item.quantity) -->
                             <text class="shopmon left">/{{ "起" }}</text>
@@ -60,7 +60,7 @@
                         </div>
                         <div class="shopjudge row i-center">
                             <view style="display:flex;">
-                                <image :src="setShopPic(item.shopThumb)" class="shopIcon" radius="30rpx"></image>
+                                <image v-if="item.businessType !== 4" :src="setShopPic(item.shopThumb)" class="shopIcon" radius="30rpx"></image>
                                 <text class=" u-line-1">{{ item.shopName || '' }}</text>
                             </view>
                             <view v-if="false" class="Learn_more" @click.stop="Learnmore(item.id)">
@@ -153,7 +153,7 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 //阿里云一键登录sdk
 // #endif
 import { columnList } from "@/api/setite-api"
-import { gotoserviceDetail } from '@/routes/service-routes'
+import { gotoserviceDetail, gotoServiceOrg } from '@/routes/service-routes'
 import { recomLikeList, recommendList } from "@/api/goods-api"
 import { gotoLogin } from "@/routes/public-routes"
 import listItem from "./listItem/listItem.vue"
@@ -323,6 +323,9 @@ const linkinfo = (item: any) => {
     }
     if (item.businessType == 2) {
         return gotogoodsDetail(item.id)
+    }
+    if (item.businessType == 4) {
+        return gotoServiceOrg({id: item.id})
     }
 
 }

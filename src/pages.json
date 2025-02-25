@@ -193,14 +193,14 @@
             "enablePullDownRefresh": false
           }
         },
-        //        {
-        //          "path": "pages/Servicestore/choiceDetails",
-        //          "style": {
-        //            "navigationBarTitleText": "机构详情",
-        //            "navigationStyle": "custom",
-        //            "enablePullDownRefresh": false
-        //          }
-        //        },
+        {
+          "path": "pages/Servicestore/choiceDetails",
+          "style": {
+            "navigationBarTitleText": "机构详情",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
         {
           "path": "pages/Servicestore/setUpTextDetails",
           "style": {

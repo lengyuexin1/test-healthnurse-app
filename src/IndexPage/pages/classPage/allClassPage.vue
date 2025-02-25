@@ -37,6 +37,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import { getAssetsPic } from '@/common/setPicture'
 import { allColm, setPageBank } from "@/api/setite-api"
 import { gotoZone } from "@/routes/active-routes"
+import { gotoSellerList } from "@/routes/service-routes"
 
 interface Data {
     dataList: any
@@ -79,7 +80,7 @@ const getData = (num: number) => {
 const paging = ref(null)
 
 const toClassPage = (item: any, sonItem: any) => {
-    gotoZone(item.id, item.name)
+    gotoSellerList({ id: item.id, name: item.name })
 }
 
 
