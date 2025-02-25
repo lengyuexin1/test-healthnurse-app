@@ -186,9 +186,8 @@
             </template>
               <!-- 优惠券 coupon-->
             <choiceCoupon ref="recCoup" @getGroup="selectCoupon" :list="data.grantList" :coupsList="data.coupsList" />
-            <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="getLocation"
+            <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="map"
             permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
-            <!-- <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="map" permissionID="ACCESS_FINE_LOCATION"></yk-authpup> -->
     		<BCNotify ref="bcNotify"></BCNotify>
         </z-paging>
     </view>
@@ -285,7 +284,7 @@ const data = reactive<Data>({
 })
 
 const bcNotify = ref()
-
+const recCoup = ref()
 const addressRef = ref()
 const visitorRef = ref()
 
@@ -385,7 +384,7 @@ const showCoupon = () => {
         bcNotify.value.show('暂无优惠')
         return
     }
-    // this.$refs.recCoup.openCpup()
+    recCoup.value.openCpup()
 }
 // 店铺优惠券列表
 const initGetCouponGranted = () => {
@@ -827,11 +826,24 @@ const exist = (str:string) => {
     })
     return !!item
 }
-
+// 修改商品数量(正常服务)
 // 监听数量变化
 const getquantity = (quantity:number) => {
+    uni.showLoading({ title: '正在加载...', mask: true })
+    gainShopCouponList(1).then(() => {
+        console.log('更改数量')
+        // return this.calculation()
+    }).then((res) => {
+        data.calculationInfo = res
+        console.log('计算完成')
+    }).finally(() => {
+        uni.hideLoading()
+    })
+    /*  */
+
     data.quantity = quantity
 }
+
 
 onMounted(() => {
     const tempStorage = new TempStorage()
