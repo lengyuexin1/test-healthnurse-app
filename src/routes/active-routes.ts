@@ -484,10 +484,10 @@ export const gotoallClassPage = (type: any) => {
 }
 
 // 消息
-export const gotoaNews = () => {
+export const gotoaNews = (type: any) => {
     const route = {
-        path: '/pagesMsg/pages/news/news',
-        query: {  }
+        path: '/IndexPage/pages/news/news',
+        query: { type }
     } as any
     return pageController.push(route)
 }

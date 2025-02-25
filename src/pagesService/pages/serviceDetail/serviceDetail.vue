@@ -362,9 +362,11 @@ const getDetail = (id: any) => {
             note: res.itemExt.note,
             tagList: res.tagList,
             saleVolume: res.item.userCnt || 0,
-            templateCode: res.item.templateCode
+            templateCode: res.item.templateCode,
+            price: res.optionList[0].price,
+            unitName: res.optionList[0]?.extend?.serviceWorkingHours?.unitName
         }
-
+        
         baseId.value = res.item.shopId
         optionList.value = res.optionList
         getCoupList()
@@ -614,8 +616,9 @@ const clickCustomerService = () => {
                 thumb: orderObj.value.thumb,
                 desc: orderObj.value.desc,
                 price: orderObj.value.price,
+                unitName: orderObj.value.unitName,
                 msgType: 'product',
-                templateCode: 131586
+                templateCode: orderObj.value.templateCode
             }
             gotoChatPage({
                 to: res.tid,

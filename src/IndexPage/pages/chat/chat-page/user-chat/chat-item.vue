@@ -54,6 +54,7 @@ import { gotoresumedetails, gotoOrderdetails } from "@bc/api/routes/message-rout
 import { useMsgReceiptEvent, userInfoProvider } from "@bc/msg"
 import { handleEnvAccount } from "@/utils/handleEnv"
 import { gotogoodsDetail } from "@/routes/goods-routes"
+import { gotoserviceDetail } from '@/routes/service-routes'
 import dayjs from "dayjs"
 
 //============================
@@ -206,7 +207,12 @@ const clickOrderMsg = (orderId: string) => {
 
 // 查看产品详情
 const clickProductMsg = (id: string) => {
-    gotogoodsDetail(id)
+    console.log(props.item)
+    if (props.item.attach?.templateCode == 131586) {
+        gotogoodsDetail(id)
+    } else {
+        gotoserviceDetail(id)
+    }
 }
 
 // 点击猜你想问

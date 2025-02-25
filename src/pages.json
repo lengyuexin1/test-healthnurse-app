@@ -106,6 +106,13 @@
           }
         },
         {
+          "path": "pages/news/news",
+          "style": {
+            "navigationBarTitleText": "消息",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "pages/chat/chat-container",
           "style": {
             "navigationBarTitleText": "",
@@ -1092,14 +1099,14 @@
             "enablePullDownRefresh": false
           }
         },
-//        {
-//          "path": "pages/goodsOrderDetail/goodsOrderDetail",
-//          "style": {
-//            "navigationBarTitleText": "适品订单详情",
-//            "navigationStyle": "custom",
-//            "enablePullDownRefresh": false
-//          }
-//        },
+        //        {
+        //          "path": "pages/goodsOrderDetail/goodsOrderDetail",
+        //          "style": {
+        //            "navigationBarTitleText": "适品订单详情",
+        //            "navigationStyle": "custom",
+        //            "enablePullDownRefresh": false
+        //          }
+        //        },
         {
           "path": "pages/balanceOrder/balanceOrder",
           "style": {
@@ -1181,11 +1188,11 @@
           }
         },
         {
-					"path": "pages/groupSplit/groupSplit",
-					"style": {
-                        "navigationBarTitleText": "拼团分享"
-                    }
-				}
+          "path": "pages/groupSplit/groupSplit",
+          "style": {
+            "navigationBarTitleText": "拼团分享"
+          }
+        }
       ]
     },
     {
@@ -1812,18 +1819,6 @@
           "path": "pages/science/caption",
           "style": {
             "navigationBarTitleText": "使用说明",
-            "navigationStyle": "custom"
-          }
-        }
-      ]
-    },
-    {
-      "root": "pagesMsg",
-      "pages": [
-        {
-          "path": "pages/news/news",
-          "style": {
-            "navigationBarTitleText": "消息",
             "navigationStyle": "custom"
           }
         }
