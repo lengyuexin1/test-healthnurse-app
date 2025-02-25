@@ -28,7 +28,7 @@ const stsOpt = {
     securityToken: '',
     stsTokenFreshTime: 3600, // 设置stsToken的刷新时间，单位为秒
     refreshSTSTokenInterval: 300, // 设置stsToken的刷新间隔，单位为秒
-    refreshSTSToken: () => {
+    refreshSTSToken: () => { // 放置空函数，避免阿里云日志服务报错
     }
 }
 
@@ -44,9 +44,7 @@ tracker.useStsPlugin(stsPlugin)
 // 发送日志
 export const sendLog = (data: any) => {
     getOptions().then((res: any) => {
-        console.log(res)
         const credentials = res.credentials
-        console.log(credentials.accessKeyId)
         stsOpt.accessKeyId = credentials.accessKeyId
         stsOpt.accessKeySecret = credentials.accessKeySecret
         stsOpt.securityToken = credentials.securityToken

@@ -1,7 +1,8 @@
 <template>
     <view class="list-box tn-flex-column">
         <view class="list tn-flex-row" v-for="(item, index) in props.list" :key="index">
-            <view class="checkbox tn-flex-center-center animate__animated animate__faster animate__slideInLeft" v-if="props.isEdit">
+            <view class="checkbox tn-flex-center-center animate__animated animate__faster animate__slideInLeft"
+                  v-if="props.isEdit">
                 <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="item.checked"></TnCheckbox>
             </view>
             <view class="item tn-flex-row" @tap="clickItem(item, index)">
@@ -9,9 +10,12 @@
                 <template v-if="props.type == 'normal'">
                     <NormalList :item="item"></NormalList>
                 </template>
-
+                <!-- 收藏服务列表 -->
+                <template v-else-if="props.type == 'collectService'">
+                    <CollectService :item="item"></CollectService>
+                </template>
                 <!-- 足迹列表、康养服务、康养适品 -->
-                <template v-else-if="['browerHistory', 'healthList'].includes(props.type)"> 
+                <template v-else-if="['browerHistory', 'healthList'].includes(props.type)">
                     <TrackList :item="item"></TrackList>
                 </template>
 
@@ -53,8 +57,11 @@
     </view>
 
     <view class="btn tn-flex-center-between animate__animated animate__faster animate__slideInUp" v-if="props.isEdit">
-        <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="data.allSelect" @change="change">全选</TnCheckbox>
-        <TnButton width="220rpx" height="76rpx" font-size="30rpx" bg-color="#EA3E1A" text-color="#FFFFFF" :debounce="true" @tap="clickBtn">
+        <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="data.allSelect" @change="change">
+            全选
+        </TnCheckbox>
+        <TnButton width="220rpx" height="76rpx" font-size="30rpx" bg-color="#EA3E1A" text-color="#FFFFFF"
+                  :debounce="true" @tap="clickBtn">
             {{ props.btnName }}
         </TnButton>
     </view>
@@ -63,7 +70,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineEmits, reactive, watch } from "vue"
+import { defineEmits, reactive, ref, watch } from "vue"
 import TnCheckbox from '@tuniao/tnui-vue3-uniapp/components/checkbox/src/checkbox.vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import BCNotify from '@/components/notify/index.vue'
@@ -76,9 +83,10 @@ import ChatdraftList from './compontent/chatdraftList.vue'
 import HasChatList from './compontent/hasChatList.vue'
 import ReportList from './compontent/ReportList.vue'
 import LiveList from './compontent/liveList.vue'
+import CollectService from './compontent/CollectService.vue'
 
 const props = defineProps({
-    /** 
+    /**
      * @param {list}
      * 确保list数组中的对象有checked:false 属性值
      */
@@ -128,7 +136,7 @@ watch(() => props.list.map((item: any) => item.checked), (newVal, oldVal) => {
         data.allSelect = false
         return
     }
-    if (newVal.every((value: boolean) => value === true)) {  
+    if (newVal.every((value: boolean) => value === true)) {
         data.allSelect = true
     }
     else {
@@ -147,7 +155,7 @@ const clickItem = (item: any, index: number) => {
         props.list[index].checked = !props.list[index].checked
         return
     }
-    
+
     emit('clickItem', item)
 }
 
@@ -162,12 +170,13 @@ const clickBtn = () => {
     let ids = [] as any
     props.list.map((item: any) => {
         if (item.checked) {
+            console.log(item)
             /** 康养服务、康养适品需要返回id */
             if (props.type == 'healthList') {
                 if (props.listType == 'watchList') {
                     ids.push(item.id)
                 }
-                else if (props.listType == 'collectList'){
+                else if (props.listType == 'collectList') {
                     ids.push(item.itemId)
                 }
                 return
@@ -176,7 +185,7 @@ const clickBtn = () => {
                 if (props.listType == 'watchList') {
                     ids.push(item.id)
                 }
-                else if (props.listType == 'collectList'){
+                else if (props.listType == 'collectList') {
                     ids.push(item.shopId)
                 }
                 return
@@ -185,8 +194,12 @@ const clickBtn = () => {
                 ids.push(item.id)
                 return
             }
-
-            ids.push(item.id)
+            else if (props.type == 'collectService') {
+                ids.push(item.itemId)
+            }
+            else {
+                ids.push(item.id)
+            }
         }
     })
     if (ids.length == 0) {
@@ -214,6 +227,7 @@ const emit = defineEmits(["clickBtn", "clickItem", "clickSection"])
             padding-top: 0;
         }
     }
+
     .item {
         width: 100%;
         background-color: #FFFFFF;
