@@ -71,6 +71,14 @@
           }
         },
         {
+          "path": "pages/goHome/goHome",
+          "style": {
+            "navigationBarTitleText": "到家健康",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
           "path": "pages/index/index",
           "style": {
             "navigationBarTitleText": "首页",

@@ -781,6 +781,15 @@ export const gotoAgency = (query: any) => {
     return pageController.push(route)
 }
 
+/* 到家 */
+export const gotoHomeService = (query: any) => {
+    const route = {
+        path: '/IndexPage/pages/goHome/goHome',
+        query
+    }
+    return pageController.push(route)
+}
+
 /* 平台资质 */
 export const gotoPlatformQualification = (query: any) => {
     const route = {
