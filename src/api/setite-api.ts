@@ -27,7 +27,7 @@ export const productList = (req: any) => {
 
 // 活动详情
 export const activeDetail = (req: any) => {
-    return openHttp.get('api/order/v1/bc/public//app/activity/detail', { id: req })
+    return openHttp.get('api/order/v1/bc/public/app/activity/detail', { id: req })
 }
 
 // 优惠券

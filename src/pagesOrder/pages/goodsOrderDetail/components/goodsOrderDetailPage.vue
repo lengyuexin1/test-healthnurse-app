@@ -6,8 +6,8 @@
             :refresher-enabled="false"
             >
             <template #top>
-                <PageTopbg bgstyle="background: transparent;"></PageTopbg>
-                <bc-page-navbar :title="'订单详情'" text-color="#fff" icon-color="#fff"></bc-page-navbar>
+                <PageTopbg></PageTopbg>
+                <bc-page-navbar :title="'订单详情'"></bc-page-navbar>
             </template>
 
             <view class="content">
