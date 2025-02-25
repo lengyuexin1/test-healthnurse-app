@@ -205,7 +205,7 @@ const tabsData: any = ref([
     { id: '5', icon: getAssetsPic('/fare/v2/gre-cai.png'), name: '到店健康', flagCode: 1 },
     { id: '8', icon: getAssetsPic('/fare/v2/home_icon_jigou.png'), name: '找机构', flagCode: 1 },
     { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 },
-    { id: '1', icon: getAssetsPic('/fare/home-more.png'), name: '日志test', flagCode: 1 }
+    // { id: '1', icon: getAssetsPic('/fare/home-more.png'), name: '日志test', flagCode: 1 }
 ])
 
 interface Props {
@@ -700,7 +700,7 @@ defineExpose({
     // margin-bottom: 30rpx;
     margin: 20rpx;
     background: #fff;
-    padding: 26rpx 20rpx;
+    padding: 26rpx 20rpx 10rpx 20rpx;
     border-radius: 16rpx;
 
     .Tabs_deitem {

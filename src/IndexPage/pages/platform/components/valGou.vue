@@ -39,7 +39,7 @@ const getAssetsUrl = computed(() => (src: string) => {
 })
 
 const gotoMark = () => {
-    gotoPiMark('1716988256624369666')
+    gotoPiMark(props.dataObjTwo.id)
 }
 
 // 更多

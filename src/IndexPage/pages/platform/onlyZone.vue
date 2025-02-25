@@ -786,6 +786,10 @@ const seeMonr = (item: any) => {
                 margin-top: 20rpx;
                 font-size: 22rpx;
                 color: #1B1B1B;
+                width: 120rpx;
+                overflow: hidden;
+                height: 30rpx;
+                text-align: center;
             }
         }
     }
