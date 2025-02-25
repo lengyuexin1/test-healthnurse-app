@@ -66,6 +66,7 @@ import { TempStorage } from "@bc/base"
 
 interface Data {
     collectLists: any
+    dataList: any
     sectionList: any
     salonSectionList: any
     healthSectionList: any
@@ -83,6 +84,7 @@ interface Data {
 
 const data = reactive<Data>({
     collectLists: [],
+    dataList: [],
     sectionList: [],
     salonSectionList: ['收藏时间', '发布时间'],
     healthSectionList: ['适品', '店铺'],

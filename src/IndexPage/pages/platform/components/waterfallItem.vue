@@ -38,16 +38,14 @@
                 <view class="sel-tit u-line-1">{{ item.shopName || '' }}</view>
             </view>
             <view class="seller row i-center" v-if="item.sourceType == 4">
-                <u-image v-if="item.accountAvatar" :src="getAssetsPic(item.accountAvatar) || ''" errorIcon="error-circle"
-                    width="30rpx" height="30rpx" radius="20" mode="aspectFill"></u-image>
-                <u-image v-if="item.accountThumb" :src="getAssetsPic(item.accountThumb) || ''" errorIcon="error-circle"
-                    width="30rpx" height="30rpx" radius="20" mode="aspectFill"></u-image>
+                <image style="width: 30rpx;height: 30rpx;border-radius: 20rpx" v-if="item.accountAvatar" :src="getAssetsPic(item.accountAvatar) || ''" errorIcon="error-circle" mode="aspectFill"></image>
+                <image style="width: 30rpx;height: 30rpx;border-radius: 20rpx" v-if="item.accountThumb" :src="getAssetsPic(item.accountThumb) || ''" errorIcon="error-circle" mode="aspectFill"></image>
                 <view class="sel-tit u-line-1">{{ item.accountName || '' }}</view>
             </view>
         </view>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { moneyFilter } from "@/common/filters"
 import { ref, computed, reactive, onMounted } from 'vue'
@@ -93,7 +91,7 @@ const todetail = (item: any) => {
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .wf-item-page {
     background-color: #FFFFFF;
@@ -268,4 +266,3 @@ const todetail = (item: any) => {
     border-radius: 50%;
 }
 </style>
-  

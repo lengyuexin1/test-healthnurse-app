@@ -63,6 +63,12 @@
       "root": "IndexPage",
       "pages": [
         {
+          "path": "pages/test/test",
+          "style": {
+            "navigationBarTitleText": "测试页"
+          }
+        },
+        {
           "path": "pages/agency/agency",
           "style": {
             "navigationBarTitleText": "到店健康",
@@ -1728,6 +1734,13 @@
           "path": "pages/intellect/home",
           "style": {
             "navigationBarTitleText": "智护帮首页",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/intellect/mineInfo",
+          "style": {
+            "navigationBarTitleText": "个人详情",
             "navigationStyle": "custom"
           }
         },

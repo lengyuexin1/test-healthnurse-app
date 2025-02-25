@@ -1,17 +1,18 @@
 <template>
     <z-paging ref="paging" v-model="data.dataList" :auto="true" :fixed="false" @query="queryList" @scroll="scrollPage"
-        :defaultPageSize="6" :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="还没有数据哦~"
-        :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true"
-        back-to-top-bottom="180rpx" :back-to-top-img="getAssetsUrl('/leyou/home/page_Topup.svg')"
-        :back-to-top-style="{ width: '80rpx', height: '80rpx', padding: '18rpx', background: '#fff', borderRadius: '50%' }">
+              :defaultPageSize="6" :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
+              empty-view-text="还没有数据哦~"
+              :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto-show-back-to-top="true"
+              back-to-top-bottom="180rpx" :back-to-top-img="getAssetsUrl('/leyou/home/page_Topup.svg')"
+              :back-to-top-style="{ width: '80rpx', height: '80rpx', padding: '18rpx', background: '#fff', borderRadius: '50%' }">
 
         <template #top>
             <view class="author" v-if="(props.channelId == 1 && data.attentionList.length != 0)">
                 <view class="author_item" v-for="item in data.attentionList" :key="item.followId">
                     <view class="author_img_box" @click="clickauthor(item)">
                         <image class="author_img"
-                            :src="item.accountId == 999 ? getAssetsUrl(item.followImage) : item.followImage"
-                            mode="scaleToFill" />
+                               :src="item.accountId == 999 ? getAssetsUrl(item.followImage) : item.followImage"
+                               mode="scaleToFill"/>
                     </view>
                     <view class="author_text">
                         {{ item.followName }}
@@ -150,7 +151,7 @@ import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { gotoLogin } from "@/routes/public-routes"
 import { gotoChannelFollow } from '@/routes/create-routes'
 
-import { gotoAgency, gotoLiveList, gotoHomeService } from '@/routes/user-routes'
+import { gotoAgency, gotoLiveList, gotoHomeServicegototest } from '@/routes/user-routes'
 import { activeDetail, bannerList, columnList, setPageBank } from "@/api/setite-api"
 import { gotoServiceStore, gotoserviceDetail, toInnerPage } from '@/routes/service-routes'
 import { gotoallClassPage, gotoCenterChanges, gotoZone } from '@/routes/active-routes'
@@ -203,7 +204,8 @@ const tabsData: any = ref([
     { id: '2', icon: getAssetsPic('/fare/v2/home_icon_heal.png'), name: '到家健康', flagCode: 1 },
     { id: '5', icon: getAssetsPic('/fare/v2/gre-cai.png'), name: '到店健康', flagCode: 1 },
     { id: '8', icon: getAssetsPic('/fare/v2/home_icon_jigou.png'), name: '找机构', flagCode: 1 },
-    { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 }
+    { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 },
+    { id: '1', icon: getAssetsPic('/fare/home-more.png'), name: 'test', flagCode: 1 }
 ])
 
 interface Props {
@@ -240,6 +242,10 @@ const gotoColmDetail = (index: any, item: any) => {
                 break
             case '8':
                 toInnerPage(item.id)
+                break
+            case '1':
+                console.log(123)
+                gototest()
                 break
             default:
                 break

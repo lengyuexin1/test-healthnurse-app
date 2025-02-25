@@ -2,12 +2,13 @@
     <div class="container">
         <div class="mainbox">
             <Summary v-if="data.value1 === 0"/>
-            <Package v-if="data.value1 === 2"/>
-            <RoomDev v-if="data.value1 === 1"/>
+            <Package v-if="data.value1 === 1"/>
+            <RoomDev v-if="data.value1 === 2"/>
             <Mine v-if="data.value1 === 3"/>
         </div>
         <div class="footbox">
             <TnTabbar v-model="data.value1" @change="name => data.value1 = name" active-color="#333333"
+                      :icon-size="'40rpx'"
                       inactive-color="#6E7378">
                 <!--                #ifdef MP-WEIXIN-->
                 <TnTabbarItem v-for="(item, index) in data.tabList" :key="item.id" :text="item.name"
@@ -67,16 +68,16 @@ const data = reactive<Data>({
             inactive: '/pagesMall/static/tabimg/inte-in-tab1.svg'
         },
         {
-            id: '003',
-            name: '智慧椿家',
-            active: '/pagesMall/static/tabimg/inte-tab3.svg',
-            inactive: '/pagesMall/static/tabimg/inte-in-tab3.svg'
-        },
-        {
             id: '002',
             name: '全屋智能',
             active: '/pagesMall/static/tabimg/inte-tab2.svg',
             inactive: '/pagesMall/static/tabimg/inte-in-tab2.svg'
+        },
+        {
+            id: '003',
+            name: '智慧椿家',
+            active: '/pagesMall/static/tabimg/inte-tab3.svg',
+            inactive: '/pagesMall/static/tabimg/inte-in-tab3.svg'
         },
         {
             id: '004',

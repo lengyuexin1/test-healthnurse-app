@@ -61,7 +61,8 @@
                             <view class="data_number">
                                 {{ data.homeObj.cntFollow ? data.homeObj.cntFollow : '--' }}
                             </view>
-                            <view class="data_text">我的关注
+                            <view class="data_text row j-center i-center">
+                                <text>我的关注</text>
                                 <TnIcon color="#ffffff" name="right" size="28"/>
                             </view>
                         </view>
@@ -69,7 +70,8 @@
                             <view class="data_number">
                                 {{ data.homeObj.totalFans ? data.homeObj.totalFans : '--' }}
                             </view>
-                            <view class="data_text">我的粉丝
+                            <view class="data_text row j-center i-center">
+                                <text>我的粉丝</text>
                                 <TnIcon color="#ffffff" name="right" size="28"/>
                             </view>
                         </view>
@@ -77,7 +79,8 @@
                             <view class="data_number">
                                 {{ data.homeObj.cntLike ? data.homeObj.cntLike : '--' }}
                             </view>
-                            <view class="data_text">获赞数
+                            <view class="data_text row j-center i-center">
+                                <text>获赞数</text>
                                 <TnIcon name="right" color="#ffffff" size="28"/>
                             </view>
                         </view>

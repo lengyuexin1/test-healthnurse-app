@@ -64,7 +64,7 @@
                         <view class="scetit">智慧场景</view>
                         <view class="row i-center" @click="gotoSceneManage">
                             <view class="scetex">查看更多</view>
-                            <TnIcon name="arrow-right" color="#999999" size="30rpx"></TnIcon>
+                            <TnIcon name="right" color="#999999" size="30rpx"></TnIcon>
                         </view>
                     </view>
                     <TnScrollList class="scrolbox" v-if="data.smartList.length">
@@ -260,6 +260,8 @@ const linkSmartDetail = (id) => {
         margin: 0 20rpx 40rpx;
 
         .scetop {
+            padding: 0 5rpx;
+
             .scetit {
                 font-weight: bold;
                 font-size: 30rpx;

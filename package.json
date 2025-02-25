@@ -50,6 +50,10 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@aliyun-sls/web-base": "^0.3.9",
+    "@aliyun-sls/web-sts-plugin": "^0.3.9",
+    "@aliyun-sls/web-track-mini": "^0.3.9",
+    "@aliyun-sls/web-types": "^0.3.9",
     "@andresaya/edge-tts": "^1.2.4",
     "@bc/api": "workspace:^",
     "@bc/base": "workspace:^",
