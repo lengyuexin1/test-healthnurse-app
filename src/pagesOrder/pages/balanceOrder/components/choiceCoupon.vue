@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<TnPopup v-model:show="coupshow" position="bottom" round="20" @close="coupshow = false">
+		<TnPopup v-model="coupshow" open-direction="bottom" round="20" @close="coupshow = false">
       <view class="oldman-head">
         <view class="oldman-close" @click="coupshow = false">
           <tn-icon name="close" size="18"></tn-icon>
@@ -43,7 +43,7 @@
                   </view>
                 </view>
                 <tn-checkbox
-                  size="22"
+                  :size="22"
                   :model-value="item.isChecked"
                   @update:model-value="(val) => groupCoup(val, item, index)"
                   :disabled="item.canUse === 0"
@@ -104,65 +104,57 @@
 	</view>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { formattime } from '@/common/formatTime'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnCheckbox from '@tuniao/tnui-vue3-uniapp/components/checkbox/src/checkbox.vue'
 import TnCheckboxGroup from '@tuniao/tnui-vue3-uniapp/components/checkbox/src/checkbox-group.vue'
 import TnRadio from '@tuniao/tnui-vue3-uniapp/components/radio/src/radio.vue'
 import TnRadioGroup from '@tuniao/tnui-vue3-uniapp/components/radio/src/radio-group.vue'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
-import { ref, watch, computed, defineProps, defineEmits } from 'vue'
-
+import { ref, watch, computed, defineProps, defineEmits, nextTick } from 'vue'
 import BCNotify from '@/components/notify/index.vue'
-// Props
-const props = defineProps({
-    granid: {
-        type: [String, undefined],
-        default: ''
-    },
-    collageId: {
-        type: [String, undefined],
-        default: ''
-    },
-    list: Array,
-    coupsList: Array
-})
 
-// Emits
-const emit = defineEmits('getGroup')
-const bcNotify = ref()
-// State
+// Define Props interface
+interface Props {
+  granid?: string
+  collageId?: string
+  list: Array<any>
+  coupsList: Array<any>
+}
+
+// Define the props
+const props = defineProps<Props>()
+
+// Define Emits
+const emit = defineEmits<{(event: 'getGroup', item: any, checked: boolean, collageId: string | undefined): void}>()
+
+// State variables
+const bcNotify = ref<any>()
 const coupshow = ref(false)
-const coupId = ref([])
-const coupArr = ref([])
-const notCanArr = ref([])
+const coupId = ref<string[]>([])
+const coupArr = ref<Array<any>>([])
+const notCanArr = ref<Array<any>>([])
 
-// Computed Properties
-const timeFormat = computed(() => {
-    return (timestamp) => {
-        return uni.$u.timeFormat(timestamp, 'yyyy-mm-dd hh:MM')
-    }
+// Computed properties
+const timeFormat = computed(() => (time: number) => {
+    return formattime(time, 'YYYY-MM-DD HH:mm')
 })
-const getCouponType = (typeId) => {
+
+const getCouponType = (typeId: number): boolean => {
     const cpuponTypeList = [1000004, 1000002, 10004, 10002, 100002, 100004]
     return cpuponTypeList.includes(typeId)
 }
-const isRebate = computed(() => {
-    return (typeId) => {
-        return getCouponType(typeId)
-    }
-})
 
-// Watchers
-watch(() => props.list, getCoupList)
-watch(() => props.coupsList, getCoupList)
+const isRebate = computed(() => (typeId: number): boolean => getCouponType(typeId))
+
 
 // Methods
 const openCpup = () => {
-    uni.$u.throttle(() => {
-        getCoupList()
-        coupshow.value = true
-    }, 800)
+
+    getCoupList()
+    console.log(coupshow.value)
+    coupshow.value = true
 }
 
 const getCoupList = () => {
@@ -188,13 +180,15 @@ const getCoupList = () => {
         }
     })
 }
+// Watchers
+watch(() => props.list, getCoupList)
+watch(() => props.coupsList, getCoupList)
 
-const receCoup = (item) => {
-    const uToast = useToast()
-    uToast.success('领取成功')
+const receCoup = (item: any) => {
+    bcNotify.value.show('领取成功')
 }
 
-const groupCoup = (e, item, index) => {
+const groupCoup = (e: boolean, item: any, index: number) => {
     if (e) {
         coupArr.value = coupArr.value.map((x, inds) => {
             if (index === inds) {
@@ -208,12 +202,7 @@ const groupCoup = (e, item, index) => {
         coupId.value = [item.grantedId]
     }
     else {
-        coupArr.value = coupArr.value.map(x => {
-            return {
-                ...x,
-                isChecked: false
-            }
-        })
+        coupArr.value = coupArr.value.map(x => ({ ...x, isChecked: false }))
         coupId.value = []
     }
     emit('getGroup', item, e, props.collageId)
@@ -221,7 +210,12 @@ const groupCoup = (e, item, index) => {
         coupshow.value = false
     })
 }
+
+defineExpose({
+    openCpup
+})
 </script>
+
 
 
 <style lang="scss" scoped>
