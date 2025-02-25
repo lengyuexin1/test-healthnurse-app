@@ -39,6 +39,20 @@ export const getCategoryShowList = (req: any) => {
     return http.order.get('/v1/bc/public/app/category_show/list', req)
 }
 
+/* 计算价格 */
+export const getCalculation = async (req: any) => {
+    return http.order.post('/v1/bc/app/order/price/calculation', req) as Promise<any>
+}
+
+
+/** 获取支付店铺的优惠券 */
+export const getCouponGranted = (params: any) => {
+    return  http.order.post('/v1/bc/app/coupon/use/list', params) as Promise<any>
+}
+/** 获取支付平台的优惠券 */
+export const getPlatCoupon = (params: any) => {
+    return http.order.post('/v1/bc/app/coupon/use/platform', params) as Promise<any>
+}
 /* 服务列表 */
 export const getSerListAll = (params: any) => {
     return http.post('api/search/v1/bc/public/es/item/list', params) as Promise<[]>

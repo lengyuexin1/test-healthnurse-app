@@ -27,15 +27,54 @@
                     </view>
                     <view class="service_time" v-if="showtime">
                         <!-- 服务时间\备注 -->
-                        <serviceTime @inpbur="inpbur" ref="timeRef"></serviceTime>
+                    <serviceTime @inpbur="inpbur" ref="timeRef"></serviceTime>
                     </view>
-                         <!-- 价格明细 -->
-                    <view class="price_infoBox">
+                         <!-- 价格明细  -->
+                    <!-- <view class="price_infoBox"  v-if="handle == 1"> -->
                         <!-- :showInfo="data.showInfo" -->
-                        <priceInfo :serviceInfo="data.balanceInfoObj" :showInfo="data.showInfo" :isinstitution="true"></priceInfo>
+                           <!-- 价格结算面板 -->
+            <view class="bala_box">
+                <view class="bala_tit">价格明细</view>
+                <view class="bala_mation row j-between">
+                    <view class="bala_mation_tit">服务价格</view>
+                    <view class="bala_mation_des">￥ {{ (data.calculationInfo.amount / 100).toFixed(2)  }}</view>
+                </view>
+                <view class="bala_mation row j-between" @click="gainShopCouponList">
+                    <view class="bala_mation_tit">店铺优惠</view>
+                    <view class="bala_mation_des">{{ data.calculationInfo.couponName || '' }}</view>
+                    <view class="row i-center">
+                        <view class="bala_mation_des row i-center" style="margin-right: 10rpx">
+                            <view class="bala-mon-pref bala-mon-red" v-if="data.shopCoupon.cfgOffer">
+                                <template v-if="!isRebate(data.shopCoupon.typeId)">￥{{data.shopCoupon.cfgOffer }}</template>
+                                <template v-else>{{data.shopCoupon.cfgOffer}}折</template>
+                            </view>
+                            <view class="bala-mon-pref">{{!data.shopCoupList ? '暂无优惠' : '更多优惠'}}</view>
+                        </view>
+                        <u-icon v-if="data.shopCoupList" name="arrow-right" size="30rpx" color="#999999"></u-icon>
+                    </view>
+                </view>
+                <view class="bala_mation row j-between" @click="getPingCouponList">
+                    <view class="bala_mation_tit">平台优惠</view>
+                    <view class="bala_mation_des">{{ data.calculationInfo.couponName || '' }}</view>
+                    <view class="row i-center">
+                        <view class="bala_mation_des row i-center" style="margin-right: 10rpx">
+                            <view class="bala-mon-pref bala-mon-red" v-if="data.platCoups.cfgOffer">
+                                <template v-if="!isRebate(data.platCoups.typeId)">￥{{data.platCoups.cfgOffer ? (Number(data.platCoups.cfgOffer) / 100).toFixed(2) : 0}}</template>
+                                <template v-else>{{data.platCoups.cfgOffer }}折</template>
+                            </view>
+                            <view class="bala-mon-pref">{{!data.platCouList ? '暂无优惠' : '更多优惠'}}</view>
+                        </view>
+                        <u-icon v-if="data.platCouList" name="arrow-right" size="30rpx" color="#999999"></u-icon>
+                    </view>
+                </view>
+                <view class="bala_mation row j-between">
+                    <view class="bala_mation_tit">需付款</view>
+                    <view class="bala_mation_des">￥{{ (data.calculationInfo.paidAmount / 100).toFixed(2) }}</view>
+                </view>
+
+            </view>
 
                  </view>
-                </view>
             </template>
             <!-- 机构服务订单确认服务 -->
             <template v-else>
@@ -145,13 +184,18 @@
                     </view>
                 </view>
             </template>
+              <!-- 优惠券 coupon-->
+            <choiceCoupon ref="recCoup" @getGroup="selectCoupon" :list="data.grantList" :coupsList="data.coupsList" />
+            <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="getLocation"
+            permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
+            <!-- <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="map" permissionID="ACCESS_FINE_LOCATION"></yk-authpup> -->
     		<BCNotify ref="bcNotify"></BCNotify>
         </z-paging>
     </view>
 </template>
 
 <script setup lang="ts">
-import priceInfo from './price-info.vue'
+import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
 import { ref, reactive, computed, onMounted } from 'vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import { TempStorage } from "@bc/base"
@@ -159,8 +203,10 @@ import PageTopbg from "@/components/page-topbg/page-topbg.vue"
 import balanceInfo from "./balanceInfo.vue"
 import agencyCardInfo from "./agencyCardInfo.vue"
 
+import choiceCoupon from './choiceCoupon.vue'
 import visitorInformation from './visitor-information.vue'
 import serviceAddress from './service-address.vue'
+import { getCouponGranted, getPlatCoupon, getCalculation } from '@/api/care-api'
 import serviceTime from './service-time.vue'
 import { orderEntityConfig, cartEntityConfig, getBaseInfo, createOrder, cardCreateOrder, getOrderEntityConfig, houseOrderPay } from "@/api/order-api"
 import { CareEvents } from "@/events/care-events"
@@ -186,6 +232,7 @@ interface Data {
     showInfo:boolean,
     balanceInfoObj:any,
     consumerAttr:any,
+    coupsList:any,
     archives:any, //照护人信息
     location:any, //地址信息
     calculationInfo: any //支付信息
@@ -194,17 +241,32 @@ interface Data {
     serviceRules: any, //下单时间规则
     optionUnit: number, //下单时间单位
     quantity:number,
+    platCoups:any, //平台优惠券
     remark:string, //备注
     ismany:boolean,
+    grantList: any, //优惠券选择列表
     agencyObj:any, // 康养详情
     preferential:number,
+    shopCoupList: any, //店铺优惠券列表
+    shopCoupon:any, //店铺优惠券
+    platCouList: any, //平台优惠券列表
+    hospital: any, //医院信息
+    couponIdx: number, //-1平台优惠 1店铺优惠
     institutionitemId:string
 
 }
 const data = reactive<Data>({
+    hospital: {},
+    platCouList: [], //平台优惠券列表
+    shopCoupon: {}, //当前选中的店铺优惠信息
+    couponIdx: 0, //-1平台优惠 1店铺优惠
     showInfo: true,
+    platCoups: {}, //当前选中的平台优惠信息
     showPage: false,
     uniqueId: '',
+    shopCoupList: [], //店铺优惠券列表
+    coupsList: ['', ''], //已选择的优惠券列表
+    grantList: [], //优惠券选择列表
     balanceInfoObj: {},
     consumerAttr: [],
     optionMation: {},
@@ -232,7 +294,34 @@ const timeRef = ref()
 const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
+// 优惠券初始状态
+const copuInit = {
+    cfgOffer: 0,
+    grantedId: "",
+    typeName: "请选择优惠券",
+    typeId: 0,
+    id: 0
+}
+const getCouponType = (typeId) => {
+    const cpuponTypeList = [1000004, 1000002, 10004, 10002, 100002, 100004]
+    return cpuponTypeList.includes(typeId)
+}
+const map = () => {
+    uni.chooseLocation({
+        keyword: '医院',
+        success: (res) => {
+            data.hospital = res
+        },
+        fail: (err) => {
+            console.log(err)
+            bcNotify.value.show('暂无优惠券')
+        }
+    })
+},
+const isRebate = (typeId) => {
+    return getCouponType(typeId)
 
+}
 // 是否存在就诊人信息配置
 const showvisitor = computed(() => {
     return ![65795, 65796].includes(data.optionMation.templateCode) && exist("visitor_information")
@@ -290,8 +379,177 @@ const isImproper = (() => {
 const isAssess = (() => {
     return data.archives.id && !data.archives.estimateGradeCategoryIds
 })
+// 优惠券弹窗
+const showCoupon = () => {
+    if (data.grantList.length == 0) {
+        bcNotify.value.show('暂无优惠')
+        return
+    }
+    // this.$refs.recCoup.openCpup()
+}
+// 店铺优惠券列表
+const initGetCouponGranted = () => {
+    return getCouponGranted({
+        pay: data.optionMation.optionPrice * data.quantity,
+        itemId: [data.optionMation.itemId],
+        canUse: 1,
+        applyId: 2
+    })
+}
+// 优惠价格大于订单价格，重置优惠券选择
+const resetCoupon = () => {
+    if (data.couponIdx == -1) {
+        data.coupsList.splice(data.coupsList.indexOf(data.platCoups.grantedId), 1)
+        data.platCoups = { ...copuInit }
+    }
+    else {
+        data.coupsList.splice(data.coupsList.indexOf(data.shopCoupon.grantedId), 1)
+        data.shopCoupon = { ...copuInit }
+    }
+}
+/* 计算价格 */
+const calculation = () => {
+    const userRelCouponIds:any = []
+
+    data.platCoups.grantedId && userRelCouponIds.push(data.platCoups.grantedId)
+
+    data.shopCoupon.grantedId && userRelCouponIds.push(data.shopCoupon.grantedId)
+
+    console.log('计算价格', data.platCoups.grantedId, data.shopCoupon.grantedId)
+
+    // 没有优惠券 使用初始化的值
+    /* if (!userRelCouponIds.length) {
+                return Promise.resolve({
+                    amount: this.optionMation.optionPrice,
+                    couponName: '',
+                    discountAmount: 0,
+                    paidAmount: this.optionMation.optionPrice
+                })
+            } */
+
+    return getCalculation({
+        entity: {
+            quantity: data.quantity,
+            optionId: data.optionMation.optionId
+        },
+        userRelCouponIds
+    })
+}
+// 选取优惠券
+const getGroup = (e, state) => {
+    let couponDetail = { ...copuInit }
+    if (state) {
+        couponDetail = {
+            ...couponDetail,
+            ...e
+        }
+        // this.coupsList.push(e.grantedId)
+        if (data.couponIdx === -1) {
+            data.coupsList.splice(0, 1, e.grantedId)
+        }
+        else {
+            data.coupsList.splice(1, 1, e.grantedId)
+        }
+
+    }
+    else {
+        data.coupsList.splice(data.coupsList.indexOf(e.grantedId), 1, '')
+    }
+    if (data.couponIdx === -1) {
+        data.platCoups = couponDetail
+    }
+    else {
+        data.shopCoupon = couponDetail
+    }
 
 
+    return calculation()
+}
+const selectCoupon = (e, state) => {
+    getGroup(e, state).then(res => {
+        data.calculationInfo = res
+    }).catch(err => {
+        bcNotify.value.show(err.message)
+        resetCoupon()
+    })
+}
+
+/* 平台优惠券 */
+const getPingCouponList = (type) => {
+    if (data.platCouList === null && !type) {
+        bcNotify.value.show('暂无优惠券')
+        // this.$refs.uToast.error('暂无优惠券')
+        return
+    }
+    getPlatCoupon({
+        pay: data.optionMation.optionPrice * data.quantity,
+        categoryId: data.optionMation.categoryId,
+        canUse: 1,
+        itemId: [data.optionMation.itemId]
+    }).then(res => {
+        data.platCouList = res.length ? res : null
+        data.grantList = res
+        data.couponIdx = -1
+
+        if (type === 1) {
+            console.log('没有店铺优惠券', res.length)
+            if (res.length == 0) {
+                getGroup(copuInit, false).then(res => {
+                    data.calculationInfo = res
+                }).catch(() => {
+                    resetCoupon()
+                })
+                return
+            }
+            return getGroup(res[0], true).then(res => {
+                data.calculationInfo = res
+            }).catch(err => {
+                !type && bcNotify.value.show(err.message)
+                resetCoupon()
+            })
+        }
+        showCoupon()
+    })
+}
+// 获取店铺优惠券
+const gainShopCouponList = (type:number) => {
+    if (type == 1) {
+        data.platCoups = copuInit
+        data.shopCoupon = copuInit
+    }
+    if (data.shopCoupList === null && !type) {
+        // this.$refs.uToast.error('暂无优惠券')
+        return Promise.resolve('暂无优惠券')
+    }
+    return initGetCouponGranted().then(res => {
+        data.shopCoupList = res.length ? res : null
+        data.grantList = res
+        data.couponIdx = 1
+        if (type === 1) {
+            console.log('this.grantList.length', data.grantList.length)
+            if (data.grantList.length == 0) {
+                // this.getGroup(copuInit, false)
+                // 获取完店铺优惠，获取平台优惠
+                getPingCouponList(1)
+                return
+            }
+            return getGroup(res[0], true).then(res => {
+                data.calculationInfo = res
+                if (type === 1) {
+                    // 获取完店铺优惠，获取平台优惠
+                    getPingCouponList(1)
+                }
+            }).catch(err => {
+                !type && bcNotify.value.show(err.message)
+
+                resetCoupon()
+            })
+        }
+        showCoupon()
+    }).catch(err => {
+        bcNotify.value.show(err.message)
+    })
+}
 // 获取普通服务订单需要填写内容
 const getEntityConfig = (optionId: any) => {
 
@@ -331,7 +589,7 @@ const getEntityConfig = (optionId: any) => {
 
         // res.patient && (data.visitName = res.patient)
 
-        // data.gainShopCouponList(1)
+        gainShopCouponList(1)
 
         // data.shopId = res.item.shopId
 
@@ -385,15 +643,15 @@ const inpbur = (val:string) => {
 const placeOrder = () => {
     // 调用子组件的属性
     if (!addressRef.value?.data?.location) {
-        bcNotify.value.error('请选择地址')
+        bcNotify.value.show('请选择地址')
         return
     }
     if (!timeRef.value?.datetime) {
-        bcNotify.value.error('请选择上门时间')
+        bcNotify.value.show('请选择上门时间')
         return
     }
     if (showvisitor.value && !visitorRef.value?.data?.archives.id) {
-        bcNotify.value.error('请选择照护人')
+        bcNotify.value.show('请选择照护人')
         return
     }
 
@@ -459,7 +717,7 @@ const placeOrder = () => {
     createOrder(reqData).then((res:any) => {
         uppay(res)
     }).catch(err => {
-        bcNotify.value.error(err.message)
+        bcNotify.value.show(err.message)
     }).finally(() => {
         uni.hideLoading()
     })
@@ -477,7 +735,7 @@ const playinstitution = () => {
     }).then((res:any) => {
         uppay(res)
     }).catch((err:any) => {
-        bcNotify.value.error(err.message)
+        bcNotify.value.show(err.message)
     }).finally(() => {
         uni.hideLoading()
     })
@@ -518,7 +776,7 @@ const uppay = (orderId:string) => {
         })
         // #endif
     }).catch((err) => {
-        bcNotify.value.error(err.message)
+        bcNotify.value.show(err.message)
     }).finally(() => {
         uni.hideLoading()
     })
@@ -531,12 +789,13 @@ const toOrderDetail = (id:string) => {
 
 
 // 获取订单详情
-const getorderEntity = (optionId:string) => {
+const getorderEntity = (optionId:string, quantity:number) => {
     orderEntityConfig({
         optionId
     }).then((res:any) => {
         data.balanceInfoObj = {
             title: res.item.name,
+            quantity,
             optiontitle: res.option.name,
             optionprice: res.option.price,
             servicethumb: res.item.thumb
@@ -574,22 +833,19 @@ const getquantity = (quantity:number) => {
     data.quantity = quantity
 }
 
-
-
-
-
 onMounted(() => {
     const tempStorage = new TempStorage()
     tempStorage.get(props.uniqueId).then((res:any) => {
         if (props.handle == 1) {
-            getorderEntity(res.optionId)
+            data.quantity = res.quantity
+            getorderEntity(res.optionId, res.quantity)
             getEntityConfig(res.optionId)
         }
         else {
             res.voucherType == 1 ? getvoucherdetail(res.itemId) : gethealthdetail(res.itemId)
         }
     }).catch(() => {
-        bcNotify.value.error('订单获取失败')
+        bcNotify.value.show('订单获取失败')
         setTimeout(() => {
             pageController.back()
         }, 1000)
@@ -606,6 +862,58 @@ onMounted(() => {
     box-sizing: border-box;
     .balance_info{
         margin-bottom: 20rpx;
+    }
+    .bala_mation {
+        margin-top: 40rpx;
+
+        .bala_mation_tit {
+            font-size: 30rpx;
+            font-weight: bold;
+            color: #333333;
+        }
+        .bala_mation_des {
+            font-size: 28rpx;
+            font-weight: 400;
+            color: #666666;
+
+            .bala-mon-red {
+                color: #f50606;
+                margin-right: 12rpx;
+            }
+        }
+    }
+
+    .bala_note {
+        font-size: 24rpx;
+        line-height: 30rpx;
+        font-weight: 400;
+        color: #f50606;
+        margin-top: 20rpx;
+    }
+
+    .play_text_box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .play_title {
+            color: #333333;
+            font-size: 30rpx;
+            font-weight: 600;
+        }
+        .play_single {
+            color: #999999;
+            font-size: 28rpx;
+        }
+    }
+    .play_notice {
+        color: #333333;
+        font-size: 30rpx;
+        font-weight: 600;
+        margin-bottom: 24rpx;
+    }
+    .play_text {
+        color: #999999;
+        font-size: 28rpx;
     }
     .all_price {
         display: flex;
@@ -648,6 +956,12 @@ onMounted(() => {
         background: #ffffff;
         box-shadow: 0rpx 0rpx 16rpx rgba(0, 0, 0, 0.06);
         border-radius: 24rpx;
+        .bala_tit {
+        font-size: 32rpx;
+        font-weight: bold;
+        color: #333333;
+        flex-shrink: 0;
+    }
         .play_text_box {
             display: flex;
             align-items: center;

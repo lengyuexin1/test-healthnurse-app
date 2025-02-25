@@ -31,7 +31,7 @@
 <script>
 import customNavbar from '@/components/custom-navbar/custom-navbar.vue'
 import { getAssetsPic } from "@/common/setPicture"
-import { gotoSmartGoods, gotoSmartDetail } from "@/routes/wisdom-routes"
+import { gotoSmartDetail } from "@/routes/wisdom-routes"
 import { sceneList } from "@/api/smart-api"
 export default {
     components: {

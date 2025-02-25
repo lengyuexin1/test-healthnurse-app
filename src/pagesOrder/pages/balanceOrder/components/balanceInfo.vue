@@ -20,7 +20,7 @@
                             ￥{{ props.balanceInfoObj.optionprice / 100 }}
                         </view>
                         <view>
-                            <TnNumberBox v-model="data.vModelValue" bg-color="#f5f5f5" :max="data.maxStock" 
+                            <TnNumberBox v-model="props.balanceInfoObj.quantity" bg-color="#f5f5f5" :max="data.maxStock"
                             :min="1" buttonSize="56rpx" inputWidth="66rpx" @change="changevalue">
                             </TnNumberBox>
                         </view>
@@ -52,8 +52,8 @@ interface Data {
     maxStock:number,
 }
 const data = reactive<Data>({
-    vModelValue:1,
-    maxStock:31,
+    vModelValue: 1,
+    maxStock: 31
 })
 
 interface Events {
@@ -67,12 +67,12 @@ onMounted(() => {
 })
 
 const changevalue = (value:number) => {
-    emit('getquantity',value)
+    emit('getquantity', value)
 }
 
 
 </script>
-  
+
 <style scoped>
 :deep(.tn-number-box){
     border-radius: 28rpx;
@@ -140,7 +140,7 @@ const changevalue = (value:number) => {
 
                 }
             }
-            
+
             .balance_info_right_shop{
                 display: flex;
                 align-items: center;
@@ -160,4 +160,3 @@ const changevalue = (value:number) => {
     }
 }
 </style>
-  

@@ -21,13 +21,8 @@
                     <TnSwipeAction @select="delGoods($event, ele, idx)">
                         <TnSwipeActionItem :options="options" :auto-close="false">
                             <view class="goodsList tn-flex-center-center" @tap="clickGoods(ele)">
-                                <!-- <TnRadioGroup v-model="">
-    <TnRadio >
-      <template #left>男</template>
-    </TnRadio>
 
-  </TnRadioGroup> -->
-                                <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="ele.checked" @change="changeSingle($event, index)"></TnCheckbox>
+                    <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="ele.checked" @change="changeSingle($event, ele)"></TnCheckbox>
                                 <view class="goodsInfo tn-flex-row">
                                     <view class="left tn-flex-row">
                                         <image class="left_img" :src="ele.image" mode="scaleToFill" />
@@ -102,7 +97,6 @@
 </template>
 
 <script setup lang="ts">
-
 import { recomLikeList } from "@/api/goods-api"
 import { ref, reactive, computed, onMounted } from "vue"
 import { onLoad, onShow } from "@dcloudio/uni-app"
@@ -131,7 +125,7 @@ interface Data {
     totalProductLength: number
     allChecked: boolean
     delGoodsId: string
-
+    checkedId: number | null
     delGoodsItemIndex: number
     delGoodsItemProductIndex: number
     submitTotal: number
@@ -145,6 +139,7 @@ const props = withDefaults(defineProps<{
     dataList: []
 })
 const data = reactive<Data>({
+    checkedId: null,
     firstLoading: 0,
     pageLoading: false,
     dataList: [],
@@ -204,9 +199,13 @@ const quantityChange = (val: number, id: string) => {
 }
 
 // 单个选择
-const changeSingle = (e: any, index: number) => {
-    console.log('单选', index)
+const changeSingle = (e: any, item: any) => {
 
+    data.checkedId = item.id
+    props.dataList.forEach((val) => {
+        val.checked = false
+    })
+    item.checked = e
     // 判断店铺下的商品是否已全部选择
     // const shopAllChecked = props.dataList[index].productList.every((obj: any) => {
     //     obj.checked == true
@@ -227,32 +226,6 @@ const changeSingle = (e: any, index: number) => {
     calulateTotalPrice()
 }
 
-// 全部全选
-const allChange = (e: any) => {
-    if (e) {
-        props.dataList.forEach((item: any) => {
-            item.checkedGroup = true
-
-            item.productList.forEach((element: any) => {
-                element.checked = true
-                if (element.isItemDeleted == 1) {
-                    element.checked = false
-                    return
-                }
-            })
-        })
-    }
-    else {
-        props.dataList.forEach((item: any) => {
-            item.checkedGroup = false
-
-            item.productList.forEach((element: any) => {
-                element.checked = false
-            })
-        })
-    }
-    calulateTotalPrice()
-}
 
 // 计算总数
 const calulateTotalPrice = () => {
@@ -289,29 +262,24 @@ const clickBtn = () => {
         return
     }
 
-    const listData = props.dataList.filter((item: any) => (item.checked))
+    const item = props.dataList.find((item: any) => (item.checked))
     data.allChecked = false
     calulateTotalPrice()
 
     const uniqueId = TempStorage.savewx({
-        listData,
-        isCart: 1
+        optionId: item.optionId,
+        carId: item.id,
+        quantity: item.quantity
     })
-    // const uniqueId = TempStorage.save({
-    //             optionId: item.optionId,
-    //             carId: item.id,
-    //             quantity: item.quantity,
-    //             adresMation: this.adresMation.id ? this.adresMation : null
-    //         })
+
     gotoBalanceOrder(uniqueId)
     // #ifdef MP-WEIXIN
-    gotoBalanceOrder(uniqueId)
     // #endif
 
 
     // #ifdef APP-PLUS
     const payJSON = JSON.stringify({
-        listData,
+        listData: [item],
         isCart: 1
     })
 
