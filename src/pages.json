@@ -112,6 +112,13 @@
           }
         },
         {
+          "path": "pages/news/news",
+          "style": {
+            "navigationBarTitleText": "消息",
+            "navigationStyle": "custom"
+          }
+        },
+        {
           "path": "pages/chat/chat-container",
           "style": {
             "navigationBarTitleText": "",
@@ -1825,18 +1832,6 @@
           "path": "pages/science/caption",
           "style": {
             "navigationBarTitleText": "使用说明",
-            "navigationStyle": "custom"
-          }
-        }
-      ]
-    },
-    {
-      "root": "pagesMsg",
-      "pages": [
-        {
-          "path": "pages/news/news",
-          "style": {
-            "navigationBarTitleText": "消息",
             "navigationStyle": "custom"
           }
         }

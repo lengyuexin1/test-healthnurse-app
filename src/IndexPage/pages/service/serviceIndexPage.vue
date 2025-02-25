@@ -548,7 +548,7 @@ const changeNav = (item: any) => {
 }
 
 const changebubble = () => {
-    gotoaNews()
+    gotoaNews(1)
 }
 
 const changecity = () => {
