@@ -672,7 +672,7 @@ onShareAppMessage((res:any) => {
         title: orderObj.value.name,
         imageUrl: orderObj.value.thumb,
         desc: orderObj.value.desc,
-        path: `/Goods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`
+        path: `/pagesGoods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`
     }
 })
 //#endif
@@ -682,7 +682,7 @@ const sharePoster = async () => {
 
     const coverUrl = await drawBGIMG(orderObj.value.thumb)
     // 二维码链接图片
-    const qrimg =  await getQrcode(`/Goods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`).then((img:any) => {
+    const qrimg =  await getQrcode(`/pagesGoods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`).then((img:any) => {
         return img
     })
     const qrimgUrl = await drawBGIMG(qrimg)
@@ -787,7 +787,7 @@ const sharePage = () => {
         title: orderObj.value.name,
         miniProgram: {
             id: 'gh_fd20b530cb94', //微信小程序原始id
-            path: `/Goods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`, //点击链接进入的页面
+            path: `/pagesGoods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`, //点击链接进入的页面
             type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
             webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接
         },

@@ -479,13 +479,13 @@ const setcoll = () => {
         itemId: itemId.value
     }
     collectService(datas)
-          .then(() => {
-              isFavorite.value = true
-              bcNotify.value.show('收藏成功')
-          })
-          .catch((err: any) => {
-              bcNotify.value.error(err.message)
-          })
+        .then(() => {
+            isFavorite.value = true
+            bcNotify.value.show('收藏成功')
+        })
+        .catch((err: any) => {
+            bcNotify.value.error(err.message)
+        })
 }
 //取消收藏
 const celcoll = () => {
@@ -493,13 +493,13 @@ const celcoll = () => {
         itemIds: [itemId.value]
     }
     cancelCollect(datas)
-          .then(() => {
-              isFavorite.value = false
-              bcNotify.value.show('取消收藏')
-          })
-          .catch((err: any) => {
-              bcNotify.value.error(err.message)
-          })
+        .then(() => {
+            isFavorite.value = false
+            bcNotify.value.show('取消收藏')
+        })
+        .catch((err: any) => {
+            bcNotify.value.error(err.message)
+        })
 }
 
 const setOption = (str: string) => {
@@ -731,28 +731,28 @@ const sharePoster = async () => {
     context.restore()
 
     context.draw(
-          false,
-          setTimeout(async () => {
-              uni.canvasToTempFilePath({
-                  canvasId: 'mycanvas',
-                  success: (res: any) => {
-                      shareimgUrl.value = res.tempFilePath
-                      status.value = 2
-                      title = ''
-                  },
-                  fail: err => {
-                      console.log(err)
-                      uni.showToast({
-                          icon: 'none',
-                          title: '生成失败,请稍后重试'
-                      })
-                  },
-                  complete: (ret) => {
-                      console.log('生成中....')
-                      uni.hideLoading()
-                  }
-              }, instance)
-          }, 3000)
+        false,
+        setTimeout(async () => {
+            uni.canvasToTempFilePath({
+                canvasId: 'mycanvas',
+                success: (res: any) => {
+                    shareimgUrl.value = res.tempFilePath
+                    status.value = 2
+                    title = ''
+                },
+                fail: err => {
+                    console.log(err)
+                    uni.showToast({
+                        icon: 'none',
+                        title: '生成失败,请稍后重试'
+                    })
+                },
+                complete: (ret) => {
+                    console.log('生成中....')
+                    uni.hideLoading()
+                }
+            }, instance)
+        }, 3000)
     )
 
 
@@ -771,7 +771,7 @@ const sharePage = () => {
         title: orderObj.value.name,
         miniProgram: {
             id: 'gh_c2469c570746', //微信小程序原始id
-            path: `/Goods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`, //点击链接进入的页面
+            path: `/pagesGoods/pages/goodsDetail/goodsDetail?itemId=${orderObj.value.id}`, //点击链接进入的页面
             type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
             webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接
         },
