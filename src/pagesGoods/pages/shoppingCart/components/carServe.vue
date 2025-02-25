@@ -18,10 +18,11 @@
                             <image class="thumb" :src="ele.shopIcon" mode="scaleToFill" />
                             {{ ele.shopName }}<TnIcon name="right" color="#8D8D8D" />
                     </view>
-                    <TnSwipeAction @select="delGoods($event, item, index)">
+                    <TnSwipeAction @select="delGoods($event, ele, idx)">
                         <TnSwipeActionItem :options="options" :auto-close="false">
                             <view class="goodsList tn-flex-center-center" @tap="clickGoods(ele)">
-                                <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="ele.checked" @change="changeSingle($event, index)"></TnCheckbox>
+
+                    <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="ele.checked" @change="changeSingle($event, ele)"></TnCheckbox>
                                 <view class="goodsInfo tn-flex-row">
                                     <view class="left tn-flex-row">
                                         <image class="left_img" :src="ele.image" mode="scaleToFill" />
@@ -66,13 +67,13 @@
         <!-- <template #bottom> -->
             <view class="btn tn-flex-center-between animate__animated animate__faster animate__slideInUp" v-if="props.dataList.length">
                 <view class="tn-flex-row" style="align-items: center;">
-                    <TnCheckbox custom-class="allCheckbox" size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="data.allChecked" @change="allChange">全选</TnCheckbox>
+                    <!-- <TnCheckbox custom-class="allCheckbox" size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="data.allChecked" @change="allChange">全选</TnCheckbox> -->
                     <view class="total tn-flex-column">
                         <view>合计：<text class="price">{{ priceFormat(data.submitPrice) }}</text></view>
-                        <view class="tips">共{{ data.submitTotal }}件</view>
+                        <!-- <view class="tips">共{{ data.submitTotal }}件</view> -->
                     </view>
                 </view>
-                <view :class="[data.submitTotal > 0 ? '' : 'btn-disabled']">
+                <view :class="[data.submitPrice > 0 ? '' : 'btn-disabled']">
                     <TnButton shape="round" width="220rpx" height="76rpx" font-size="30rpx" bg-color="#EA3E1A" text-color="#FFFFFF" :debounce="true" @tap="clickBtn">
                         去结算
                     </TnButton>
@@ -124,6 +125,7 @@ interface Data {
     totalProductLength: number
     allChecked: boolean
     delGoodsId: string
+    checkedId: number | null
     delGoodsItemIndex: number
     delGoodsItemProductIndex: number
     submitTotal: number
@@ -137,6 +139,7 @@ const props = withDefaults(defineProps<{
     dataList: []
 })
 const data = reactive<Data>({
+    checkedId: null,
     firstLoading: 0,
     pageLoading: false,
     dataList: [],
@@ -189,77 +192,54 @@ const quantityChange = (val: number, id: string) => {
         quantity: val
     }).then(() => {
         calulateTotalPrice()
-    }).catch((err: any) => {
-        bcNotify.value.error(err.message)
     })
+        .catch((err: any) => {
+            bcNotify.value.error(err.message)
+        })
 }
 
 // 单个选择
-const changeSingle = (e: any, index: number) => {
-    console.log('单选', index)
+const changeSingle = (e: any, item: any) => {
 
-    // 判断店铺下的商品是否已全部选择
-    const shopAllChecked = props.dataList[index].productList.every((obj: any) => {
-        obj.checked == true
-        if (obj.isItemDeleted == 1) {
-            obj.checked = false
-            return
-        }
+    data.checkedId = item.id
+    props.dataList.forEach((val) => {
+        val.checked = false
     })
+    item.checked = e
+    // 判断店铺下的商品是否已全部选择
+    // const shopAllChecked = props.dataList[index].productList.every((obj: any) => {
+    //     obj.checked == true
+    //     if (obj.isItemDeleted == 1) {
+    //         obj.checked = false
+    //         return
+    //     }
+    // })
 
-    // 如果该店铺的商品都已经选择，则店铺全选按钮设为true
-    if (shopAllChecked) {
-        props.dataList[index].checkedGroup = true
-    }
-    else {
-        props.dataList[index].checkedGroup = false
-    }
+    // // 如果该店铺的商品都已经选择，则店铺全选按钮设为true
+    // if (shopAllChecked) {
+    //     props.dataList[index].checkedGroup = true
+    // }
+    // else {
+    //     props.dataList[index].checkedGroup = false
+    // }
     // 重新计算金额
     calulateTotalPrice()
 }
 
-// 全部全选
-const allChange = (e: any) => {
-    if (e) {
-        props.dataList.forEach((item: any) => {
-            item.checkedGroup = true
-
-            item.productList.forEach((element: any) => {
-                element.checked = true
-                if (element.isItemDeleted == 1) {
-                    element.checked = false
-                    return
-                }
-            })
-        })
-    }
-    else {
-        props.dataList.forEach((item: any) => {
-            item.checkedGroup = false
-
-            item.productList.forEach((element: any) => {
-                element.checked = false
-            })
-        })
-    }
-    calulateTotalPrice()
-}
 
 // 计算总数
 const calulateTotalPrice = () => {
-    const totalLength = props.dataList.reduce((total: number, item: any) => {
-        return total + item.productList.filter((product: any) => product.checked).length
-    }, 0)
+    // const totalLength = props.dataList.reduce((total: number, item: any) => {
+    //     return total + item.productList.filter((product: any) => product.checked).length
+    // }, 0)
 
-    data.submitTotal = totalLength
+    // data.submitTotal = totalLength
 
     const totalPrice = props.dataList.reduce((total: number, item: any) => {
-        return total + item.productList.reduce((subTotal: number, product: any) => {
-            if (product.checked) {
-                return subTotal + (product.price * product.quantity)
-            }
-            return subTotal
-        }, 0)
+        if (item.checked) {
+            return total + (item.price * item.quantity)
+        }
+        return total  // 这里返回未变化的 total
     }, 0)
 
     data.submitPrice = totalPrice
@@ -277,39 +257,29 @@ const clickGoods = (item: any) => {
 }
 
 const clickBtn = () => {
-    if (data.submitTotal == 0) {
+    if (data.submitPrice == 0) {
         bcNotify.value.show('您还没选择商品哦')
         return
     }
-    const listData : any = []
 
-    for (const i in props.dataList) {
-        const dataItem = props.dataList[i]
-        dataItem.checkedGroup = false
-        for (const j in dataItem.productList) {
-            const productItem = dataItem.productList[j]
-            if (productItem.checked) {
-                listData.push(productItem.id)
-                productItem.checked = false
-            }
-        }
-    }
+    const item = props.dataList.find((item: any) => (item.checked))
     data.allChecked = false
     calulateTotalPrice()
 
     const uniqueId = TempStorage.savewx({
-        listData,
-        isCart: 1
+        optionId: item.optionId,
+        carId: item.id,
+        quantity: item.quantity
     })
 
-    // #ifdef MP-WEIXIN
     gotoBalanceOrder(uniqueId)
+    // #ifdef MP-WEIXIN
     // #endif
 
 
     // #ifdef APP-PLUS
     const payJSON = JSON.stringify({
-        listData,
+        listData: [item],
         isCart: 1
     })
 
@@ -348,7 +318,7 @@ const clickBtn = () => {
 const delGoods = (e: number, item: any, index: number) => {
     data.delGoodsItemIndex = index
     data.delGoodsItemProductIndex = e
-    data.delGoodsId = item.productList[e].id
+    data.delGoodsId = item.id
     bcPopup.value.open()
 }
 
@@ -362,15 +332,15 @@ const confirmDel = () => {
         dispatchWEvent(GlobalEvents.Refresh_ShoppingCart_Badge)
 
         // 接口请求成功后，使用本地删除，防止清除用户全选或者选择的操作
-        props.dataList[data.delGoodsItemIndex].productList.splice(data.delGoodsItemProductIndex, 1)
+        // props.dataList[data.delGoodsItemIndex].productList.splice(data.delGoodsItemProductIndex, 1)
 
-        // 如果该店铺下只有一个商品，删除商品后，删除该店铺
-        if (props.dataList[data.delGoodsItemIndex].productList.length == 0) {
-            props.dataList.splice(data.delGoodsItemIndex, 1)
-        }
+        // // 如果该店铺下只有一个商品，删除商品后，删除该店铺
+        // if (props.dataList[data.delGoodsItemIndex].productList.length == 0) {
+        //     props.dataList.splice(data.delGoodsItemIndex, 1)
+        // }
 
         // 修改标题的商品总数
-        uni.setNavigationBarTitle({ title: `购物车(${data.totalProductLength - 1})` })
+        // uni.setNavigationBarTitle({ title: `购物车(${data.totalProductLength - 1})` })
 
         setTimeout(() => {
             // 重新算合计的总额

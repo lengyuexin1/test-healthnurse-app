@@ -12,9 +12,8 @@
     >
 
         <template #top>
-            <PageTopbg :zIndex="-1"></PageTopbg>
-            <bc-page-navbar :title="pageTitle"></bc-page-navbar>
-
+            <TnSticky :customNavHeight="98">
+            <bc-page-navbar title="机构详情"></bc-page-navbar>
             <view class="top_inp_box">
                 <view class="inp_box" @click="tosearch">
                     <TnIcon name="search" color="#666" size="26"></TnIcon>
@@ -29,7 +28,7 @@
                             mode="scaleToFill" />
                     </div>
             </div>
-            <view class="top_icon_list">
+            <!-- <view class="top_icon_list">
                 <view class="top_scrool">
                     <view
                     class="scrool_item"
@@ -45,7 +44,8 @@
                         <view class="select_box" v-if="data.topIndex == index"></view>
                     </view>
                 </view>
-            </view>
+            </view> -->
+            </TnSticky>
         </template>
         <view class="screen_box" v-if="data.dataList.length">
             <!-- 列表 -->
@@ -54,13 +54,9 @@
         <!-- <institutionList :dataList="data.dataList"></institutionList> -->
 
         <BCNotify ref="bcNotify"></BCNotify>
-
-        <!-- <template #bottom>
-
-        </template> -->
-    </z-paging>
-    <TnPopup v-model="show" mode="top" :safeAreaInsetBottom="false" round="32rpx" :closeOnClickOverlay="true" @close="allClose">
-                <div class="menu_show_box">
+        <TnPopup v-model="show"  open-direction="top" :safeAreaInsetBottom="false" round="32rpx"
+        :closeOnClickOverlay="true" @close="allClose">
+                <div class="menu_show_box" :style="'margin-top:' + navbarTop + 'px'">
                     <!-- 区域菜单 -->
                     <div class="region_box" v-if="showregion">
                         <div class="region_box_top">
@@ -110,11 +106,17 @@
                     </div>
                 </div>
             </TnPopup>
+        <!-- <template #bottom>
+
+        </template> -->
+    </z-paging>
+
             <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="getLocation"
             permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
 </template>
 
 <script setup lang="ts">
+import TnSticky from '@tuniao/tnui-vue3-uniapp/components/sticky/src/sticky.vue'
 import { ref, reactive, computed, onMounted, defineExpose } from 'vue'
 import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
 import agencyItem from "../components/agencyItem.vue"
@@ -176,7 +178,7 @@ const show = ref(false)
 const showregion = ref(false)
 const showcategory = ref(false)
 const showpriceItem = ref(false)
-const navbarTop = ref(175)
+const navbarTop = ref(160)
 const rateValue = ref(3)
 const areaList = ref([])
 const areaIndex = ref(null)
@@ -534,7 +536,7 @@ defineExpose({
 .top_inp_box{
     padding: 14rpx 20rpx;
     box-sizing: border-box;
-
+    background: linear-gradient(180deg, #dff7ef -190%, #f8f9f9 110%);
     .inp_box{
         width: 100%;
         background: #FFFFFF;
