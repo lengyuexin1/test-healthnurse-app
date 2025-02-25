@@ -1,64 +1,61 @@
 <template>
     <view class="contraner">
         <z-paging ref="paging" v-model="data.dataList" @query="queryList" :defaultPageSize="10"
-                  :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="还没有数据哦~"
-                  :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto="true">
+            :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')" empty-view-text="还没有数据哦~"
+            :empty-view-img-style="{ width: '320rpx', height: '320rpx' }" :auto="true">
             <template #top>
                 <PageTopbg></PageTopbg>
-                <bc-page-navbar :title="'到店健康'"></bc-page-navbar>
+                <bc-page-navbar :title="'到家健康'"></bc-page-navbar>
                     <!-- 自定义导航栏 -->
-                <TnSticky :customNavHeight="0">
-                    <!-- <bc-page-navbar :title="' '">
-                        <template #back>
-                            <TnIcon name="left" @click="goback"></TnIcon>
-                        </template>
-                        <view :style="{ margin: '0 auto' }">
-                            <TnTabs v-model="data.current" bar-color="#29C86F" bg-color="transparent" color="#666666"
-                                    :bottom-shadow="false"
-                                    active-color="#333333" font-size="28rpx"
-                                    active-font-size="33rpx" active-bold
-                                    @change="tabsChange">
-                                <TnTabsItem v-for="item in data.navList" :title="item.name" :key="item.id"></TnTabsItem>
-                            </TnTabs>
-                        </view>
-                    </bc-page-navbar> -->
-                    <div class="inp_box">
-                        <div class="inp" @click="searKey">
-                            <div class="search_icon">
-                                <TnIcon name="search" size="28"></TnIcon>
+                    <TnSticky :customNavHeight="0">
+                        <!-- <bc-page-navbar :title="' '">
+                            <template #back>
+                                <TnIcon name="left" @click="goback"></TnIcon>
+                            </template>
+                            <view :style="{ margin: '0 auto' }">
+                                <TnTabs v-model="data.current" bar-color="#29C86F" bg-color="transparent" color="#666666"
+                                    :bottom-shadow="false" active-color="#333333" font-size="28rpx" active-font-size="33rpx"
+                                    active-bold @change="tabsChange">
+                                    <TnTabsItem v-for="item in data.navList" :title="item.name" :key="item.id"></TnTabsItem>
+                                </TnTabs>
+                            </view>
+                        </bc-page-navbar> -->
+                        <div class="inp_box">
+                            <div class="inp" @click="searKey">
+                                <div class="search_icon">
+                                    <TnIcon name="search" size="28"></TnIcon>
+                                </div>
+                                <div class="inp_text">输入搜索信息</div>
                             </div>
-                            <div class="inp_text">输入搜索信息</div>
                         </div>
-                    </div>
-                    <div class="menu">
-                        <div class="menu_item" @click="showRegion">
-                            <text class="menu_item_text" :class="{ 'isclick': data.showregion }">区域</text>
-                            <image class="menu_item_img"
-                                   :src="data.showregion ? getAssetsUrl('/channel/icon_down_highlig.png') : getAssetsUrl('/channel/icon_down.png')"
-                                   mode="scaleToFill"/>
+                        <div class="menu">
+                            <div class="menu_item" @click="showRegion">
+                                <text class="menu_item_text" :class="{ 'isclick': data.showregion }">区域</text>
+                                <image class="menu_item_img"
+                                    :src="data.showregion ? getAssetsUrl('/channel/icon_down_highlig.png') : getAssetsUrl('/channel/icon_down.png')"
+                                    mode="scaleToFill" />
+                            </div>
+                            <div class="menu_item" @click="showCategory">
+                                <text class="menu_item_text" :class="{ 'isclick': data.showcategory }">类别</text>
+                                <image class="menu_item_img"
+                                    :src="data.showcategory ? getAssetsUrl('/channel/icon_down_highlig.png') : getAssetsUrl('/channel/icon_down.png')"
+                                    mode="scaleToFill" />
+                            </div>
+                            <div class="menu_item" @click="changePrice" v-if="data.templateId == 123">
+                                <text class="menu_item_text" :class="{ 'isclick': data.showpriceItem }">价格</text>
+                                <image class="menu_item_img"
+                                    :src="data.showpriceItem ? getAssetsUrl('/channel/icon_down_highlig.png') : getAssetsUrl('/channel/icon_down.png')"
+                                    mode="scaleToFill" />
+                            </div>
                         </div>
-                        <div class="menu_item" @click="showCategory">
-                            <text class="menu_item_text" :class="{ 'isclick': data.showcategory }">类别</text>
-                            <image class="menu_item_img"
-                                   :src="data.showcategory ? getAssetsUrl('/channel/icon_down_highlig.png') : getAssetsUrl('/channel/icon_down.png')"
-                                   mode="scaleToFill"/>
-                        </div>
-                        <div class="menu_item" @click="changePrice" v-if="data.templateId == 123">
-                            <text class="menu_item_text" :class="{ 'isclick': data.showpriceItem }">价格</text>
-                            <image class="menu_item_img"
-                                   :src="data.showpriceItem ? getAssetsUrl('/channel/icon_down_highlig.png') : getAssetsUrl('/channel/icon_down.png')"
-                                   mode="scaleToFill"/>
-                        </div>
-                    </div>
-                </TnSticky>
+                    </TnSticky>
             </template>
 
             <agencyItem :agencyList="data.dataList" :coordinate="data.coordinate" :positioning="data.positioning"
-                        :templateId="data.templateId" :isRecommend="false"/>
+                :templateId="data.templateId" :isRecommend="false" />
 
             <TnPopup v-model="data.show" open-direction="top" :safeAreaInsetBottom="false" round="32rpx"
-                     :closeOnClickOverlay="true"
-                     @close="allClose">
+                :closeOnClickOverlay="true" @close="allClose">
                 <div class="menu_show_box" :style="'margin-top:' + data.navbarTop + 'px'">
                     <!-- 区域菜单 -->
                     <div class="region_box" v-if="data.showregion">
@@ -68,10 +65,9 @@
                         </div>
                         <div class="region_box_list">
                             <view class="gird">
-                                <view v-for="(areaListItem, areaListIndex) in data.areaList"
-                                      :key="areaListIndex">
+                                <view v-for="(areaListItem, areaListIndex) in data.areaList" :key="areaListIndex">
                                     <div class="region_box_item" @click="clickarea(areaListItem, areaListIndex)"
-                                         :class="{ 'isshow_region': data.districtIds.includes(areaListItem.id) }">{{
+                                        :class="{ 'isshow_region': data.districtIds.includes(areaListItem.id) }">{{
                                             areaListItem.name
                                         }}
                                     </div>
@@ -84,8 +80,8 @@
                     <div class="category_box" v-if="data.showcategory">
                         <div class="category_box_list">
                             <div v-for="(item, index) in data.categoryList" :key="index" class="category_box_item"
-                                 @click="clickcategory(item, index)"
-                                 :class="{ 'isshow_region': data.categoryIds.includes(item.id) }">{{ item.name }}
+                                @click="clickcategory(item, index)"
+                                :class="{ 'isshow_region': data.categoryIds.includes(item.id) }">{{ item.name }}
                             </div>
                         </div>
                     </div>
@@ -94,11 +90,11 @@
                     <div class="priceItem_box" v-if="data.showpriceItem">
                         <div class="priceItem_box_list">
                             <div class="priceItem" @click="data.priceIndex = 999"
-                                 :class="{ 'isshow_region': data.priceIndex == 999 }">不限
+                                :class="{ 'isshow_region': data.priceIndex == 999 }">不限
                             </div>
                             <div v-for="(item, index) in data.priceItemlist" :key="index"
-                                 :class="{ 'isshow_region': index == data.priceIndex }" class="priceItem"
-                                 @click="clickpriceItem(item, index)">
+                                :class="{ 'isshow_region': index == data.priceIndex }" class="priceItem"
+                                @click="clickpriceItem(item, index)">
                                 <text v-if="!item.minPrice">{{ item.maxPrice }}以下</text>
                                 <text v-if="item.minPrice && item.maxPrice">{{ item.minPrice }}-{{ item.maxPrice }}
                                 </text>
@@ -116,7 +112,7 @@
             </TnPopup>
         </z-paging>
         <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="getLocation"
-                    permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
+            permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
         <view class="chatbox" @click="gotoChat" v-if="false">
             <image :src="getAssetsUrl('/platform/chatAvatar.png')" style="width: 96rpx;height: 96rpx;"></image>
         </view>
@@ -128,7 +124,7 @@ import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import TnSticky from '@tuniao/tnui-vue3-uniapp/components/sticky/src/sticky.vue'
 import { getAssetsPic, setPriceVer } from "@/common/setPicture"
 import { getCategoryShowList, getSerListAll } from "@/api/care-api"
-import { gotochoiceDetails, gotohealthDetails, gotoSearch } from "@/routes/plateform-routes"
+import { gotoSearch } from "@/routes/plateform-routes"
 import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -192,8 +188,8 @@ interface Data {
 
 const data = reactive<Data>({
     navList: [
-        { id: 123, name: '到店服务' },
-        { id: 122, name: '辅助护理' } // 上门服务
+        { id: 122, name: '辅助护理' }, // 上门服务
+        { id: 123, name: '到店服务' }
     ],
     current: 0,
     typeTitle: "",
@@ -209,7 +205,7 @@ const data = reactive<Data>({
     categoryIndex: null, //
     dataList: [],
     parentId: 440100,
-    templateId: 123,
+    templateId: 122,
     positioning: false,
     coordinate: {}, //经纬度
     categoryId: null,
@@ -234,68 +230,6 @@ const getAssetsUrl = computed(() => {
         return getAssetsPic(str)
     }
 })
-const setShopPic = computed(() => {
-    return (str) => {
-        return setPriceVer(str)
-    }
-})
-const baseGrade = computed(() => {
-    return (type: number) => {
-        switch (type) {
-            case 4:
-                return false
-            default:
-                return getAssetsPic(`/shop/seller_level_${type}.png`)
-        }
-    }
-})
-const showprice = computed(() => {
-    return (min: number, max: number) => {
-        if (min && max) {
-            if (min == max) {
-                return 1
-            }
-            else {
-                return 2
-            }
-        }
-        else if (!min && !max) {
-            return 3
-        }
-        else {
-            return 1
-        }
-    }
-})
-const priceText = computed(() => {
-    return (index: number) => {
-        if (index == 999) {
-            return "不限"
-        }
-        else if (index && data.maxPrice && data.minPrice) {
-            return data.minPrice / 100 + "-" + data.maxPrice / 100
-        }
-        else if (index == 0 && data.maxPrice && !data.minPrice) {
-            return data.maxPrice / 100 + "以下"
-        }
-        else if (index && !data.maxPrice && data.minPrice) {
-            return data.minPrice / 100 + "以上"
-        }
-        else {
-            return "价格"
-        }
-    }
-})
-watch(() => data.templateId, (newVal) => {
-    if (newVal == 122) {
-        data.typeTitle = "找机构"
-        getStairCategory(12)
-    }
-    else {
-        data.typeTitle = "找康养"
-        getStairCategory(13)
-    }
-})
 onMounted(() => {
     /* PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
@@ -310,8 +244,6 @@ onMounted(() => {
             return
         }
     }) */
-
-
     // 区域
     hasAreaList()
 
@@ -365,17 +297,17 @@ const queryList = (pageNumber, pageSize) => {
                 categoryIds: data.categoryIds.length > 0 ? data.categoryIds : ["15"],
                 districtIds: data.districtIds,
                 maxPrice:
-                      data.priceIndex == 999
-                            ? null
-                            : data.maxPrice
-                                  ? data.maxPrice
-                                  : null,
+                    data.priceIndex == 999
+                        ? null
+                        : data.maxPrice
+                            ? data.maxPrice
+                            : null,
                 minPrice:
-                      data.priceIndex == 999
-                            ? null
-                            : data.minPrice
-                                  ? data.minPrice
-                                  : null
+                    data.priceIndex == 999
+                        ? null
+                        : data.minPrice
+                            ? data.minPrice
+                            : null
             }
         }).then(res => {
             // res.forEach((item) => {
@@ -395,17 +327,17 @@ const queryList = (pageNumber, pageSize) => {
                 // sortType: this.sortType == 0 ? null : Number(this.sortType),
                 applyId: data.templateId == 122 ? 12 : 13,
                 maxPrice:
-                      data.priceIndex == 999
-                            ? null
-                            : data.maxPrice
-                                  ? data.maxPrice
-                                  : null,
+                    data.priceIndex == 999
+                        ? null
+                        : data.maxPrice
+                            ? data.maxPrice
+                            : null,
                 minPrice:
-                      data.priceIndex == 999
-                            ? null
-                            : data.minPrice
-                                  ? data.minPrice
-                                  : null
+                    data.priceIndex == 999
+                        ? null
+                        : data.minPrice
+                            ? data.minPrice
+                            : null
             }
         }).then((res) => {
             // 上报
@@ -572,20 +504,14 @@ const resetting = () => {
     }
     if (data.showpriceItem) {
         data.priceIndex = null
-        this.maxPrice = null
-        this.minPrice = null
+        data.maxPrice = null
+        data.minPrice = null
     }
+    paging.value.reload()
+    data.show = false
 }
 const searKey = () => {
     gotoSearch()
-}
-const tochoiceDetails = (item) => {
-    if (data.templateId == 122) {
-        gotochoiceDetails(item.id, item.isAd)
-    }
-    else {
-        gotohealthDetails(item.id, item.isAd)
-    }
 }
 </script>
 
