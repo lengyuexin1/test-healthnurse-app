@@ -366,7 +366,7 @@ const getDetail = (id: any) => {
             price: res.optionList[0].price,
             unitName: res.optionList[0]?.extend?.serviceWorkingHours?.unitName
         }
-        
+
         baseId.value = res.item.shopId
         optionList.value = res.optionList
         getCoupList()
@@ -477,7 +477,7 @@ const getCoupList = () => {
 // 收藏
 const setcoll = () => {
     const datas: any = {
-        applyId: 3,
+        applyId: 2,
         itemId: itemId.value
     }
     collectService(datas)

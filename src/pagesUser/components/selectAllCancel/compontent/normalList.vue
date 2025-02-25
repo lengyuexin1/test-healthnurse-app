@@ -9,7 +9,7 @@
             <view class="name tn-flex-row">
                 <image class="avatar" :src="props.item.accountThumb" mode="aspectFill" v-if="props.item?.accountThumb" />
                 <view>{{ props.item.accountName }}</view>
-                <view class="time" v-if="props.item.publicTime">{{ dateTime(props.item.publicTime) }}</view> 
+                <view class="time" v-if="props.item.publicTime">{{ dateTime(props.item.publicTime) }}</view>
             </view>
         </view>
     </view>

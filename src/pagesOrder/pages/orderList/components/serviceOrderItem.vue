@@ -148,7 +148,6 @@ interface Props {
 
 const props = defineProps<Props>()
 onMounted(() => {
-    console.log('props.orderInfo', props.orderInfo)
 })
 
 interface Events {

@@ -42,7 +42,7 @@ const up = () => {
 
 <template>
     <view>
-        <TnButton @click="up">上报</TnButton>
+        <TnButton style="margin: 100rpx 100rpx" size="xl" @click="up">上报</TnButton>
     </view>
 </template>
 

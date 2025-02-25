@@ -151,7 +151,7 @@ import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 import { gotoLogin } from "@/routes/public-routes"
 import { gotoChannelFollow } from '@/routes/create-routes'
 
-import { gotoAgency, gotoLiveList, gotoHomeServicegototest } from '@/routes/user-routes'
+import { gotoAgency, gotoLiveList, gotoHomeService, gototest } from '@/routes/user-routes'
 import { activeDetail, bannerList, columnList, setPageBank } from "@/api/setite-api"
 import { gotoServiceStore, gotoserviceDetail, toInnerPage } from '@/routes/service-routes'
 import { gotoallClassPage, gotoCenterChanges, gotoZone } from '@/routes/active-routes'
@@ -205,7 +205,7 @@ const tabsData: any = ref([
     { id: '5', icon: getAssetsPic('/fare/v2/gre-cai.png'), name: '到店健康', flagCode: 1 },
     { id: '8', icon: getAssetsPic('/fare/v2/home_icon_jigou.png'), name: '找机构', flagCode: 1 },
     { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 },
-    { id: '1', icon: getAssetsPic('/fare/home-more.png'), name: 'test', flagCode: 1 }
+    { id: '1', icon: getAssetsPic('/fare/home-more.png'), name: '日志test', flagCode: 1 }
 ])
 
 interface Props {
