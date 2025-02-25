@@ -317,7 +317,7 @@ const map = () => {
             bcNotify.value.show('暂无优惠券')
         }
     })
-},
+}
 const isRebate = (typeId) => {
     return getCouponType(typeId)
 
