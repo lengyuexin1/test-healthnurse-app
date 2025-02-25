@@ -167,21 +167,19 @@
                 </view>
 
                 <!-- 新人福利 -->
-                <view class="newPople" v-if="showBk.includes(3)">
+                <view class="newPople" v-if="showBk.includes(999)">
                     <!-- 活动1 -->
-                    <NewcomerWelfare v-if="dataObj.type !== 3" :dataObj="dataObj"></NewcomerWelfare>
+                    <NewcomerWelfare v-if="dataObj.type == 6" :dataObj="dataObj"></NewcomerWelfare>
                     <!-- 活动2 -->
                     <!-- <NewcomerTwo :dataObjTwo="dataObjTwo"></NewcomerTwo> -->
                     <!-- 活动三 -->
-                    <NewcomerTre v-if="dataObj.type == 3" :dataObjTre="dataObj"></NewcomerTre>
+                    <!-- <NewcomerTre v-if="dataObj.type == 3" :dataObjTre="dataObj"></NewcomerTre> -->
                 </view>
-
-                <view class="content_right_list" :class="{ 'not_height': data.dataList.length == 0 }">
-                    <!-- :navid="data.NavId" -->
-                    <WaterfallsFlow :wfList="data.dataList" :navid="NavId" @waterItem="clickwaterItem">
-                    </WaterfallsFlow>
-                </view>
-
+            </view>
+            <view class="content_right_list" :class="{ 'not_height': data.dataList.length == 0 }">
+                <!-- :navid="data.NavId" -->
+                <WaterfallsFlow :wfList="data.dataList" :navid="NavId" @waterItem="clickwaterItem">
+                </WaterfallsFlow>
             </view>
             <view class="page_bg"></view>
 
@@ -212,7 +210,7 @@ import BCNotify from '@/components/notify/index.vue'
 import WaterfallsFlow from '../platform/components/WaterfallsFlow.vue'
 import { gotoRegister, gotogoodsDetail, gotogoodsRanking } from '@/routes/goods-routes'
 import { gotoCitychange, invitationDetail } from '@/routes/user-routes'
-import { gotoServiceStore,gotoserviceDetail, toInnerPage, gotosearch, gotoShopDetail, gotoserviceLnnerPage, gotoServiceExpo, gotoLiveSelection } from '@/routes/service-routes'
+import { gotoServiceStore, gotoserviceDetail, toInnerPage, gotosearch, gotoShopDetail, gotoserviceLnnerPage, gotoServiceExpo, gotoLiveSelection } from '@/routes/service-routes'
 import { PlatformManage } from '@bc/sys'
 import { gotoLogin } from "@/routes/public-routes"
 import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
@@ -418,6 +416,13 @@ const healthMyData = (list: any) => {
                 ...element.navbarList
             ]
             getTextList(1)
+
+            if (element.activityIds.length > 0) {
+                showBk.value.push(999)
+                activeDetail(element.activityIds[0]).then(res => {
+                    dataObj.value = res
+                })
+            }
         }
     })
 }
@@ -895,7 +900,7 @@ defineExpose({
 
 .content_right_list {
     min-height: 800rpx;
-
+    padding: 0 18rpx;
     &.not_height {
         min-height: 0;
     }
