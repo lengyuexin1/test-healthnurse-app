@@ -112,7 +112,7 @@ defineExpose({
         margin-bottom: 20rpx;
 
         .menu_title {
-            font-weight: 500;
+            font-weight: 600;
             color: #333333;
             font-size: 32rpx;
             margin-bottom: 30rpx;
@@ -120,13 +120,14 @@ defineExpose({
 
         .icon_list {
             display: grid;
-            grid-gap: 30rpx;
-            grid-template-columns: auto auto auto auto auto;
-            padding: 0rpx 16rpx;
+            gap: 10rpx;
+            grid-template-columns: repeat(5, 1fr);
+            // grid-template-columns: auto auto auto auto auto;
+            // padding: 0rpx 16rpx;
             box-sizing: border-box;
 
             .icon_item {
-                width: 96rpx;
+                width: 120rpx;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -135,13 +136,18 @@ defineExpose({
                 .item_img {
                     width: 100%;
                     height: 96rpx;
-                    margin-bottom: 8rpx;
+                    margin-bottom: 12rpx;
+                    border-radius: 10rpx;
                 }
 
                 .item_text {
+                    // width: 120rpx;
                     font-size: 28rpx;
                     color: #333333;
                     font-weight: 400;
+                    height: 40rpx;
+                    overflow: hidden;
+                    padding-bottom: 10rpx;
                 }
             }
         }
