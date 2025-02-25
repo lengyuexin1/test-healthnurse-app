@@ -271,6 +271,14 @@
             "navigationStyle": "custom",
             "enablePullDownRefresh": false
           }
+        },
+        {
+          "path": "pages/serviceList/serviceList",
+          "style": {
+            "navigationBarTitleText": "服务列表",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
         }
       ]
     },

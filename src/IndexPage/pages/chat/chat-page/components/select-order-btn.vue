@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, defineExpose } from 'vue'
-
+import { getHouseOrderListL } from '@/api/hours-api'
 import { getgoodOrderList, getorderList } from '@bc/api/im-api'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -143,15 +143,15 @@ const getProductList = () => {
         }
     }).then((res) => {
         data.messageList = res.data
-    }) : getgoodOrderList({
-        pageNumber: 1,
-        pageSize: 1000,
+    }) : getHouseOrderListL({
+        size: 100,
         query: {
-            userId: data.userId ? data.userId : null,
-            mobile: data.mobile,
-            serialNo: data.serialNo,
-            title: data.title,
-        }
+            // userId: data.userId ? data.userId : null,
+            // mobile: data.mobile,
+            // serialNo: data.serialNo,
+            title: data.searchText,
+        },
+        cursor: null
     }).then((res: any) => {
         data.messageList = res.data
     })

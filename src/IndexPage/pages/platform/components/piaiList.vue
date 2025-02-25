@@ -2,8 +2,8 @@
     <view class="activityCed row i-center j-between">
         <view class="activili" @click.stop="gotoSettled">
             <view class="activiname">
-                <view>品牌馆</view>
-                <text class="activitit">为您精选店铺推荐</text>
+                <view>{{ dataObjTre.name || '品牌馆'}}</view>
+                <text class="activitit">{{ dataObjTre.desc || '为您精选店铺推荐'}}</text>
             </view>
             <scroll-view class="sett-seler" scroll-x>
                 <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTre.shopList" :key="item.id">

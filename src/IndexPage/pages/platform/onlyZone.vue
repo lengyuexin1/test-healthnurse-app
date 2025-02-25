@@ -31,8 +31,8 @@
                 <view class="live_swiper" v-if="swiperList.length > 0">
                     <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" :vertical="false"
                         @change="liveswiperChange">
-                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id">
-                            <!-- @click="liveList(item)" -->
+                        <swiper-item class="swiper_item" v-for="(item, index) in swiperList" :key="item.id"
+                            @click="liveList(item)">
                             <image class="live_swiper_img" :src="item.icon" mode="aspectFill" />
                         </swiper-item>
                     </swiper>
@@ -57,12 +57,12 @@
                             <view class="zonr2"></view>
                         </view>
                         <view v-if="item.status == 10" class="goUse" @click="getQuCou(item)">领取</view>
-                        <view class="alseUse" v-else @click="useCou">去使用</view>
+                        <view class="alseUse" v-else @click="useCou">已领取</view>
                     </view>
                 </view>
 
                 <view class="cateListcs" v-if="showBk.includes(18)">
-                    <!-- <view class="cateText">住院陪护分类</view> -->
+                    <view class="cateText"> {{ kjName }}</view>
                     <view class="cateUl">
                         <view class="cateItem" v-for="(item, index) in tabsData" :key="index"
                             @click="gotoColmDetail(index, item)">
@@ -72,11 +72,11 @@
                     </view>
                 </view>
                 <view class="activeCon">
-                    <view class="activeConLeft" v-if="dataObjTre.type">
-                        <piaiList :dataObjTre="dataObjTre"></piaiList>
+                    <view class="activeConLeft" v-if="dataObjTre.length > 0" v-for="(item, index) in dataObjTre">
+                        <piaiList :dataObjTre="item"></piaiList>
                     </view>
-                    <view class="activeConRight" v-if="dataObjTwo.type">
-                        <valGou :dataObjTwo="dataObjTwo"></valGou>
+                    <view class="activeConRight" v-if="dataObjTwo.length > 0" v-for="(item, index) in dataObjTwo">
+                        <valGou :dataObjTwo="item"></valGou>
                     </view>
                 </view>
                 <view class="goodWu" v-if="showBk.includes(20)">
@@ -109,11 +109,12 @@ import { gotoLogin } from "@/routes/public-routes"
 import { gotogoodsDetail } from '@/routes/goods-routes'
 import { gotoCateArrList, gotoZone } from '@/routes/active-routes'
 import { recommendList } from "@/api/goods-api"
+import { gotoSellerList, gotoserviceDetail } from "@/routes/service-routes"
 import ListItem from "@/components/recommended/listItem.vue"
 const moreGoodList = ref([])
 const tabsData: any = ref([])
-const dataObjTre: any = ref({})
-const dataObjTwo: any = ref({})
+const dataObjTre: any = ref([])
+const dataObjTwo: any = ref([])
 const showBk: any = ref([])
 const norList: any = ref([])
 const paging = ref()
@@ -122,7 +123,9 @@ const titleTop = ref(0)
 const titleRight = ref(0)
 const sBarHeight = ref(0)
 const swiperList: any = ref([])
-const listCates = ref([])
+const listCates: any = ref([])
+const conApi = ref(false)
+const kjName = ref('')
 const detailData: any = ref({
     couponIds: {}
 })
@@ -161,6 +164,7 @@ const healthMyData = (list: any) => {
         }
         // 快捷导航
         if (element.moduleId == 18) {
+            kjName.value = element.name
             kuaiRou(element.dataIds)
         }
         // 营销组件
@@ -168,18 +172,30 @@ const healthMyData = (list: any) => {
             element.dataIds.forEach(item => {
                 activeDetail(item).then(res => {
                     if (res.type == 3) {
-                        dataObjTre.value = res
+                        dataObjTre.value.push(res)
                     }
-                    if (res.type == 4) {
-                        dataObjTwo.value = res
+                    else {
+                        dataObjTwo.value.push(res)
+                        console.log(dataObjTwo.value)
                     }
                 })
             })
         }
         //  个性化推荐
         if (element.moduleId == 20) {
-            listCates.value = element.categoryIds
-            queryList(1, 6)
+            const dares = {
+                ids: element.dataIds
+            }
+            columnList(dares).then(res => {
+                if (res.length > 0) {
+                    res.forEach((ins: any, ids) => {
+                        listCates.value = [...listCates.value, ...ins.categoryIds]
+                    })
+                }
+                console.log(listCates.value)
+                conApi.value = true
+                queryList(1, 6)
+            })
         }
     })
 }
@@ -216,11 +232,24 @@ const tosearch = () => {
 
 const gotoColmDetail = (index: any, item: any) => {
     // 跳转微页面
-    return gotoZone(item.id, item.name)
+    console.log(item)
+
+    return gotoSellerList({ id: item.id, name: item.name })
+    // return gotoZone(item.id, item.name)
 }
 
 const clickwaterItem = () => {
 
+}
+
+const liveList = (item: any) => {
+    console.log('item', item)
+    if (item.type == 1) {
+        gotoserviceDetail(item.dataId)
+    }
+    if (item.type == 2) {
+        gotogoodsDetail(item.dataId)
+    }
 }
 
 // 退出页面
@@ -316,6 +345,9 @@ const gotoDetail = (item: any) => {
 }
 
 const queryList = (pageNumber, pageSize) => {
+    if (!conApi.value) {
+        return false
+    }
     recommendList({
         pageSize: pageSize,
         pageNumber: pageNumber,
@@ -356,7 +388,7 @@ const getBannerList = (data: any) => {
 const useCou = () => {
     // diajCou.value = false
     // cateList.value = []
-    gotoCateArrList({ type: 1, id: detailId.value })
+    // gotoCateArrList({ type: 1, id: detailId.value })
 }
 const seeMonr = (item: any) => {
     console.log(item);

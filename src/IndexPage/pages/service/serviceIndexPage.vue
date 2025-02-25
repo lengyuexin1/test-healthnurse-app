@@ -212,7 +212,7 @@ import BCNotify from '@/components/notify/index.vue'
 import WaterfallsFlow from '../platform/components/WaterfallsFlow.vue'
 import { gotoRegister, gotogoodsDetail, gotogoodsRanking } from '@/routes/goods-routes'
 import { gotoCitychange, invitationDetail } from '@/routes/user-routes'
-import { gotoServiceStore, toInnerPage, gotosearch, gotoShopDetail, gotoserviceLnnerPage, gotoServiceExpo, gotoLiveSelection } from '@/routes/service-routes'
+import { gotoServiceStore,gotoserviceDetail, toInnerPage, gotosearch, gotoShopDetail, gotoserviceLnnerPage, gotoServiceExpo, gotoLiveSelection } from '@/routes/service-routes'
 import { PlatformManage } from '@bc/sys'
 import { gotoLogin } from "@/routes/public-routes"
 import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
@@ -275,10 +275,13 @@ const openBotMun = () => {
     showBottomMenu.value = !showBottomMenu.value
 }
 
+const tabCats = ref([])
 const upCalik = (item: any, index: number) => {
     console.log(item.id, index)
     NavId.value = item.id;
     paging.value.reload()
+    tabCats.value = item.categoryIds
+    queryList(1, 6)
 }
 
 const allInList: any = ref([])
@@ -305,7 +308,7 @@ const getSetIds = (num: number) => {
 const liveList = (item: any) => {
     console.log('item', item)
     if (item.type == 1) {
-        gotoServiceStore({ itemId: item.dataId })
+        gotoserviceDetail(item.dataId)
     }
     if (item.type == 2) {
         gotogoodsDetail(item.dataId)
@@ -488,7 +491,7 @@ const queryList = async (pageNumber: number, pageSize: number) => {
         pageNumber,
         pageSize: 10,
         query: {
-            categoryIds: NavId.value == 1 ? [] : [NavId.value]
+            categoryIds: NavId.value == 1 ? [] : tabCats.value
         }
     }
     productList(data).then((res) => {
@@ -520,6 +523,7 @@ const clickActivityList = (item: any) => {
 }
 
 const changeNav = (item: any) => {
+    tabCats.value = []
     if (item.id == 11) {
         // 检查登录状态
         PlatformManage.isRequireLogin().then((isRequireLogin) => {
@@ -533,7 +537,9 @@ const changeNav = (item: any) => {
         })
     }
     NavId.value = item.id;
-    (paging.value as any).reload()
+    tabCats.value = item.categoryIds
+    // (paging.value as any).reload()
+    queryList(1, 6)
 }
 
 const changebubble = () => {
@@ -541,7 +547,7 @@ const changebubble = () => {
 }
 
 const changecity = () => {
-    gotoCitychange()
+    // gotoCitychange()
 }
 const tosearch = () => {
     gotosearch()

@@ -101,7 +101,7 @@ const todetail = (item: any) => {
     box-shadow: 0rpx 0rpx 20rpx rgba(0, 0, 0, 0.02);
     /* #endif */
     border-radius: 24rpx;
-    width: 346rpx;
+    width: 350rpx;
     overflow: hidden;
     margin-bottom: 20rpx;
 

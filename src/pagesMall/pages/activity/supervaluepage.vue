@@ -101,7 +101,7 @@ import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 import TnNavbar from '@tuniao/tnui-vue3-uniapp/components/navbar/src/navbar.vue'
 import { getAssetsPic } from "@/common/setPicture"
 import { getactiviList } from '@/api/care-api'
-import { gotoServiceStore } from '@/routes/service-routes'
+import { gotoserviceDetail } from '@/routes/service-routes'
 // import { gotoServeDetail, gotoAttendShop } from '@/route/care-routes'
 import { gotogoodsDetail } from '@/routes/goods-routes'
 // import { gotoIndex } from '@/route/care-routes'
@@ -111,18 +111,10 @@ import { gotoShopDetail } from "@/routes/service-routes"
 import { ref, computed } from 'vue'
 import { moneyFilter } from "@/common/filters"
 import { onLoad } from "@dcloudio/uni-app"
-const dataList: any = ref([
-    {
-        thumb: "https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/life/care/service/thumb/2023121144324926.jpg",
-        name: "居家照护（中度失能）",
-        desc: "适合行动不便的老人",
-        price: 210000,
-        couponPrice: 202000
-    }
-])
+const dataList: any = ref([])
 const id = ref('')
-const activityTitle = ref('服务类新人立减')
-const activityBG = ref('https://xcpublic.oss-cn-shenzhen.aliyuncs.com/backend/env_prod/marketing/customerAcquisition/2024712145730181.png')
+const activityTitle = ref('')
+const activityBG = ref('')
 const allList = ref([])
 const slicingList = ref([])
 const type = ref(0) // 1 4有优惠价 2正常价
@@ -210,7 +202,7 @@ const gotoBack = () => {
 const gotoChanpinInfo = (item) => {
     if (item.type == 1) {
         // gotoServeDetail({ itemId: item.id })
-        gotoServiceStore({ itemId: item.id })
+        gotoserviceDetail(item.id)
     }
     else if (item.type == 2) {
         gotogoodsDetail(item.id)

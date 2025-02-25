@@ -2,8 +2,8 @@
     <view class="activityCed row i-center j-between">
         <view class="activili" @click="gotoMark">
             <view class="activiname">
-                <view>超值购</view>
-                <text class="activitit">优惠抢购，机不可失</text>
+                <view>{{ dataObjTwo.name }}</view>
+                <text class="activitit">{{ dataObjTwo.desc || '优惠抢购，机不可失' }}</text>
             </view>
             <scroll-view class="sett-seler" scroll-x>
                 <view class="sett-seli column i-center j-center" v-for="(item) in dataObjTwo.itemList" :key="item.id">
@@ -11,7 +11,7 @@
                         <image class="imgsel" :src="item.thumb"></image>
                     </view>
                     <view class="sett-seli-name u-line-1">{{ item.name }}</view>
-                    <view class="priceText">低至<text class="priceNum">299</text>元起</view>
+                    <view class="priceText">低至<text class="priceNum">{{ moneyFilter(item.price) }}</text>元起</view>
                 </view>
             </scroll-view>
         </view>
@@ -20,6 +20,7 @@
     
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
+import { moneyFilter } from "@/common/filters"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/count-down.vue'
 import { getAssetsPic } from '@/common/setPicture'
@@ -56,7 +57,7 @@ const gotoSettled = (item: any) => {
     .activili {
         width: 100%;
         height: 304rpx;
-        background: linear-gradient(180deg, #FDF9F0 0%, #FEEDDD 100%);
+        background: linear-gradient( 223deg, #FDFAF3 0%, #FFF0D1 100%);
         background-size: cover;
         border-radius: 24rpx;
         box-sizing: border-box;
@@ -67,7 +68,7 @@ const gotoSettled = (item: any) => {
         }
 
         &:last-child {
-            background: linear-gradient(180deg, #FEF7F1 0%, #FDE6D8 100%);
+            background: linear-gradient( 223deg, #FDFAF3 0%, #FFF0D1 100%);
         }
 
         .activiname {
@@ -89,7 +90,7 @@ const gotoSettled = (item: any) => {
 .sett-seler {
     margin-top: 10rpx;
     width: 100%;
-    height: 160rpx;
+    height: 164rpx;
     overflow: hidden;
     white-space: nowrap;
     padding: 0 10rpx;
@@ -101,16 +102,17 @@ const gotoSettled = (item: any) => {
 
     .sett-seli {
         display: inline-flex;
-        margin-right: 42rpx;
+        margin-right: 20rpx;
         margin-top: 10px;
 
         .sett-seli-img {
-            width: 120rpx;
+            width: 122rpx;
             height: 90rpx;
 
             .imgsel {
-                width: 86rpx;
-                height: 86rpx;
+                width: 100%;
+                height: 100%;
+                border-radius: 12rpx;
             }
         }
 
@@ -133,6 +135,7 @@ const gotoSettled = (item: any) => {
         .priceText {
             font-size: 18rpx;
             color: #F51F1F;
+            margin-top: 6rpx;
             .priceNum {
                 font-size: 22rpx;
                 font-weight: 600;
