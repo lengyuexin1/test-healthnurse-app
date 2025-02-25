@@ -9,10 +9,12 @@
             <view class="row i-center j-between">
                 <view class="myInfo_detail" @tap="editInfo">
                     <view class="myInfo_pic">
-                        <image v-if="Object.keys(data.userinfo).length > 0" :src="data.userinfo && data.userinfo.avatar || '/static/default_avatar.png'"
+                        <image v-if="Object.keys(data.userinfo).length > 0"
+                               :src="data.userinfo && data.userinfo.avatar || '/static/default_avatar.png'"
                                mode="aspectFill" style="width: 110rpx;height: 110rpx; border-radius: 50%;">
                         </image>
-                        <image v-else class="avatar" :src="getAssetsUrl('/leyou/static/default_avatar.png')" mode="aspectFill"
+                        <image v-else class="avatar" :src="getAssetsUrl('/leyou/static/default_avatar.png')"
+                               mode="aspectFill"
                                style="width: 110rpx;height: 110rpx; border-radius: 50%;">
                         </image>
                     </view>
@@ -64,7 +66,7 @@
 <script lang="ts" setup>
 import TnBadge from '@tuniao/tnui-vue3-uniapp/components/badge/src/badge.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
-import { gotoEditProfile } from "@/routes/user-routes"
+import { gotoUserDetail } from "@/routes/user-routes"
 import { gotoLogin } from "@/routes/public-routes"
 import { gotoChatPage } from "@/routes/nim-routes"
 import { getAssetsPic } from "@/common/setPicture"
@@ -128,7 +130,7 @@ const editInfo = async () => {
 
             return
         }
-        gotoEditProfile()
+        gotoUserDetail()
     })
 }
 

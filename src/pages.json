@@ -63,6 +63,12 @@
       "root": "IndexPage",
       "pages": [
         {
+          "path": "pages/test/test",
+          "style": {
+            "navigationBarTitleText": "测试页"
+          }
+        },
+        {
           "path": "pages/agency/agency",
           "style": {
             "navigationBarTitleText": "到店健康",
@@ -1092,14 +1098,14 @@
             "enablePullDownRefresh": false
           }
         },
-//        {
-//          "path": "pages/goodsOrderDetail/goodsOrderDetail",
-//          "style": {
-//            "navigationBarTitleText": "适品订单详情",
-//            "navigationStyle": "custom",
-//            "enablePullDownRefresh": false
-//          }
-//        },
+        //        {
+        //          "path": "pages/goodsOrderDetail/goodsOrderDetail",
+        //          "style": {
+        //            "navigationBarTitleText": "适品订单详情",
+        //            "navigationStyle": "custom",
+        //            "enablePullDownRefresh": false
+        //          }
+        //        },
         {
           "path": "pages/balanceOrder/balanceOrder",
           "style": {
@@ -1181,11 +1187,11 @@
           }
         },
         {
-					"path": "pages/groupSplit/groupSplit",
-					"style": {
-                        "navigationBarTitleText": "拼团分享"
-                    }
-				}
+          "path": "pages/groupSplit/groupSplit",
+          "style": {
+            "navigationBarTitleText": "拼团分享"
+          }
+        }
       ]
     },
     {
@@ -1721,6 +1727,13 @@
           "path": "pages/intellect/home",
           "style": {
             "navigationBarTitleText": "智护帮首页",
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/intellect/mineInfo",
+          "style": {
+            "navigationBarTitleText": "个人详情",
             "navigationStyle": "custom"
           }
         },

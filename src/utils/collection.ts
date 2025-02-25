@@ -1,5 +1,4 @@
-import { deviceRecord, marketingDetail } from '@/api/user-api'
-import { getWeixinSessionKey } from '@/api/user-api'
+import { deviceRecord, getWeixinSessionKey, marketingDetail } from '@/api/user-api'
 import { PlatformManage } from "@bc/sys"
 
 const WEB_ENV: TEnv = import.meta.env.VITE_WEB_ENV as TEnv
@@ -11,7 +10,7 @@ class CollectAndReport {
 
     private req: any = {}
 
-    constructor(options: { deviceId?: string, channelId?: string, adScene?:string }) {
+    constructor(options: { deviceId?: string, channelId?: string, adScene?: string }) {
         this.deviceId = options.deviceId || uni.getStorageSync("statistics")?.deviceId || ""
         this.channelId = options.channelId || uni.getStorageSync("statistics")?.channelId || ""
         this.customScene = options.adScene || ''
@@ -37,17 +36,17 @@ class CollectAndReport {
 
     // 获取请求参数
     private getReqMation() {
-        getReportMation().then((res:any) => {
+        getReportMation().then((res: any) => {
             this.req = { ...this.req, ...res }
             return getChannel(this.channelId)
-        }).then((res:any) => {
+        }).then((res: any) => {
             this.req = { ...this.req, ...res }
             this.crankup(this.customScene ? 13 : 6)
         })
     }
 
     // 获取路径
-    private getCurrent(activity_id?:string, type?:string) {
+    private getCurrent(activity_id?: string, type?: string) {
         // 小程序页面路由
         const pages = getCurrentPages()
         const page = pages[pages.length - 1] || {
@@ -107,7 +106,7 @@ class CollectAndReport {
     }
 
     // 同页面不同列表预览上报
-    previewReport(type:string) {
+    previewReport(type: string) {
         console.log('previewReportTYPE', type)
 
         this.getCurrent("", type)
@@ -122,7 +121,7 @@ class CollectAndReport {
     }
 
     // 视频播放事件
-    videoPlayReport(type?:string, itemId?:string) {
+    videoPlayReport(type?: string, itemId?: string) {
         this.getCurrent("", type)
 
         deviceRecord({
@@ -139,7 +138,7 @@ class CollectAndReport {
 
 
     // 视频完播事件
-    videoPlayOverReport(type?:string, itemId?:string) {
+    videoPlayOverReport(type?: string, itemId?: string) {
         this.getCurrent("", type)
         deviceRecord({
             event: 17,
@@ -156,9 +155,10 @@ class CollectAndReport {
 }
 
 
-let instanceCache:any = null
+let instanceCache: any = null
+
 // 缓存实例
-function createCollectAndReport(options:{ channelId?:string, deviceId?:string, adScene?:string } = {}) {
+function createCollectAndReport(options: { channelId?: string, deviceId?: string, adScene?: string } = {}) {
     if (!instanceCache || (options.channelId && !instanceCache.channelId)) {
         instanceCache = new CollectAndReport(options)
     }
@@ -167,7 +167,6 @@ function createCollectAndReport(options:{ channelId?:string, deviceId?:string, a
 
 // 创建实例并传递参数
 export default createCollectAndReport
-
 
 
 export async function getReportMation() {
@@ -234,6 +233,7 @@ export async function getReportMation() {
             })
         })
     }
+
     // #ifdef APP-PLUS
     // 获取oaid
     function getOAID() {
@@ -256,7 +256,7 @@ export async function getReportMation() {
     //获取本机Mac地址
     function getMAC() {
         let deviceMac = ""
-        const net:any = plus.android.importClass("java.net.NetworkInterface")
+        const net: any = plus.android.importClass("java.net.NetworkInterface")
         const wl0 = net.getByName("wlan0")
         const macByte = wl0.getHardwareAddress() || ""
         for (let i = 0; i < macByte.length; i++) {
@@ -302,8 +302,8 @@ export async function getReportMation() {
 
     // 获取android id
     function getAndroidId() {
-        const mainActivity:any = plus.android.runtimeMainActivity()
-        const Settings:any = plus.android.importClass(
+        const mainActivity: any = plus.android.runtimeMainActivity()
+        const Settings: any = plus.android.importClass(
             "android.provider.Settings"
         )
         const androidId = Settings.Secure.getString(
@@ -329,6 +329,7 @@ export async function getReportMation() {
         // const result = { 'idfa': idfa, 'idfv': identifierForVendor }
         return identifierForVendor//result
     }
+
     // #endif
 
     // 获取IP地址 【理应服务器获取】
@@ -337,7 +338,7 @@ export async function getReportMation() {
             uni.request({
                 url: "https://app.bilibili.com/x/resource/ip",
                 method: "GET",
-                success: (res:any) => {
+                success: (res: any) => {
                     if (res.data.code === 0) {
                         resolve(res.data.data.addr)
                         return
@@ -365,7 +366,7 @@ export async function getReportMation() {
                     getWeixinSessionKey({
                         code: loginRes.code,
                         appid: 'wxba2158972baec41b'
-                    }).then((res:any) => {
+                    }).then((res: any) => {
                         // uni.setStorageSync('unionid', res.unionid)
                         resolve({
                             wxOpenId: res.openid,
@@ -392,7 +393,7 @@ export async function getReportMation() {
         })
     }
 
-    const wxInfo:any = await getWxUnionid()
+    const wxInfo: any = await getWxUnionid()
     wxOpenId = wxInfo.wxOpenId
     wxUnionId = wxInfo.wxUnionId
     // #endif
@@ -426,7 +427,7 @@ export async function getReportMation() {
         // console.log("华为不做操作")
     }
     else {
-        const devinfo:any = await getIMEI()
+        const devinfo: any = await getIMEI()
         identityImei = devinfo.imei
         identityIdfa = devinfo.idfa
     }
@@ -467,7 +468,7 @@ appType = 2
 
 
 // 获取渠道
-export const getChannel = (promotionId:string) => {
+export const getChannel = (promotionId: string) => {
     console.log("+++++++promotionId", promotionId)
     const channelMation = {
         promotionId: "",
@@ -483,7 +484,7 @@ export const getChannel = (promotionId:string) => {
             resolve(channelMation)
             return
         }
-        marketingDetail(promotionId).then((res:any) => {
+        marketingDetail(promotionId).then((res: any) => {
             console.log("promotionId", promotionId)
             resolve({
                 promotionId: res.id,
