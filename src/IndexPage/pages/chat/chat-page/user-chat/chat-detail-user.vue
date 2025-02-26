@@ -23,7 +23,7 @@
                 <view class="newser_rig-subtit tn-text-ellipsis-1" v-if="data.msgProduct.desc">{{ data.msgProduct.desc }}</view>
                 <view class="newser_rig-pic tn-flex-center-between">
                     <view>
-                        ￥ <text>{{ data.msgProduct.price / 100 }}</text>
+                        ￥ <text>{{ moneyFilter(data.msgProduct.price) }}</text>
                         <template v-if="data.msgProduct.unitName">/{{ data.msgProduct.unitName }}</template>
                     </view>
                     <view class="newser_more-btn" @tap="sendSer">发送链接</view>
@@ -127,6 +127,7 @@
 </template>
 
 <script setup lang="ts">
+import { moneyFilter } from "@/common/filters"
 import { ref, reactive, nextTick, onMounted, onUnmounted, watch, computed } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
