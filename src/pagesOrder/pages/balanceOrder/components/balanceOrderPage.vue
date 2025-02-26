@@ -37,7 +37,7 @@
                 <view class="bala_tit">价格明细</view>
                 <view class="bala_mation row j-between">
                     <view class="bala_mation_tit">服务价格</view>
-                    <view class="bala_mation_des">￥ {{ (data.calculationInfo.amount / 100).toFixed(2)  }}</view>
+                    <view class="bala_mation_des">￥ {{ moneyFilter(data.calculationInfo.amount)}}</view>
                 </view>
                 <view class="bala_mation row j-between" @click="gainShopCouponList">
                     <view class="bala_mation_tit">店铺优惠</view>
@@ -46,7 +46,7 @@
                         <view class="bala_mation_des row i-center" style="margin-right: 10rpx">
                             <view class="bala-mon-pref bala-mon-red" v-if="data.shopCoupon.cfgOffer">
                                 <template v-if="!isRebate(data.shopCoupon.typeId)">￥{{data.shopCoupon.cfgOffer }}</template>
-                                <template v-else>{{data.shopCoupon.cfgOffer}}折</template>
+                                <template v-else>{{discountFilter(data.shopCoupon.cfgOffer)}}折</template>
                             </view>
                             <view class="bala-mon-pref">{{!data.shopCoupList ? '暂无优惠' : '更多优惠'}}</view>
                         </view>
@@ -59,8 +59,8 @@
                     <view class="row i-center">
                         <view class="bala_mation_des row i-center" style="margin-right: 10rpx">
                             <view class="bala-mon-pref bala-mon-red" v-if="data.platCoups.cfgOffer">
-                                <template v-if="!isRebate(data.platCoups.typeId)">￥{{data.platCoups.cfgOffer ? (Number(data.platCoups.cfgOffer) / 100).toFixed(2) : 0}}</template>
-                                <template v-else>{{data.platCoups.cfgOffer }}折</template>
+                                <template v-if="!isRebate(data.platCoups.typeId)">￥{{data.platCoups.cfgOffer ? moneyFilter(data.platCoups.cfgOffer) : 0}}</template>
+                                <template v-else>{{discountFilter(data.platCoups.cfgOffer)}}折</template>
                             </view>
                             <view class="bala-mon-pref">{{!data.platCouList ? '暂无优惠' : '更多优惠'}}</view>
                         </view>
@@ -69,7 +69,7 @@
                 </view>
                 <view class="bala_mation row j-between">
                     <view class="bala_mation_tit">需付款</view>
-                    <view class="bala_mation_des">￥{{ (data.calculationInfo.paidAmount / 100).toFixed(2) }}</view>
+                    <view class="bala_mation_des">￥{{ moneyFilter(data.calculationInfo.paidAmount)}}</view>
                 </view>
 
             </view>
@@ -186,14 +186,14 @@
             </template>
               <!-- 优惠券 coupon-->
             <choiceCoupon ref="recCoup" @getGroup="selectCoupon" :list="data.grantList" :coupsList="data.coupsList" />
-            <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="map"
-            permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
+            <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="map" permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
     		<BCNotify ref="bcNotify"></BCNotify>
         </z-paging>
     </view>
 </template>
 
 <script setup lang="ts">
+import { moneyFilter, discountFilter } from "@/common/filters"
 import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
 import { ref, reactive, computed, onMounted } from 'vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'

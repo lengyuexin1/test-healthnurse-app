@@ -15,7 +15,7 @@
                 <view class="top_box">
                     <view
                           class="navList_item"
-                          :class="{ 'is_select' : data.navIndex == index }"
+                          :class="{ 'is_select': data.navIndex == index }"
                     v-for="(item,index) in data.navList" :key="item.id"
                     @click="select(item,index)">
                         {{ item.category_name }}
@@ -89,7 +89,7 @@ interface Prop {
 const props = defineProps<Prop>()
 
 const data = reactive<Data>({
-    dataList:[],
+    dataList: [],
     navList: [
         {
             id: '1',
@@ -117,30 +117,30 @@ const data = reactive<Data>({
             category_id: 196609
         }
     ],
-    navIndex:0,
+    navIndex: 0,
     statusId: null,
-    cursor:null,
-    reasonList:[],
+    cursor: null,
+    reasonList: [],
     showreason: false,
-    cancelObj:{},
-    reasonItemid: '',
+    cancelObj: {},
+    reasonItemid: ''
 })
 
 onMounted(() => {
     data.navIndex = props.tabsIndsex
 })
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 const paging = ref(null)
 
 
-const queryList = (pageNumber:number, pageSize:number)=>{
-    getOrderList(pageNumber,pageSize)
+const queryList = (pageNumber:number, pageSize:number) => {
+    getOrderList(pageNumber, pageSize)
 }
 
-const select = (item:navList, index:number) =>{
+const select = (item:navList, index:number) => {
     data.navIndex = index
     data.statusId = item.category_id;
     (paging.value as any).reload()
@@ -150,15 +150,15 @@ const select = (item:navList, index:number) =>{
 const getOrderList = (pageNumber:number, pageSize:number) => {
     if (pageNumber == 1) { data.cursor = null }
     getserviceOrderList({
-        cursor:data.cursor,
-        size:pageSize,
-        query:{
-            kind:2,
+        cursor: data.cursor,
+        size: pageSize,
+        query: {
+            kind: 2,
             statusId: data.navList[data.navIndex].category_id,
-            title:'',
+            title: props.title,
             dateOption: props.month_t
         }
-    }).then((res)=>{
+    }).then((res) => {
         (paging.value as any).complete(res.list)
         data.cursor = res.nextCursor!
     })
@@ -168,10 +168,11 @@ const getOrderList = (pageNumber:number, pageSize:number) => {
 
 const bcNotify = ref()
 const delreasonNotify = ref()
-const showNotify = (text:string,iserror:boolean = false) => {
+const showNotify = (text:string, iserror:boolean = false) => {
     if (iserror) {
         bcNotify.value.error(text)
-    }else{
+    }
+    else {
         bcNotify.value.show(text)
     }
     (paging.value as any).reload()
@@ -197,15 +198,15 @@ const clickdelreason = (id:string) => {
 
 // 提交取消订单
 const goRemove = () => {
-    console.log('data.cancelObj',data.cancelObj);
-    setTimeout(()=>{
+    console.log('data.cancelObj', data.cancelObj)
+    setTimeout(() => {
         if (data.reasonItemid == '') {
             delreasonNotify.value.error('请选择取消原因')
             return
         }
 
         if (data.cancelObj.actionableList.includes('apply_refund')) {
-            console.log('走售后');
+            console.log('走售后')
 
             // 不存在serviceInfo.info
             applyRefund({
@@ -223,7 +224,7 @@ const goRemove = () => {
             return
         }
 
-        console.log('不走售后');
+        console.log('不走售后')
         houseOrderCancel({
             orderId: data.cancelObj.id,
             reasonId: data.reasonItemid
@@ -237,7 +238,7 @@ const goRemove = () => {
         }).catch((err:any) => {
             delreasonNotify.value.error(err.message)
         })
-    },300)
+    }, 300)
 }
 
 
@@ -247,7 +248,7 @@ const reloadPage = () => {
 }
 
 defineExpose({
-    reloadPage,
+    reloadPage
 })
 
 </script>

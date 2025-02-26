@@ -15,7 +15,7 @@
                 <view class="top_box">
                     <view
                           class="navList_item"
-                          :class="{ 'is_select' : data.navIndex == index }"
+                          :class="{ 'is_select': data.navIndex == index }"
                           v-for="(item,index) in data.navList" :key="item.id"
                           @click="select(item,index)">
                         {{ item.category_name }}
@@ -83,6 +83,7 @@ interface Data {
 }
 
 interface Prop {
+    title: string,
     tabsIndsex: number | null,
     month_t: string | number | null
 }
@@ -159,7 +160,7 @@ const getOrderList = (pageNumber: number, pageSize: number) => {
         query: {
             kind: 1,
             statusId: data.navList[data.navIndex].category_id,
-            title: '',
+            title: props.title,
             dateOption: props.month_t
         }
     }).then((res) => {

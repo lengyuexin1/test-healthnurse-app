@@ -14,6 +14,18 @@
                 <view class="orderState">
                     <orderState :osObj="data.osObj"></orderState>
                 </view>
+            <div class="verify" v-if="data.serviceInfo.codeUrl">
+                <div class="verifyWork row">
+                    <div class="verifyCode" @click="seeImg">
+                        <u-image :src="data.serviceInfo.codeUrl" width="180rpx" height="180rpx"></u-image>
+                    </div>
+                    <div class="verifyTips">
+                        <div class="verifyUid">{{ data.serviceInfo.uuid }}</div>
+                        <div class="verifyTit">使用需知：</div>
+                        <div>为了保证的权益，服务前请勿将券码提供给工作人员</div>
+                    </div>
+                </div>
+            </div>
                 <view class="order_info">
                     <orderInfo :serviceInfo="data.serviceInfo" :showInfo="data.showInfo" ></orderInfo>
                 </view>
@@ -255,6 +267,13 @@ const gotoIMSessionChat = (type:number) => {
 const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
+/* 二维码大图 */
+const seeImg = () => {
+    uni.previewImage({
+        current: data.serviceInfo.codeUrl,
+        urls: [data.serviceInfo.codeUrl]
+    })
+}
 /* 修改订单 */
 const showEdit = ()  => {
     ordEdit.value.open(data.serviceInfo.info.optionId, {
@@ -357,7 +376,12 @@ const getDetail = (orderId:string) => {
             addressInfo: res?.addressInfo,
             ...res
         }
-
+        if (![65796].includes(res.templateCodeId) && res.uuid) {
+            // const img = QR.createQrCodeImg(res.uuid, {
+            //     size: parseInt(600)//二维码大小
+            // })
+            // data.serviceInfo.codeUrl = img
+        }
         if (res.kind == 3) {
             getorganizationDetail(res.shopList[0].shopId)
         }
@@ -621,8 +645,6 @@ const operate = (type:string) => {
 
 }
 
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -640,6 +662,41 @@ const operate = (type:string) => {
 .workerInfo{
     margin-bottom: 20rpx;
 }
+.verify {
+        padding: 40rpx;
+        box-shadow: 0rpx 0rpx 16rpx rgba(0, 0, 0, 0.06);
+        border-radius: 24rpx;
+        background-color: #ffffff;
+        margin-top: 24rpx;
+
+        .verifyWork {
+            .verifyCode {
+                margin-right: 28rpx;
+            }
+        }
+
+        .verifyTips {
+            font-size: 24rpx;
+            font-weight: 400;
+            line-height: 40rpx;
+            color: #666666;
+            border-radius: 12rpx;
+            .verifyTit {
+                font-size: 26rpx;
+                font-weight: 500;
+                line-height: 40rpx;
+                color: #333333;
+                margin-bottom: 10rpx;
+            }
+            .verifyUid {
+                font-size: 36rpx;
+                font-weight: 500;
+                color: #333333;
+                margin-bottom: 24rpx;
+            }
+        }
+    }
+
 .institution_box {
     padding: 30rpx;
     background: #ffffff;

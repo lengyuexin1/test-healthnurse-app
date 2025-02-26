@@ -1,9 +1,9 @@
 <template>
 	<view class="content">
-		<TnPopup v-model="coupshow" open-direction="bottom" round="20" @close="coupshow = false">
+		<TnPopup v-model="coupshow" open-direction="bottom" @close="coupshow = false" :z-index="9999999">
       <view class="oldman-head">
         <view class="oldman-close" @click="coupshow = false">
-          <tn-icon name="close" size="18"></tn-icon>
+          <TnIcon name="close" size="32"></TnIcon>
         </view>
         <view class="" style="text-align: center;margin:0 90rpx;">
           <text class="head-tit">优惠详情</text>
@@ -14,22 +14,22 @@
         <view class="coupbox column">
           <!-- 可使用优惠券 -->
           <view class="coup_li_box" v-if="coupArr.length > 0">
-            <tn-checkbox-group v-model="coupId" placement="column">
-              <view
-                class="coupli row"
-                :class="{ 'unable': item.canUse === 0 }"
-                v-for="(item, index) in coupArr"
-                :key="item.grantedId"
-              >
+            <!-- <tn-checkbox-group v-model="coupId" placement="column"> -->
+            <view
+            class="coupli row"
+            :class="{ 'unable': item.canUse === 0 }"
+            v-for="(item, index) in coupArr"
+            :key="item.grantedId"
+            >
                 <view class="couplef row">
                   <view class="">
                     <view class="coupic row">
                       <template v-if="!isRebate(item.typeId)">
                         <text class="pictex unit">￥</text>
-                        <text class="pictex">{{ item.cfgOffer  }}</text>
+                        <text class="pictex">{{ moneyFilter(item.cfgOffer)  }}</text>
                       </template>
                       <template v-else>
-                        <text class="pictex">{{ item.cfgOffer  }}</text>
+                        <text class="pictex">{{ discountFilter(item.cfgOffer)  }}</text>
                         <text class="pictex unit">折</text>
                       </template>
                     </view>
@@ -42,17 +42,17 @@
                     <text class="couptie">有效期至 {{ timeFormat(item.utcEnd) }}</text>
                   </view>
                 </view>
-                <tn-checkbox
-                  :size="22"
-                  :model-value="item.isChecked"
-                  @update:model-value="(val) => groupCoup(val, item, index)"
+                <TnCheckbox
+                  size="22"
+                  @change="groupCoup($event, item, index)"
+                  v-model="item.isChecked"
                   :disabled="item.canUse === 0"
                   shape="circle"
                   active-color="#FF1616"
                   inactive-color="#DBDBDB"
-                ></tn-checkbox>
+                ></TnCheckbox>
               </view>
-            </tn-checkbox-group>
+            <!-- </tn-checkbox-group> -->
           </view>
 
           <!-- 不可使用优惠券 -->
@@ -70,10 +70,10 @@
                       <view class="coupic row">
                         <template v-if="!isRebate(item.typeId)">
                           <text class="pictex unit">￥</text>
-                          <text class="pictex">{{ item.cfgOffer  }}</text>
+                          <text class="pictex">{{ moneyFilter(item.cfgOffer)  }}</text>
                         </template>
                         <template v-else>
-                          <text class="pictex">{{ item.cfgOffer  }}</text>
+                          <text class="pictex">{{ discountFilter(item.cfgOffer)  }}</text>
                           <text class="pictex unit">折</text>
                         </template>
                       </view>
@@ -105,10 +105,10 @@
 </template>
 
 <script lang="ts" setup>
+import { moneyFilter, discountFilter } from "@/common/filters"
 import { formattime } from '@/common/formatTime'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnCheckbox from '@tuniao/tnui-vue3-uniapp/components/checkbox/src/checkbox.vue'
-import TnCheckboxGroup from '@tuniao/tnui-vue3-uniapp/components/checkbox/src/checkbox-group.vue'
 import TnRadio from '@tuniao/tnui-vue3-uniapp/components/radio/src/radio.vue'
 import TnRadioGroup from '@tuniao/tnui-vue3-uniapp/components/radio/src/radio-group.vue'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
@@ -188,7 +188,7 @@ const receCoup = (item: any) => {
     bcNotify.value.show('领取成功')
 }
 
-const groupCoup = (e: boolean, item: any, index: number) => {
+const groupCoup = (e: any, item: any, index: number) => {
     if (e) {
         coupArr.value = coupArr.value.map((x, inds) => {
             if (index === inds) {

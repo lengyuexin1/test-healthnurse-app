@@ -36,8 +36,8 @@
                             <input class="contarea" v-model="parameter.patient" :maxlength="7" placeholder="请输入就诊人" />
                         </div>
                     </div>
-                    <!-- v-if="contactVisi" -->
-                    <div class="conli" @click="getAdres">
+
+                    <div class="conli" @click="getAdres" v-if="contactVisi">
                         <div class="conltit">联系人</div>
                         <div class="conadrs row j-between">
                             <div class="contip">
@@ -48,8 +48,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- v-if="methodVisi" -->
-                    <div class="conli" @click="deliveryShow = true" >
+
+                    <div class="conli" @click="deliveryShow = true" v-if="methodVisi">
                         <div class="conltit">代送方式</div>
                         <div class="conadrs row j-between">
                             <div class="contip">
@@ -60,8 +60,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- v-if="deliveryVisi" -->
-                    <div class="conli" @click="getAdres">
+                    <!--  -->
+                    <div class="conli" @click="getAdres" v-if="deliveryVisi">
                         <div class="conltit">配送地址</div>
                         <div class="conadrs row j-between">
                             <div class="contip">
@@ -73,8 +73,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- v-if="certificateVisi" -->
-                    <div class="conli" >
+
+                    <div class="conli" v-if="certificateVisi">
                         <div class="conltit">代送凭证</div>
                         <div class="conadrs row j-between">
                     <div class="contip">

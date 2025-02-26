@@ -71,14 +71,6 @@
           }
         },
         {
-          "path": "pages/goHome/goHome",
-          "style": {
-            "navigationBarTitleText": "到家健康",
-            "navigationStyle": "custom",
-            "enablePullDownRefresh": false
-          }
-        },
-        {
           "path": "pages/index/index",
           "style": {
             "navigationBarTitleText": "首页",
@@ -193,14 +185,14 @@
             "enablePullDownRefresh": false
           }
         },
-        {
-          "path": "pages/Servicestore/choiceDetails",
-          "style": {
-            "navigationBarTitleText": "机构详情",
-            "navigationStyle": "custom",
-            "enablePullDownRefresh": false
-          }
-        },
+               {
+                 "path": "pages/Servicestore/choiceDetails",
+                 "style": {
+                   "navigationBarTitleText": "机构详情",
+                   "navigationStyle": "custom",
+                   "enablePullDownRefresh": false
+                 }
+               },
         {
           "path": "pages/Servicestore/setUpTextDetails",
           "style": {
