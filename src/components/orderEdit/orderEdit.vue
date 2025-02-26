@@ -106,15 +106,17 @@
                 <div class="consub"><TnButton @click="submit" :throttleTime="1000"  style="width: 100%; border-radius: 10rpx; color: #ffffff;height: 80rpx;" shape="circle" bg-color="#29C86F" color="#ffffff">提交</TnButton></div>
             </div>
             <!-- 配送方式 -->
-            <TnPicker v-model="parameter.deliveryMethodId" v-model:open="deliveryShow" :data="deliveryList" @confirm="setDelivery" />
+            <TnPicker v-model="parameter.deliveryMethodId" v-model:open="deliveryShow" :data="deliveryList"
+                      @confirm="setDelivery"/>
             <BCNotify ref="uToast"></BCNotify>
-		</TnPopup>
+        </TnPopup>
         <BCNotify ref="bToast"></BCNotify>
 
     </div>
 </template>
 
 <script setup>
+import BCNotify from '@/components/notify/index.vue'
 import TnPicker from '@tuniao/tnui-vue3-uniapp/components/picker/src/picker.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import imgUpload from '@/components/upload/img-upload.vue'

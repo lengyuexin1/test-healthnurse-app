@@ -17,7 +17,7 @@
             <div class="verify" v-if="data.serviceInfo.codeUrl">
                 <div class="verifyWork row">
                     <div class="verifyCode" @click="seeImg">
-                        <u-image :src="data.serviceInfo.codeUrl" width="180rpx" height="180rpx"></u-image>
+                        <image :src="data.serviceInfo.codeUrl" style="width: 180rpx;height: 180rpxx;"></image>
                     </div>
                     <div class="verifyTips">
                         <div class="verifyUid">{{ data.serviceInfo.uuid }}</div>
@@ -176,16 +176,13 @@
                 </view>
                 <view class="delreason_btn" @click="goRemove">提交</view>
             </view>
-
-		    <BCNotify ref="delreasonNotify"></BCNotify>
         </TnPopup>
-
-
+        <BCNotify ref="delreasonNotify"></BCNotify>
     </view>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch, computed } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import orderEdit from '@/components/orderEdit/orderEdit.vue'
 import BCNotify from '@/components/notify/index.vue'
 import PageTopbg from "@/components/page-topbg/page-topbg.vue"
@@ -216,6 +213,7 @@ import { gotoComment } from '@/routes/user-routes'
 import { PlatformManage } from "@bc/sys"
 import { gotoChatPage } from "@/routes/nim-routes"
 import { createTeam } from "@/api/nim-api"
+
 interface Props {
     orderId: any
     isAppOpen: boolean
@@ -224,16 +222,17 @@ interface Props {
 const props = defineProps<Props>()
 
 interface Data {
-    osObj:any,
-    showInfo:boolean,
-    serviceInfo:any,
-    detailObj:any,
-    showreason:boolean,
-    reasonList:any, // 订单取消原因列表
-    reasonItemid:string,
-    payId:string,
+    osObj: any,
+    showInfo: boolean,
+    serviceInfo: any,
+    detailObj: any,
+    showreason: boolean,
+    reasonList: any, // 订单取消原因列表
+    reasonItemid: string,
+    payId: string,
 
 }
+
 const data = reactive<Data>({
     osObj: {},
     showInfo: false,
@@ -245,8 +244,8 @@ const data = reactive<Data>({
     payId: ''
 
 })
-const gotoIMSessionChat = (type:number) => {
-    PlatformManage.getToken().then((token:any) => {
+const gotoIMSessionChat = (type: number) => {
+    PlatformManage.getToken().then((token: any) => {
         createTeam({
             userId: token?.id,
             userName: token?.nickname,
@@ -264,7 +263,7 @@ const gotoIMSessionChat = (type:number) => {
         })
     })
 }
-const getAssetsUrl = computed(() => (src:string) => {
+const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 /* 二维码大图 */
@@ -275,7 +274,7 @@ const seeImg = () => {
     })
 }
 /* 修改订单 */
-const showEdit = ()  => {
+const showEdit = () => {
     ordEdit.value.open(data.serviceInfo.info.optionId, {
         utcVisitStart: data.serviceInfo.utcVisitStart,
         ressinfo: data.serviceInfo.addressInfo,
@@ -313,20 +312,20 @@ const showBottom = computed(() => {
 
     if (arr.length > 0) {
     	if (arr.length == 1 && arr[0] == 'show_card') {
-            console.log(2)
+            // console.log(2)
 
-    		return false
-    	}
-        console.log(3)
-    	return true
+            return false
+        }
+        // console.log(3)
+        return true
     }
     else {
-    	if (data.osObj.status == 196611) {
-            console.log(4)
-    		return true
-    	}
-        console.log(5)
-    	return false
+        if (data.osObj.status == 196611) {
+            // console.log(4)
+            return true
+        }
+        // console.log(5)
+        return false
     }
 })
 
@@ -336,11 +335,11 @@ const isinstitution = computed(() => {
 })
 
 
-const timeformat = computed(() => (time:number) => {
+const timeformat = computed(() => (time: number) => {
     return formattime(time, 'YYYY-MM-DD HH:mm')
 })
 
-const vldTime = computed(() => (time:number) => {
+const vldTime = computed(() => (time: number) => {
     const now = (Date.now() / 1000)
     const days = Math.trunc((time - now) / (60 * 60 * 24))
     console.log('now,time', now, time, Date.now(time))
@@ -364,10 +363,10 @@ onMounted(() => {
 //     getDetail(newvalue)
 // })
 
-const getDetail = (orderId:string) => {
+const getDetail = (orderId: string) => {
     getserviceOrderDetail({
         orderId
-    }).then((res:any) => {
+    }).then((res: any) => {
         data.osObj = res
         data.showInfo = true
         data.serviceInfo = {
@@ -394,11 +393,11 @@ const getDetail = (orderId:string) => {
         }
     })
 }
-const getorganizationDetail = (shopId:string) => {
+const getorganizationDetail = (shopId: string) => {
     organizationDetail({
         shopId,
         isAd: 0
-    }).then((res:any) => {
+    }).then((res: any) => {
         data.detailObj = res || {}
     })
 }
@@ -409,7 +408,7 @@ const delreasonNotify = ref()
 const getdelreason = () => {
     getAftersaleReason({
         typeId: 6
-    }).then((res:any) => {
+    }).then((res: any) => {
         data.reasonList = res
         data.showreason = true
     }).catch(() => {
@@ -418,7 +417,7 @@ const getdelreason = () => {
 }
 
 
-const clickdelreason = (id:string) => {
+const clickdelreason = (id: string) => {
     data.reasonItemid = id
 }
 
@@ -436,12 +435,12 @@ const goRemove = () => {
                 reasonId: data.reasonItemid,
                 number: data.serviceInfo.info.quantity,
                 refund: data.serviceInfo.priceInfo.paidAmount
-            }).then((res:any) => {
+            }).then((res: any) => {
                 delreasonNotify.value.show('取消订单成功')
                 setTimeout(() => {
                     uni.navigateBack()
                 }, 1500)
-            }).catch((err:any) => {
+            }).catch((err: any) => {
                 delreasonNotify.value.error(err.message)
             })
             return
@@ -451,13 +450,13 @@ const goRemove = () => {
             orderId: props.orderId,
             reasonId: data.reasonItemid
 
-        }).then((res:any) => {
+        }).then((res: any) => {
             delreasonNotify.value.show('取消订单成功')
 
             setTimeout(() => {
                 uni.navigateBack()
             }, 1500)
-        }).catch((err:any) => {
+        }).catch((err: any) => {
             delreasonNotify.value.error(err.message)
         })
     }, 300)
@@ -474,15 +473,17 @@ const uppay = async () => {
         subopenId: openid
     }
 
-    if (data.serviceInfo.payId) { data.payId = data.serviceInfo.payId }
+    if (data.serviceInfo.payId) {
+        data.payId = data.serviceInfo.payId
+    }
 
     uni.showLoading({
         title: '调起支付',
         mask: true
     })
     // #ifdef MP-WEIXIN
-    houseOrderPay(payData).then((res:any) => {
-        packPayment(res.payParams).then((ret:any) => {
+    houseOrderPay(payData).then((res: any) => {
+        packPayment(res.payParams).then((ret: any) => {
             if (ret.isSuccess && ret.status === 'CPCN') {
                 getDetail(props.orderId)
                 return false
@@ -494,13 +495,13 @@ const uppay = async () => {
             //     orderId: props.orderId,
             //     payChannelId: res.payChannelId
             // }, 'replace')
-        }).catch((err:any) => {
+        }).catch((err: any) => {
             bcNotify.value.error('支付失败')
             checkResult(res.payChannelId)
             linkHouseOrder()
         })
 
-    }).catch((err:any) => {
+    }).catch((err: any) => {
         bcNotify.value.error(err.message)
         linkHouseOrder()
     }).finally(() => {
@@ -529,7 +530,7 @@ const uppay = async () => {
         if (sweixin) {
             uni.hideLoading()
 
-            PlatformManage.getToken().then((res:any) => {
+            PlatformManage.getToken().then((res: any) => {
                 console.log('获取userinfo', res)
 
                 sweixin.launchMiniProgram({
@@ -549,12 +550,12 @@ const uppay = async () => {
 }
 
 // 检查支付结果
-const checkResult = async (payChannelId:string, status = 0) => {
+const checkResult = async (payChannelId: string, status = 0) => {
     return await housePayResult({
         orderId: props.orderId,
         payChannelId,
         payStatus: status//0：放弃，1：成功
-    }).catch((err:any) => {
+    }).catch((err: any) => {
         bcNotify.value.error(err.message)
     }).finally(() => {
         uni.hideToast()
@@ -595,7 +596,7 @@ const againBay = () => {
         if (sweixin) {
             uni.hideLoading()
 
-            PlatformManage.getToken().then((res:any) => {
+            PlatformManage.getToken().then((res: any) => {
                 console.log('获取userinfo', res)
 
                 sweixin.launchMiniProgram({
@@ -616,7 +617,7 @@ const againBay = () => {
 
 
 // 底部按钮触发事件
-const operate = (type:string) => {
+const operate = (type: string) => {
     // this[type]()
     if (type == 'showClear') {
         console.log('取消订单')
@@ -645,6 +646,7 @@ const operate = (type:string) => {
 
 }
 
+
 </script>
 
 <style lang="scss" scoped>
@@ -652,14 +654,17 @@ const operate = (type:string) => {
     padding: 20rpx;
     box-sizing: border-box;
 }
-.content{
+
+.content {
     padding: 20rpx;
     box-sizing: border-box;
 }
-.order_info{
+
+.order_info {
     margin-bottom: 20rpx;
 }
-.workerInfo{
+
+.workerInfo {
     margin-bottom: 20rpx;
 }
 .verify {
@@ -697,6 +702,7 @@ const operate = (type:string) => {
         }
     }
 
+
 .institution_box {
     padding: 30rpx;
     background: #ffffff;
@@ -705,64 +711,77 @@ const operate = (type:string) => {
     margin-bottom: 20rpx;
     display: flex;
     align-items: center;
+
     .institution_img {
         width: 136rpx;
         height: 136rpx;
         border-radius: 12rpx;
         margin-right: 20rpx;
     }
+
     .institution_text_box {
         flex: 1;
         display: flex;
         flex-direction: column;
+
         .institution_title {
             margin-bottom: 8rpx;
             color: #333333;
             font-size: 30rpx;
         }
+
         .institution_time_box {
             display: flex;
             align-items: center;
         }
+
         .institution_time {
             color: #999999;
             font-size: 24rpx;
             margin-bottom: 24rpx;
         }
+
         .institution_address {
             color: #666666;
             font-size: 24rpx;
         }
     }
 }
+
 .product_box {
     padding: 30rpx;
     background: #ffffff;
     border-radius: 24rpx;
     margin-top: 20rpx;
     margin-bottom: 20rpx;
+
     .contit {
         font-size: 32rpx;
         font-weight: bold;
         color: #333333;
     }
+
     .product_list {
         padding-top: 30rpx;
         box-sizing: border-box;
+
         .product_item {
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30rpx;
+
             .product_title {
                 color: #333333;
                 font-size: 28rpx;
             }
+
             .product_right {
                 display: flex;
                 align-items: center;
                 font-size: 28rpx;
+
                 .product_number {
                     margin-right: 20rpx;
                     color: #999999;
