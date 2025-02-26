@@ -206,14 +206,14 @@
             "enablePullDownRefresh": false
           }
         },
-               {
-                 "path": "pages/Servicestore/choiceDetails",
-                 "style": {
-                   "navigationBarTitleText": "机构详情",
-                   "navigationStyle": "custom",
-                   "enablePullDownRefresh": false
-                 }
-               },
+        {
+          "path": "pages/Servicestore/choiceDetails",
+          "style": {
+            "navigationBarTitleText": "机构详情",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
         {
           "path": "pages/Servicestore/setUpTextDetails",
           "style": {
@@ -1197,6 +1197,12 @@
           "path": "pages/groupSplit/groupSplit",
           "style": {
             "navigationBarTitleText": "拼团分享"
+          }
+        },
+        {
+          "path": "pages/workInfo/workInfo",
+          "style": {
+            "navigationBarTitleText": "简历"
           }
         }
       ]

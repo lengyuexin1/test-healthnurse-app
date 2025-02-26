@@ -212,6 +212,10 @@ export const getHospitalList = (params: any) => {
 
 /* 获取服务人员简历 */
 export const getResumeDetail = (req: any) => {
-    return javaHttp.get(HOUSE_API.resumeDetail, req)
+    return http.user.get('/v1/bc/app/resume/detail', req)
 }
 
+/* 获取服务人员简历 */
+export const confifList = (req: any) => {
+    return http.user.get('/v1/bc/company/company/configList', req)
+}
