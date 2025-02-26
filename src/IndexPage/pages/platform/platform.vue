@@ -293,7 +293,6 @@ onMounted(async () => {
     // #endif
 
     // #ifdef APP-PLUS || H5
-    console.log('app顶部')
     const height = 0
     const width = 0
     const top = 0
@@ -321,7 +320,6 @@ onMounted(async () => {
     data.titleRight = 8
     // #endif
 
-    console.log(',data.titleRight', data.titleRight)
 
 
     getCity()
@@ -345,7 +343,6 @@ onMounted(async () => {
             sortType: 7
         }
     }).then((res: any) => {
-        console.log('res', res)
 
     })
 
@@ -381,17 +378,14 @@ onMounted(async () => {
         }
         // #endif
     }).exec()
-    console.log('7891011,data.titleRight', data.titleRight)
 
     query.select('#topView').boundingClientRect((res: any) => {
         if (res) {
             data.topViewHeight = (res.height + 6)
-            console.log('data.topViewHeight', data.topViewHeight)
         }
     }).exec()
 
-    console.log('78,data.titleRight', data.titleRight)
-
+    console.log(data)
 
     data.RECORDER.onStart(() => {
         console.log('开始录音');

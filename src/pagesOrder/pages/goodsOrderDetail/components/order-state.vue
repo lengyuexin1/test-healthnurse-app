@@ -127,13 +127,13 @@ const sharePage = () => {
 
         .state-title {
             font-size: 40rpx;
-            color: #FFFFFF;
+            color: #333;
             margin-bottom: 8rpx;
         }
 
         .state-text {
             font-size: 24rpx;
-            color: #FFFFFF;
+            color: #333;
         }
 
         &.state1 {

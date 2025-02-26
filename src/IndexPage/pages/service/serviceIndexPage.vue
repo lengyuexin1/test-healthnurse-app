@@ -247,7 +247,7 @@ const data = reactive<Data>({
     swiperList: [],
 })
 const tabsData: any = ref([
-    { id: '360', icon: getAssetsPic('/fare/home-more.png'), name: '全部服务', flagCode: 1 }
+    { id: '360', icon: getAssetsPic('/fare/spMorn.png'), name: '全部适品', flagCode: 1 }
 ])
 const badge = ref(0)
 const showBk: any = ref([])
@@ -548,7 +548,7 @@ const changeNav = (item: any) => {
 }
 
 const changebubble = () => {
-    gotoaNews()
+    gotoaNews(1)
 }
 
 const changecity = () => {

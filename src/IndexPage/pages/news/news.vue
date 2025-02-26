@@ -5,7 +5,7 @@
             <template #top>
                 <PageTopbg></PageTopbg>
                 <bc-page-navbar :title="'消息'">
-                    <template #back>
+                    <template #back v-if="data.isShowBack">
                         <view></view>
                     </template>
                 </bc-page-navbar>
@@ -61,7 +61,7 @@ import ListItem from "@/components/recommended/listItem.vue"
 import { computed } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { ref, reactive, watch, onMounted } from 'vue'
-import { onShow } from "@dcloudio/uni-app"
+import { onShow, onLoad } from "@dcloudio/uni-app"
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import TnBadge from '@tuniao/tnui-vue3-uniapp/components/badge/src/badge.vue'
 import { SessionSDK, useNoticeSessions, useSessionsList } from "@bc/msg"
@@ -84,7 +84,8 @@ interface Data {
     noticeList: any
     /** 活动消息 */
     activitySession: any,
-    safeBotomHeight: number
+    safeBotomHeight: number,
+    isShowBack: boolean
 }
 
 const data = reactive<Data>({
@@ -99,7 +100,8 @@ const data = reactive<Data>({
         { id: 'p2p-4', to: '4', unread: 0, name: '平台公告', image: '/leyou/assets/message_icon_plateform.png' },
     ],
     activitySession: { id: 'p2p-5', to: '5', unread: 0, lastMsg: { fromNick: '活动消息' }, updateTime: null },
-    safeBotomHeight: 0
+    safeBotomHeight: 0,
+    isShowBack: true
 })
 
 const bcNotify = ref()
@@ -108,6 +110,13 @@ const paging = ref()
 
 const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
+})
+onLoad((option: any) => {
+    if (option.type) {
+        data.isShowBack = false
+    } else {
+        data.isShowBack = true
+    }
 })
 
 const getActivitySession = computed(() => {
@@ -285,6 +294,7 @@ onShow(() => {
         color: #0B0B0B;
     }
 }
+
 .message {
     width: 96%;
     margin-left: 2%;
@@ -296,6 +306,7 @@ onShow(() => {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
     .title {
         .title_txt {
             font-size: 33rpx;

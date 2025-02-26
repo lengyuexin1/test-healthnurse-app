@@ -91,8 +91,8 @@ onShareAppMessage((res:any) => {
 }
 </style>
 <style>
-page{
+/* page{
     background: linear-gradient(180deg, #EA3E1A 10%, #F8F9F9 40%);
-}
+} */
 </style>
 

@@ -148,11 +148,33 @@ export const gotoEstimate = (info?: string) => {
     return pageController.push(route)
 }
 
+/*
+* 跳转测试页
+* */
+export const gototest = (query: any) => {
+    const route = {
+        path: '/IndexPage/pages/test/test',
+        query
+    } as any
+    return pageController.push(route)
+}
+
 /* 编辑个人信息 */
 export const gotoEditProfile = () => {
     const route = {
         path: '/pagesUser/pages/EditProfile/EditProfile',
         query: {}
+    } as any
+    return pageController.push(route)
+}
+
+/*
+*   智护帮跳转个人详情
+* */
+export const gotoUserDetail = (query: any) => {
+    const route = {
+        path: '/pagesMall/pages/intellect/mineInfo',
+        query
     } as any
     return pageController.push(route)
 }
