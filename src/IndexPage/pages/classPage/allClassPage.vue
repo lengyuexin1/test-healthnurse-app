@@ -65,9 +65,14 @@ onLoad((option: any) => {
 const getData = (num: number) => {
     setPageBank(num).then(res => {
         const dataList = res.recordList.filter((item: any) => item.moduleId == 2)
-        if (dataList.length > 0) {
+        let idsList: any = []
+        dataList[0].navbarList.forEach(element => {
+            idsList = [...idsList, ...element.columnIds]
+        })
+        console.log(idsList)
+        if (idsList.length > 0) {
             const sendData = {
-                ids: dataList[0].dataIds
+                ids: idsList
             }
             allColm(sendData).then(res => {
                 dataListTwo.value = res
@@ -90,16 +95,17 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-
 .noneData {
     width: 100%;
     display: flex;
     justify-content: center;
 }
+
 .imgBox {
     width: 600rpx;
     height: 500rpx;
 }
+
 .menu_list {
     padding: 20rpx 0rpx;
     box-sizing: border-box;
