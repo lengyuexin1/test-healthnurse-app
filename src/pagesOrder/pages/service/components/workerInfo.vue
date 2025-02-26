@@ -3,7 +3,7 @@
         <div class="contit">服务人员信息</div>
         <div class="mation" v-if="serviceInfo.workerInfo && serviceInfo.workerInfo.workerId">
             <div class="mattit">{{serviceInfo.workerInfo.workerName || '--'}}</div>
-            <div class="mattip">
+            <div class="mattip" @click="goWorker">
                 <text>查看详情</text>
                 <TnIcon name="right" />
             </div>
@@ -13,11 +13,11 @@
         </div>
     </div>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
-
+import { gotoWorkerInfo } from '@/routes/care-routes'
 
 interface Props {
     serviceInfo:any,
@@ -30,17 +30,19 @@ onMounted(() => {
 
 })
 
-
+const goWorker = () => {
+    gotoWorkerInfo(props.serviceInfo.workerInfo.workerId, props.serviceInfo.info.shopId)
+}
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .content{
     width: 100%;
     background: #FFFFFF;
     border-radius: 24rpx;
-    padding: 30rpx;
+    padding: 40rpx;
     box-sizing: border-box;
     .contit{
         font-size: 32rpx;
@@ -59,6 +61,7 @@ onMounted(() => {
             flex-shrink: 0;
         }
         .mattip{
+            color: #999999;
             display: flex;
             align-items: center;
         }
@@ -82,4 +85,3 @@ onMounted(() => {
     }
 }
 </style>
-  

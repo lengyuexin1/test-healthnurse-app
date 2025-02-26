@@ -335,8 +335,8 @@ const clickBtn = () => {
         isCart: 1
     })
 
-    // #ifdef MP-WEIXIN
     gotoBalanceGood(uniqueId)
+    // #ifdef MP-WEIXIN
     // #endif
 
 
@@ -606,6 +606,7 @@ const clickwaterItem = (item:any) => {
     padding: 20rpx;
     position: fixed;
     bottom: 0;
+    z-index: 999999;
     background-color: #FFFFFF;
     box-shadow: 0 -4rpx 12rpx 2rpx rgba(0, 0, 0, .06);
 
