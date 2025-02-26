@@ -44,10 +44,10 @@
             </template>
             <swiper class="swiper" :current="data.currentTabIndex" @change="onswiperchange">
                 <swiper-item>
-                    <serviceOrder ref="service" :tabsIndsex="data.tabsIndex" :month_t="data.OptionId"></serviceOrder>
+                    <serviceOrder ref="service" :tabsIndsex="data.tabsIndex" :month_t="data.OptionId" :title="data.title"></serviceOrder>
                 </swiper-item>
                 <swiper-item>
-                    <goodsOrder ref="goods" :tabsIndsex="data.tabsIndex" :month_t="data.OptionId"></goodsOrder>
+                    <goodsOrder ref="goods" :tabsIndsex="data.tabsIndex" :month_t="data.OptionId" :title="data.title"></goodsOrder>
                 </swiper-item>
                 <swiper-item>
                     <courseOrder ref="course"></courseOrder>

@@ -115,13 +115,13 @@
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue'
 
 import { formattime } from '@/common/formatTime'
 import { torefundOrder } from '@/routes/order-routes'
- 
+
 interface Props {
     serviceInfo:any,
     showInfo:boolean,
@@ -178,12 +178,12 @@ const gotorefund = () => {
     torefundOrder({orderId:props.serviceInfo.id})
 }
 
-const tominutes = (index:number) =>{ 
+const tominutes = (index:number) =>{
     // 退款记录
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .container{
     background: #fff;
@@ -318,7 +318,7 @@ const tominutes = (index:number) =>{
             color: #999999;
 
         }
-        
+
     }
     .record_box {
         padding-top: 20rpx;
@@ -381,4 +381,3 @@ const tominutes = (index:number) =>{
     }
 }
 </style>
-  
