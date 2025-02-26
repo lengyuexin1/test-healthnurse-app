@@ -30,6 +30,12 @@
       }
     },
     {
+      "path": "pages/resume/resume",
+      "style": {
+        "navigationBarTitleText": "简历"
+      }
+    },
+    {
       "path": "pages/login/onekeyLogin",
       "style": {
         "navigationBarTitleText": "一键登录页",
@@ -1197,12 +1203,6 @@
           "path": "pages/groupSplit/groupSplit",
           "style": {
             "navigationBarTitleText": "拼团分享"
-          }
-        },
-        {
-          "path": "pages/workInfo/workInfo",
-          "style": {
-            "navigationBarTitleText": "简历"
           }
         }
       ]
