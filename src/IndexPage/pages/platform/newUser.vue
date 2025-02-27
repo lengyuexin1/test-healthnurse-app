@@ -15,10 +15,9 @@
                         <view class="quanLi" v-for="(item, index) in artList" :key="index">
                             <view>
                                 <view class="groupMon">
-                                    <view class="ecad">￥</view>
-                                    <view class="numMoney">{{ item.money }}</view>
+                                    <view class="numMoney">{{ showTPri(item.typeId, item) }}</view>
                                 </view>
-                                <view class="whereUse">{{ item.text }}</view>
+                                <view class="whereUse">{{ item.desc }}</view>
                             </view>
                             <view class="syuas">
                                 <view class="lineBox">
@@ -27,15 +26,35 @@
                                     <view class="zonr2"></view>
                                 </view>
                             </view>
-                            <view class="noget" v-if="item.isUse == 1" @click="getUp(item)">领取</view>
+                            <view class="noget" v-if="!isLogin || (isLogin && item.grantedId == 0)" @click="getUp(item)">领取
+                            </view>
                             <view class="noget alseUse" v-else @click="gotoUse(item)">已领取</view>
                         </view>
                     </view>
 
-                    <view class="centTitle">特惠商品</view>
+                    <view class="centTitle" v-if="dataList.length > 0">
+                        <view class="centText">特惠服务</view>
+                        <view class="mornGood" @click="gotoUseList(1)">
+                            <text class="mornWz">更多</text>
+                            <TnIcon name="right" size="28rpx" color="#a6a6a6"></TnIcon>
+                        </view>
+                    </view>
 
                     <view class="qianGoods">
                         <WaterfallsFlow :wfList="dataList" @waterItem="clickwaterItem">
+                        </WaterfallsFlow>
+                    </view>
+
+                    <view class="centTitle" v-if="dataListTow.length > 0">
+                        <view class="centText">特惠商品</view>
+                        <view class="mornGood" @click="gotoUseList(2)">
+                            <text class="mornWz">更多</text>
+                            <TnIcon name="right" size="28rpx" color="#a6a6a6"></TnIcon>
+                        </view>
+                    </view>
+
+                    <view class="qianGoods">
+                        <WaterfallsFlow :wfList="dataListTow" @waterItem="clickwaterItemTow">
                         </WaterfallsFlow>
                     </view>
                 </view>
@@ -45,41 +64,71 @@
     </view>
 </template>
 <script setup lang="ts">
+import { moneyFilter } from "@/common/filters"
+import { PlatformManage } from "@bc/sys"
 import { ref, reactive, computed, onMounted } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
 import TnNavbar from '@tuniao/tnui-vue3-uniapp/components/navbar/src/navbar.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
-import { activeDetail, zqCouList } from "@/api/setite-api"
+import { activeDetail, activeDetailTow, getCoupon } from "@/api/setite-api"
 import { onLoad } from "@dcloudio/uni-app"
 import WaterfallsFlow from '@/IndexPage/pages/platform/components/WaterfallsFlow.vue'
-import { gotoServiceStore } from '@/routes/service-routes'
+import { gotoserviceDetail, gotoSellerList } from '@/routes/service-routes'
 import { gotogoodsDetail } from '@/routes/goods-routes'
+import { gotoLogin } from "@/routes/public-routes"
 const paging = ref()
+const isLogin = ref(false)
 const dataList = ref([])
-const artList:any = ref([])
-const dataObj:any = ref({})
+const dataListTow = ref([])
+const artList: any = ref([])
+const dataObj: any = ref({})
 onLoad((option: any) => {
-    activeDetail(option.id).then(res => {
-        dataObj.value = res
-        paging.value.complete(res.itemList)
-        
-        // 优惠券
-        getCouList(res.couponIds || res.carouselIds)
+    PlatformManage.isRequireLogin().then((isRequireLogin) => {
+        if (isRequireLogin) {
+            isLogin.value = false
+            getDetail(option.id)
+        } else {
+            isLogin.value = true
+            getDetailTow(option.id)
+        }
     })
 })
 
-const getCouList = (cuoIds: any) => {
-    const couData = {
-        pageNumber: 1,
-        pageSize: 30,
-        query: {
-            ids: cuoIds
-        }
-    }
-    zqCouList(couData).then(res => {
-        artList.value = res.data
+const getDetail = (id: any) => {
+    activeDetail(id).then(res => {
+        dataObj.value = res
+        paging.value.complete(res.itemList)
+        dataListTow.value = res.productList
+        // 优惠券
+        artList.value = res.couponList
     })
 }
+
+const getDetailTow = (id: any) => {
+    activeDetailTow(id).then(res => {
+        dataObj.value = res
+        paging.value.complete(res.itemList)
+        dataListTow.value = res.productList
+        // 优惠券
+        artList.value = res.couponList
+    })
+}
+
+const gotoUseList = (num: string) => {
+    gotoSellerList(
+        { type: num, id: dataObj.value.id }
+    )
+}
+
+const showTPri = computed(() => (cup: string, dats: any) => {
+    const strPri = (cup + '').slice(-1)
+    if (strPri == '0') {
+        return "￥" + moneyFilter(dats.cfgOffer)
+    }
+    if (strPri == '4') {
+        return dats.cfgOffer / 100 + '折'
+    }
+})
 
 const scrollPage = (e: any) => { }
 const getAssetsUrl = computed(() => (src: string) => {
@@ -87,12 +136,10 @@ const getAssetsUrl = computed(() => (src: string) => {
 })
 
 const clickwaterItem = (item: any) => {
-    if (item.type == 1) {
-        gotoServiceStore({itemId:item.id })
-    }
-    if (item.type == 2) {
-        gotogoodsDetail(item.id)
-    }
+    gotoserviceDetail(item.id)
+}
+const clickwaterItemTow = (item: any) => {
+    gotogoodsDetail(item.id)
 }
 
 const queryList = (pageNumber: number, pageSize: number) => {
@@ -100,7 +147,30 @@ const queryList = (pageNumber: number, pageSize: number) => {
 }
 
 const getUp = (item: any) => {
-    item.isUse = 2
+    if (!isLogin.value) {
+        return gotoLogin({})
+    }
+    if (item.grantedId == 0) {
+        return uni.showToast({
+            icon: 'none',
+            title: '您不是新用户，未达到领取条件',
+        })
+    }
+    // const sendData = {
+    //     couponId: item.id
+    // }
+    // getCoupon(sendData).then(res => {
+    //     item.status = 11
+    //     uni.showToast({
+    //         icon: 'none',
+    //         title: '领取成功',
+    //     })
+    // }).catch(err => {
+    //     uni.showToast({
+    //         icon: 'none',
+    //         title: err.message,
+    //     })
+    // })
 }
 const gotoUse = (item: any) => {
 
@@ -157,11 +227,27 @@ const gotoBack = () => {
     margin: 30rpx 0 40rpx 0;
 
     .centTitle {
-        text-align: center;
+        position: relative;
         font-weight: 600;
         font-size: 32rpx;
         color: #020202;
-        margin: 30rpx 10rpx;
+        display: flex;
+        margin-top: 20rpx;
+
+        .centText {
+            flex: 1;
+            text-align: center;
+        }
+
+        .mornGood {
+            position: absolute;
+            right: 10rpx;
+
+            .mornWz {
+                color: #a6a6a6;
+                font-size: 26rpx;
+            }
+        }
     }
 
     .qianUl {

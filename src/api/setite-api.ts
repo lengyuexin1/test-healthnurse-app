@@ -26,6 +26,11 @@ export const productList = (req: any) => {
 }
 
 // 活动详情
+export const activeDetailTow = (req: any) => {
+    return http.get('api/order/v1/bc/public/app/activity/detail', { id: req })
+}
+
+// 活动详情
 export const activeDetail = (req: any) => {
     return openHttp.get('api/order/v1/bc/public/app/activity/detail', { id: req })
 }
@@ -39,3 +44,9 @@ export const zqCouList = (req: any) => {
 export const allColm = (req: any) => {
     return openHttp.post('api/order/v1/bc/public/app/adorn/column/all', req)
 }
+
+// 领取优惠券
+export const getCoupon = (req: any) => {
+    return http.post('api/order/v1/bc/app/coupon/collect',  req )
+}
+

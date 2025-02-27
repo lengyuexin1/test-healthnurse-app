@@ -60,7 +60,8 @@
                         </div>
                         <div class="shopjudge row i-center">
                             <view style="display:flex;">
-                                <image v-if="item.businessType !== 4" :src="setShopPic(item.shopThumb)" class="shopIcon" radius="30rpx"></image>
+                                <image v-if="item.businessType !== 4" :src="setShopPic(item.shopThumb)" class="shopIcon"
+                                    radius="30rpx"></image>
                                 <text class=" u-line-1">{{ item.shopName || '' }}</text>
                             </view>
                             <view v-if="false" class="Learn_more" @click.stop="Learnmore(item.id)">
@@ -161,6 +162,9 @@ import { computed, onMounted, reactive, ref, watch } from "vue"
 import { organizationList } from "@/api/service-api"
 import { getSonList } from "@/api/user-api"
 import { onLoad } from "@dcloudio/uni-app"
+import { searListFlag } from "@/api/open-api"
+import { happysearch } from '@/api/user-api'
+import { activeDetail } from "@/api/setite-api"
 
 const titleName = ref('服务列表')
 const authpup = ref()
@@ -262,9 +266,31 @@ const baseGrade = computed(() => {
 
 const dataCates = ref('')
 onLoad((options: any) => {
-    titleName.value = options.name
-    kuaiRou(options.id)
+    if (options.type) {
+        options.type == 1 ? titleName.value = '特惠服务' : titleName.value = '特惠商品'
+        activeDetail(options.id).then(res => {
+            getCipList(options.type, res.categoryIds)
+        })
+    } else {
+        titleName.value = options.name
+        kuaiRou(options.id)
+    }
 })
+
+const getCipList = (type:any, dataCate:any) => {
+    const objData = {
+            pageSize: 100,
+            pageNumber: 1,
+            query: {
+                sourceType: type,
+                categoryIds: dataCate,
+            }
+        }
+        happysearch(objData, true).then(res =>
+        data.dataList = res.data
+            // paging.value.complete(res.data)
+        )
+}
 
 const kuaiRou = (data: any) => {
     const dares = {
@@ -274,7 +300,7 @@ const kuaiRou = (data: any) => {
         console.log(res[0].categoryIds)
         conApi.value = true
         dataCates.value = res[0].categoryIds
-        queryList(1,10)
+        queryList(1, 10)
     })
 }
 
@@ -325,7 +351,7 @@ const linkinfo = (item: any) => {
         return gotogoodsDetail(item.id)
     }
     if (item.businessType == 4) {
-        return gotoServiceOrg({id: item.id})
+        return gotoServiceOrg({ id: item.id })
     }
 
 }

@@ -12,17 +12,16 @@
             <view class="coupon">
                 <image class="coupon-bg" :src="getAssetsUrl('/leyou/icon/coupon-bg.png')" mode="scaleToFill" />
                 <view class="content">
-                    <view class="price tn-text-bold">
-                        <text class="unit">￥</text>
-                        {{ moneyFilter(dataObj.couponCfgTotal) }}
-                        <view class="txt">{{ dataObj.couponDesc }}</view>
+                    <view class="price tn-text-bold" v-if="dataObj.couponList.length > 0">
+                        {{ showTPri(dataObj.couponList[0].typeId, dataObj.couponList[0]) }}
+                        <view class="txt">{{ dataObj.couponList[0].desc }}</view>
                     </view>
                     <view class="btn tn-text-bold">去使用</view>
                 </view>
             </view>
-            <view class="wrap tn-flex-column" v-for="(item, index) in dataObj.itemList" :key="index">
+            <view class="wrap tn-flex-column" v-for="(item, index) in dataObj.itemList.splice(0, 3)" :key="index">
                 <image class="img" :src="item.thumb" mode="scaleToFill" />
-                <text class="txt">劵后￥{{ moneyFilter(item.couponPrice) }}元</text>
+                <text class="txt">劵后￥{{ moneyFilter(item.price) }}元</text>
             </view>
         </view>
     </view>
@@ -41,11 +40,30 @@ interface Props {
     dataObj: any
 }
 
+const showTPri = computed(() => (cup: string, dats: any) => {
+    const strPri = (cup + '').slice(-1)
+    if (strPri == '0') {
+        return "￥" + moneyFilter(dats.cfgOffer)
+    }
+    if (strPri == '4') {
+        return dats.cfgOffer / 100 + '折'
+    }
+})
+
 const props = defineProps<Props>()
 
 const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
+
+const cupList = [
+    { id: 100001, name: "活动满减券" },
+    { id: 100000, name: "活动现金券" },
+    { id: 100002, name: "活动满折券" },
+    { id: 100003, name: "活动兑换码" },
+    { id: 100004, name: "活动折扣券" },
+]
+
 
 // 更多
 const clickMore = () => {
@@ -123,10 +141,11 @@ const clickMore = () => {
                 font-size: 40rpx;
                 height: 106rpx;
                 overflow: hidden;
+                margin-top: 10rpx;
             }
 
             .btn {
-                margin-top: 28rpx;
+                margin-top: 20rpx;
                 font-size: 24rpx;
             }
         }
