@@ -241,39 +241,36 @@ const open = async (optionId, data) => {
 }
 
 const submit = async () => {
-    try {
-        await editOrderModify({
-            orderId: orderId.value,
-            note: parameter.note,
-            attr: {
-                utcVisitStart: dayjs().unix(parameter.utcVisitStart),
-                addressId: consumerAdrs.value || deliveryVisi.value ? ressinfo.value.id : null,
-                patientId: consumerVisi.value ? parameter.patientId : null,
-                hospitalId: parameter.hospitalId || null,
-                hospital: parameter.hospital || null,
-                patient: informationVisi.value ? parameter.patient : null,
-                patientMobile: parameter.patientMobile || null,
-                deliveryMethod: methodVisi.value ? parameter.deliveryMethodId : null,
-                deliveryCertificate: certificateVisi.value ? fileList1.value : null
-            },
-            contact: contactVisi.value ? {
-                mobile: ressinfo.value.mobile,
-                person: ressinfo.value.name
-            } : null
-        }).then(() => {
-            bCNotifyRef.value.show('修改成功')
 
-            emit('updateOrder')
-        }).catch(err => {
-            bCNotifyRef.value.show(err.message)
-        })
+    await editOrderModify({
+        orderId: orderId.value,
+        note: parameter.note,
+        attr: {
+            utcVisitStart: dayjs().unix(parameter.utcVisitStart),
+            addressId: consumerAdrs.value || deliveryVisi.value ? ressinfo.value.id : null,
+            patientId: consumerVisi.value ? parameter.patientId : null,
+            hospitalId: parameter.hospitalId || null,
+            hospital: parameter.hospital || null,
+            patient: informationVisi.value ? parameter.patient : null,
+            patientMobile: parameter.patientMobile || null,
+            deliveryMethod: methodVisi.value ? parameter.deliveryMethodId : null,
+            deliveryCertificate: certificateVisi.value ? fileList1.value : null
+        },
+        contact: contactVisi.value ? {
+            mobile: ressinfo.value.mobile,
+            person: ressinfo.value.name
+        } : null
+    }).then(() => {
+        bCNotifyRef.value.show('修改成功')
 
-        close()
-    }
-    catch (err:any) {
+        emit('updateOrder')
+    }).catch(err => {
         bCNotifyRef.value.show(err.message)
-    // Handle error with a toast or any other method
-    }
+    })
+
+    close()
+
+
 }
 
 const getAdres = (type = 0) => {
