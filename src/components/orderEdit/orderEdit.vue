@@ -16,8 +16,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- v-if="consumerTime && isOrderPackage != 1" -->
-                    <div class="conli" @click="clickSelectTime">
+
+                    <div class="conli" @click="clickSelectTime" v-if="consumerTime && isOrderPackage != 1">
                         <div class="conltit">服务时间</div>
                         <div class="conadrs row j-between">
                                 <div class="contip">{{parameter.utcVisitStart}}</div>
@@ -69,7 +69,7 @@
                                 <div>{{ressinfo.name}}  {{ressinfo.mobile}}</div>
                             </div>
                             <div class="conbtn">
-                                <TnButton plain size="mini" style="border: none;" shape="circle" color="#F2F2F2" :customStyle="btnStyle">修改</TnButton>
+                                <TnButton plain size="mini" style="border: none;" shape="circle" color="#F2F2F2" >修改</TnButton>
                             </div>
                         </div>
                     </div>
@@ -106,25 +106,27 @@
                 <div class="consub"><TnButton @click="submit" :throttleTime="1000"  style="width: 100%; border-radius: 10rpx; color: #ffffff;height: 80rpx;" shape="circle" bg-color="#29C86F" color="#ffffff">提交</TnButton></div>
             </div>
             <!-- 配送方式 -->
-            <TnPicker v-model="parameter.deliveryMethodId" v-model:open="deliveryShow" :data="deliveryList"
-                      @confirm="setDelivery"/>
-            <BCNotify ref="uToast"></BCNotify>
-        </TnPopup>
-        <BCNotify ref="bToast"></BCNotify>
+            <TnPicker v-model="parameter.deliveryMethodId" v-model:open="deliveryShow" :data="deliveryList" @confirm="setDelivery" />
+            <BCNotify ref="bCNotifyRef"></BCNotify>
+		</TnPopup>
 
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { gotoAddressList } from '@/routes/user-routes'
 import BCNotify from '@/components/notify/index.vue'
+import dayjs from 'dayjs'
 import TnPicker from '@tuniao/tnui-vue3-uniapp/components/picker/src/picker.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import imgUpload from '@/components/upload/img-upload.vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import TnDateTimePicker from '@tuniao/tnui-vue3-uniapp/components/date-time-picker/src/date-time-picker.vue'
-import { ref, reactive, watch, nextTick } from 'vue'
-import { getOrderEntityConfig, editGodsOrder } from '@/api/order-api'
+import { ref, reactive, watch, nextTick, computed, onMounted } from 'vue'
+import { getOrderEntityConfig, editOrderModify } from '@/api/order-api'
+import { addWEventsListener } from '@/events/event-registry'
+import { CareEvents } from '@/events/care-events'
 // import { gotoUserLink } from '@/route/user-routes'
 const openDateTimePicker = ref(false)
 const show = ref(false)
@@ -147,18 +149,51 @@ const consumerAttr = ref([])
 const optionMation = reactive({
     templateCode: ''
 })
+const bCNotifyRef = ref()
 const timeUnit = ref('')
 const serviceRules = ref('')
 const optionUnit = ref('')
 const deliveryList = [{ label: '同城', value: 1 }, { label: '邮寄', value: 2 }]
-const consumerAdrs = ref(null)
-const deliveryVisi = ref(false)
-const informationVisi = ref(false)
-const methodVisi = ref(false)
-const certificateVisi = ref(false)
-const contactVisi = ref(false)
+const consumerTime = computed(() => exist('service_time'))
+const consumerAdrs = computed(() => exist('service_address'))
 
+const consumerVisi = computed(() => {
+    return ![65795, 65796].includes(optionMation.templateCode) && exist('visitor_information')
+})
+
+const informationVisi = computed(() => {
+    return [65795, 65796].includes(optionMation.templateCode) && exist('visitor_information')
+})
+const props = withDefaults(
+    defineProps<{
+    shopId?: any;
+  }>(),
+    {
+        shopId: ''
+    }
+)
+onMounted(() => {
+    addWEventsListener(CareEvents.Get__Address, (res) => {
+        console.log(res)
+        ressinfo.value = res
+    })
+})
+const hospitalVisi = computed(() => exist('hospital_address'))
+const methodVisi = computed(() => exist('delivery_method'))
+const deliveryVisi = computed(() => exist('delivery_address'))
+const certificateVisi = computed(() => exist('delivery_certificate'))
+const contactVisi = computed(() => exist('contact_info'))
+const emit = defineEmits(["updateOrder"])
+const ismany = computed(() => {
+    if (isOrderPackage.value === 0) {
+        return true
+    }
+    else {
+        return !!ressinfo.value.name
+    }
+})
 // Methods
+
 const handleChange = (item) => {
     fileList1.value = item
 }
@@ -172,6 +207,7 @@ const openUp = () => {
 const clickSelectTime = () => {
     openDateTimePicker.value = true
 }
+// 判断参数是否存在
 const exist = (str) => {
     const item = consumerAttr.value.find(x => x.field === str)
     return !!item
@@ -198,48 +234,49 @@ const open = async (optionId, data) => {
         optionUnit.value = res.option.extend.serviceWorkingHours.unit
         show.value = true
     }
-    catch (err) {
-        console.error('Error:', err.message)
+    catch (err:any) {
+        bCNotifyRef.value.error(err.message)
     // Handle error with a toast or any other method
     }
 }
 
 const submit = async () => {
-    try {
-        await editGodsOrder({
-            orderId: orderId.value,
-            note: parameter.note,
-            attr: {
-                utcVisitStart: parameter.utcVisitStart,
-                addressId: consumerAdrs.value || deliveryVisi.value ? ressinfo.value.id : null,
-                patientId: informationVisi.value ? parameter.patientId : null,
-                hospitalId: parameter.hospitalId || null,
-                hospital: parameter.hospital || null,
-                patient: informationVisi.value ? parameter.patient : null,
-                patientMobile: parameter.patientMobile || null,
-                deliveryMethod: methodVisi.value ? parameter.deliveryMethodId : null,
-                deliveryCertificate: certificateVisi.value ? fileList1.value : null
-            },
-            contact: contactVisi.value ? {
-                mobile: ressinfo.value.mobile,
-                person: ressinfo.value.name
-            } : null
-        })
 
-        close()
-    // Emit event after successful submission
-    // e.g., emit("updateOrder") if needed
-    }
-    catch (err) {
-        console.error('Error:', err.message)
-    // Handle error with a toast or any other method
-    }
+    await editOrderModify({
+        orderId: orderId.value,
+        note: parameter.note,
+        attr: {
+            utcVisitStart: dayjs().unix(parameter.utcVisitStart),
+            addressId: consumerAdrs.value || deliveryVisi.value ? ressinfo.value.id : null,
+            patientId: consumerVisi.value ? parameter.patientId : null,
+            hospitalId: parameter.hospitalId || null,
+            hospital: parameter.hospital || null,
+            patient: informationVisi.value ? parameter.patient : null,
+            patientMobile: parameter.patientMobile || null,
+            deliveryMethod: methodVisi.value ? parameter.deliveryMethodId : null,
+            deliveryCertificate: certificateVisi.value ? fileList1.value : null
+        },
+        contact: contactVisi.value ? {
+            mobile: ressinfo.value.mobile,
+            person: ressinfo.value.name
+        } : null
+    }).then(() => {
+        bCNotifyRef.value.show('修改成功')
+
+        emit('updateOrder')
+    }).catch(err => {
+        bCNotifyRef.value.show(err.message)
+    })
+
+    close()
+
+
 }
 
 const getAdres = (type = 0) => {
     const req = {}
-    if (type === 1) { req.shopId = shopId.value }
-    // gotoUserLink(req, 'dizhi')
+    if (type === 1) { req.shopId = props.shopId }
+    gotoAddressList(req, 'dizhi')
 }
 
 const getSerTime = (e) => {

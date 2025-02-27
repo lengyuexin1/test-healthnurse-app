@@ -17,7 +17,7 @@
             <div class="verify" v-if="data.serviceInfo.codeUrl">
                 <div class="verifyWork row">
                     <div class="verifyCode" @click="seeImg">
-                        <image :src="data.serviceInfo.codeUrl" style="width: 180rpx;height: 180rpxx;"></image>
+                        <image :src="data.serviceInfo.codeUrl"></image>
                     </div>
                     <div class="verifyTips">
                         <div class="verifyUid">{{ data.serviceInfo.uuid }}</div>
@@ -202,6 +202,7 @@ import {
     applyRefund,
     houseOrderCancel,
     houseOrderPay,
+    getQrCodeCreate,
     housePayResult
 } from '@/api/order-api'
 import { organizationDetail } from '@/api/service-api'
@@ -376,10 +377,9 @@ const getDetail = (orderId: string) => {
             ...res
         }
         if (![65796].includes(res.templateCodeId) && res.uuid) {
-            // const img = QR.createQrCodeImg(res.uuid, {
-            //     size: parseInt(600)//二维码大小
-            // })
-            // data.serviceInfo.codeUrl = img
+            getQrCodeCreate({ data: res.uuid, "width": 480, "height": 480, "business": 0 }).then((res) => {
+                data.serviceInfo.codeUrl = res
+            })
         }
         if (res.kind == 3) {
             getorganizationDetail(res.shopList[0].shopId)
@@ -672,11 +672,15 @@ const operate = (type: string) => {
         box-shadow: 0rpx 0rpx 16rpx rgba(0, 0, 0, 0.06);
         border-radius: 24rpx;
         background-color: #ffffff;
-        margin-top: 24rpx;
+        margin: 24rpx 0;
 
         .verifyWork {
             .verifyCode {
                 margin-right: 28rpx;
+                image{
+                    width: 220rpx;
+                    height: 220rpx;
+                }
             }
         }
 

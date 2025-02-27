@@ -41,7 +41,7 @@
 					<view class="item-right">
 						<view class="item-option">
 							<view class="contacts">
-								<view class="name">{{ item.name }}</view>	
+								<view class="name">{{ item.name }}</view>
 								<view class="phone">{{ item.mobile }}</view>
 							</view>
 						</view>
@@ -110,13 +110,13 @@ interface Data {
 	shopId: string
 }
 
-const data = reactive<Data>({ 
-	list: [],
-	defaultId: null,
-	unDefaultList: [],
-	isEmpty: false,
-	addressId: '',
-	shopId: ''
+const data = reactive<Data>({
+    list: [],
+    defaultId: null,
+    unDefaultList: [],
+    isEmpty: false,
+    addressId: '',
+    shopId: ''
 })
 
 const bcPopup = ref()
@@ -124,49 +124,49 @@ const bcPopup = ref()
 const bcNotify = ref()
 
 const setDef = (item: any) => {
-	editAddress({
-		...item,
-		addressId: item.id,
-		isDefault: 1
-	}).then((res) => {
-		bcNotify.value.show('设置成功')
-		addressList()
-		data.defaultId = item.id
-	}).catch((err) => {
-		bcNotify.value.error(err.message)
-	})
+    editAddress({
+        ...item,
+        addressId: item.id,
+        isDefault: 1
+    }).then((res) => {
+        bcNotify.value.show('设置成功')
+        addressList()
+        data.defaultId = item.id
+    }).catch((err) => {
+        bcNotify.value.error(err.message)
+    })
 }
 
 const seleSite = (item: any) => {
-	console.log(123132,item);
-	
-	Throttle(() => {
-		dispatchWEvent(CareEvents.Get__Address, item)
-		pageController.back()
-	}, 800)
+    console.log(123132, item)
+
+    Throttle(() => {
+        dispatchWEvent(CareEvents.Get__Address, item)
+        pageController.back()
+    }, 800)
 }
 
 const editGoodsAddress = (addressId: String) => {
-	gotoAddressManage({ type: 2, item: JSON.stringify(addressId) })	
+    gotoAddressManage({ type: 2, item: JSON.stringify(addressId) })
 }
 
 const deletGoodsAddress = (addressId: string) => {
-	data.addressId = addressId
-	bcPopup.value.open()
+    data.addressId = addressId
+    bcPopup.value.open()
 }
 
 const clickAddGoodsAddress = () => {
-	gotoAddressManage({ type: 1 })
+    gotoAddressManage({ type: 1 })
 }
 
 const confirmDelAddress = () => {
-	delAddress({ addressId: data.addressId }).then(() => {
-		bcNotify.value.show('删除成功')
-		bcPopup.value.close()
-		addressList()
-	}).catch((err) => {
-		bcNotify.value.error(err.message)
-	})
+    delAddress({ addressId: data.addressId }).then(() => {
+        bcNotify.value.show('删除成功')
+        bcPopup.value.close()
+        addressList()
+    }).catch((err) => {
+        bcNotify.value.error(err.message)
+    })
 }
 
 const cancel = () => {
@@ -174,29 +174,29 @@ const cancel = () => {
 }
 
 const addressList = () => {
-	getAddressList().then((res) => {
-		if (data.shopId) {
-			data.list = res.filter(x => x.isMatch === undefined || x.isMatch === 1)
-			data.unDefaultList = res.filter(x => x.isMatch === 0)
-		}
-		else {
-			data.list = res
-		}
+    getAddressList().then((res) => {
+        if (data.shopId) {
+            data.list = res.filter(x => x.isMatch === undefined || x.isMatch === 1)
+            data.unDefaultList = res.filter(x => x.isMatch === 0)
+        }
+        else {
+            data.list = res
+        }
 
-		const obj = res.find(x => x.isDefault === 1)
-		data.defaultId = obj ? obj.id : 0
-		data.isEmpty = res.length == 0
-	}).catch((err) => {
-		bcNotify.value.error(err.message)
-	})
+        const obj = res.find(x => x.isDefault === 1)
+        data.defaultId = obj ? obj.id : 0
+        data.isEmpty = res.length == 0
+    }).catch((err) => {
+        bcNotify.value.error(err.message)
+    })
 }
 
 onShow(() => {
-	addressList()
+    addressList()
 })
 
 onLoad((options) => {
-	options?.shopId && (data.shopId = options.shopId)
+    options?.shopId && (data.shopId = options.shopId)
 })
 
 </script>

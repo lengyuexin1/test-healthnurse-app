@@ -59,6 +59,7 @@
                         separator-mode="cn"/>
 						<view class="typetex texmgin">后自动收货</view>
                     </view>
+                    <text class="typetex" v-else-if="props.orderInfo.status == 131089">{{props.orderInfo.statusName || ''}}</text>
                     <text class="typetex" v-else>{{props.orderInfo.statusDetailIntro || ''}}</text>
 
 					<text class="typetex retreat" v-if="props.orderInfo.cancelRefund">退款金额￥{{props.orderInfo.cancelRefund / 100}}</text>
@@ -79,7 +80,8 @@
         <view class="order-botom" v-if="isnotDel">
             <!--  width="118" height="60" -->
             <TnBubbleBox @click="BubbleBtn" :options="bubbleOptions" option-item-padding="12rpx">
-                <view class="BubbleBox">更多</view>
+                <view class="BubbleBox" v-if="bubbleOptions.length">更多</view>
+                <view class="BubbleBox" v-else></view>
             </TnBubbleBox>
             <view class="order-allbtn">
                 <view class="order-allbtn-contact btn-border-grey" @click="toOrderDetail" v-if="props.orderInfo.actionableList.includes('edit')">
@@ -114,10 +116,9 @@
 import { ref, reactive, computed } from 'vue'
 import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/count-down.vue'
 import TnBubbleBox from '@tuniao/tnui-vue3-uniapp/components/bubble-box/src/bubble-box.vue'
-
 import { GoodsOrderDetail, gotorefundDetail } from '@/routes/order-routes'
 import { getAssetsPic } from '@/common/setPicture'
-import { gotoAftersalesList } from "@/routes/user-routes"
+import { gotoAftersalesList, gotoFeedback } from "@/routes/user-routes"
 import { delayReceive, confirmReceipt } from '@/api/order-api'
 
 import dayjs from 'dayjs'
@@ -143,11 +144,11 @@ const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
-const isCancel = computed(()=>{
+const isCancel = computed(() => {
     return (props.orderInfo.actionableList.includes("cancel") || props.orderInfo.actionableList.includes("apply_refund"))
 })
 
-const isLaint = computed (()=>{
+const isLaint = computed(() => {
     return props.orderInfo.actionableList.includes("complaint")
 })
 
@@ -157,8 +158,10 @@ const isnotDel = computed(() => {
 
 const bubbleOptions = computed(() => {
     const bubbleOptionslist = []
+    console.log('props.orderInfo.actionableList', props.orderInfo.actionableList)
 
     if (props.orderInfo.actionableList.includes("cancel") || props.orderInfo.actionableList.includes("apply_refund")) {
+        console.log('props.orderInfo.actionableList.includes("cancel")', props.orderInfo.actionableList.includes("cancel"))
 
         bubbleOptionslist.push({ text: '取消订单', id: 1 })
     }
@@ -170,14 +173,17 @@ const bubbleOptions = computed(() => {
 
 
 const cancelOrder = () => {
-    emit('cancelOrder',props.orderInfo)
+    console.log('取消订单')
+    emit('cancelOrder', props.orderInfo)
 }
 
 const BubbleBtn = (index:number) => {
     if (bubbleOptions.value[index].id == 1) {
         cancelOrder()
-    }else if(bubbleOptions.value[index].id == 2){
-        console.log('纠纷申诉');
+    }
+    else if (bubbleOptions.value[index].id == 2) {
+        gotoFeedback()
+        console.log('纠纷申诉')
     }
 
 }

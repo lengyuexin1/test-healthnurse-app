@@ -246,6 +246,14 @@ export const confirmReceipt = (req:_v1_product_app_order_confirm_receive_post_re
 export const editGodsOrder = (req:_v1_product_app_order_modify_post_req) => {
     return http.order.post('/v1/product/app/order/modify', req)
 }
+// 商品订单修改地址
+export const editOrderModify = (req:_v1_bc_app_order_modify_post_req) => {
+    return http.order.post('/v1/bc/app/order/modify', req)
+}
+// 商品订单修改地址
+export const getQrCodeCreate = (req:_v1_bc_app_QRCode_create_post_req) => {
+    return http.order.post('/v1/bc/app/QRCode/create', req)
+}
 
 // 积分商品兑换详情
 export const integralOrderDetail = (req:any) => {

@@ -86,12 +86,12 @@ const toArticledetails = () => {
     console.log('props.info', props.info)
     if (props.info.status == 5) {
         if (props.info.type == 1 || props.info.type == 3) {
-            gotoarticledetails({ id: props.info.id })
+            gotoarticledetails({ id: props.info.articleId })
             return
         }
         if (props.info.type == 2) {
             // 创作中心进入到视频详情，是否需要特殊处理为仅单个视频不上下滚动
-            gotovideoPreview({ videoId: props.info.id, videoPagetype: 0 })
+            gotovideoPreview({ videoId: props.info.articleId, videoPagetype: 0 })
         }
     }
     if (props.info.status == 2) {

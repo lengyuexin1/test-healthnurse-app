@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive,computed } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { onLoad, onBackPress } from '@dcloudio/uni-app'
 import BasicInfo from './components/basicInfo.vue'
 import LegalInfo from './components/legalInfo.vue'
@@ -223,13 +223,13 @@ const next = () => {
             }
         }
     }
-    
+
     if (data.step == 4) {
         stepOneData = basicInfo.value.data
         stepTwoData = legalInfo.value.data
         stepThreeData = licenseInfo.value.data
         stepFourData = permitInfo.value.data
-        
+
         const certificates = stepFourData.certificates.map((item: any) => {
             return {
                 id: item.id,
@@ -249,10 +249,10 @@ const next = () => {
             organizationInfo: {
                 ...stepTwoData.organizationInfo,
                 ...stepThreeData.organizationInfo
-            } ,
+            },
             categories: [{
                 categoryId: stepOneData.categories[0].categoryId,
-                sonCategories: stepOneData.categories[0].sonCategories,
+                sonCategories: stepOneData.categories[0].sonCategories
             }],
             certificates: certificates
         }

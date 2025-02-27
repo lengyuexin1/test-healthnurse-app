@@ -132,7 +132,7 @@
 import { computed, onMounted, reactive } from 'vue'
 import TnCountDown from '@tuniao/tnui-vue3-uniapp/components/count-down/src/count-down.vue'
 import TnBubbleBox from '@tuniao/tnui-vue3-uniapp/components/bubble-box/src/bubble-box.vue'
-
+import { gotoFeedback } from "@/routes/user-routes"
 import { gotoOrderDetail } from "@/routes/order-routes"
 
 
@@ -201,6 +201,7 @@ const BubbleBtn = (index: number) => {
         cancelOrder()
     }
     else if (bubbleOptions.value[index].id == 2) {
+        gotoFeedback()
         console.log('纠纷申诉')
     }
 

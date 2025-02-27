@@ -104,10 +104,10 @@
     <yk-authpup ref="authpup" :isNativeHead="false" type="top" @changeAuth="changeAuth" permissionID="WRITE_EXTERNAL_STORAGE"></yk-authpup>
     <baTreePicker
         ref="treePicker"
-        :selectParent="false"
-        :multiple="false"
+        :selectParent="data.pickerFilter.id == 'agency.shop' || data.pickerFilter.id == 'health.shop' ? false : true"
+        :multiple="data.pickerFilter.id == 'agency.shop' || data.pickerFilter.id == 'health.shop' ? false : true"
         @select-change="selectChange"
-        title="商户分类"
+        title="选择分类"
         :localdata="data.listData"
         valueKey="id"
         textKey="name"
@@ -142,6 +142,7 @@ interface Data {
     uploadStyle: any
     shopInfo: any
     pickerMerchant: any
+    pickerFilter: any
     pickerData: any
     openPicker: boolean
     originlaData: any
@@ -159,26 +160,45 @@ const data = reactive<Data>({
     uploadStyle: {
         columns: 1,
         columnGap: '0',
-        rowGap:'0',
-        padding:'0',
-        height:'150rpx',
-        radius:'20rpx'
+        rowGap: '0',
+        padding: '0',
+        height: '150rpx',
+        radius: '20rpx'
     },
     shopInfo: {
         thumb: '',
         name: '',
         shortName: '',
-        address: '',
+        address: '广东省广州市白云区康园路191号',
+        lat: '23.155535',
+        lng: '113.341125'
     },
     pickerMerchant: {
         name: ''
     },
+    pickerFilter: {
+
+    },
     openPicker: false,
-    pickerData: [],
+    pickerData: ['服务商户', '适品商户', '养老机构', '健康机构'],
     originlaData: [
-        { label: '健康商户', value: "health.shop" },
-        // { label: '乐悠云课堂', value: "curriculum.shop" },
-        { label: '内容创作', value: "ly.content.shop" }
+        {
+
+            name: "服务商户",
+            id: "service.shop"
+        },
+        {
+            name: "适品商户",
+            id: "goods.shop"
+        },
+        {
+            name: "养老机构",
+            id: "agency.shop"
+        },
+        {
+            name: "健康机构",
+            id: "health.shop"
+        }
     ],
     businessList: [],
     listData: [],
@@ -197,13 +217,13 @@ const authpup = ref()
 
 onMounted(() => {
     console.log(props.type)
-    
-    if (props.type == 'content') {
-        data.pickerData = ['内容创作']
-    }
-    else if (props.type == 'sale') {
-        data.pickerData = ['健康商户']
-    }
+
+    // if (props.type == 'content') {
+    //     data.pickerData = ['内容创作']
+    // }
+    // else if (props.type == 'sale') {
+    //     data.pickerData = ['健康商户']
+    // }
 })
 
 const beforeUpload = (tempFile: any, next: any) => {
@@ -222,7 +242,7 @@ const beforeUpload = (tempFile: any, next: any) => {
 * @param {Object} item 当前删除的图片或者视频信息
 * @param {Number} index 当前删除的图片或视频索引
 * @param {Function} next 调用此函数继续执行组件删除逻辑
-* */ 
+* */
 const beforeDelete = (item: any, index: any, next: any) => {
     uni.showModal({
         title: '提示信息',
@@ -274,11 +294,11 @@ const showPicker = () => {
 }
 
 const pickerConfirm = (value: any) => {
-    const filterData = data.originlaData.filter((item: any) => item.label == value)
+    const filterData = data.originlaData.filter((item: any) => item.name == value)
+    data.pickerFilter = filterData[0]
     data.categories = []
     data.businessList = []
-
-    getAllCategory({ applyId: filterData[0].value }).then((res) => {
+    getAllCategory({ applyId: filterData[0].id }).then((res) => {
         data.listData = res
     })
 }
@@ -332,12 +352,12 @@ const selectChange = (ids, names) => {
             list.push(v)
         })
     })
+    treePicker.value._hide()
     dispatchWEvent(GlobalEvents.Add_Merchant_Sort, list)
-    treePicker.value._show()
 }
 
 const findParentId = (tree, targetId) => {
-    const parent = data.listData.find(child => child.categories && child.categories.some(grandchild => grandchild.id === targetId));
+    const parent = data.listData.find(child => child.categories && child.categories.some(grandchild => grandchild.id === targetId))
     return parent ? parent.id : null
 }
 

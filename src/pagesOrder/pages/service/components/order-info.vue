@@ -12,7 +12,7 @@
                 {{ serviceInfo.shopinfo.shopName }}
             </view>
         </view>
-        <view class="order_info_top">
+        <view class="order_info_top" @click="clickGotoServeDetail(serviceInfo.info.itemId)">
             <view class="order_info_img_box">
                 <image
                       class="order_info_img"
@@ -56,7 +56,7 @@
         </view>
         <template v-if="!isKeep && !isinstitution">
             <view class="service_info_item" v-if="serviceInfo.addressInfo">
-                <view class="info_title">服务地址</view>
+                <view class="info_title" style="width:240rpx">服务地址</view>
                 <view class="info_text_box">
                     <view class="info_text">
                         <text>{{ serviceInfo.addressInfo.area }}{{ serviceInfo.addressInfo.address }}</text>
@@ -123,8 +123,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive } from 'vue'
-
+import { ref, reactive, computed, onMounted } from 'vue'
+import { gotoServiceOrg, gotoServiceStore, gotoserviceDetail } from '@/routes/service-routes'
 import { formattime } from '@/common/formatTime'
 import { torefundOrder } from '@/routes/order-routes'
 
@@ -136,14 +136,16 @@ interface Props {
 const props = defineProps<Props>()
 
 
-interface data {
-    shopInfo: any
+interface Data {
+    shopInfo:any
 }
-
-const data = reactive<data>({
+const data = reactive<Data>({
     shopInfo: {}
 })
-
+// 服务详情
+const clickGotoServeDetail = (itemId) => {
+    isinstitution.value ? props.serviceInfo.info.cardExtend.typeId == 2 ? gotoServiceOrg(props.serviceInfo.info.cardExtend.id) : gotoServiceStore({ itemId }) : gotoserviceDetail(itemId)
+}
 // 判断是否机构订单
 const isinstitution = computed(() => {
     return props.serviceInfo.kind === 3
