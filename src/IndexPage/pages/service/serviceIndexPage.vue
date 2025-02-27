@@ -318,7 +318,7 @@ const gotoColmDetail = (index: any, item: any) => {
         gotoallClassPage(3)
     } else {
         // 跳转微页面
-        return gotoZone(item.id, item.name)
+        return gotoZone(item.columnIds[0], item.name)
     }
 }
 
@@ -388,7 +388,7 @@ const healthMyData = (list: any) => {
         }
         // 导航栏
         if (element.moduleId == 2) {
-            getTabbar(element.dataIds)
+            tabsData.value.unshift(...element.navbarList)
         }
         // 新人活动
         if (element.moduleId == 3) {
@@ -454,15 +454,6 @@ const channelList = (id: any, num: number) => {
         if (num == 6) {
             orgSelect.value = res.data
         }
-    })
-}
-
-const getTabbar = (data: any) => {
-    const dares = {
-        ids: data
-    }
-    columnList(dares).then(res => {
-        tabsData.value.unshift(...res)
     })
 }
 

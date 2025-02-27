@@ -256,7 +256,8 @@ const gotoColmDetail = (index: any, item: any) => {
     }
     else {
         // 跳转微页面
-        return gotoZone(item.id, item.name)
+        
+        return gotoZone(item.columnIds[0], item.name)
     }
 }
 
@@ -370,7 +371,7 @@ const healthMyData = (list: any) => {
         }
         // 导航栏
         if (element.moduleId == 2) {
-            getTabbar(element.dataIds)
+            tabsData.value.unshift(...element.navbarList)
         }
         // 新人活动
         if (element.moduleId == 3) {
@@ -466,15 +467,6 @@ const scrollPage = (e: any) => {
     else {
         emit('changeTabbarTop', true)
     }
-}
-
-const getTabbar = (data: any) => {
-    const dares = {
-        ids: data
-    }
-    columnList(dares).then(res => {
-        tabsData.value.unshift(...res)
-    })
 }
 
 const bcNotify = ref()

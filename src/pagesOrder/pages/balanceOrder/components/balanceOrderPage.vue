@@ -792,6 +792,7 @@ const getorderEntity = (optionId:string, quantity:number) => {
     orderEntityConfig({
         optionId
     }).then((res:any) => {
+        console.log('订单详情', res)
         data.balanceInfoObj = {
             title: res.item.name,
             quantity,

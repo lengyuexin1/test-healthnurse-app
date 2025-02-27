@@ -430,7 +430,7 @@ export const gotoAdaptDetail = (id: string) => {
 /* 跳转服务人员简历 */
 export const gotoWorkerInfo = (id: string, shopId: string) => {
     const route = {
-        path: '/Order/pages/workInfo/workInfo',
+        path: '/pagesOrder/pages/workInfo/workInfo',
         query: { id, shopId: shopId }
     }
     return pageController.push(route)

@@ -19,7 +19,7 @@
             <view class="mesg-ode-dat">
                 <!-- @scrolltolower="loadMoreList" -->
                 <scroll-view class="mesg-ode-list" scroll-y="true" upper-threshold="50">
-                    <template v-if="data.messageList.length">
+                    <template v-if="data.messageList?.length">
                         <block v-for="(order) in data.messageList" :key="order.id">
                             <block v-for="(item) in order.shopList" :key="item.shopId">
                                 <block v-for="(ele) in item.entityList" :key="ele.entityId">

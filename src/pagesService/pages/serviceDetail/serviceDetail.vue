@@ -363,7 +363,7 @@ const getDetail = (id: any) => {
             tagList: res.tagList,
             saleVolume: res.item.userCnt || 0,
             templateCode: res.item.templateCode,
-            price: res.optionList[0].price,
+            price: monovalent,
             unitName: res.optionList[0]?.extend?.serviceWorkingHours?.unitName
         }
 

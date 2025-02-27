@@ -38,6 +38,9 @@ const msg = computed(() => {
     return props.item.attach || {}
 })
 
+console.log(props.item)
+
+
 const isUnread = computed(() => {
     if (props.item.status === 'unread') {
         return true

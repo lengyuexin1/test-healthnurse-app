@@ -15,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+import { gotoresumedetails } from "@bc/api/routes/message-routes"
 import { ref, computed, onMounted } from 'vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import { gotoWorkerInfo } from '@/routes/care-routes'
@@ -31,7 +32,7 @@ onMounted(() => {
 })
 
 const goWorker = () => {
-    gotoWorkerInfo(props.serviceInfo.workerInfo.workerId, props.serviceInfo.info.shopId)
+    gotoresumedetails(props.serviceInfo.workerInfo.workerId)
 }
 
 

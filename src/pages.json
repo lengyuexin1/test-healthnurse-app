@@ -30,6 +30,12 @@
       }
     },
     {
+      "path": "pages/resume/resume",
+      "style": {
+        "navigationBarTitleText": "简历"
+      }
+    },
+    {
       "path": "pages/login/onekeyLogin",
       "style": {
         "navigationBarTitleText": "一键登录页",
@@ -72,6 +78,14 @@
           "path": "pages/agency/agency",
           "style": {
             "navigationBarTitleText": "到店健康",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/goHome/goHome",
+          "style": {
+            "navigationBarTitleText": "到家健康",
             "navigationStyle": "custom",
             "enablePullDownRefresh": false
           }
@@ -198,14 +212,14 @@
             "enablePullDownRefresh": false
           }
         },
-               {
-                 "path": "pages/Servicestore/choiceDetails",
-                 "style": {
-                   "navigationBarTitleText": "机构详情",
-                   "navigationStyle": "custom",
-                   "enablePullDownRefresh": false
-                 }
-               },
+        {
+          "path": "pages/Servicestore/choiceDetails",
+          "style": {
+            "navigationBarTitleText": "机构详情",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
         {
           "path": "pages/Servicestore/setUpTextDetails",
           "style": {
