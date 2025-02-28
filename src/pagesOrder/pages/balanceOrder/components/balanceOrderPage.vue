@@ -25,57 +25,16 @@
                         <!-- 服务地址 -->
                         <serviceAddress ref="addressRef"></serviceAddress>
                     </view>
-                    <view class="service_time" v-if="showtime">
+                    <view class="service_time" v-if="consumerTime && ![65795,65796].includes(data.optionMation.templateCode)">
                         <!-- 服务时间\备注 -->
                     <serviceTime @inpbur="inpbur" ref="timeRef"></serviceTime>
                     </view>
                          <!-- 价格明细  -->
                     <!-- <view class="price_infoBox"  v-if="handle == 1"> -->
                         <!-- :showInfo="data.showInfo" -->
-             <!-- 价格结算面板 -->
-            <view class="bala_box">
-                <view class="bala_tit">价格明细</view>
-                <view class="bala_mation row j-between">
-                    <view class="bala_mation_tit">服务价格</view>
-                    <view class="bala_mation_des">￥ {{ moneyFilter(data.calculationInfo.amount)}}</view>
-                </view>
-                <view class="bala_mation row j-between" @click="gainShopCouponList">
-                    <view class="bala_mation_tit">店铺优惠</view>
-                    <view class="bala_mation_des">{{ data.calculationInfo.couponName || '' }}</view>
-                    <view class="row i-center">
-                        <view class="bala_mation_des row i-center" style="margin-right: 10rpx">
-                            <view class="bala-mon-pref bala-mon-red" v-if="data.shopCoupon.cfgOffer">
-                                <template v-if="!isRebate(data.shopCoupon.typeId)">￥{{data.shopCoupon.cfgOffer }}</template>
-                                <template v-else>{{discountFilter(data.shopCoupon.cfgOffer)}}折</template>
-                            </view>
-                            <view class="bala-mon-pref">{{!data.shopCoupList ? '暂无优惠' : '更多优惠'}}</view>
-                        </view>
-                        <u-icon v-if="data.shopCoupList" name="arrow-right" size="30rpx" color="#999999"></u-icon>
-                    </view>
-                </view>
-                <view class="bala_mation row j-between" @click="getPingCouponList">
-                    <view class="bala_mation_tit">平台优惠</view>
-                    <view class="bala_mation_des">{{ data.calculationInfo.couponName || '' }}</view>
-                    <view class="row i-center">
-                        <view class="bala_mation_des row i-center" style="margin-right: 10rpx">
-                            <view class="bala-mon-pref bala-mon-red" v-if="data.platCoups.cfgOffer">
-                                <template v-if="!isRebate(data.platCoups.typeId)">￥{{data.platCoups.cfgOffer ? moneyFilter(data.platCoups.cfgOffer) : 0}}</template>
-                                <template v-else>{{discountFilter(data.platCoups.cfgOffer)}}折</template>
-                            </view>
-                            <view class="bala-mon-pref">{{!data.platCouList ? '暂无优惠' : '更多优惠'}}</view>
-                        </view>
-                        <u-icon v-if="data.platCouList" name="arrow-right" size="30rpx" color="#999999"></u-icon>
-                    </view>
-                </view>
-                <view class="bala_mation row j-between">
-                    <view class="bala_mation_tit">需付款</view>
-                    <view class="bala_mation_des">￥{{ moneyFilter(data.calculationInfo.paidAmount)}}</view>
-                </view>
-
-            </view>
-              <!-- 跑腿类 -->
-              <view v-if="[65795,65796].includes(data.optionMation.templateCode)">
-                <view class="bala_box balanceNures">
+             <!-- 跑腿类 -->
+             <view v-if="[65795,65796].includes(data.optionMation.templateCode)">
+                <view class="bala_box">
                     <view class="bala_tit">服务确认</view>
                     <view class="bala_cel bala_cel_bod row j-btween" @click="selectHosp">
                         <view class="bala_cel_tit">就诊医院</view>
@@ -92,50 +51,41 @@
                     <view class="bala_cel row j-between" v-if="informationMobile">
                         <view class="bala_cel_tit">就诊人电话</view>
                         <view class="bala_cel_inp">
-                            <u-input
-                                v-model="visitorRef.data.archives.mobile"
-                                inputAlign="right"
-                                maxlength="11"
-                                border="none"
+                            <TnInput
+                                v-model="data.mobile"
+                                text-align="right" size="sm"
+                                :border="false"
+                                :maxlength="11"
                                 placeholder="请输入就诊人电话"
                                 clearable
                                 type="number"
-                            ></u-input>
+                            ></TnInput>
                         </view>
                     </view>
                     <view></view>
                     <view class="visitor_box" @click="data.openDateTimePicker = true">
-                     <view class="visitor_box_title">上门时间</view>
+                     <view class="visitor_box_title">就诊时间</view>
                         <view class="more_box">
-                        <view class="more_text">{{ timeRef.datetime || '选择' }}</view>
+                        <view class="more_text">{{ data.startTime || '选择' }}</view>
                         <TnIcon name="right" color="#999999" size="24"></TnIcon>
                          </view>
                      </view>
-                    <!-- <view class="bala_cel">
-                        <orderDatetimeSelect
-                            :title="informationMobile ? '就诊时间' : '代送时间'"
-                            :serviceRules="data.serviceRules"
-                            :optionUnit="optionUnit"
-                            @setTiem="getSerTime"
-                            ref="dataTime"
-                        ></orderDatetimeSelect>
-                    </view> -->
                     <view class="bala_cel bala_cel_nt">
                         <view class="bala_cel_note" v-if="data.startTime" style="color:#3E9FFF;">预约成功后陪诊人员将会与您确认具体的服务时间</view>
                         <view class="bala_cel_note" v-else style="color:#3E9FFF;">联系人信息、备注为非必填信息，如有需要请按实际情况填写</view>
                     </view>
 
                     <!-- 陪诊类 -->
-                     <template>
+                     <!-- <template> -->
                         <view class="bala_cel row j-between" @click="getAdres" v-if="contactVisi">
                             <view class="bala_cel_tit">联系人信息</view>
                             <view class="bala_cel_inp row i-center" style="justify-content: flex-end;">
                                 <view v-if="data.location.id">{{ data.location.name }} {{ data.location.mobile}}</view>
-                                <view v-else>请选择联系人</view>
-                                <u-icon name="arrow-right" color="#BEBEBE" size="34rpx"></u-icon>
+                                <view v-else style="color:#BCBCBC;">请选择联系人</view>
+                                <TnIcon name="arrow-right" color="#BEBEBE" size="34rpx"></TnIcon>
                             </view>
                         </view>
-                    </template>
+                    <!-- </template> -->
 
                     <!-- 跑腿类 -->
                      <template v-if="data.optionMation.templateCode == 65796">
@@ -144,7 +94,7 @@
                             <view class="bala_cel_inp row i-center" style="justify-content: flex-end;">
                                 <view v-if="data.method.id">{{ data.method.label }}</view>
                                 <view v-else>请选择</view>
-                                <u-icon name="arrow-right" color="#BEBEBE" size="34rpx"></u-icon>
+                                <TnIcon name="arrow-right" color="#BEBEBE" size="34rpx"></TnIcon>
                             </view>
                         </view>
                         <view class="bala_cel row j-between" @click="getAdres">
@@ -155,7 +105,7 @@
                                     <view>{{ data.location.area }} {{ data.location.address }}</view>
                                 </view>
                                 <view v-else>请选择</view>
-                                <u-icon name="arrow-right" color="#BEBEBE" size="34rpx"></u-icon>
+                                <TnIcon name="arrow-right" color="#BEBEBE" size="34rpx"></TnIcon>
                             </view>
                         </view>
                         <view class="bala_cel">
@@ -192,6 +142,47 @@
                             <TnInput v-model="data.remark" size="sm" placeholder="请输入备注信息" text-align="right" :border="false" clearable />
                         </view>
                     </view>
+                </view>
+            </view>
+
+             <!-- 价格结算面板 -->
+            <view class="bala_box balanceNures">
+                <view class="bala_tit">价格明细</view>
+                <view class="bala_mation row j-between">
+                    <view class="bala_mation_tit">服务价格</view>
+                    <view class="bala_mation_des">￥ {{ moneyFilter(data.calculationInfo.amount)}}</view>
+                </view>
+                <view class="bala_mation row j-between" @click="gainShopCouponList">
+                    <view class="bala_mation_tit">店铺优惠</view>
+                    <view class="bala_mation_des">{{ data.calculationInfo.couponName || '' }}</view>
+                    <view class="row i-center">
+                        <view class="bala_mation_des row i-center" style="margin-right: 10rpx">
+                            <view class="bala-mon-pref bala-mon-red" v-if="data.shopCoupon.cfgOffer">
+                                <template v-if="!isRebate(data.shopCoupon.typeId)">￥{{data.shopCoupon.cfgOffer }}</template>
+                                <template v-else>{{discountFilter(data.shopCoupon.cfgOffer)}}折</template>
+                            </view>
+                            <view class="bala-mon-pref">{{!data.shopCoupList ? '暂无优惠' : '更多优惠'}}</view>
+                        </view>
+                        <TnIcon v-if="data.shopCoupList" name="arrow-right" size="30rpx" color="#999999"></TnIcon>
+                    </view>
+                </view>
+                <view class="bala_mation row j-between" @click="getPingCouponList">
+                    <view class="bala_mation_tit">平台优惠</view>
+                    <view class="bala_mation_des">{{ data.calculationInfo.couponName || '' }}</view>
+                    <view class="row i-center">
+                        <view class="bala_mation_des row i-center" style="margin-right: 10rpx">
+                            <view class="bala-mon-pref bala-mon-red" v-if="data.platCoups.cfgOffer">
+                                <template v-if="!isRebate(data.platCoups.typeId)">￥{{data.platCoups.cfgOffer ? moneyFilter(data.platCoups.cfgOffer) : 0}}</template>
+                                <template v-else>{{discountFilter(data.platCoups.cfgOffer)}}折</template>
+                            </view>
+                            <view class="bala-mon-pref">{{!data.platCouList ? '暂无优惠' : '更多优惠'}}</view>
+                        </view>
+                        <u-icon v-if="data.platCouList" name="arrow-right" size="30rpx" color="#999999"></u-icon>
+                    </view>
+                </view>
+                <view class="bala_mation row j-between">
+                    <view class="bala_mation_tit">需付款</view>
+                    <view class="bala_mation_des">￥{{ moneyFilter(data.calculationInfo.paidAmount)}}</view>
                 </view>
             </view>
 
@@ -327,6 +318,7 @@ import PageTopbg from "@/components/page-topbg/page-topbg.vue"
 import balanceInfo from "./balanceInfo.vue"
 import agencyCardInfo from "./agencyCardInfo.vue"
 
+import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import { addWEventsListener } from '@/events/event-registry'
 import { CareEvents } from '@/events/care-events'
 import { getAddressList } from '@/api/goods-api'
@@ -339,7 +331,7 @@ import { orderEntityConfig, cartEntityConfig, getBaseInfo, createOrder, cardCrea
 import BCNotify from '@/components/notify/index.vue'
 import { pageController } from '@bc/uni-tools'
 import { packPayment } from '@/libs/pay/pay-tools'
-
+import { gotoAddressList } from '@/routes/user-routes'
 import { healthdetail, voucherdetail } from '@/api/service-api'
 import { gotoOrderDetail } from '@/routes/order-routes'
 import { getAssetsPic } from '@/common/setPicture'
@@ -383,6 +375,7 @@ interface Data {
     hospital: any, //医院信息
     shopId: string,
     fileList1:any,
+    mobile:string,
     openDateTimePicker:boolean,
     method: any, //配送方式
     couponIdx: number, //-1平台优惠 1店铺优惠
@@ -394,6 +387,7 @@ const data = reactive<Data>({
     hospital: {},
     fileList1: [],
     startTime: '',
+    mobile: '',
     method: {},
     deliveryShow: false,
     shopId: '',
@@ -451,9 +445,10 @@ const selectHosp = () => {
 /* 选择地址 or 选择联系人 */
 const getAdres = (type = 0) => {
     const req = {}
-    // type === 1 && (req.shopId = this.baseInfo.id)
-    // gotoUserLink(req, 'dizhi')
+    // type === 1 && (req.shopId = data.baseInfo.id)
+    gotoAddressList()
 }
+
 const openUp = () => {
     nextTick(() => {
         console.log('手动调用', imgUploadref, imgUploadref.value)
@@ -497,9 +492,9 @@ const showaddress = computed(() => {
     return exist("service_address")
 })
 // 是否存在服务时间
-const showtime = computed(() => {
-    return exist("service_time")
-})
+// const showtime = computed(() => {
+//     return exist("service_time")
+// })
 /* 否需要提交/渲染 就诊人信息 !陪诊 */
 const consumerVisi = computed(() => {
     return ![65795, 65796].includes(data.optionMation.templateCode) && exist('visitor_information')
@@ -508,7 +503,14 @@ const consumerVisi = computed(() => {
 const informationVisi = computed(() => {
     return [65795, 65796].includes(data.optionMation.templateCode) && exist('visitor_information')
 })
-
+/* 是否需要提交/渲染 就诊/服务时间 */
+const consumerTime = computed(() => {
+    return exist('service_time')
+})
+/* 否需要提交/渲染 服务地址 */
+const consumerAdrs = computed(() => {
+    return exist('service_address')
+})
 /* 否需要提交/渲染 就诊人电话 陪诊 */
 const informationMobile = computed(() => {
     return [65795].includes(data.optionMation.templateCode)
@@ -809,15 +811,34 @@ const getvoucherdetail = (id:string) => {
 const inpbur = (val:string) => {
     console.log(val)
 }
-
-
+const showError = (message) => {
+    bcNotify.value.show(message)
+}
+// 校验必填项
+const dataCheck = (check, message) => {
+    // 服务可以多次使用并且勾选上立即使用
+    if (data.ismany && data.ischeck) {
+        if (check) {
+            showError(message)
+            return true
+        }
+        // 服务不是多次使用
+    }
+    else if (!data.ismany) {
+        if (check) {
+            showError(message)
+            return true
+        }
+    }
+    return false
+}
 const placeOrder = () => {
     // 调用子组件的属性
     if (showaddress.value && !addressRef.value?.data?.location) {
         bcNotify.value.show('请选择地址')
         return
     }
-    if (!timeRef.value?.datetime || !data.startTime) {
+    if (!timeRef.value?.datetime && !data.startTime) {
         bcNotify.value.show('请选择上门时间')
         return
     }
@@ -825,10 +846,21 @@ const placeOrder = () => {
         bcNotify.value.show('请选择照护人')
         return
     }
+    if (dataCheck(consumerVisi.value && data.archives.id, '请选择被照护人') ||
+                dataCheck(consumerAdrs.value && !data.location?.id, '请选择地址') ||
+                dataCheck(consumerTime.value && !data.startTime, '请选择时间') ||
+                // dataCheck(hospitalVisi.value && !data.hospital.name, '请选择医院') ||
+                dataCheck(methodVisi.value && !data.method.id, '请选择寄送方式') ||
+                dataCheck(deliveryVisi.value && !data.location?.id, '请选择配送地址') ||
+                dataCheck(certificateVisi.value && !data.fileList1.length, '请上传代送凭证') ||
+                dataCheck(informationVisi.value && !data.archivesName, '请输入就诊人姓名') ||
+                dataCheck(contactVisi.value && !data.location?.id, '请选择联系人') ||
+                dataCheck(informationMobile.value && !data.mobile, '请输入就诊人电话')) {
+        return
+    }
 
-
-    const location = addressRef.value.data.location
-    const datetime = new Date(timeRef.value.datetime ? timeRef.value.datetime : data.startTime).getTime()
+    const location = addressRef.value?.data?.location
+    const datetime = new Date(timeRef.value?.datetime ? timeRef.value?.datetime : data.startTime).getTime()
     const archives = visitorRef.value?.data?.archives
 
     // console.log('location',location);
@@ -866,16 +898,22 @@ const placeOrder = () => {
         attr: {
             utcVisitStart: datetime / 1000, //上门时间/就诊时间
 
-            addressId: showaddress.value || deliveryVisi ? location.id : null, //地址id
-            patientId: showvisitor.value ? archives.id : 0, //老人档案ID，只有居家照护需要填写照护人
+            addressId: showaddress.value || deliveryVisi ? location?.id || data.location.id : null, //地址id
+            patientId: showvisitor.value ? archives?.id : 0, //老人档案ID，只有居家照护需要填写照护人
 
             /* todo */
             hospitalId: null, //医院id
 
-            hospital: null,
 
-            patient: informationVisi.value ? archives?.name || '测试' : null, //就诊人名称
-            patientMobile: archives?.mobile || '16626408381' || null, //就诊人手机号
+            hospital: hospitalVisi.value ? data.hospital.id ? null : {
+                name: data.hospital.name,
+                address: data.hospital.address,
+                lat: data.hospital.latitude,
+                lng: data.hospital.longitude
+            } : null,
+
+            patient: informationVisi.value ? archives?.name || data.archivesName : null, //就诊人名称
+            patientMobile: archives?.mobile ||  data.mobile || null, //就诊人手机号
             deliveryMethod: null, //配送方式 id
             deliveryCertificate: null //代取凭证
 
@@ -1035,14 +1073,15 @@ onMounted(() => {
     })
 
     // 监听收货地址选择
-    addWEventsListener(CareEvents.Get__Address, (data) => {
-        addressRef.value.data.location = data
+    addWEventsListener(CareEvents.Get__Address, (res) => {
+        data.location = res
+        console.log('data', data.location)
     })
 
 
     // 照护人档案
     addWEventsListener(CareEvents.Get__Archives, (data) => {
-        visitorRef.value.data.archives = data
+        data.archives = data
     })
 })
 
@@ -1051,8 +1090,30 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.visitor_box{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 24rpx 0;
+         &.bottom{
+            margin-bottom: 0rpx;
+        }
+        .visitor_box_title{
+            font-size: 32rpx;
+            color: #666666;
+        }
+        .more_box{
+            display: flex;
+            align-items: center;
+            .more_text{
+                color: #999999;
+                font-size: 28rpx;
+                margin-right: 12rpx;
+            }
+        }
+    }
 .balanceNures{
-    margin-bottom: 220rpx !important;
+    margin-bottom: 100rpx !important;
 }
 .content{
     padding: 20rpx;

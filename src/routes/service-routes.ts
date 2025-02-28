@@ -27,10 +27,10 @@ export const gotoServiceStore = (query: any) => {
 }
 
 // 机构详情
-export const gotoServiceOrg = (query: any) => {
+export const gotoServiceOrg = (itemId: any) => {
     const route = {
         path: '/pagesService/pages/Servicestore/choiceDetails',
-        query
+        query: { itemId }
     } as any
     return pageController.push(route)
 }
@@ -165,7 +165,7 @@ export const gotoServiceExpo = () => {
 
 /**
  * 老博会分类
- * 
+ *
  */
 export const gotoServiceExpoClass = (query:any) => {
     const route = {
@@ -173,11 +173,11 @@ export const gotoServiceExpoClass = (query:any) => {
         query
     } as any
     return pageController.push(route)
-} 
+}
 
 /**
  * 老博会新品专区
- * 
+ *
  */
 export const gotonewProduct = (query:any) => {
     const route = {
@@ -185,11 +185,11 @@ export const gotonewProduct = (query:any) => {
         query
     } as any
     return pageController.push(route)
-} 
+}
 
 /**
  * 全部分区
- * 
+ *
  */
 export const gotoAllZone = (query:any) => {
     const route = {
@@ -197,23 +197,23 @@ export const gotoAllZone = (query:any) => {
         query
     } as any
     return pageController.push(route)
-} 
+}
 
 /**
  * 全部分类
- * 
+ *
  */
- export const gotoAllClass = (query:any) => {
+export const gotoAllClass = (query:any) => {
     const route = {
         path: '/pagesOldExpo/pages/serviceExpo/allClass',
         query
     } as any
     return pageController.push(route)
-} 
+}
 
 /**
  * 类详情
- * 
+ *
  */
 export const gotoClassItemPage = (query:any) => {
     const route = {
@@ -221,7 +221,7 @@ export const gotoClassItemPage = (query:any) => {
         query
     } as any
     return pageController.push(route)
-} 
+}
 
 /**
  * 扫码跳转
