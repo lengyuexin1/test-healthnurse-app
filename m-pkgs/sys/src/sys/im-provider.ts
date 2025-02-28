@@ -121,4 +121,5 @@ class IMProvider {
 
 }
 
+console.log(new IMProvider())
 export const imProvider = new IMProvider()

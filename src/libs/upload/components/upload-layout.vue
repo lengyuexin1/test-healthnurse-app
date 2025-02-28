@@ -15,7 +15,7 @@
             :capture="['album']"
         >
             <view class="u-upload__seat row align-center center" :style="{ width, height }" @click.stop="handleClick">
-                <image src="@/static/img/icon/uploadIcon.png" mode="scaleToFill" />
+                <image src="@/static/uplaod.png" mode="scaleToFill" />
             </view>
         </u-upload>
 
@@ -69,7 +69,7 @@ export default {
 
         const upload = new BCUpload({ uploadPath: this.uploadPath }).setList(this.value.map(item => item))
         return {
-            upload, 
+            upload,
             state: upload.state
         }
     },
@@ -80,7 +80,7 @@ export default {
             const paths = this.state.fileList.filter((item) => item.status === 'success').map(item => item.url)
             this.$emit('change', paths)
         }
-        this.upload.setUploadCallback({ 
+        this.upload.setUploadCallback({
             input: fun,
             delete: fun
         })

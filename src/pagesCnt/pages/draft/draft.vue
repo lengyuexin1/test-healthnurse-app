@@ -1,14 +1,14 @@
 <template>
     <z-paging
-        ref="paging"
-        v-model="data.draftLists"
-        :auto="true"
-        :fixed="true"
-        @query="queryList"
-        :defaultPageSize="10"
-        :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
-        empty-view-text="还没有数据哦~"
-        :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
+          ref="paging"
+          v-model="data.draftLists"
+          :auto="true"
+          :fixed="true"
+          @query="queryList"
+          :defaultPageSize="10"
+          :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
+          empty-view-text="还没有数据哦~"
+          :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
     >
         <template #top>
             <view class="nav_mangage tn-flex-row" v-if="data.draftLists.length">
@@ -20,9 +20,10 @@
                 </view>
             </view>
         </template>
-        
+
         <view class="container">
-            <SelectAllCancel btnName="删除" type="draftList" :list="data.draftLists" :isEdit="data.isEdit" @clickItem="clickItem" @clickBtn="del"></SelectAllCancel>
+            <SelectAllCancel btnName="删除" type="draftList" :list="data.draftLists" :isEdit="data.isEdit"
+                             @clickItem="clickItem" @clickBtn="del"></SelectAllCancel>
         </view>
     </z-paging>
     <BCNotify ref="bcNotify"></BCNotify>
@@ -35,7 +36,7 @@
                 <view class="btn confirm" @click="isdel">删除</view>
             </view>
         </view>
-    </TnPopup> 
+    </TnPopup>
 
 </template>
 
@@ -57,7 +58,7 @@ interface Data {
     subsectionValue: number
     subTitle: string
     isEdit: boolean
-    currentTabIndex : number
+    currentTabIndex: number
     sectionActive: number
     type: string
     showdelBox: boolean
@@ -82,16 +83,16 @@ const bcNotify = ref()
 
 const paging = ref() as any
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 
 const queryList = (pageNumber: number, pageSize: number) => {
     // myContentList({
-    getnewDraftList({
+    myContentList({
         query: {
-            // status: 1 // 草稿
-            title: '' // 草稿
+            status: 1 // 草稿
+            // title: '' // 草稿
         },
         pageNumber,
         pageSize
@@ -109,22 +110,18 @@ const clickItem = (item: any) => {
     // gotouparticle({
     //     articleId: item.articleId,
     //     type: item.type,
-    //     ischange: 1, 
+    //     ischange: 1,
     // })
-
-    gotoNewUpcontentPage({
-        isChange: 1,
-        isDraft: 1,
-        editId: item.id,
-    })
+    console.log(item)
+    gotoNewUpcontentPage({ type: item.type, articleId: item.articleId, isDratType: 1 })
 }
 
 const del = (ids: any) => {
-    data.ids = ids;
-    data.showdelBox = true;
+    data.ids = ids
+    data.showdelBox = true
 }
 
-const isdel = () =>{
+const isdel = () => {
     // delMyContentList({ articleIds: data.ids }).then(() => {
     delnewContent({ ids: data.ids }).then(() => {
         bcNotify.value.show('删除成功')
@@ -146,7 +143,7 @@ onShow(() => {
 })
 
 onLoad((option) => {
-    
+
 })
 
 </script>
@@ -192,12 +189,13 @@ onLoad((option) => {
 .navRed {
     color: #EA3E1A;
 }
-.del_box{
+
+.del_box {
     width: 500rpx;
     background: #FFFFFF;
     border-radius: 24rpx;
-    
-    .del_box_top{
+
+    .del_box_top {
         font-weight: 500;
         font-size: 32rpx;
         color: #333333;
@@ -205,23 +203,27 @@ onLoad((option) => {
         margin-bottom: 24rpx;
         padding: 40rpx;
         box-sizing: border-box;
-    }  
-    .del_box_bottom{
+    }
+
+    .del_box_bottom {
         width: 100%;
         display: flex;
         align-items: center;
         border-top: 2rpx solid #E3E3E3;
-        .btn{
+
+        .btn {
             width: 50%;
             height: 80rpx;
             text-align: center;
             line-height: 80rpx;
             font-size: 28rpx;
-            &.cancel{
+
+            &.cancel {
                 color: #666666;
                 border-right: 2rpx solid #E3E3E3;
             }
-            &.confirm{
+
+            &.confirm {
                 color: #EA3E1A;
             }
         }
