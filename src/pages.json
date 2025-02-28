@@ -1721,6 +1721,67 @@
       }
     },
     {
+      "root": "pagesOldExpo",
+      "pages": [
+        {
+          "path": "pages/serviceExpo/serviceExpo",
+          "style": {
+            "navigationBarTitleText": "老博会",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/serviceExpo/serviceExpoClass",
+          "style": {
+            "navigationBarTitleText": "老博会分类",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/serviceExpo/newProduct",
+          "style": {
+            "navigationBarTitleText": "新品专区",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/serviceExpo/discussDetail",
+          "style": {
+            "navigationBarTitleText": "展商详情",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/serviceExpo/classItemPage",
+          "style": {
+            "navigationBarTitleText": "类详情",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/serviceExpo/allZone",
+          "style": {
+            "navigationBarTitleText": "全部分区",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "pages/serviceExpo/allClass",
+          "style": {
+            "navigationBarTitleText": "全部分类",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        }
+      ]
+    },
+    {
       "root": "pagesMall",
       "pages": [
         {
