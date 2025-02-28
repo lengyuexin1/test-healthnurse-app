@@ -165,6 +165,7 @@ import { onLoad } from "@dcloudio/uni-app"
 import { searListFlag } from "@/api/open-api"
 import { happysearch } from '@/api/user-api'
 import { activeDetail } from "@/api/setite-api"
+import { PlatformManage } from "@bc/sys"
 
 const titleName = ref('服务列表')
 const authpup = ref()
@@ -277,19 +278,19 @@ onLoad((options: any) => {
     }
 })
 
-const getCipList = (type:any, dataCate:any) => {
+const getCipList = (type: any, dataCate: any) => {
     const objData = {
-            pageSize: 100,
-            pageNumber: 1,
-            query: {
-                sourceType: type,
-                categoryIds: dataCate,
-            }
+        pageSize: 100,
+        pageNumber: 1,
+        query: {
+            sourceType: type,
+            categoryIds: dataCate,
         }
-        happysearch(objData, true).then(res =>
+    }
+    happysearch(objData, true).then(res =>
         data.dataList = res.data
-            // paging.value.complete(res.data)
-        )
+        // paging.value.complete(res.data)
+    )
 }
 
 const kuaiRou = (data: any) => {
@@ -343,17 +344,25 @@ const priceText = computed(() => {
 })
 
 const linkinfo = (item: any) => {
-    console.log(item)
-    if (item.businessType == 1) {
-        return gotoserviceDetail(item.id)
-    }
-    if (item.businessType == 2) {
-        return gotogoodsDetail(item.id)
-    }
-    if (item.businessType == 4) {
-        return gotoServiceOrg({ id: item.id })
-    }
+    // 检查登录状态
+    PlatformManage.isRequireLogin().then((isRequireLogin) => {
+        if (isRequireLogin) {
+            setTimeout(() => {
+                gotoLogin({})
+            }, 1000)
+            return
+        }
+        if (item.businessType == 1) {
+            return gotoserviceDetail(item.id)
+        }
+        if (item.businessType == 2) {
+            return gotogoodsDetail(item.id)
+        }
+        if (item.businessType == 4) {
+            return gotoServiceOrg({ id: item.id })
+        }
 
+    })
 }
 
 // watch(() => data.templateId, (newVal) => {

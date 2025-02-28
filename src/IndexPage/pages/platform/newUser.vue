@@ -136,9 +136,15 @@ const getAssetsUrl = computed(() => (src: string) => {
 })
 
 const clickwaterItem = (item: any) => {
+    if (!isLogin.value) {
+        return gotoLogin({})
+    }
     gotoserviceDetail(item.id)
 }
 const clickwaterItemTow = (item: any) => {
+    if (!isLogin.value) {
+        return gotoLogin({})
+    }
     gotogoodsDetail(item.id)
 }
 
