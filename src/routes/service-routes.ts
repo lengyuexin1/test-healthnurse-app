@@ -157,11 +157,71 @@ export const gotoserviceLnnerSonPage = (query: any) => {
  */
 export const gotoServiceExpo = () => {
     const route = {
-        path: '/pagesService/pages/serviceExpo/serviceExpo',
+        path: '/pagesOldExpo/pages/serviceExpo/serviceExpo',
         query: {}
     } as any
     return pageController.push(route)
 }
+
+/**
+ * 老博会分类
+ * 
+ */
+export const gotoServiceExpoClass = (query:any) => {
+    const route = {
+        path: '/pagesOldExpo/pages/serviceExpo/serviceExpoClass',
+        query
+    } as any
+    return pageController.push(route)
+} 
+
+/**
+ * 老博会新品专区
+ * 
+ */
+export const gotonewProduct = (query:any) => {
+    const route = {
+        path: '/pagesOldExpo/pages/serviceExpo/newProduct',
+        query
+    } as any
+    return pageController.push(route)
+} 
+
+/**
+ * 全部分区
+ * 
+ */
+export const gotoAllZone = (query:any) => {
+    const route = {
+        path: '/pagesOldExpo/pages/serviceExpo/allZone',
+        query
+    } as any
+    return pageController.push(route)
+} 
+
+/**
+ * 全部分类
+ * 
+ */
+ export const gotoAllClass = (query:any) => {
+    const route = {
+        path: '/pagesOldExpo/pages/serviceExpo/allClass',
+        query
+    } as any
+    return pageController.push(route)
+} 
+
+/**
+ * 类详情
+ * 
+ */
+export const gotoClassItemPage = (query:any) => {
+    const route = {
+        path: '/pagesOldExpo/pages/serviceExpo/classItemPage',
+        query
+    } as any
+    return pageController.push(route)
+} 
 
 /**
  * 扫码跳转

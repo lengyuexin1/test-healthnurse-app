@@ -8,7 +8,7 @@
                 <view class="my_channel">
                     <view class="my_channel_top">
                         <view class="my_channel_top_left">
-                            <view class="my_channel_title">我的频道</view>
+                            <view class="my_channel_title">频道</view>
                             <view class="my_channel_bace">点击进入频道</view>
                         </view>
                     </view>

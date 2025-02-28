@@ -16,7 +16,7 @@
                 <text class="item-info-pric" v-if="item.quantity">￥{{ moneyFilter(item.price / item.quantity) }}</text>
                 <text class="item-info-pric" v-else>￥{{ moneyFilter(item.price) }}</text>
                 <text class="item-info-optionName" v-if="item.businessType !== 2">/起</text>
-                <text class="item-info-fakePrice" v-if="item.fakePrice">￥{{ moneyFilter(item.fakePrice / item.quantity)
+                <text class="item-info-fakePrice" v-if="item.fakePrice">￥{{ moneyFilter(item.fakePrice)
                 }}</text>
                 <!-- <view class="item-info-tag row">
 						<text class="item-info-tag-tex">可用券</text>
