@@ -4,20 +4,20 @@
             <clUpload
                   ref="upload"
                   v-model="data.list"
+                  fileType="video"
                   :listStyle="data.uploadStyle"
                   :max="1"
-                  fileType="video"
                   useBeforeDelete
                   useBeforeUpload
-                  @beforeDelete="beforeDelete"
-                  @beforeUpload="beforeUpload"
-                  @closePreviewVideo="closePreviewVideo"
                   @onError="uploadError"
                   @onVideo="onVideo"
+                  @closePreviewVideo="closePreviewVideo"
+                  @beforeDelete="beforeDelete"
+                  @beforeUpload="beforeUpload"
             >
                 <template v-slot:addImg>
                     <view class="addVideo column">
-                        <TnIcon :size="60" color="#AAAAAA" name="camera"></TnIcon>
+                        <TnIcon name="camera" :size="60" color="#AAAAAA"></TnIcon>
                         <text class="txt">选择视频</text>
                     </view>
                 </template>
@@ -26,13 +26,13 @@
 
             <view class="input">
                 <view class="up_title_inp">
-                    <TnInput v-model="data.title" :border="false" :maxlength="30" clearable
-                             fontSize="16"
-                             placeholder="请输入标题(2~30个字)"></TnInput>
+                    <TnInput placeholder="请输入标题(2~30个字)" :border="false" fontSize="16" v-model="data.title"
+                             clearable
+                             :maxlength="30"></TnInput>
                 </view>
-                <view class="up_text_inp">
-                    <TnInput v-model="data.describe" :maxlength="500" class="up_textarea" placeholder="添加描述（选填）"
-                             show-word-limit type="textarea"/>
+                <view class="up_title_inp">
+                    <TnInput class="up_textarea" v-model="data.describe" type="textarea" placeholder="添加描述（选填）"
+                             :maxlength="500" show-word-limit/>
                 </view>
             </view>
             <view v-if="data.isloadingImg" class="up_img_inp">
@@ -73,31 +73,33 @@
                 </view>
                 <view class="name row i-center" @tap="clickPick">
                     <view :class="[data.channelName !== '' ? 'active' : '']">{{ data.channelName || '请选择' }}</view>
-                    <TnIcon :size="12" name="right"></TnIcon>
+                    <TnIcon name="right" :size="12"></TnIcon>
                 </view>
             </view>
 
-            <view slot="bottom" class="bottom_box">
+            <view class="bottom_box" slot="bottom">
                 <view class="bottom_box_draft" @tap="clickBtn(1)">保存草稿</view>
                 <view class="bottom_box_btn" @tap="clickBtn(2)">发布视频</view>
             </view>
         </z-paging>
         <TnPicker
-              v-model="props.categoryId"
-              :data="data.columns"
-              :open="data.pickShow"
+              v-model="data.categoryId"
               label-ley="name"
               value-ley="id"
+              :open="data.pickShow"
+              ref="uPicker"
+              :data="data.columns"
+              @confirm="confirm"
               @cancel="data.pickShow = false"
               @close="data.pickShow = false"
-              @confirm="confirm"
         ></TnPicker>
         <BCNotify ref="bcNotify"></BCNotify>
     </view>
 </template>
 
-<script lang="ts" setup>
-import { uploadCertificate, uploadVideo } from '@/api/file-api'
+<script setup lang="ts">
+import { uploadVideo } from '@/api/file-api'
+import UploadLayout from '@/libs/upload/components/upload-layout.vue'
 import { categoryAll, getDraftDetails, editContent, addContent } from '@/api/create-api'
 import clUpload from '@/pagesCnt/uni_modules/cl-upload/components/cl-upload/cl-upload.vue'
 import BCNotify from "@/components/notify/index.vue"
