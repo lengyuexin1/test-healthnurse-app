@@ -122,10 +122,10 @@ const gotoUseList = (num: string) => {
 
 const showTPri = computed(() => (cup: string, dats: any) => {
     const strPri = (cup + '').slice(-1)
-    if (strPri == '0') {
+    if (strPri == '0' || strPri == '1') {
         return "￥" + moneyFilter(dats.cfgOffer)
     }
-    if (strPri == '4') {
+    if (strPri == '4' || strPri == '2') {
         return dats.cfgOffer / 100 + '折'
     }
 })
@@ -136,9 +136,15 @@ const getAssetsUrl = computed(() => (src: string) => {
 })
 
 const clickwaterItem = (item: any) => {
+    if (!isLogin.value) {
+        return gotoLogin({})
+    }
     gotoserviceDetail(item.id)
 }
 const clickwaterItemTow = (item: any) => {
+    if (!isLogin.value) {
+        return gotoLogin({})
+    }
     gotogoodsDetail(item.id)
 }
 
