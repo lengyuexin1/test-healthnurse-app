@@ -24,6 +24,7 @@
 import { gotoarticledetails } from '@/routes/create-routes' // 文章详情
 import { reactive, computed } from 'vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
+import dayjs from "dayjs"
 interface Data {
     pStyle: {
         p: string
@@ -44,17 +45,17 @@ const data = reactive<Data>({
 })
 
 const timefrom = computed(() => {
-    return (timestamp: any) => {
-        console.log(timestamp)
 
+    return (timestamp: any) => {
         // 换一种方式转换时间戳
-        const date = new Date(parseInt(timestamp))
-        const year = date.getFullYear()
-        const month = date.getMonth() + 1
-        const day = date.getDate()
-        const hour = date.getHours()
-        const minute = date.getMinutes()
-        return `${year}-${month}-${day} ${hour}:${minute}`
+        // const date = new Date(parseInt(timestamp))
+        // const year = date.getFullYear()
+        // const month = date.getMonth() + 1
+        // const day = date.getDate()
+        // const hour = date.getHours()
+        // const minute = date.getMinutes()
+        // return `${year}-${month}-${day} ${hour}:${minute}`
+        return dayjs.unix(timestamp).format('YYYY-MM-DD HH:mm:ss')
     }
 })
 

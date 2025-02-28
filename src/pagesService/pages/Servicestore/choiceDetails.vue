@@ -8,11 +8,11 @@
             <template #top>
                     <PageTopbg></PageTopbg>
                     <bc-page-navbar :title="'机构详情'">
-                        <template #back>
-                            <view class="nav_back" @click="goback">
-                                <TnIcon name="left" color="#333333" size="38" :bold="true"/>
-                            </view>
-                        </template>
+<!--                        <template #back>-->
+<!--                            <view class="nav_back" @click="goback">-->
+<!--                                <TnIcon name="left" color="#333333" size="38" :bold="true"/>-->
+<!--                            </view>-->
+<!--                        </template>-->
 
                     </bc-page-navbar>
                 </template>
@@ -522,7 +522,7 @@ watch(() => route, (newVal) => {
 })
 const callfun = () => {
     uni.makePhoneCall({
-        phoneNumber: this.detailObj.telephones
+        phoneNumber: detailObj.telephones
     })
 }
 //这个是自己的方法名

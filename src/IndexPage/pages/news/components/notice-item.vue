@@ -67,6 +67,7 @@ const clickNotice = () => {
     console.log(msg.value)
 
     const fun = routeTable[msg.value.linkMark]
+    console.log(fun)
     if (!fun) {
         bcNotify.value.error('当前路由不支持跳转')
         return
