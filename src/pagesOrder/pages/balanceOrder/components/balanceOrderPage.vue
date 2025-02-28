@@ -32,7 +32,7 @@
                          <!-- 价格明细  -->
                     <!-- <view class="price_infoBox"  v-if="handle == 1"> -->
                         <!-- :showInfo="data.showInfo" -->
-                           <!-- 价格结算面板 -->
+             <!-- 价格结算面板 -->
             <view class="bala_box">
                 <view class="bala_tit">价格明细</view>
                 <view class="bala_mation row j-between">
@@ -73,8 +73,129 @@
                 </view>
 
             </view>
+              <!-- 跑腿类 -->
+              <view v-if="[65795,65796].includes(data.optionMation.templateCode)">
+                <view class="bala_box balanceNures">
+                    <view class="bala_tit">服务确认</view>
+                    <view class="bala_cel bala_cel_bod row j-btween" @click="selectHosp">
+                        <view class="bala_cel_tit">就诊医院</view>
+                        <view class="bala_cel_inp" v-if="data.hospital.name" style="margin-right:12rpx">{{ data.hospital.name }}</view>
+                        <view class="bala_cel_inp" v-else style="margin-right:12rpx;color:#BCBCBC;">请选择就诊医院</view>
+                        <u-icon name="arrow-right" color="#BEBEBE" size="34rpx"></u-icon>
+                    </view>
+                    <view class="bala_cel row j-between" v-if="informationVisi">
+                        <view class="bala_cel_tit">就诊人</view>
+                        <view class="bala_cel_inp">
+                            <TnInput v-model="data.archivesName" text-align="right" size="sm" color="#BCBCBC" :border="false"   placeholder="请输入就诊人" clearable></TnInput>
+                        </view>
+                    </view>
+                    <view class="bala_cel row j-between" v-if="informationMobile">
+                        <view class="bala_cel_tit">就诊人电话</view>
+                        <view class="bala_cel_inp">
+                            <u-input
+                                v-model="visitorRef.data.archives.mobile"
+                                inputAlign="right"
+                                maxlength="11"
+                                border="none"
+                                placeholder="请输入就诊人电话"
+                                clearable
+                                type="number"
+                            ></u-input>
+                        </view>
+                    </view>
+                    <view></view>
+                    <view class="visitor_box" @click="data.openDateTimePicker = true">
+                     <view class="visitor_box_title">上门时间</view>
+                        <view class="more_box">
+                        <view class="more_text">{{ timeRef.datetime || '选择' }}</view>
+                        <TnIcon name="right" color="#999999" size="24"></TnIcon>
+                         </view>
+                     </view>
+                    <!-- <view class="bala_cel">
+                        <orderDatetimeSelect
+                            :title="informationMobile ? '就诊时间' : '代送时间'"
+                            :serviceRules="data.serviceRules"
+                            :optionUnit="optionUnit"
+                            @setTiem="getSerTime"
+                            ref="dataTime"
+                        ></orderDatetimeSelect>
+                    </view> -->
+                    <view class="bala_cel bala_cel_nt">
+                        <view class="bala_cel_note" v-if="data.startTime" style="color:#3E9FFF;">预约成功后陪诊人员将会与您确认具体的服务时间</view>
+                        <view class="bala_cel_note" v-else style="color:#3E9FFF;">联系人信息、备注为非必填信息，如有需要请按实际情况填写</view>
+                    </view>
 
-                 </view>
+                    <!-- 陪诊类 -->
+                     <template>
+                        <view class="bala_cel row j-between" @click="getAdres" v-if="contactVisi">
+                            <view class="bala_cel_tit">联系人信息</view>
+                            <view class="bala_cel_inp row i-center" style="justify-content: flex-end;">
+                                <view v-if="data.location.id">{{ data.location.name }} {{ data.location.mobile}}</view>
+                                <view v-else>请选择联系人</view>
+                                <u-icon name="arrow-right" color="#BEBEBE" size="34rpx"></u-icon>
+                            </view>
+                        </view>
+                    </template>
+
+                    <!-- 跑腿类 -->
+                     <template v-if="data.optionMation.templateCode == 65796">
+                        <view class="bala_cel row j-between" @click="data.deliveryShow = true">
+                            <view class="bala_cel_tit">代送方式</view>
+                            <view class="bala_cel_inp row i-center" style="justify-content: flex-end;">
+                                <view v-if="data.method.id">{{ data.method.label }}</view>
+                                <view v-else>请选择</view>
+                                <u-icon name="arrow-right" color="#BEBEBE" size="34rpx"></u-icon>
+                            </view>
+                        </view>
+                        <view class="bala_cel row j-between" @click="getAdres">
+                            <view class="bala_cel_tit">配送地址</view>
+                            <view class="bala_cel_inp row i-center" style="justify-content: flex-end;text-align:right;">
+                                <view v-if="data.location.id">
+                                    <view>{{ data.location.name }} {{ data.location.mobile }}</view>
+                                    <view>{{ data.location.area }} {{ data.location.address }}</view>
+                                </view>
+                                <view v-else>请选择</view>
+                                <u-icon name="arrow-right" color="#BEBEBE" size="34rpx"></u-icon>
+                            </view>
+                        </view>
+                        <view class="bala_cel">
+                            <!-- <view class="bala_cel_tit">代送凭证</view>
+                            <view class="bala_cel_tip">请截图或拍照医院取药凭证、电子就诊卡、电子处方单等资料</view>
+                            <view class="bala_cel_inp" style="margin-left:0;">
+                                <UploadLayout
+                                    @change="handleChange"
+                                    :maxCount="9"
+                                    width="60px"
+                                    height="60px"
+                                    v-model="fileList1"
+                                    uploadPath="errand"
+                                    uploadIcon="plus"
+                                />
+                            </view> -->
+                    <imgUpload v-model:imageArr="data.fileList1" :limit="3" ref="imgUploadref">
+                        <template #uploadBtn>
+                            <view @click="openUp" class="up_box">
+                                <view class="up_icon">
+                                    <TnIcon name="add" color="#C9C9C9" size="80"/>
+                                </view>
+                                <view class="bala_cel_tit">代送凭证</view>
+                                <view class="bala_cel_tip">请截图或拍照医院取药凭证、电子就诊卡、电子处方单等资料</view>
+                            </view>
+                        </template>
+                    </imgUpload>
+                </view>
+                    </template>
+
+                    <view class="bala_cel row j-between">
+                        <view class="bala_cel_tit">备注信息</view>
+                        <view class="bala_cel_inp">
+                            <TnInput v-model="data.remark" size="sm" placeholder="请输入备注信息" text-align="right" :border="false" clearable />
+                        </view>
+                    </view>
+                </view>
+            </view>
+
+            </view>
             </template>
             <!-- 机构服务订单确认服务 -->
             <template v-else>
@@ -186,29 +307,35 @@
             </template>
               <!-- 优惠券 coupon-->
             <choiceCoupon ref="recCoup" @getGroup="selectCoupon" :list="data.grantList" :coupsList="data.coupsList" />
-            <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="map" permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
+            <TnDateTimePicker mode="datetime" v-model="data.startTime" v-model:open="data.openDateTimePicker" />
+            <yk-authpup ref="authpupRef" type="top" :isNativeHead="false" @changeAuth="map" permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
     		<BCNotify ref="bcNotify"></BCNotify>
         </z-paging>
     </view>
 </template>
 
 <script setup lang="ts">
+import imgUpload from '@/components/upload/img-upload.vue'
+import TnDateTimePicker from '@tuniao/tnui-vue3-uniapp/components/date-time-picker/src/date-time-picker.vue'
+import TnInput from '@tuniao/tnui-vue3-uniapp/components/input/src/input.vue'
 import { moneyFilter, discountFilter } from "@/common/filters"
 import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
-import { ref, reactive, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted, nextTick } from 'vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import { TempStorage } from "@bc/base"
 import PageTopbg from "@/components/page-topbg/page-topbg.vue"
 import balanceInfo from "./balanceInfo.vue"
 import agencyCardInfo from "./agencyCardInfo.vue"
 
+import { addWEventsListener } from '@/events/event-registry'
+import { CareEvents } from '@/events/care-events'
+import { getAddressList } from '@/api/goods-api'
 import choiceCoupon from './choiceCoupon.vue'
 import visitorInformation from './visitor-information.vue'
 import serviceAddress from './service-address.vue'
 import { getCouponGranted, getPlatCoupon, getCalculation } from '@/api/care-api'
 import serviceTime from './service-time.vue'
 import { orderEntityConfig, cartEntityConfig, getBaseInfo, createOrder, cardCreateOrder, getOrderEntityConfig, houseOrderPay } from "@/api/order-api"
-import { CareEvents } from "@/events/care-events"
 import BCNotify from '@/components/notify/index.vue'
 import { pageController } from '@bc/uni-tools'
 import { packPayment } from '@/libs/pay/pay-tools'
@@ -227,6 +354,7 @@ const props = defineProps<Props>()
 
 interface Data {
     showPage:boolean,
+    deliveryShow:boolean,
     uniqueId:any,
     showInfo:boolean,
     balanceInfoObj:any,
@@ -240,26 +368,40 @@ interface Data {
     serviceRules: any, //下单时间规则
     optionUnit: number, //下单时间单位
     quantity:number,
+    archivesName:string,
     platCoups:any, //平台优惠券
     remark:string, //备注
     ismany:boolean,
+    ischeck:boolean,
     grantList: any, //优惠券选择列表
     agencyObj:any, // 康养详情
     preferential:number,
+    startTime:any,
     shopCoupList: any, //店铺优惠券列表
     shopCoupon:any, //店铺优惠券
     platCouList: any, //平台优惠券列表
     hospital: any, //医院信息
+    shopId: string,
+    fileList1:any,
+    openDateTimePicker:boolean,
+    method: any, //配送方式
     couponIdx: number, //-1平台优惠 1店铺优惠
     institutionitemId:string
 
 }
 const data = reactive<Data>({
+    openDateTimePicker: false,
     hospital: {},
+    fileList1: [],
+    startTime: '',
+    method: {},
+    deliveryShow: false,
+    shopId: '',
     platCouList: [], //平台优惠券列表
     shopCoupon: {}, //当前选中的店铺优惠信息
     couponIdx: 0, //-1平台优惠 1店铺优惠
     showInfo: true,
+    archivesName: '',
     platCoups: {}, //当前选中的平台优惠信息
     showPage: false,
     uniqueId: '',
@@ -273,6 +415,7 @@ const data = reactive<Data>({
     location: {},
     calculationInfo: {},
     carId: '',
+    ischeck: false, // 勾选
     serviceRules: {},
     optionUnit: 2, //下单时间单位
     quantity: 1,
@@ -282,7 +425,7 @@ const data = reactive<Data>({
     preferential: 0,
     institutionitemId: ''
 })
-
+const imgUploadref = ref()
 const bcNotify = ref()
 const recCoup = ref()
 const addressRef = ref()
@@ -293,6 +436,30 @@ const timeRef = ref()
 const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
+const getSerTime = (e:any) => {
+    data.startTime = e
+}
+const authpupRef = ref()
+const selectHosp = () => {
+    // #ifdef APP-PLUS
+    authpupRef.value.open() //调起自定义权限目的弹框,具体可看示例里面很详细
+    // #endif
+    // #ifndef APP-PLUS
+    map()
+    // #endif
+}
+/* 选择地址 or 选择联系人 */
+const getAdres = (type = 0) => {
+    const req = {}
+    // type === 1 && (req.shopId = this.baseInfo.id)
+    // gotoUserLink(req, 'dizhi')
+}
+const openUp = () => {
+    nextTick(() => {
+        console.log('手动调用', imgUploadref, imgUploadref.value)
+        imgUploadref.value.chooseFileFun()
+    })
+}
 // 优惠券初始状态
 const copuInit = {
     cfgOffer: 0,
@@ -347,35 +514,35 @@ const informationMobile = computed(() => {
     return [65795].includes(data.optionMation.templateCode)
 })
 /* 否需要提交/渲染 医院地址 */
-const hospitalVisi = (() => {
+const hospitalVisi = computed(() => {
     return exist('hospital_address')
 })
 /* 否需要提交/渲染 寄送方式 */
-const methodVisi = (() => {
+const methodVisi = computed(() => {
     return exist('delivery_method')
 })
 /* 否需要提交/渲染 配送地址 */
-const deliveryVisi = (() => {
+const deliveryVisi = computed(() => {
     return exist('delivery_address')
 })
 /* 否需要提交/渲染 凭证 */
-const certificateVisi = (() => {
+const certificateVisi = computed(() => {
     return exist('delivery_certificate')
 })
 /* 否需要提交/渲染 联系人 */
-const contactVisi = (() => {
+const contactVisi = computed(() => {
     return exist('contact_info')
 })
 // 备注提示信息 住院照护/陪诊服务
-const promptText = (() => {
+const promptText = computed(() => {
     return [65800, 65795].includes(data.optionMation.templateCode) ? '请填写患者相关病情' : '请填写注意事项'
 })
 // 照护人是否合适
-const isImproper = (() => {
+const isImproper = computed(() => {
     return data.archives.estimateGradeCategoryIds && !data.archives.estimateGradeCategoryIds.includes(data.optionMation.categoryId)
 })
 // 照护人是否评估
-const isAssess = (() => {
+const isAssess = computed(() => {
     return data.archives.id && !data.archives.estimateGradeCategoryIds
 })
 // 优惠券弹窗
@@ -553,7 +720,6 @@ const gainShopCouponList = (type:number) => {
 const getEntityConfig = (optionId: any) => {
 
     getOrderEntityConfig(data.carId ? data.carId : optionId, !!data.carId).then((res: any) => {
-        console.log('res', res)
         // data.ismany = true
         data.optionMation = {
             itemId: res.item.id,
@@ -567,10 +733,14 @@ const getEntityConfig = (optionId: any) => {
             categoryName: res.item.categoryName,
             templateCode: res.item.templateCode
         }
-
-        data.serviceRules = res.item.extend.serviceRules
-        data.optionUnit = res.option.extend.serviceWorkingHours.unit
-        data.consumerAttr = res.consumerAttr || []
+        data.balanceInfoObj = {
+            title: res.item.name,
+            quantity: data.quantity,
+            optiontitle: res.option.name,
+            optionprice: res.option.price,
+            servicethumb: res.item.thumb
+        }
+        // data.optionMation = res.item
 
         data.calculationInfo = {
             amount: res.option.price,
@@ -583,16 +753,18 @@ const getEntityConfig = (optionId: any) => {
             data.ismany = true
         }
 
-
+        data.shopId = res.item.shopId
+        getShopDetail(res.item.shopId)
+        data.serviceRules = res.item.extend.serviceRules
+        data.optionUnit = res.option.extend.serviceWorkingHours.unit
+        data.consumerAttr = res.consumerAttr || []
         data.showPage = true
 
         // res.patient && (data.visitName = res.patient)
 
         gainShopCouponList(1)
 
-        // data.shopId = res.item.shopId
 
-        // data.getBaseInfo(data.shopId)
     })
 }
 
@@ -641,11 +813,11 @@ const inpbur = (val:string) => {
 
 const placeOrder = () => {
     // 调用子组件的属性
-    if (!addressRef.value?.data?.location) {
+    if (showaddress.value && !addressRef.value?.data?.location) {
         bcNotify.value.show('请选择地址')
         return
     }
-    if (!timeRef.value?.datetime) {
+    if (!timeRef.value?.datetime || !data.startTime) {
         bcNotify.value.show('请选择上门时间')
         return
     }
@@ -656,7 +828,7 @@ const placeOrder = () => {
 
 
     const location = addressRef.value.data.location
-    const datetime = new Date(timeRef.value.datetime).getTime()
+    const datetime = new Date(timeRef.value.datetime ? timeRef.value.datetime : data.startTime).getTime()
     const archives = visitorRef.value?.data?.archives
 
     // console.log('location',location);
@@ -685,7 +857,7 @@ const placeOrder = () => {
             activityId: null //data.activityId //活动id
         },
         // 联系人
-        contact: contactVisi ? {
+        contact: contactVisi.value ? {
             smsCode: 996, //短信（已废弃，写死为 996 ）
             mobile: data.location.mobile,
             person: data.location.name
@@ -702,8 +874,8 @@ const placeOrder = () => {
 
             hospital: null,
 
-            patient: informationVisi.value ? archives.name : null, //就诊人名称
-            patientMobile: archives?.mobile || null, //就诊人手机号
+            patient: informationVisi.value ? archives?.name || '测试' : null, //就诊人名称
+            patientMobile: archives?.mobile || '16626408381' || null, //就诊人手机号
             deliveryMethod: null, //配送方式 id
             deliveryCertificate: null //代取凭证
 
@@ -788,24 +960,23 @@ const toOrderDetail = (id:string) => {
 
 
 // 获取订单详情
-const getorderEntity = (optionId:string, quantity:number) => {
-    orderEntityConfig({
-        optionId
-    }).then((res:any) => {
-        console.log('订单详情', res)
-        data.balanceInfoObj = {
-            title: res.item.name,
-            quantity,
-            optiontitle: res.option.name,
-            optionprice: res.option.price,
-            servicethumb: res.item.thumb
-        }
-        data.optionMation = res.item
-        data.consumerAttr = res.consumerAttr
-        getShopDetail(res.item.shopId)
-    })
-}
-
+// const getorderEntity = (optionId:string, quantity:number) => {
+//     orderEntityConfig({
+//         optionId
+//     }).then((res:any) => {
+//         console.log('订单详情', res)
+//         data.balanceInfoObj = {
+//             title: res.item.name,
+//             quantity,
+//             optiontitle: res.option.name,
+//             optionprice: res.option.price,
+//             servicethumb: res.item.thumb
+//         }
+//         data.optionMation = res.item
+//         data.consumerAttr = res.consumerAttr
+//         getShopDetail(res.item.shopId)
+//     })
+// }
 // 获取店铺信息
 const getShopDetail = (id:string) => {
     getBaseInfo({
@@ -816,7 +987,6 @@ const getShopDetail = (id:string) => {
             shopname: res.name
         }
         console.log('data', data)
-
     })
 }
 
@@ -851,7 +1021,7 @@ onMounted(() => {
     tempStorage.get(props.uniqueId).then((res:any) => {
         if (props.handle == 1) {
             data.quantity = res.quantity
-            getorderEntity(res.optionId, res.quantity)
+            // getorderEntity(res.optionId, res.quantity)
             getEntityConfig(res.optionId)
         }
         else {
@@ -863,6 +1033,17 @@ onMounted(() => {
             pageController.back()
         }, 1000)
     })
+
+    // 监听收货地址选择
+    addWEventsListener(CareEvents.Get__Address, (data) => {
+        addressRef.value.data.location = data
+    })
+
+
+    // 照护人档案
+    addWEventsListener(CareEvents.Get__Archives, (data) => {
+        visitorRef.value.data.archives = data
+    })
 })
 
 
@@ -870,6 +1051,9 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.balanceNures{
+    margin-bottom: 220rpx !important;
+}
 .content{
     padding: 20rpx;
     box-sizing: border-box;
@@ -999,7 +1183,114 @@ onMounted(() => {
             color: #999999;
             font-size: 28rpx;
         }
+        .bala_tit {
+        font-size: 32rpx;
+        font-weight: bold;
+        color: #333333;
+        flex-shrink: 0;
     }
+    // 多次使用勾选盒子
+    .bala_ned {
+        width: 100%;
+        height: 100%;
+        background: #f3f3f3;
+        padding: 16rpx;
+        box-sizing: border-box;
+    }
+    .bala_entry {
+        margin: 40rpx 0 10rpx;
+        .bala_pic {
+            margin-right: 14rpx;
+            flex-shrink: 0;
+        }
+        .bala_more {
+            flex: 1;
+
+            .bala_about {
+                margin-left: 16rpx;
+                .bala_title {
+                    font-size: 32rpx;
+                    font-weight: bold;
+                    color: #333333;
+                }
+                .bala_price {
+                    font-size: 32rpx;
+                    font-weight: bold;
+                    color: #fc3848;
+                    margin-top: 20rpx;
+                }
+            }
+            .bala_option {
+                font-size: 28rpx;
+                font-weight: 400;
+                color: #666666;
+                margin-top: 4rpx;
+            }
+            .bala_offer {
+                font-size: 24rpx;
+                font-weight: 400;
+                color: #999999;
+                margin-top: 14rpx;
+
+                text {
+                    color: #f88400;
+                    height: 46rpx;
+                    line-height: 46rpx;
+                    background: #fff6e6;
+                    border-radius: 10rpx;
+                    padding: 0 16rpx;
+                    display: inline-block;
+                    margin: 0 6rpx;
+                    max-width: 300rpx;
+                }
+            }
+        }
+    }
+
+    .bala_cel {
+        margin-top: 40rpx;
+        // align-items: flex-start;
+        position: relative;
+        &.bala_cel_nt {
+            margin-top: 0rpx;
+        }
+        &.bala_cel_bod {
+            margin-bottom: 24rpx;
+            // border-bottom: 2rpx solid #F2F2F2;
+            // padding-bottom: 28rpx;
+        }
+        .bala_cel_tit {
+            font-size: 30rpx;
+            font-weight: 400;
+            color: #666666;
+            &.not {
+                color: #bcbcbc;
+            }
+        }
+        .bala_cel_tip {
+            font-size: 24rpx;
+            font-weight: 400;
+            color: #999999;
+            margin: 20rpx 0;
+        }
+        .bala_cel_inp {
+            // width: 460rpx;
+            flex: 1;
+            margin-left: 20rpx;
+            font-size: 30rpx;
+            color: #666666;
+            text-align: right;
+        }
+        .bala_cel_note {
+            flex: 1;
+            margin-top: 10rpx;
+            font-size: 24rpx;
+            color: #3e9fff;
+            // padding-top: 28rpx;
+            // border-top: 2rpx solid #F2F2F2;
+        }
+    }
+}
     .voucher_Notice {
         background: #ffffff;
         padding: 30rpx;

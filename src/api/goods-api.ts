@@ -14,10 +14,10 @@ export const getgoodList = (req:any) => {
 //================================================================================
 
 /** 收货地址列表 */
-export const getAddressList = async () => {
-    // const req = {} as any
-    // shopId && (req.id = shopId)
-    return http.user.get('/v1/bc/app/address/list')
+export const getAddressList = async (shopId?: string) => {
+    const req = {} as any
+    shopId && (req.id = shopId)
+    return http.user.get('/v1/bc/app/address/list', req)
 }
 
 /** 删除收货地址 */
