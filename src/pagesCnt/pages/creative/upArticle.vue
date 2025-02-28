@@ -61,7 +61,6 @@ const data = reactive<Data>({
     topic: '',
     current: 0,
     categoryId: '',
-    current: 0,
     navList: [
         { id: 1, name: '图文' },
         { id: 2, name: '视频' }

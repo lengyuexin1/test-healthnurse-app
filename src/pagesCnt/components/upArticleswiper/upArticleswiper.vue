@@ -70,7 +70,7 @@
         </z-paging>
         <!--        <view v-if="data.pickShow">-->
         <TnPicker
-              v-model="data.categoryId"
+              v-model="props.categoryId"
               label-ley="name"
               value-ley="id"
               :open="data.pickShow"
@@ -247,8 +247,6 @@ const confirm = (val: any) => {
     data.pickShow = false
     data.channelName = val[0]
     data.channelId = getcategoryItemId(val[0])
-    console.log(data.channelName)
-    console.log(data.channelId)
 }
 const clickBtn = (status) => {
     const regex = /^[\p{P}|\s]+$/u

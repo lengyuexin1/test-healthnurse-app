@@ -4,20 +4,20 @@
             <clUpload
                   ref="upload"
                   v-model="data.list"
-                  fileType="video"
                   :listStyle="data.uploadStyle"
                   :max="1"
+                  fileType="video"
                   useBeforeDelete
                   useBeforeUpload
-                  @onError="uploadError"
-                  @onVideo="onVideo"
-                  @closePreviewVideo="closePreviewVideo"
                   @beforeDelete="beforeDelete"
                   @beforeUpload="beforeUpload"
+                  @closePreviewVideo="closePreviewVideo"
+                  @onError="uploadError"
+                  @onVideo="onVideo"
             >
                 <template v-slot:addImg>
                     <view class="addVideo column">
-                        <TnIcon name="camera" :size="60" color="#AAAAAA"></TnIcon>
+                        <TnIcon :size="60" color="#AAAAAA" name="camera"></TnIcon>
                         <text class="txt">选择视频</text>
                     </view>
                 </template>
@@ -26,58 +26,78 @@
 
             <view class="input">
                 <view class="up_title_inp">
-                    <TnInput placeholder="请输入标题(2~30个字)" :border="false" fontSize="16" v-model="data.title"
-                             clearable
-                             :maxlength="30"></TnInput>
+                    <TnInput v-model="data.title" :border="false" :maxlength="30" clearable
+                             fontSize="16"
+                             placeholder="请输入标题(2~30个字)"></TnInput>
                 </view>
-                <view class="up_title_inp">
-                    <TnInput class="up_textarea" v-model="data.describe" type="textarea" placeholder="添加描述（选填）"
-                             :maxlength="500" show-word-limit/>
+                <view class="up_text_inp">
+                    <TnInput v-model="data.describe" :maxlength="500" class="up_textarea" placeholder="添加描述（选填）"
+                             show-word-limit type="textarea"/>
                 </view>
             </view>
-            <view class="up_img_inp" v-if="data.isloadingImg">
-                <UploadLayout :maxCount="1" width="90px" height="90px" v-model="data.fileList" uploadPath="create"
-                              @change="handleChange">
-                    <view class="up_inp_text" slot="up-text">{{
-                            data.fileList.length < 1 ? '添加封面图片' : '添加图片'
-                        }}
-                    </view>
-                </UploadLayout>
+            <view v-if="data.isloadingImg" class="up_img_inp">
+                <!--                <UploadLayout :maxCount="1" width="90px" height="90px" v-model="data.fileList" uploadPath="create"-->
+                <!--                              @change="handleChange">-->
+                <!--                    <view class="up_inp_text" slot="up-text">{{-->
+                <!--                            data.fileList.length < 1 ? '添加封面图片' : '添加图片'-->
+                <!--                        }}-->
+                <!--                    </view>-->
+                <!--                </UploadLayout>-->
+                <ClUpload
+                      ref="upload"
+                      v-model="data.fileList"
+                      :listStyle="data.uploadStyle"
+                      :max="data.maxCount"
+                      fileType="image"
+                      imageType="image"
+                      useBeforeDelete
+                      useBeforeUpload
+                      @beforeDelete="imgbeforeDelete"
+                      @beforeUpload="imgbeforeUpload">
+
+                    <template v-slot:addImg>
+                        <view class="up_box">
+                            <view class="up_icon">
+                                <TnIcon color="#C9C9C9" name="add" size="40"/>
+                            </view>
+                            <view class="up_text">{{ data.fileList.length < 1 ? '添加封面图片' : '添加图片' }}
+                            </view>
+                        </view>
+                    </template>
+                </ClUpload>
             </view>
             <view class="channel">
                 <view class="title row i-center">
-                    <TnIcon name="tags" :size="20"></TnIcon>
+                    <TnIcon :size="20" name="tags"></TnIcon>
                     选择发布渠道
                 </view>
                 <view class="name row i-center" @tap="clickPick">
                     <view :class="[data.channelName !== '' ? 'active' : '']">{{ data.channelName || '请选择' }}</view>
-                    <TnIcon name="right" :size="12"></TnIcon>
+                    <TnIcon :size="12" name="right"></TnIcon>
                 </view>
             </view>
 
-            <view class="bottom_box" slot="bottom">
+            <view slot="bottom" class="bottom_box">
                 <view class="bottom_box_draft" @tap="clickBtn(1)">保存草稿</view>
                 <view class="bottom_box_btn" @tap="clickBtn(2)">发布视频</view>
             </view>
         </z-paging>
         <TnPicker
-              v-model="data.categoryId"
+              v-model="props.categoryId"
+              :data="data.columns"
+              :open="data.pickShow"
               label-ley="name"
               value-ley="id"
-              :open="data.pickShow"
-              ref="uPicker"
-              :data="data.columns"
-              @confirm="confirm"
               @cancel="data.pickShow = false"
               @close="data.pickShow = false"
+              @confirm="confirm"
         ></TnPicker>
         <BCNotify ref="bcNotify"></BCNotify>
     </view>
 </template>
 
-<script setup lang="ts">
-import { uploadVideo } from '@/api/file-api'
-import UploadLayout from '@/libs/upload/components/upload-layout.vue'
+<script lang="ts" setup>
+import { uploadCertificate, uploadVideo } from '@/api/file-api'
 import { categoryAll, getDraftDetails, editContent, addContent } from '@/api/create-api'
 import clUpload from '@/pagesCnt/uni_modules/cl-upload/components/cl-upload/cl-upload.vue'
 import BCNotify from "@/components/notify/index.vue"
@@ -85,6 +105,7 @@ import TnInput from '@tuniao/tnui-vue3-uniapp/components/input/src/input.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnPicker from '@tuniao/tnui-vue3-uniapp/components/picker/src/picker.vue'
 import { onMounted, reactive, ref } from "vue"
+import ClUpload from "@/pagesCnt/uni_modules/cl-upload/components/cl-upload/cl-upload.vue"
 
 const bcNotify = ref()
 
@@ -103,6 +124,7 @@ interface Data {
         height: string,
         radius: string
     },
+    maxCount: number,
     disabled: boolean,
     isloadingImg: boolean,
     isPreviewVideo: boolean,
@@ -112,13 +134,13 @@ interface Data {
 }
 
 interface Props {
-    categoryId: string,
-    topic: string,
-    isDratType: string,
-    activityId: string,
-    taskId: string, //任务id
-    articleId: string, //草稿id
-    type: number //话题
+    categoryId: String,
+    topic: String,
+    isDratType: String,
+    activityId: String,
+    taskId: String, //任务id
+    articleId: String, //草稿id
+    type: Number //话题
 }
 
 const props = defineProps<Props>()
@@ -137,6 +159,7 @@ const data = reactive<Data>({
         height: '300rpx',
         radius: '20rpx'
     },
+    maxCount: 3, //图片上传最大值
     disabled: false,
     isloadingImg: false,
     isPreviewVideo: false,
@@ -196,6 +219,36 @@ const clickPick = () => {
 const handleChange = (item) => {
     data.fileList = item
 }
+const imgbeforeUpload = (tempFile: any, next: any) => {
+    uni.showLoading({
+        title: '正在上传..'
+    })
+    uploadCertificate(tempFile.path).then((res: any) => {
+        data.fileList.push(res.url)
+        uni.hideLoading()
+    })
+}
+
+/**
+ * 文件删除前钩子
+ * @param {Object} item 当前删除的图片或者视频信息
+ * @param {Number} index 当前删除的图片或视频索引
+ * @param {Function} next 调用此函数继续执行组件删除逻辑
+ * */
+const imgbeforeDelete = (item: any, index: any, next: any) => {
+    uni.showModal({
+        title: '提示信息',
+        content: '确定要删除这个文件嘛？',
+        success: res => {
+            if (res.confirm) {
+                // 清除信息
+                data.fileList = []
+                next()
+            }
+        }
+    })
+}
+
 /**
  * 删除前钩子
  * @param {Object} item 当前删除的图片或者视频信息
@@ -241,12 +294,17 @@ const onVideo = () => {
 const closePreviewVideo = () => {
     // this.isPreviewVideo = false
 }
-const confirm = (val => {
-    data.pickShow = false
-
-    data.channelName = val.value[0]
-    data.channelId = data.categoryList[val.indexs[0]].id
+const getcategoryItemId = (name: string) => {
+    const item = data.categoryList.find(item => item.name === name)
+    return item ? item.id : null
 }
+const confirm = (val) => {
+
+    data.pickShow = false
+    data.channelName = val[0]
+    data.channelId = getcategoryItemId(val[0])
+}
+
 const clickBtn = (status) => {
     const regex = /^[\p{P}|\s]+$/u
 
@@ -360,6 +418,33 @@ const clickBtn = (status) => {
         align-items: center;
         justify-content: space-around;
     }
+
+    .up_text_inp {
+        margin: 5rpx 30rpx;
+        box-sizing: border-box;
+
+        .up_textarea {
+            min-height: 300rpx !important;
+            max-height: 500rpx !important;
+            width: 100%;
+        }
+
+        .topic_box {
+            display: flex;
+            align-items: center;
+
+            .topic_item {
+                padding: 12rpx 16rpx;
+                box-sizing: border-box;
+                background: #f3f3f3;
+                border-radius: 28rpx;
+                text-align: center;
+                color: #7e7e7e;
+                font-size: 24rpx;
+                margin-right: 20rpx;
+            }
+        }
+    }
 }
 
 .up_img_inp {
@@ -374,6 +459,24 @@ const clickBtn = (status) => {
         color: #c9c9c9;
         font-size: 24rpx;
         text-align: center;
+    }
+
+    .up_box {
+        width: 200rpx;
+        height: 200rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border: 1px solid #f8f8f8;
+        padding: 20rpx;
+
+        .up_text {
+            margin-top: 24rpx;
+            font-size: 24rpx;
+            color: #C9C9C9;
+            font-weight: 400;
+        }
     }
 }
 

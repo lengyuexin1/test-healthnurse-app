@@ -1211,12 +1211,12 @@
       "root": "pagesCnt",
       "pages": [
         {
-          "path": "/pages/creative/upArticle",
-            "style": {
-                "navigationBarTitleText": "文章详情",
-                "enablePullDownRefresh": false,
-                "navigationStyle": "custom"
-            }
+          "path": "pages/creative/upArticle",
+          "style": {
+            "navigationBarTitleText": "文章详情",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
         },
         {
           "path": "pages/knowledge/knowledge",

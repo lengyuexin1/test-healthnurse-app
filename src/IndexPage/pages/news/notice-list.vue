@@ -38,12 +38,14 @@ let paper: any
 
 const queryList = (pageNumber: number, pageSize: number) => {
     paper?.loadmore().then((res: any) => {
+        console.log(res)
         paging.value.complete(res)
     })
 }
 
 const getInitList = () => {
     paper = useNoticeList(data.to, limit, (res) => {
+        console.log(res)
         paper.data.items.push(res)
     })
 }
@@ -58,7 +60,7 @@ onLoad((options) => {
     uni.setNavigationBarTitle({ title: options?.name })
 
     getInitList()
-    
+
     /** 延迟2s后标记已读 */
     setTimeout(() => {
         data.dataList.length && resetSessionUnread()
