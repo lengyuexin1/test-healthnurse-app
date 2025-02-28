@@ -24,19 +24,19 @@
                 <!-- #ifdef APP || H5 -->
                 <PageTopbg bgstyle="background: #F2F3F5" :zIndex="-1" :addheight="262"></PageTopbg>
                 <!-- #endif -->
-                
+
 
                 <bc-page-navbar :title="data.title" ></bc-page-navbar>
 
                 <!-- #ifdef APP-PLUS -->
                 <view class="placeholder"></view>
                 <!-- #endif -->
-                
+
 
             </template>
-            
+
             <template #left>
-                
+
                 <view class="left_nva_box" v-if="data.categoryList.length > 0">
                     <view class="navItem" @click="changeNav(index)" :class="{ 'is_select' : item.id == data.categoryList[data.categoryIndex].id }" v-for="(item, index) in data.categoryList" :key="item.id">
                         <view>
@@ -45,9 +45,9 @@
                         <view class="select_box" v-if="item.id == data.categoryList[data.categoryIndex].id"></view>
                     </view>
                 </view>
-                
+
             </template>
-            
+
 
             <view class="page_content">
                 <template v-for="(item,index) in data.dataList" :key="item.categoryId">
@@ -71,8 +71,8 @@
                     </view>
                 </template>
             </view>
-           
-            
+
+
 
 
 
@@ -99,7 +99,7 @@ import { Debounce } from '@/libs/antivibthrot'
 
 import { gotoDiscussDetail, gotoServiceStore, gotoClassItemPage } from '@/routes/service-routes'
 
-import WaterfallsFlow from '@/Service/pages/serviceExpo/components/WaterfallsFlow.vue'
+import WaterfallsFlow from '@/pagesOldExpo/pages/serviceExpo/components/WaterfallsFlow.vue'
 
 interface Data {
     dataList: any
@@ -184,19 +184,19 @@ const queryList = async (pageNumber:number, pageSize:number) => {
             (paging.value as any).complete(sortedArray2)
 
             console.log('data.dataList', data.dataList);
-            
+
         }).catch((err:any) => {
             (paging.value as any).complete([])
         });
 
-        
+
     });
 
 }
 
 const changeNav = (index:number) => {
     data.categoryIndex = index;
-    
+
     (paging.value as any).scrollIntoViewById('toView' + index , 150);
 
 }
@@ -236,9 +236,9 @@ const pageScroll = (e:any) => {
     // #ifdef MP-WEIXIN
     Debounce(()=>{
         data.categoryList.forEach((item:any, index:number) => {
-            query.select( '#toView'+ index ).boundingClientRect((rect:any) => { 
+            query.select( '#toView'+ index ).boundingClientRect((rect:any) => {
                 console.log('rect',rect);
-                
+
                 if (rect.top <= 150 && rect.top >= 50) {
                     console.log('rect.top',rect.top);
 
@@ -248,7 +248,7 @@ const pageScroll = (e:any) => {
         })
     }, 500)
     // #endif
-    
+
 }
 
 defineExpose({
