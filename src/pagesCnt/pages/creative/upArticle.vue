@@ -3,7 +3,6 @@
         <z-paging-swiper>
             <template #top>
                 <view id="pageTop" class="top_box">
-                    <pageTopbg :zIndex="-1"></pageTopbg>
                     <bc-page-navbar :title="'创作者中心'"></bc-page-navbar>
                     <view class="top_swiper">
                         <TnTabs
@@ -15,30 +14,36 @@
                 </view>
             </template>
 
-            <swiper class="swiper" :current="current" @change="onswiperchange">
+            <swiper class="swiper" :current="data.current" @change="onswiperchange">
                 <swiper-item>
-                    <upArticleswiper :categoryId="categoryId" :topic="topic" :isDratType="isDratType"
-                                     :articleId="articleId" :activityId="activityId" :taskId="taskId" :type="type"
-                                     v-if="current == 0"></upArticleswiper>
+                    <upArticleswiper :categoryId="data.categoryId" :topic="data.topic" :isDratType="data.isDratType"
+                                     :articleId="data.articleId" :activityId="data.activityId" :taskId="data.taskId"
+                                     :type="data.type"
+                                     v-if="data.current == 0"></upArticleswiper>
                 </swiper-item>
                 <swiper-item>
-                    <upVideoswiper :categoryId="categoryId" :topic="topic" :isDratType="isDratType"
-                                   :articleId="articleId" :activityId="activityId" :taskId="taskId" :type="type"
-                                   v-if="current == 1"></upVideoswiper>
+                    <upVideoswiper :categoryId="data.categoryId" :topic="data.topic" :isDratType="data.isDratType"
+                                   :articleId="data.articleId" :activityId="data.activityId" :taskId="data.taskId"
+                                   :type="data.type"
+                                                       v-if="data.current == 1"></upVideoswiper>
                 </swiper-item>
             </swiper>
         </z-paging-swiper>
+        <BCNotify ref="bcNotify"></BCNotify>
     </view>
 </template>
 
 <script lang="ts" setup>
 import TnTabs from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs.vue'
 import TnTabsItem from '@tuniao/tnui-vue3-uniapp/components/tabs/src/tabs-item.vue'
-import upArticleswiper from '@/Create/components/upArticleswiper/upArticleswiper.vue'
-import upVideoswiper from '@/Create/components/upVideoswiper/upVideoswiper.vue'
+import upArticleswiper from '@/pagesCnt/components/upArticleswiper/upArticleswiper.vue'
+import upVideoswiper from '@/pagesCnt/components/upVideoswiper/upVideoswiper.vue'
 import { addContentAccount } from "@/api/create-api"
-import { reactive } from "vue"
+import { reactive, ref } from "vue"
 import { onLoad } from '@dcloudio/uni-app'
+import BCNotify from "@/components/notify/index.vue"
+
+const bcNotify = ref()
 
 interface Data {
     current: number,
@@ -56,7 +61,6 @@ const data = reactive<Data>({
     topic: '',
     current: 0,
     categoryId: '',
-    current: 0,
     navList: [
         { id: 1, name: '图文' },
         { id: 2, name: '视频' }
@@ -84,28 +88,26 @@ onLoad((options) => {
     addContentAccount({}).then(() => {
 
     }).catch((err) => {
-        uni.$u.toast(err.message)
+        bcNotify.value.error(err.message)
     })
 })
 
 const goback = () => {
     uni.navigateBack({ delta: 1 })
 }
-const tabsChange = (e) => {
-    this.current = e.index
+const tabsChange = (e: any) => {
+    data.current = e.index
 }
-const onswiperchange = (e) => {
-    this.current = e.detail.current
+const onswiperchange = (e: any) => {
+    data.current = e.detail.current
 }
 </script>
 
-<style>
-page {
-    background: #fff;
-}
-</style>
 
 <style lang="scss" scoped>
+page{
+    background: #ffffff;
+}
 .top_box {
     background: #ffffff;
     border-bottom: 2rpx solid #f2f2f2;

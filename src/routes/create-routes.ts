@@ -550,7 +550,7 @@ interface QueryParams {
 
 export const gotoNewUpcontentPage = (query:QueryParams) => {
     const  route = {
-        path: "/CreateSplit/pages/Upcontent/newUpcontentPage",
+        path: "/pagesCnt/pages/creative/upArticle",
         query
     } as any
     return pageController.push(route)

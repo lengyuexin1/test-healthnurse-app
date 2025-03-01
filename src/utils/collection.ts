@@ -1,4 +1,5 @@
 import { deviceRecord, getWeixinSessionKey, marketingDetail } from '@/api/user-api'
+// import { WebTracking } from "@bc/api"
 import { PlatformManage } from "@bc/sys"
 
 const WEB_ENV: TEnv = import.meta.env.VITE_WEB_ENV as TEnv
@@ -63,46 +64,49 @@ class CollectAndReport {
     private crankup(event: 6 | 13) {
         console.log("...this.req", this.req)
         this.getCurrent()
-        deviceRecord({
-            // 3 站外曝光、4 站外点击、5 激活(安装)、6 启动、7 注册、8 登录、10 咨询 12支付 13 广告启动 14活动点击 15推广ID采集错误上报
-            event,
-            ...this.req
-        }).then(res => {
-            if (!uni.getStorageSync('unionId')) {
-                this.req.unionId = res || null
-                this.installReport()
-                uni.setStorageSync('unionId', res)
-            }
-            console.log(`${event}启动上报成功`)
-        }).catch(err => {
-            console.log(`${event}启动上报失败`, err)
-        })
+        WebTracking.up({ ...this.req, event })
+        // deviceRecord({
+        //     // 3 站外曝光、4 站外点击、5 激活(安装)、6 启动、7 注册、8 登录、10 咨询 12支付 13 广告启动 14活动点击 15推广ID采集错误上报
+        //     event,
+        //     ...this.req
+        // }).then(res => {
+        //     if (!uni.getStorageSync('unionId')) {
+        //         this.req.unionId = res || null
+        //         this.installReport()
+        //         uni.setStorageSync('unionId', res)
+        //     }
+        //     console.log(`${event}启动上报成功`)
+        // }).catch(err => {
+        //     console.log(`${event}启动上报失败`, err)
+        // })
     }
 
     // 安装上报
     private installReport() {
         this.getCurrent()
-        deviceRecord({
-            event: 5,
-            ...this.req
-        }).then(() => {
-            console.log("安装上报成功")
-        }).catch(err => {
-            console.log("安装上报失败", err)
-        })
+        WebTracking.up({ ...this.req, event: 5 })
+        // deviceRecord({
+        //     event: 5,
+        //     ...this.req
+        // }).then(() => {
+        //     console.log("安装上报成功")
+        // }).catch(err => {
+        //     console.log("安装上报失败", err)
+        // })
     }
 
     // 正常预览上报
     surfReport() {
         this.getCurrent()
-        deviceRecord({
-            event: 1,
-            ...this.req
-        }).then(() => {
-            console.log("浏览上报成功")
-        }).catch(err => {
-            console.log("浏览上报失败", err)
-        })
+        WebTracking.up({ event: 1, ...this.req })
+        // deviceRecord({
+        //     event: 1,
+        //     ...this.req
+        // }).then(() => {
+        //     console.log("浏览上报成功")
+        // }).catch(err => {
+        //     console.log("浏览上报失败", err)
+        // })
     }
 
     // 同页面不同列表预览上报
@@ -110,45 +114,47 @@ class CollectAndReport {
         console.log('previewReportTYPE', type)
 
         this.getCurrent("", type)
-        deviceRecord({
-            event: 1,
-            ...this.req
-        }).then(() => {
-            console.log("同页面不同列表预览上报成功")
-        }).catch(err => {
-            console.log("同页面不同列表预览上报失败", err)
-        })
+        WebTracking.up({ ...this.req, event: 1 })
+        // deviceRecord({
+        //     event: 1,
+        //     ...this.req
+        // }).then(() => {
+        //     console.log("同页面不同列表预览上报成功")
+        // }).catch(err => {
+        //     console.log("同页面不同列表预览上报失败", err)
+        // })
     }
 
     // 视频播放事件
     videoPlayReport(type?: string, itemId?: string) {
         this.getCurrent("", type)
-
-        deviceRecord({
-            event: 16,
-            ...this.req,
-            itemId
-
-        }).then(() => {
-            console.log("视频播放事件成功")
-        }).catch(err => {
-            console.log("视频播放事件失败", err)
-        })
+        WebTracking.up({ ...this.req, event: 16, itemId })
+        // deviceRecord({
+        //     event: 16,
+        //     ...this.req,
+        //     itemId
+        //
+        // }).then(() => {
+        //     console.log("视频播放事件成功")
+        // }).catch(err => {
+        //     console.log("视频播放事件失败", err)
+        // })
     }
 
 
     // 视频完播事件
     videoPlayOverReport(type?: string, itemId?: string) {
         this.getCurrent("", type)
-        deviceRecord({
-            event: 17,
-            ...this.req,
-            itemId
-        }).then(() => {
-            console.log("视频完播事件成功")
-        }).catch(err => {
-            console.log("视频完播事件失败", err)
-        })
+        WebTracking.up({ ...this.req, event: 17, itemId })
+        // deviceRecord({
+        //     event: 17,
+        //     ...this.req,
+        //     itemId
+        // }).then(() => {
+        //     console.log("视频完播事件成功")
+        // }).catch(err => {
+        //     console.log("视频完播事件失败", err)
+        // })
     }
 
 

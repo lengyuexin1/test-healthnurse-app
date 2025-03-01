@@ -15,7 +15,7 @@
             <template #top>
                 <pageTopbg :zIndex="-1" :bgstyle="'background: #F2F3F5;'"></pageTopbg>
                 <bc-page-navbar :title="'展商详情'" ></bc-page-navbar>
-                
+
 
                 <view class="top_content_box">
                     <view class="discuss_box">
@@ -34,7 +34,7 @@
                     </view>
                 </view>
 
-                
+
 
             </template>
 
@@ -44,9 +44,9 @@
                     <WaterfallsFlow :wfList="data.dataList" @waterItem="clickwaterItem" :isGoods="true"></WaterfallsFlow>
                 </view>
 
-            </view>            
-           
-            
+            </view>
+
+
 
 
             <BCNotify ref="bcNotify"></BCNotify>
@@ -74,7 +74,7 @@ import { unHealthShop, addShop } from "@/api/user-api"
 
 import { gotoServiceExpoClass } from '@/routes/service-routes'
 
-import WaterfallsFlow from '@/Service/pages/serviceExpo/components/WaterfallsFlow.vue'
+import WaterfallsFlow from '@/pagesOldExpo/pages/serviceExpo/components/WaterfallsFlow.vue'
 // import WaterfallsFlow from '@/Mall/pages/shop/components/WaterfallsFlow.vue'
 
 
@@ -200,7 +200,7 @@ defineExpose({
                 font-weight: 500;
                 font-size: 32rpx;
                 color: #000002;
-                
+
             }
             .discuss_bottom{
                 width: 100%;
@@ -237,7 +237,7 @@ defineExpose({
         margin-bottom: 16rpx;
         font-weight: 600;
     }
-    
+
 }
 
 </style>

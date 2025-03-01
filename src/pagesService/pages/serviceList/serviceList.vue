@@ -272,7 +272,8 @@ onLoad((options: any) => {
         activeDetail(options.id).then(res => {
             getCipList(options.type, res.categoryIds)
         })
-    } else {
+    }
+    else {
         titleName.value = options.name
         kuaiRou(options.id)
     }
@@ -284,7 +285,7 @@ const getCipList = (type: any, dataCate: any) => {
         pageNumber: 1,
         query: {
             sourceType: type,
-            categoryIds: dataCate,
+            categoryIds: dataCate
         }
     }
     happysearch(objData, true).then(res =>
@@ -359,7 +360,7 @@ const linkinfo = (item: any) => {
             return gotogoodsDetail(item.id)
         }
         if (item.businessType == 4) {
-            return gotoServiceOrg({ id: item.id })
+            return gotoServiceOrg(item.id)
         }
 
     })

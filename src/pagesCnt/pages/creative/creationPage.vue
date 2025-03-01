@@ -579,6 +579,7 @@ const clickStagingList = (item: any) => {
     item.id == 3 && gotoActivityIndex()
     // item.id == 5 && bcNotify.value.show('敬请期待')
     item.id == 5 && gotowithdrawalIncome()
+    // id： 6 草稿箱
     item.id == 6 && gotoDraftList()
     item.id == 7 && gotoCreateSchool()
     item.id == 8 && gotoCommentSetting(data.pageObj.commentSet + '')

@@ -14,6 +14,7 @@ export const getImToken = () => {
 
 // im授权初始化
 const init = () => {
+    console.log(imProvider)
     imProvider.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
             //需要登录

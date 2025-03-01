@@ -1,121 +1,128 @@
 <template>
     <z-paging
-        ref="paging"
-        v-model="data.dataList"
-        :auto="true"
-        :fixed="true"
-        @query="queryList"
-        :defaultPageSize="6"
-        :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
-        empty-view-text="还没有数据哦~"
-        :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
+          ref="paging"
+          v-model="data.dataList"
+          :auto="true"
+          :fixed="true"
+          @query="queryList"
+          :defaultPageSize="6"
+          :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
+          empty-view-text="还没有数据哦~"
+          :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
     >
 
         <template #top>
             <TnSticky :customNavHeight="98">
-            <bc-page-navbar title="机构详情"></bc-page-navbar>
-            <view class="top_inp_box">
-                <view class="inp_box" @click="tosearch">
-                    <TnIcon name="search" color="#666" size="26"></TnIcon>
-                    <view class="inp_text">搜索</view>
+                <bc-page-navbar title="机构详情"></bc-page-navbar>
+                <view class="top_inp_box">
+                    <view class="inp_box" @click="tosearch">
+                        <TnIcon name="search" color="#666" size="26"></TnIcon>
+                        <view class="inp_text">搜索</view>
+                    </view>
                 </view>
-            </view>
-            <div class="menu">
+                <div class="menu">
                     <div class="menu_item" @click="changeTab(index)" v-for="(item, index) in treList" :key="index">
                         <text class="menu_item_text" :class="{ 'isclick': item.showregion }">{{ item.text }}</text>
                         <image class="menu_item_img"
-                            :src="item.showregion ? getAssetsUrl('/channel/icon_down_highlig.png') : getAssetsUrl('/channel/icon_down.png')"
-                            mode="scaleToFill" />
+                               :src="item.showregion ? getAssetsUrl('/channel/icon_down_highlig.png') : getAssetsUrl('/channel/icon_down.png')"
+                               mode="scaleToFill"/>
                     </div>
-            </div>
-            <!-- <view class="top_icon_list">
-                <view class="top_scrool">
-                    <view
-                    class="scrool_item"
-                    @click="changeToplist(item,index)"
-                    :class="{ 'is_select': data.topIndex == index }"
-                    v-for="(item,index) in data.topList" :key="item.id">
-                        <image
-                            class="item_img"
-                            :src="data.topIndex == index ? item.secondIcon : item.icon"
-                            mode="aspectFill"
-                        />
-                        <view class="item_name">{{ item.name }}</view>
-                        <view class="select_box" v-if="data.topIndex == index"></view>
+                </div>
+                <!-- <view class="top_icon_list">
+                    <view class="top_scrool">
+                        <view
+                        class="scrool_item"
+                        @click="changeToplist(item,index)"
+                        :class="{ 'is_select': data.topIndex == index }"
+                        v-for="(item,index) in data.topList" :key="item.id">
+                            <image
+                                class="item_img"
+                                :src="data.topIndex == index ? item.secondIcon : item.icon"
+                                mode="aspectFill"
+                            />
+                            <view class="item_name">{{ item.name }}</view>
+                            <view class="select_box" v-if="data.topIndex == index"></view>
+                        </view>
                     </view>
-                </view>
-            </view> -->
+                </view> -->
             </TnSticky>
         </template>
         <view class="screen_box" v-if="data.dataList.length">
             <!-- 列表 -->
-            <agencyItem :agencyList="data.dataList" :coordinate="coordinate" :positioning="positioning" />
+            <agencyItem :agencyList="data.dataList" :coordinate="coordinate" :positioning="positioning"/>
         </view>
         <!-- <institutionList :dataList="data.dataList"></institutionList> -->
 
         <BCNotify ref="bcNotify"></BCNotify>
-        <TnPopup v-model="show"  open-direction="top" :safeAreaInsetBottom="false" round="32rpx"
-        :closeOnClickOverlay="true" @close="allClose">
-                <div class="menu_show_box" :style="'margin-top:' + navbarTop + 'px'">
-                    <!-- 区域菜单 -->
-                    <div class="region_box" v-if="showregion">
-                        <div class="region_box_top">
-                            <text class="region_box_top_text">当前城市:</text>
-                            <text class="nowcity">广州</text>
-                        </div>
-                        <div class="region_box_list">
-                            <!-- <u-grid col="3"> -->
-                                <block v-for="(areaListItem, areaListIndex) in areaList" :key="areaListIndex">
-                                    <div class="region_box_item" @click="clickarea(areaListItem, areaListIndex)"
-                                        :class="{ 'isshow_region': districtIds.includes(areaListItem.id) }">{{
-                                            areaListItem.name }}</div>
-                                </block>
-                            <!-- </u-grid> -->
-                        </div>
+        <TnPopup v-model="show" open-direction="top" :safeAreaInsetBottom="false" round="32rpx"
+                 :closeOnClickOverlay="true" @close="allClose">
+            <div class="menu_show_box" :style="'margin-top:' + navbarTop + 'px'">
+                <!-- 区域菜单 -->
+                <div class="region_box" v-if="showregion">
+                    <div class="region_box_top">
+                        <text class="region_box_top_text">当前城市:</text>
+                        <text class="nowcity">广州</text>
                     </div>
-
-                    <!-- 类别菜单 -->
-                    <div class="category_box" v-if="showcategory">
-                        <div class="category_box_list">
-                            <div v-for="(item, index) in categoryList" :key="index" class="category_box_item"
-                                @click="clickcategory(item, index)"
-                                :class="{ 'isshow_region': categoryIds.includes(item.id) }">{{ item.name }}</div>
-                        </div>
-                    </div>
-
-                    <!-- 价格菜单 -->
-                    <div class="priceItem_box" v-if="showpriceItem">
-                        <div class="priceItem_box_list">
-                            <div class="priceItem" @click="priceIndex = 999"
-                                :class="{ 'isshow_region': priceIndex == 999 }">不限</div>
-                            <div v-for="(item, index) in priceItemlist" :key="index"
-                                :class="{ 'isshow_region': index == priceIndex }" class="priceItem"
-                                @click="clickpriceItem(item, index)">
-                                <text v-if="!item.minPrice">{{ item.maxPrice | moneyFilter }}以下</text>
-                                <text v-if="item.minPrice && item.maxPrice">{{ item.minPrice | moneyFilter }}-{{
-                                    item.maxPrice | moneyFilter }}</text>
-                                <text v-if="!item.maxPrice">{{ item.minPrice | moneyFilter }}以上</text>
+                    <div class="region_box_list">
+                        <!-- <u-grid col="3"> -->
+                        <block v-for="(areaListItem, areaListIndex) in areaList" :key="areaListIndex">
+                            <div class="region_box_item" @click="clickarea(areaListItem, areaListIndex)"
+                                 :class="{ 'isshow_region': districtIds.includes(areaListItem.id) }">{{
+                                    areaListItem.name
+                                }}
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- 选中选项 -->
-                    <div class="menu_btn">
-                        <div class="resetting_btn" @click="resetting">重置</div>
-                        <div class="selected_btn" @click="selected">确定</div>
+                        </block>
+                        <!-- </u-grid> -->
                     </div>
                 </div>
-            </TnPopup>
+
+                <!-- 类别菜单 -->
+                <div class="category_box" v-if="showcategory">
+                    <div class="category_box_list">
+                        <div v-for="(item, index) in categoryList" :key="index" class="category_box_item"
+                             @click="clickcategory(item, index)"
+                             :class="{ 'isshow_region': categoryIds.includes(item.id) }">{{ item.name }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 价格菜单 -->
+                <div class="priceItem_box" v-if="showpriceItem">
+                    <div class="priceItem_box_list">
+                        <div class="priceItem" @click="priceIndex = 999"
+                             :class="{ 'isshow_region': priceIndex == 999 }">不限
+                        </div>
+                        <div v-for="(item, index) in priceItemlist" :key="index"
+                             :class="{ 'isshow_region': index == priceIndex }" class="priceItem"
+                             @click="clickpriceItem(item, index)">
+                            <text v-if="!item.minPrice">{{ moneyFilter(item.maxPrice) }}以下</text>
+                            <text v-if="item.minPrice && item.maxPrice">{{ moneyFilter(item.minPrice) }}-{{
+                                    moneyFilter(item.maxPrice)
+                                }}
+                            </text>
+                            <text v-if="!item.maxPrice">{{ moneyFilter(item.minPrice) }}以上</text>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 选中选项 -->
+                <div class="menu_btn">
+                    <div class="resetting_btn" @click="resetting">重置</div>
+                    <div class="selected_btn" @click="selected">确定</div>
+                </div>
+            </div>
+        </TnPopup>
         <!-- <template #bottom>
 
         </template> -->
     </z-paging>
 
-            <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="getLocation"
-            permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
+    <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="getLocation"
+                permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
 </template>
 
 <script setup lang="ts">
+import { moneyFilter } from "@/common/filters"
 import TnSticky from '@tuniao/tnui-vue3-uniapp/components/sticky/src/sticky.vue'
 import { ref, reactive, computed, onMounted, defineExpose } from 'vue'
 import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
@@ -132,19 +139,21 @@ import { getcategoryList, shoplist } from '@/api/service-api'
 import { getDistances } from '@/utils/distance'
 import { useRoute } from 'vue-router'
 import { gotosearch } from '@/routes/service-routes'
+
 const treList = ref([
     { text: '区域', showregion: false },
     { text: '类别', showregion: false },
     { text: '价格', showregion: false }
 ])
-interface Data{
-    dataList:any,
-    topList:any,
-    topIndex:number,
-    screenIndex:number,
-    salesType:number,
-    priceType:number,
-    sortType:number,
+
+interface Data {
+    dataList: any,
+    topList: any,
+    topIndex: number,
+    screenIndex: number,
+    salesType: number,
+    priceType: number,
+    sortType: number,
 }
 
 const data = reactive<Data>({
@@ -159,11 +168,13 @@ const data = reactive<Data>({
 
 
 interface Props {
-    id:string,
-    pageTitle:string,
+    id: string,
+    templateId: number,
+    parentId: number,
+    pageTitle: string,
 }
-const props = defineProps<Props>()
 
+const props = defineProps<Props>()
 
 
 onMounted(() => {
@@ -231,7 +242,9 @@ const getdistance = computed(() => (lat, lng) => {
 
 const showprice = computed(() => (min, max) => {
     if (min && max) {
-        if (min === max) { return 1 }
+        if (min === max) {
+            return 1
+        }
         return 2
     }
     else if (!min && !max) {
@@ -243,7 +256,9 @@ const showprice = computed(() => (min, max) => {
 })
 
 const priceText = computed(() => (index) => {
-    if (index === 999) { return '不限' }
+    if (index === 999) {
+        return '不限'
+    }
     if (index && maxPrice.value && minPrice.value) {
         return `${minPrice.value / 100}-${maxPrice.value / 100}`
     }
@@ -258,10 +273,9 @@ const priceText = computed(() => (index) => {
 
 // OnMounted
 onMounted(() => {
-    const options = route.query
 
-    parentId.value = options.parentId || 440100
-    templateId.value = options.templateId
+    parentId.value = props.parentId || 440100
+    templateId.value = props.templateId
 
     // 区域
     hasAreaList()
@@ -295,18 +309,21 @@ const getLocation = async () => {
     }
 }
 
-const queryList = (pageNumber, pageSize) => {
+const queryList = (pageNumber: number, pageSize: number) => {
+    console.log('机构ID', templateId.value)
     getOrganEsList({
         pageNumber,
         pageSize,
         query: {
             categoryIds: categoryIds.value,
             districtIds: districtIds.value,
-            businessType: templateId.value === 122 ? 4 : 3,
+            businessType: templateId.value == 122 ? 4 : 3,
             maxPrice: priceIndex.value === 999 ? null : maxPrice.value || null,
             minPrice: priceIndex.value === 999 ? null : minPrice.value || null
         }
     }).then((res) => {
+        // 过滤
+        // const data = res.data.filter(item => item.businessType === 4);
         (paging.value as any).complete(res.data)
     }).catch(() => {
         (paging.value as any).complete([])
@@ -314,11 +331,11 @@ const queryList = (pageNumber, pageSize) => {
 }
 
 // Category Methods
-const getStairCategory = (type) => {
+const getStairCategory = (type: number) => {
     const action =
-    type === 13
-        ? getCategoryShowList({ id: 18, appType: 1 })
-        : getCategoryShowList({ id: 17, appType: 1 })
+          type === 13
+                ? getCategoryShowList({ id: 18, appType: 1 })
+                : getCategoryShowList({ id: 17, appType: 1 })
     action.then((res) => {
         categoryList.value = res
     })
@@ -384,7 +401,9 @@ const changePrice = () => {
 const clickarea = (item) => {
     if (districtIds.value.includes(item.id)) {
         const districtIndex = districtIds.value.indexOf(item.id)
-        if (districtIndex !== -1) { districtIds.value.splice(districtIndex, 1) }
+        if (districtIndex !== -1) {
+            districtIds.value.splice(districtIndex, 1)
+        }
         return
     }
     districtIds.value.push(item.id)
@@ -393,7 +412,9 @@ const clickarea = (item) => {
 const clickcategory = (item) => {
     if (categoryIds.value.includes(item.id)) {
         const categoryIndex = categoryIds.value.indexOf(item.id)
-        if (categoryIndex !== -1) { categoryIds.value.splice(categoryIndex, 1) }
+        if (categoryIndex !== -1) {
+            categoryIds.value.splice(categoryIndex, 1)
+        }
         return
     }
     categoryIds.value.push(item.id)
@@ -461,15 +482,12 @@ const changeTab = (index: number) => {
 }
 
 
-
 const bcNotify = ref()
 
-const changeToplist = (item:any, index:number) => {
+const changeToplist = (item: any, index: number) => {
     data.topIndex = index;
     (paging.value as any).reload()
 }
-
-
 
 
 // 页面刷新
@@ -533,18 +551,21 @@ defineExpose({
         }
     }
 }
-.top_inp_box{
+
+.top_inp_box {
     padding: 14rpx 20rpx;
     box-sizing: border-box;
     background: linear-gradient(180deg, #dff7ef -190%, #f8f9f9 110%);
-    .inp_box{
+
+    .inp_box {
         width: 100%;
         background: #FFFFFF;
         border-radius: 36rpx;
         display: flex;
         align-items: center;
         padding: 16rpx 20rpx;
-        .inp_text{
+
+        .inp_text {
             font-size: 24rpx;
             font-weight: 400;
             color: #666666;
@@ -553,18 +574,19 @@ defineExpose({
     }
 }
 
-.top_icon_list{
+.top_icon_list {
     width: 100%;
     overflow-x: scroll;
     padding: 20rpx 20rpx 0 20rpx;
     // margin-bottom: 20rpx;
     box-sizing: border-box;
-    .top_scrool{
+
+    .top_scrool {
         display: flex;
         align-items: center;
         width: fit-content;
 
-        .scrool_item{
+        .scrool_item {
             flex-shrink: 0;
             display: flex;
             align-items: center;
@@ -575,24 +597,28 @@ defineExpose({
             background: #fff;
             color: #333;
             position: relative;
-            &.is_select{
-                background: linear-gradient( 90deg, #FF8C74 0%, #EA3E1A 100%);
+
+            &.is_select {
+                background: linear-gradient(90deg, #FF8C74 0%, #EA3E1A 100%);
                 color: #FFFFFF;
             }
-            .item_img{
+
+            .item_img {
                 width: 38rpx;
                 height: 38rpx;
                 margin-right: 8rpx;
             }
-            .item_name{
+
+            .item_name {
                 flex-shrink: 0;
                 font-size: 26rpx;
                 font-weight: 400;
             }
-            .select_box{
+
+            .select_box {
                 width: 64rpx;
                 height: 64rpx;
-                background: linear-gradient( 90deg, #FF8C74 0%, #EA3E1A 200%);
+                background: linear-gradient(90deg, #FF8C74 0%, #EA3E1A 200%);
                 position: absolute;
                 bottom: -2rpx;
                 left: 50%;
@@ -602,7 +628,8 @@ defineExpose({
         }
     }
 }
-.screen_box{
+
+.screen_box {
     width: 100%;
     padding-top: 20rpx;
     box-sizing: border-box;
@@ -610,141 +637,159 @@ defineExpose({
 }
 
 .menu_show_box {
-        width: 100%;
-        // height: 500rpx;
-        border-top: 4rpx solid #f2f3f5;
-        // margin-top: 175px;
+    width: 100%;
+    // height: 500rpx;
+    border-top: 4rpx solid #f2f3f5;
+    // margin-top: 175px;
+    box-sizing: border-box;
+
+    .region_box {
+        padding: 30rpx;
+        padding-bottom: 0rpx;
         box-sizing: border-box;
-        .region_box {
-            padding: 30rpx;
-            padding-bottom: 0rpx;
-            box-sizing: border-box;
-            .region_box_top {
-                margin-bottom: 30rpx;
-                .region_box_top_text {
-                    font-size: 28rpx;
-                    color: #000;
-                    margin-right: 10rpx;
-                }
-                .nowcity {
-                    font-size: 28rpx;
-                    font-weight: 500;
-                    line-height: 36rpx;
-                    color: #333;
-                }
+
+        .region_box_top {
+            margin-bottom: 30rpx;
+
+            .region_box_top_text {
+                font-size: 28rpx;
+                color: #000;
+                margin-right: 10rpx;
             }
-            .region_box_list {
-                display: flex;
-                flex-wrap: wrap;
-                .region_box_item {
-                    padding: 16rpx 50rpx;
-                    width: 30%;
-                    height: 72rpx;
-                    margin-right: 20rpx;
-                    line-height: 28rpx;
-                    text-align: center;
-                    background: #f7f7f7;
-                    border-radius: 36rpx;
-                    font-size: 28rpx;
-                    color: #333;
-                    box-sizing: border-box;
-                    margin-bottom: 30rpx;
-                    border: 2rpx solid #f0f0f0;
-                    &.isshow_region {
-                        color: #29c86f;
-                        border: 2px solid rgba(41, 200, 111, 0.302);
-                        background: rgba(41, 200, 111, 0.15);
-                    }
-                }
+
+            .nowcity {
+                font-size: 28rpx;
+                font-weight: 500;
+                line-height: 36rpx;
+                color: #333;
             }
         }
-        .category_box {
-            padding: 30rpx;
-            padding-bottom: 0rpx;
-            box-sizing: border-box;
-            .category_box_list {
-                display: flex;
-                flex-wrap: wrap;
-                .category_box_item {
-                    padding: 16rpx 40rpx;
-                    height: 72rpx;
-                    line-height: 28rpx;
-                    text-align: center;
-                    background: #f7f7f7;
-                    border-radius: 36rpx;
-                    font-size: 28rpx;
-                    color: #333;
-                    box-sizing: border-box;
-                    margin-bottom: 30rpx;
-                    margin-right: 10rpx;
-                    border: 2rpx solid #f0f0f0;
-                    &.isshow_region {
-                        color: #29c86f;
-                        border: 2px solid rgba(41, 200, 111, 0.302);
-                        background: rgba(41, 200, 111, 0.15);
-                    }
-                }
-            }
-        }
-        .priceItem_box {
-            padding: 30rpx;
-            padding-bottom: 0rpx;
-            box-sizing: border-box;
-            .priceItem_box_list {
-                display: flex;
-                flex-wrap: wrap;
-                .priceItem {
-                    padding: 10rpx 30rpx;
-                    height: 72rpx;
-                    line-height: 46rpx;
-                    text-align: center;
-                    background: #f7f7f7;
-                    border-radius: 36rpx;
-                    font-size: 28rpx;
-                    color: #333;
-                    box-sizing: border-box;
-                    margin-bottom: 30rpx;
-                    margin-right: 10rpx;
-                    border: 2rpx solid #f0f0f0;
-                    &.isshow_region {
-                        color: #29c86f;
-                        border: 2px solid rgba(41, 200, 111, 0.302);
-                        background: rgba(41, 200, 111, 0.15);
-                    }
-                }
-            }
-        }
-        .menu_btn {
-            width: 100%;
-            height: 140rpx;
-            box-shadow: 0rpx -4rpx 12rpx rgba(0, 0, 0, 0.03);
+
+        .region_box_list {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 30rpx;
-            box-sizing: border-box;
-            .resetting_btn {
-                width: 236rpx;
-                height: 80rpx;
-                border-radius: 42rpx;
-                border: 2rpx solid #eeeeee;
-                background: #ffffff;
+            flex-wrap: wrap;
+
+            .region_box_item {
+                padding: 16rpx 50rpx;
+                width: 30%;
+                height: 72rpx;
+                margin-right: 20rpx;
+                line-height: 28rpx;
                 text-align: center;
-                line-height: 80rpx;
-                margin-right: 16rpx;
-                color: #666666;
-                font-size: 30rpx;
-            }
-            .selected_btn {
-                width: 434rpx;
-                height: 80rpx;
-                background: #29c86f;
-                border-radius: 42rpx;
-                text-align: center;
-                line-height: 80rpx;
-                color: #ffffff;
-                font-size: 30rpx;
+                background: #f7f7f7;
+                border-radius: 36rpx;
+                font-size: 28rpx;
+                color: #333;
+                box-sizing: border-box;
+                margin-bottom: 30rpx;
+                border: 2rpx solid #f0f0f0;
+
+                &.isshow_region {
+                    color: #29c86f;
+                    border: 2px solid rgba(41, 200, 111, 0.302);
+                    background: rgba(41, 200, 111, 0.15);
+                }
             }
         }
     }
+
+    .category_box {
+        padding: 30rpx;
+        padding-bottom: 0rpx;
+        box-sizing: border-box;
+
+        .category_box_list {
+            display: flex;
+            flex-wrap: wrap;
+
+            .category_box_item {
+                padding: 16rpx 40rpx;
+                height: 72rpx;
+                line-height: 28rpx;
+                text-align: center;
+                background: #f7f7f7;
+                border-radius: 36rpx;
+                font-size: 28rpx;
+                color: #333;
+                box-sizing: border-box;
+                margin-bottom: 30rpx;
+                margin-right: 10rpx;
+                border: 2rpx solid #f0f0f0;
+
+                &.isshow_region {
+                    color: #29c86f;
+                    border: 2px solid rgba(41, 200, 111, 0.302);
+                    background: rgba(41, 200, 111, 0.15);
+                }
+            }
+        }
+    }
+
+    .priceItem_box {
+        padding: 30rpx;
+        padding-bottom: 0rpx;
+        box-sizing: border-box;
+
+        .priceItem_box_list {
+            display: flex;
+            flex-wrap: wrap;
+
+            .priceItem {
+                padding: 10rpx 30rpx;
+                height: 72rpx;
+                line-height: 46rpx;
+                text-align: center;
+                background: #f7f7f7;
+                border-radius: 36rpx;
+                font-size: 28rpx;
+                color: #333;
+                box-sizing: border-box;
+                margin-bottom: 30rpx;
+                margin-right: 10rpx;
+                border: 2rpx solid #f0f0f0;
+
+                &.isshow_region {
+                    color: #29c86f;
+                    border: 2px solid rgba(41, 200, 111, 0.302);
+                    background: rgba(41, 200, 111, 0.15);
+                }
+            }
+        }
+    }
+
+    .menu_btn {
+        width: 100%;
+        height: 140rpx;
+        box-shadow: 0rpx -4rpx 12rpx rgba(0, 0, 0, 0.03);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 30rpx;
+        box-sizing: border-box;
+
+        .resetting_btn {
+            width: 236rpx;
+            height: 80rpx;
+            border-radius: 42rpx;
+            border: 2rpx solid #eeeeee;
+            background: #ffffff;
+            text-align: center;
+            line-height: 80rpx;
+            margin-right: 16rpx;
+            color: #666666;
+            font-size: 30rpx;
+        }
+
+        .selected_btn {
+            width: 434rpx;
+            height: 80rpx;
+            background: #29c86f;
+            border-radius: 42rpx;
+            text-align: center;
+            line-height: 80rpx;
+            color: #ffffff;
+            font-size: 30rpx;
+        }
+    }
+}
 </style>

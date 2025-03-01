@@ -15,7 +15,7 @@
         </view>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, onMounted, reactive } from 'vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -76,7 +76,7 @@ onMounted(() => {
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .container{
     background: #fff;
@@ -107,7 +107,7 @@ onMounted(() => {
         line-height: 30rpx;
         font-weight: 400;
         color: #F50606;
-        margin: 20rpx 0rpx; 
+        margin: 20rpx 0rpx;
     }
     .assess_box{
         .assess_btn{
@@ -123,4 +123,3 @@ onMounted(() => {
     }
 }
 </style>
-  
