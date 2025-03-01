@@ -1,74 +1,81 @@
 <template>
-    <view class="container">
-        <TnNavbar bgColor="transparent" :bottom-shadow="false" home-icon="" placeholder>
+    <!-- <TnNavbar bgColor="transparent" :bottom-shadow="false" home-icon="" placeholder>
             <template #back>
                 <TnIcon @click="gotoBack" color="##333333" name="left" size="42"></TnIcon>
             </template>
             <view class=titleCs>{{ dataObj.name }}</view>
         </TnNavbar>
-        <view class="gradient" :style="{ backgroundImage: `url(${dataObj.mainImage})` }"></view>
-        <view class="centent">
-            <z-paging @query="queryList" ref="paging" v-model="dataList" :auto="false" :fixed="false"
-                :refresher-enabled="false" @scroll="scrollPage">
-                <view class="qianUse">
-                    <view class="qianUl">
-                        <view class="quanLi" v-for="(item, index) in artList" :key="index">
-                            <view>
-                                <view class="groupMon" v-if="showTPri(item.typeId, item) == 1">
-                                    <text class="unit">￥</text>
-                                    <view class="numMoney">{{ moneyFilter(item.cfgOffer) }}</view>
-                                </view>
-                                <view class="groupMon" v-if="showTPri(item.typeId, item) == 2">
-                                    <view class="numMoney">{{ item.cfgOffer / 100 }}</view>
-                                    <text class="unit">折</text>
-                                </view>
-                                <view class="whereUse">{{ item.desc }}</view>
-                            </view>
-                            <view class="syuas">
-                                <view class="lineBox">
-                                    <view class="zonr1"></view>
-                                    <view class="lineDa"></view>
-                                    <view class="zonr2"></view>
-                                </view>
-                            </view>
-                            <view class="noget" v-if="!isLogin || (isLogin && item.grantedId == 0)" @click="getUp(item)">领取
-                            </view>
-                            <view class="noget alseUse" v-else @click="gotoUse(item)">已领取</view>
-                        </view>
-                    </view>
-
-                    <view class="centTitle" v-if="dataList.length > 0">
-                        <view class="centText">特惠服务</view>
-                        <view class="mornGood" @click="gotoUseList(1)">
-                            <text class="mornWz">更多</text>
-                            <TnIcon name="right" size="28rpx" color="#a6a6a6"></TnIcon>
-                        </view>
-                    </view>
-
-                    <view class="qianGoods">
-                        <WaterfallsFlow :wfList="dataList" @waterItem="clickwaterItem">
-                        </WaterfallsFlow>
-                    </view>
-
-                    <view class="centTitle" v-if="dataListTow.length > 0">
-                        <view class="centText">特惠商品</view>
-                        <view class="mornGood" @click="gotoUseList(2)">
-                            <text class="mornWz">更多</text>
-                            <TnIcon name="right" size="28rpx" color="#a6a6a6"></TnIcon>
-                        </view>
-                    </view>
-
-                    <view class="qianGoods">
-                        <WaterfallsFlow :wfList="dataListTow" @waterItem="clickwaterItemTow">
-                        </WaterfallsFlow>
-                    </view>
-                </view>
-            </z-paging>
+        <view class="gradient" :style="{ backgroundImage: `url(${dataObj.mainImage})` }"></view> -->
+    <!-- <view class="centent"> -->
+    <z-paging @query="queryList" ref="paging" v-model="dataList" :auto="true" :fixed="true" :refresher-enabled="false"
+        @scroll="scrollPage">
+        <template #top>
+            <PageTopbg></PageTopbg>
+            <bc-page-navbar title="新人福利"></bc-page-navbar>
+            <!-- :title="dataObj.name" -->
+        </template>
+        <view class="header" v-if="dataObj.mainImage">
+            <image class="bgImg" :src="dataObj.mainImage" mode="scaleToFill" />
         </view>
 
-    </view>
+        <view class="qianUse">
+            <view class="qianUl">
+                <view class="quanLi" v-for="(item, index) in artList" :key="index">
+                    <view>
+                        <view class="groupMon" v-if="showTPri(item.typeId, item) == 1">
+                            <text class="unit">￥</text>
+                            <view class="numMoney">{{ moneyFilter(item.cfgOffer) }}</view>
+                        </view>
+                        <view class="groupMon" v-if="showTPri(item.typeId, item) == 2">
+                            <view class="numMoney">{{ item.cfgOffer / 100 }}</view>
+                            <text class="unit">折</text>
+                        </view>
+                        <view class="whereUse">{{ item.desc }}</view>
+                    </view>
+                    <view class="syuas">
+                        <view class="lineBox">
+                            <view class="zonr1"></view>
+                            <view class="lineDa"></view>
+                            <view class="zonr2"></view>
+                        </view>
+                    </view>
+                    <view class="noget" v-if="!isLogin || (isLogin && item.grantedId == 0)" @click="getUp(item)">领取
+                    </view>
+                    <view class="noget alseUse" v-else @click="gotoUse(item)">已领取</view>
+                </view>
+            </view>
+
+            <view class="centTitle" v-if="dataList.length > 0">
+                <view class="centText">特惠服务</view>
+                <view class="mornGood" @click="gotoUseList(1)">
+                    <text class="mornWz">更多</text>
+                    <TnIcon name="right" size="28rpx" color="#a6a6a6"></TnIcon>
+                </view>
+            </view>
+
+            <view class="qianGoods">
+                <WaterfallsFlow :wfList="dataList" @waterItem="clickwaterItem">
+                </WaterfallsFlow>
+            </view>
+
+            <view class="centTitle" v-if="dataListTow.length > 0">
+                <view class="centText">特惠商品</view>
+                <view class="mornGood" @click="gotoUseList(2)">
+                    <text class="mornWz">更多</text>
+                    <TnIcon name="right" size="28rpx" color="#a6a6a6"></TnIcon>
+                </view>
+            </view>
+
+            <view class="qianGoods">
+                <WaterfallsFlow :wfList="dataListTow" @waterItem="clickwaterItemTow">
+                </WaterfallsFlow>
+            </view>
+        </view>
+    </z-paging>
+    <!-- </view> -->
 </template>
 <script setup lang="ts">
+import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { moneyFilter } from "@/common/filters"
 import { PlatformManage } from "@bc/sys"
 import { ref, reactive, computed, onMounted } from 'vue'
@@ -193,12 +200,6 @@ const gotoBack = () => {
 </script>
 <style lang="scss" scoped>
 .container {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
     .titleCs {
         font-size: 34rpx;
     }
@@ -217,7 +218,7 @@ const gotoBack = () => {
     .centent {
         overflow: auto;
         position: absolute;
-        top: 440rpx;
+        top: 0rpx;
         bottom: 0;
         left: 0;
         right: 0px;
@@ -374,5 +375,13 @@ const gotoBack = () => {
 
 :deep(.tn-navbar__content) {
     padding: 0 !important;
+}
+.header {
+    height: 440rpx;
+
+    .bgImg {
+        width: 100%;
+        height: 100%;
+    }
 }
 </style>
