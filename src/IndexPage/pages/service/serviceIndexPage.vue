@@ -237,14 +237,14 @@ const data = reactive<Data>({
         { id: 1, name: '品牌馆/旗舰店', rightIcon: '/leyou/logo/leyou_logo.png', topimg: "/leyou/goods/laobo.svg" },
         { id: 2, name: '好逛', rightIcon: '/leyou/goods/liveicon.png', topimg: "/leyou/goods/livetitle.svg" },
         { id: 3, name: '排行榜单', rightIcon: '/leyou/goods/goodshop-icon.svg', topimg: "/leyou/goods/Comment.svg" },
-        { id: 4, name: '新人福利', rightIcon: '/leyou/goods/Signin-icon.svg', topimg: "/leyou/goods/Signin.svg" },
+        { id: 4, name: '新人福利', rightIcon: '/leyou/goods/Signin-icon.svg', topimg: "/leyou/goods/Signin.svg" }
     ],
     nowCity: "广州",
     noticeData: [
-        '休闲/玩乐',
+        '休闲/玩乐'
     ],
     swiperIndex: 0,
-    swiperList: [],
+    swiperList: []
 })
 const tabsData: any = ref([
     { id: '360', icon: getAssetsPic('/fare/spMorn.png'), name: '全部适品', flagCode: 1 }
@@ -276,7 +276,7 @@ const openBotMun = () => {
 const tabCats = ref([])
 const upCalik = (item: any, index: number) => {
     console.log(item.id, index)
-    NavId.value = item.id;
+    NavId.value = item.id
     paging.value.reload()
     tabCats.value = item.categoryIds
     queryList(1, 6)
@@ -286,10 +286,10 @@ const allInList: any = ref([])
 const getSetIds = (num: number) => {
     setPageBank(num).then(res => {
         allInList.value = res.recordList.filter((item: any) => item.moduleId == 7)
-        console.log(allInList.value, '等于7');
+        console.log(allInList.value, '等于7')
         if (allInList.value.length > 0) {
             allInList.value.forEach((element: any) => {
-                console.log(element);
+                console.log(element)
                 // 业务模块专区
                 // channeCatelList(element, element.categoryIds)
             })
@@ -316,7 +316,8 @@ const liveList = (item: any) => {
 const gotoColmDetail = (index: any, item: any) => {
     if (item.id == '360') {
         gotoallClassPage(3)
-    } else {
+    }
+    else {
         // 跳转微页面
         return gotoZone(item.columnIds[0], item.name)
     }
@@ -431,7 +432,8 @@ const healthMyData = (list: any) => {
 const getTextList = (cateIndex: number) => {
     if (cateIndex == 1) {
 
-    } else {
+    }
+    else {
 
     }
 }
@@ -469,7 +471,7 @@ const getBannerList = (data: any) => {
 const getCity = () => {
 
     PlatformManage.getToken().then((res: any) => {
-        console.log('获取城市', res.city);
+        console.log('获取城市', res.city)
 
         data.nowCity = res.city ? res.city : '广州'
     })
@@ -497,7 +499,7 @@ const queryList = async (pageNumber: number, pageSize: number) => {
 
 
 const clickActivityList = (item: any) => {
-    console.log('item1111', item);
+    console.log('item1111', item)
     // 邀请好友
     // item.id == 1 && invitationDetail()
     // 优选店铺
@@ -510,10 +512,10 @@ const clickActivityList = (item: any) => {
             }, 1000)
             return
         }
-        item == 1 && gotoServiceExpo();
-        item == 2 && gotoLiveSelection();
-        item == 3 && gotogoodsRanking();
-        item == 4 && gotoRegister();
+        item == 1 && gotoServiceExpo()
+        item == 2 && gotoLiveSelection()
+        item == 3 && gotogoodsRanking()
+        item == 4 && gotoRegister()
         item == 5 && gotodiscussListPage()
     })
 }
@@ -532,7 +534,7 @@ const changeNav = (item: any) => {
             }
         })
     }
-    NavId.value = item.id;
+    NavId.value = item.id
     tabCats.value = item.categoryIds
     // (paging.value as any).reload()
     queryList(1, 6)
@@ -550,7 +552,7 @@ const tosearch = () => {
 }
 
 const clickwaterItem = (item: any) => {
-    console.log('item', item);
+    console.log('item', item)
     // 检查登录状态
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
@@ -566,7 +568,7 @@ const clickwaterItem = (item: any) => {
 
 // 退出页面
 const goback = () => {
-    uni.navigateBack();
+    uni.navigateBack()
 }
 
 const liveswiperChange = (e: any) => {
@@ -574,7 +576,7 @@ const liveswiperChange = (e: any) => {
 }
 
 defineExpose({
-    getCity,
+    getCity
 })
 
 </script>

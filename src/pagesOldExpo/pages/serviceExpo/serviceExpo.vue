@@ -60,7 +60,7 @@
                         <swiper-item class="swiper_item" v-for="item in 1" :key="item">
                             <!-- item.cover -->
                             <!-- @click="liveList(item)" -->
-                            
+
                             <image
                                 class="live_swiper_img"
                                 :src="getAssetsUrl('/leyou/static/expo_banner.png')"
@@ -92,7 +92,7 @@
                     />
                     <view class="nav_list_box">
                         <view class="nav_list">
-                            <view class="nav_item" @click="changeNav(item)" :class="{ 'is_selected' : item.id == data.selectedId }" v-for="(item, index) in data.navList" :key="index">
+                            <view class="nav_item" @click="changeNav(item)" :class="{ 'is_selected': item.id == data.selectedId }" v-for="(item, index) in data.navList" :key="index">
                                 <view>
                                     {{ item.name }}
                                 </view>
@@ -106,10 +106,10 @@
                 <view class="contentList_box">
                     <WaterfallsFlow :wfList="data.dataList" @waterItem="clickwaterItem"></WaterfallsFlow>
                 </view>
-                
+
             </view>
-           
-            
+
+
 
 
 
@@ -132,8 +132,9 @@ import BCNotify from '@/components/notify/index.vue'
 import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 
 import { oldExpoCategory, oldExpolist, productList } from '@/api/goods-api'
-// import { gotohealthproductDetails, , gotoDiscussDetail, gotoServiceStore } from '@/routes/service-routes'
-import { gotoServiceExpoClass, gotonewProduct, gotosearch, gotoAllZone } from '@/routes/service-routes'
+// import { gotohealthproductDetails, , gotoDiscussDetail } from '@/routes/service-routes'
+import { gotoShopDetail } from "@/routes/service-routes"
+import { gotoServiceExpoClass, gotonewProduct, gotosearch, gotoAllZone, gotoServiceStore } from '@/routes/service-routes'
 import { gotogoodsDetail } from '@/routes/goods-routes'
 
 import WaterfallsFlow from './components/WaterfallsFlow.vue'
@@ -162,7 +163,7 @@ const data = reactive<Data>({
     navList: [],
     navIndex: 1,
     selectedId: 999,
-    categoryIds: [],
+    categoryIds: []
 })
 
 
@@ -209,13 +210,13 @@ onMounted(async () => {
 })
 
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
 
 const paging = ref(null)
-const queryList = async (pageNumber:number, pageSize:number)=>{
+const queryList = async (pageNumber:number, pageSize:number) => {
 
     if (pageNumber == 1) {
         oldExpoCategory({
@@ -223,27 +224,27 @@ const queryList = async (pageNumber:number, pageSize:number)=>{
             // pageSize,
             pageNumber: 1,
             pageSize: 6,
-            query:{
+            query: {
                 isPid: 1
             }
         }).then((res:any) => {
             data.categoryList = [
                 ...res.data,
-                {name: '新品专区', thumb: '/leyou/static/new_icon.png',id: 111},
-                {name: '论坛专区', thumb: '/leyou/static/forum_icon.png',id: 333},
-                {name: '全部专区', thumb: '/leyou/static/all_icon.png',id: 222},
+                { name: '新品专区', thumb: '/leyou/static/new_icon.png', id: 111 },
+                { name: '论坛专区', thumb: '/leyou/static/forum_icon.png', id: 333 },
+                { name: '全部专区', thumb: '/leyou/static/all_icon.png', id: 222 }
             ]
 
             data.navList = [
-                {name: '关注', thumb: '', id: 998},
-                {name: '推荐', thumb: '', id: 999},
+                { name: '关注', thumb: '', id: 998 },
+                { name: '推荐', thumb: '', id: 999 },
                 ...res.data,
-                {name: '新品专区', thumb: '',id: 111},
+                { name: '新品专区', thumb: '', id: 111 }
             ]
 
             data.categoryIds = data.categoryList.map((item:any) => {
                 return item.id
-            });
+            })
 
         })
     }
@@ -253,15 +254,15 @@ const queryList = async (pageNumber:number, pageSize:number)=>{
             categoryIds: data.categoryIds
         }).then((Listres:any) => {
 
-            let arr = [] as any;
+            let arr = [] as any
             Listres.forEach((item:any) => {
-                item.productLists.forEach((sonItem:any)=>{
-                    arr = arr.concat(sonItem);
+                item.productLists.forEach((sonItem:any) => {
+                    arr = arr.concat(sonItem)
                 })
             });
 
-            (paging.value as any).complete(arr);
-            console.log('data.dataList',data.dataList);
+            (paging.value as any).complete(arr)
+            console.log('data.dataList', data.dataList)
         })
         return
     }
@@ -269,13 +270,13 @@ const queryList = async (pageNumber:number, pageSize:number)=>{
     oldExpolist({
         pageNumber,
         pageSize,
-        query:{
+        query: {
             isRecommend: data.selectedId == 999 ? 1 : 0,
             isFavorite: data.selectedId == 998 ? 1 : 0,
-            pidCategoryId: data.selectedId == 998 || data.selectedId == 999 ? '' : data.selectedId,
+            pidCategoryId: data.selectedId == 998 || data.selectedId == 999 ? '' : data.selectedId
         }
     }).then((res:any) => {
-        console.log('res',res.data);
+        console.log('res', res.data);
         (paging.value as any).complete(res.data)
     }).catch((err:any) => {
         (paging.value as any).complete([])
@@ -288,31 +289,18 @@ const liveswiperChange = (e:any) => {
     // console.log('swiper e',e);
 }
 
-const clickwaterItem = (item:any) =>{
-    console.log('item',item);
-    // 区分普通分区还是新品分区
-    if (data.selectedId != 111) {
-        if (item.shopSource == 32) {
-            gotoDiscussDetail({shopId: item.shopId})
-            return
-        }
-        gotoServiceStore({shopId: item.shopId, isAd: 0})
+const clickwaterItem = (item:any) => {
+    console.log('item', item)
+    if (item.shopSource == 32) {
+        gotoShopDetail(item.shopId)
         return
     }
-
-    if (item.productType == 1) {
-        gotogoodsDetail(item.id)
-    } else {
-        gotohealthproductDetails({itemId: item.id})
-    }
-
-    
-
-    
+    // 6 服务到店 健康
+    gotoServiceStore({ itemId: item.shopId })
 }
 
 const toClassPage = (item:any) => {
-    console.log('item',item);
+    console.log('item', item)
 
     if (item.id == 333) {
         bcNotify.value.show('敬请期待')
@@ -336,14 +324,14 @@ const toClassPage = (item:any) => {
 
 const changeNav = (item:any) => {
 
-    data.selectedId = item.id;
+    data.selectedId = item.id
 
     if (item.id == 111) {
-        console.log('新品专区');
-        
+        console.log('新品专区')
+
     }
 
-    (paging.value as any).reload();
+    (paging.value as any).reload()
 
 }
 
@@ -354,7 +342,7 @@ const tosearch = () => {
 
 // 退出页面
 const goback = () => {
-    uni.navigateBack();
+    uni.navigateBack()
 }
 
 defineExpose({
@@ -401,7 +389,7 @@ defineExpose({
             color: #6E6E6E;
             margin-left: 6rpx;
         }
-        
+
 
     }
 
@@ -410,7 +398,7 @@ defineExpose({
     padding: 40rpx 10rpx;
     box-sizing: border-box;
     background: #FFFFFF;
-    border-radius: 28rpx 28rpx 0rpx 0rpx;   
+    border-radius: 28rpx 28rpx 0rpx 0rpx;
 
     .zone_box{
         padding: 0rpx 40rpx;
@@ -454,14 +442,14 @@ defineExpose({
 
                     font-size: 20rpx;
                     color: #FFFFFF;
-                    
+
                     position: absolute;
                     top: 0;
                     right: 0;
                 }
 
             }
-            
+
         }
     }
     .live_swiper{
@@ -573,7 +561,7 @@ defineExpose({
                 .nav_item{
                     flex-shrink: 0;
                     flex-wrap: nowrap;
-        
+
                     font-weight: 400;
                     font-size: 32rpx;
                     color: #8C8C8C;
@@ -595,7 +583,7 @@ defineExpose({
 
                     }
                 }
-                
+
                 .nav_space{
                     flex-shrink: 0;
 
@@ -604,14 +592,14 @@ defineExpose({
 
                 }
             }
-            
+
         }
     }
     .contentList_box{
         background: #FAFAFA;
     }
 
-}   
+}
 
 </style>
 <style>
