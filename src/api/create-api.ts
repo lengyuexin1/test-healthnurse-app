@@ -1291,3 +1291,32 @@ export const postReportsubmit = (req: any) => {
 export const getaudioList = (req: any) => {
     return http.content.post('/v1/bc/app/audio/list', req)
 }
+
+// 讨论分区列表
+export const getdiscussionList = (req:any,isRequireLogin:boolean = false) => {
+    if (isRequireLogin) {
+        return openHttp.content.get('/v1/bc/public/discussion/list', req)
+    }
+    return http.content.get('/v1/bc/public/discussion/list', req)
+}
+
+// 讨论内容列表
+export const discussionContentList = (req:any,isRequireLogin:boolean = false) => {
+    if (isRequireLogin) {
+        return openHttp.content.post('/v1/bc/public/discussion/content/list',req)
+    }
+    return http.content.post('/v1/bc/public/discussion/content/list',req)
+}
+
+// 讨论区模块列表
+export const discussionDetailList = (req:any,isRequireLogin:boolean = false) => {
+    if (isRequireLogin) {
+        return openHttp.post('/v1/bc/app/discussion/post/list',req)
+    }
+    return http.content.post('/v1/bc/app/discussion/post/list',req)
+}
+
+// 发布讨论内容
+export const upDiscussion = (req:any) => {
+    return http.content.post('/v1/bc/app/content/submit',req)
+}
