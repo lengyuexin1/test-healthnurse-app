@@ -3,7 +3,7 @@
         <image class="icon-bg" :src="getAssetsUrl('/leyou/icon/newcomer-bg.png')" mode="scaleToFill" />
 
         <view class="title tn-flex-center-between">
-            <view class="left">限时专属红包 一键包邮</view>
+            <view class="left">{{ dataObj.name }}</view>
             <view class="right tn-flex-row">更多
                 <TnIcon name="right" />
             </view>
@@ -11,9 +11,15 @@
         <view class="list tn-flex-center-around">
             <view class="coupon">
                 <image class="coupon-bg" :src="getAssetsUrl('/leyou/icon/coupon-bg.png')" mode="scaleToFill" />
-                <view class="content">
-                    <view class="price tn-text-bold" v-if="dataObj.couponList.length > 0">
-                        {{ showTPri(dataObj.couponList[0].typeId, dataObj.couponList[0]) }}
+                <view class="content" v-if="dataObj.couponList.length > 0">
+                    <view class="price tn-text-bold"
+                        v-if="showTPri(dataObj.couponList[0].typeId, dataObj.couponList[0]) == 1">
+                        <text class="unit">￥</text>{{ moneyFilter(dataObj.couponList[0].cfgOffer) }}
+                        <view class="txt">{{ dataObj.couponList[0].desc }}</view>
+                    </view>
+                    <view class="price tn-text-bold"
+                        v-if="showTPri(dataObj.couponList[0].typeId, dataObj.couponList[0]) == 2">
+                        {{ dataObj.couponList[0].cfgOffer / 100 }}<text class="unit">折</text>
                         <view class="txt">{{ dataObj.couponList[0].desc }}</view>
                     </view>
                     <view class="btn tn-text-bold">去使用</view>
@@ -21,7 +27,7 @@
             </view>
             <view class="wrap tn-flex-column" v-for="(item, index) in dataObj.itemList.splice(0, 3)" :key="index">
                 <image class="img" :src="item.thumb" mode="scaleToFill" />
-                <text class="txt">劵后￥{{ moneyFilter(item.price) }}元</text>
+                <text class="txt quanhout">劵后￥{{ moneyFilter(item.price) }}元</text>
             </view>
         </view>
     </view>
@@ -43,10 +49,10 @@ interface Props {
 const showTPri = computed(() => (cup: string, dats: any) => {
     const strPri = (cup + '').slice(-1)
     if (strPri == '0' || strPri == '1') {
-        return "￥" + moneyFilter(dats.cfgOffer)
+        return 1
     }
     if (strPri == '4' || strPri == '2') {
-        return dats.cfgOffer / 100 + '折'
+        return 2
     }
 })
 
@@ -165,6 +171,9 @@ const clickMore = () => {
                 text-align: center;
                 font-size: 22rpx;
                 color: #E66F41;
+            }
+            .quanhout{
+                margin-top: 4rpx;
             }
         }
     }

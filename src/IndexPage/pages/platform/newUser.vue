@@ -14,8 +14,13 @@
                     <view class="qianUl">
                         <view class="quanLi" v-for="(item, index) in artList" :key="index">
                             <view>
-                                <view class="groupMon">
-                                    <view class="numMoney">{{ showTPri(item.typeId, item) }}</view>
+                                <view class="groupMon" v-if="showTPri(item.typeId, item) == 1">
+                                    <text class="unit">￥</text>
+                                    <view class="numMoney">{{ moneyFilter(item.cfgOffer) }}</view>
+                                </view>
+                                <view class="groupMon" v-if="showTPri(item.typeId, item) == 2">
+                                    <view class="numMoney">{{ item.cfgOffer / 100 }}</view>
+                                    <text class="unit">折</text>
                                 </view>
                                 <view class="whereUse">{{ item.desc }}</view>
                             </view>
@@ -123,10 +128,10 @@ const gotoUseList = (num: string) => {
 const showTPri = computed(() => (cup: string, dats: any) => {
     const strPri = (cup + '').slice(-1)
     if (strPri == '0' || strPri == '1') {
-        return "￥" + moneyFilter(dats.cfgOffer)
+        return 1
     }
     if (strPri == '4' || strPri == '2') {
-        return dats.cfgOffer / 100 + '折'
+        return 2
     }
 })
 
@@ -282,6 +287,10 @@ const gotoBack = () => {
                     font-weight: 600;
                     font-size: 28rpx;
                     color: #000000;
+                }
+
+                .unit {
+                    font-size: 24rpx;
                 }
 
                 .numMoney {
