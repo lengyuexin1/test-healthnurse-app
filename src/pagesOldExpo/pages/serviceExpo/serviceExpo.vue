@@ -132,7 +132,6 @@ import BCNotify from '@/components/notify/index.vue'
 import BarPlaying from '@/components/barPlaying/barPlaying.vue'
 
 import { oldExpoCategory, oldExpolist, productList } from '@/api/goods-api'
-// import { gotohealthproductDetails, , gotoDiscussDetail } from '@/routes/service-routes'
 import { gotoShopDetail } from "@/routes/service-routes"
 import { gotoServiceExpoClass, gotonewProduct, gotosearch, gotoAllZone, gotoServiceStore } from '@/routes/service-routes'
 import { gotogoodsDetail } from '@/routes/goods-routes'
@@ -278,7 +277,7 @@ const queryList = async (pageNumber:number, pageSize:number) => {
     }).then((res:any) => {
         console.log('res', res.data);
         (paging.value as any).complete(res.data)
-    }).catch((err:any) => {
+    }).catch(() => {
         (paging.value as any).complete([])
     })
 

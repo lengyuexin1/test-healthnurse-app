@@ -14,7 +14,7 @@
             :auto-scroll-to-top-when-reload="false"
         >
             <template #top>
-                
+
                 <PageTopbg :zIndex="-1" :addheight="250" :bgstyle="'background: linear-gradient( 180deg, #FFE3DE 0%, #F8F9F9 100%);'"></PageTopbg>
 
                 <view class="navbar_box" :style="{ paddingTop: data.titleTop + 'px', paddingRight: data.titleRight + 'px' }">
@@ -78,7 +78,7 @@
                 </view>
             </view>
 
-            
+
 
 
             <BCNotify ref="bcNotify"></BCNotify>
@@ -101,8 +101,8 @@ import { getAssetsPic } from '@/common/setPicture'
 import { getdiscussionList, discussionDetailList } from "@/api/create-api"
 import { PlatformManage } from "@bc/sys"
 import { gotoLogin } from "@/routes/public-routes"
-import { gotoUpdiscuss,  } from '@/routes/service-routes'
-// gotoarticledetails
+import { gotoUpdiscuss  } from '@/routes/service-routes'
+import { gotoarticledetails } from "@/routes/create-routes"
 
 
 import BCNotify from '@/components/notify/index.vue'
@@ -133,10 +133,10 @@ const data = reactive<Data>({
     partitionObj: {},
     discussionId: '',
     discussionName: '',
-    showListBox: false,
+    showListBox: false
 })
 
-const formatTime = computed(()=>(time:number)=>{
+const formatTime = computed(() => (time:number) => {
     return agoTime(time)
 })
 
@@ -184,7 +184,7 @@ onMounted(async () => {
 })
 
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
@@ -205,42 +205,42 @@ onLoad((option:any) => {
     // })
 
 })
-onShow(()=>{
+onShow(() => {
     (paging.value as any).reload()
 })
 
 const paging = ref(null)
-const queryList = async (pageNumber:number, pageSize:number)=>{
+const queryList = async (pageNumber:number, pageSize:number) => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
 
         if (pageNumber == 1) {
-            getdiscussionList({},isRequireLogin).then((res:any) => {
+            getdiscussionList({}, isRequireLogin).then((res:any) => {
                 data.partitionObj = res.filter((item:any) => {
                     return item.id == data.discussionId
                 })
                 data.partitionObj = data.partitionObj[0]
             })
         }
-        data.showListBox = false;
+        data.showListBox = false
 
         discussionDetailList({
-            query:{
+            query: {
                 discussionId: data.discussionId
             },
             pageNumber,
             pageSize
-        },isRequireLogin).then((res:any) => {
+        }, isRequireLogin).then((res:any) => {
             (paging.value as any).complete(res.data)
-            data.showListBox = true;
-        }).catch((err:any) => {
+            data.showListBox = true
+        }).catch(() => {
             (paging.value as any).complete([])
         })
     })
-    
+
 }
 
 const toUpdiscuss = () => {
-    gotoUpdiscuss({discussionId: data.discussionId, discussionName: data.discussionName})
+    gotoUpdiscuss({ discussionId: data.discussionId, discussionName: data.discussionName })
 }
 
 const toDetail = (item:any) => {
@@ -255,7 +255,7 @@ const goback = () => {
         gotoserviceIndexPage(true)
         return
     }
-    uni.navigateBack();
+    uni.navigateBack()
 }
 
 // app分享参数
@@ -285,14 +285,14 @@ const sharePage = () => {
 
 // 微信小程序分享
 //#ifdef MP-WEIXIN
-onShareAppMessage((res:any)=>{
-    console.log('小程序分享');
-    
+onShareAppMessage((res:any) => {
+    console.log('小程序分享')
+
     return {
         title: '讨论区',
-        imageUrl : '',
-        desc : '讨论区内页',
-        path: `/Create/pages/discussPage/discussListsonPage?discussionId=${data.discussionId}&discussionName=${data.discussionName}`, //点击链接进入的页面
+        imageUrl: '',
+        desc: '讨论区内页',
+        path: `/Create/pages/discussPage/discussListsonPage?discussionId=${data.discussionId}&discussionName=${data.discussionName}` //点击链接进入的页面
     }
 })
 //#endif
@@ -346,7 +346,7 @@ defineExpose({
         }
 
     }
-    
+
 
 }
 .partition_box{
@@ -411,7 +411,7 @@ defineExpose({
                     font-size: 28rpx;
                     color: #333333;
                 }
-                
+
             }
             .up_time{
                 font-weight: 400;

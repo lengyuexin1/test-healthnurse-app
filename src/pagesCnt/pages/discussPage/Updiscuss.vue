@@ -1,12 +1,12 @@
 <template>
     <view class="container">
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
             <template #top>
-                
+
                 <PageTopbg bgstyle="background: linear-gradient( 180deg, #FFE3DE 0%, #F8F9F9 100%);"></PageTopbg>
                 <bc-page-navbar :title=" data.isUp ? '发起讨论' : '发布预览' ">
                     <template #back>
@@ -16,21 +16,21 @@
                     </template>
                 </bc-page-navbar>
             </template>
-            
+
             <view class="up_content" v-if="data.isUp">
                 <view class="up_title_inp">
-                    <TnInput 
-                    v-model="data.inputValue" 
-                    placeholder="请输入一个完整的标题 (30字内)" 
-                    size="lg" :underline="true" 
-                    :placeholder-style="{ color : '#CCCCCC' }"
-                    :custom-style="{ paddingLeft : 0 }"
+                    <TnInput
+                    v-model="data.inputValue"
+                    placeholder="请输入一个完整的标题 (30字内)"
+                    size="lg" :underline="true"
+                    :placeholder-style="{ color: '#CCCCCC' }"
+                    :custom-style="{ paddingLeft: 0 }"
                     @blur="changeisNext"
                     :maxlength="30"
                     />
                 </view>
                 <view class="up_textarea">
-                    <textarea  
+                    <textarea
                         class="textarea_btn"
                         placeholder="添加内容"
                         placeholder-style="color:#CCCCCC"
@@ -110,22 +110,22 @@
                     <view class="create_btn createFun" v-if="data.isUp" @click="createFun">
                         预览
                     </view>
-                    <view class="create_btn toUp" :class="{ 'cannotUp' : !data.isNext , 'propopen' : !data.isUp}" @click="toUp">
+                    <view class="create_btn toUp" :class="{ 'cannotUp': !data.isNext , 'propopen': !data.isUp }" @click="toUp">
                         确定发布
                     </view>
                 </view>
-                
+
             </template>
 
 
-        </z-paging>   
-		
+        </z-paging>
+
         <yk-authpup ref="authpup" :isNativeHead="false" type="top" @changeAuth="getLocation" permissionID="ACCESS_FINE_LOCATION"></yk-authpup>
 
         <BCNotify ref="bcNotify"></BCNotify>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, nextTick } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
@@ -173,30 +173,30 @@ interface Data{
     discussionName: string
 }
 const data = reactive<Data>({
-    inputValue:'',
-    textvalue:'',
-    fileList:[],
-    coverList:[],
-    isNext:false,
-    showPopup:false,
-    isUp:true,
-    userInfo:{},
-    salonDetail:{},
-    showfilebox:false,
-    showcoverbox:false,
-    circleId:'',
+    inputValue: '',
+    textvalue: '',
+    fileList: [],
+    coverList: [],
+    isNext: false,
+    showPopup: false,
+    isUp: true,
+    userInfo: {},
+    salonDetail: {},
+    showfilebox: false,
+    showcoverbox: false,
+    circleId: '',
     showText: '',
     firstUp: true,
     regionText: '',
     lat: 0,
     lng: 0,
     discussionId: '',
-    discussionName: '',
+    discussionName: ''
 })
 
-const timeformat = computed(()=>{
-    let time = new Date().getTime()
-    return formattime((time / 1000) ,'YYYY-MM-DD HH:mm')
+const timeformat = computed(() => {
+    const time = new Date().getTime()
+    return formattime((time / 1000), 'YYYY-MM-DD HH:mm')
 })
 
 onLoad((option:any) => {
@@ -218,15 +218,15 @@ onMounted(() => {
     // // #endif
 
 
-    PlatformManage.getToken().then((res:any)=>{
+    PlatformManage.getToken().then((res:any) => {
         data.userInfo = res
     })
     if (props.ischange) {
-        console.log('修改内容',props.id);
+        console.log('修改内容', props.id)
         geteditPostsDetail({
-            id:props.id
-        }).then((res:any)=>{
-            console.log('res',res);
+            id: props.id
+        }).then((res:any) => {
+            console.log('res', res)
             getdetail(res.baseInfo.circleId)
             data.circleId = res.baseInfo.circleId
             data.inputValue = res.baseInfo.title
@@ -239,7 +239,8 @@ onMounted(() => {
 
             data.isNext = true
         })
-    }else{
+    }
+    else {
         getdetail(props.salonId)
         data.showfilebox = true
         data.showcoverbox = true
@@ -247,7 +248,7 @@ onMounted(() => {
 
 })
 
-const getdetail = (id:string) =>{
+const getdetail = (id:string) => {
     // getsalonDetail({
     //     id
     // }).then((res)=>{
@@ -260,18 +261,19 @@ const changeisNext = () => {
 
     if (data.inputValue && data.textvalue && data.fileList.length != 0 && data.regionText) {
         data.isNext = true
-    }else{
+    }
+    else {
         data.isNext = false
     }
 
-    console.log('data.isNext',data.isNext);
-    console.log('data.fileList.length',data.fileList.length);
+    console.log('data.isNext', data.isNext)
+    console.log('data.fileList.length', data.fileList.length)
 }
 
 const imgUploadref = ref()
 const openUp = () => {
-    nextTick(()=>{
-        console.log('手动调用',imgUploadref ,imgUploadref.value); 
+    nextTick(() => {
+        console.log('手动调用', imgUploadref, imgUploadref.value)
         imgUploadref.value.chooseFileFun()
     })
 }
@@ -295,7 +297,7 @@ const toUp = () => {
     }
 
     upDiscussion({
-        baseInfo:{
+        baseInfo: {
             title: data.inputValue,
             cover: data.fileList[0],
             desc: data.textvalue,
@@ -311,10 +313,10 @@ const toUp = () => {
         }
     }).then((res:any) => {
     	bcNotify.value.show('发布成功')
-        setTimeout(()=>{
+        setTimeout(() => {
             uni.navigateBack()
         }, 2000)
-    }).catch((err:any) =>{
+    }).catch((err:any) => {
         bcNotify.value.error(err.message)
     })
 }
@@ -337,7 +339,7 @@ const getLocation = () => {
             data.lng = res.longitude
         },
         fail: (err) => {
-            console.log('err',err);
+            console.log('err', err)
         }
     })
 }
@@ -346,15 +348,15 @@ const getLocation = () => {
 const positionFun = () => {
     uni.chooseLocation({
         success: (res:any) => {
-            console.log('res',res);
-            
-            data.regionText = res.address.slice(0,9)
+            console.log('res', res)
+
+            data.regionText = res.address.slice(0, 9)
             data.lat = res.latitude
             data.lng = res.longitude
 
-            console.log('data.lat',data.lat);
-            console.log('data.lng',data.lng);
-            
+            console.log('data.lat', data.lat)
+            console.log('data.lng', data.lng)
+
             changeisNext()
 
         }
@@ -362,7 +364,7 @@ const positionFun = () => {
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .up_content{
     width: 100%;
@@ -459,7 +461,7 @@ const positionFun = () => {
         border-bottom: 2rpx solid #F2F2F2;
         border-top: 2rpx solid #F2F2F2;
         .location_box{
-        
+
             width: 100%;
             display: flex;
             align-items: center;
@@ -485,7 +487,7 @@ const positionFun = () => {
         }
     }
 
-    
+
 }
 
 .preview_conten{
@@ -591,4 +593,4 @@ page{
     background: #FFFFFF;
 }
 </style>
- 
+

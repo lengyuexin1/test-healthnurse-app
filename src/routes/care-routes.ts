@@ -334,12 +334,6 @@ export const gotoAttendShop = (id: string, applyId?: TShopApply) => {
     }
 
     return gotoServiceStore({ itemId: id })
-
-    // const route = {
-    //     path: '/pagesMall/pages/shop/shopDetail',
-    //     query: { id }
-    // }
-    // return pageController.push(route)
 }
 
 

@@ -14,7 +14,7 @@
             :auto-scroll-to-top-when-reload="false"
         >
             <template #top>
-                
+
                 <PageTopbg :zIndex="-1" :addheight="250" :bgstyle="'background: linear-gradient( 180deg, #FFE3DE 0%, #F8F9F9 100%);'"></PageTopbg>
 
                 <view class="navbar_box" :style="{ paddingTop: data.titleTop + 'px', paddingRight: data.titleRight + 'px' }">
@@ -64,7 +64,7 @@
             </view>
 
             <view class="page_title">最新讨论</view>
-            
+
             <view class="content_box" v-if="data.dataList.length != 0">
                 <view class="content_list">
                     <view class="content_List_item" v-for="item in data.dataList" :key="item.id">
@@ -114,7 +114,7 @@ import { getdiscussionList, discussionContentList } from "@/api/create-api"
 import { PlatformManage } from "@bc/sys"
 import { gotoLogin } from "@/routes/public-routes"
 import { gotodiscussListsonPage } from '@/routes/service-routes'
-// gotoarticledetails
+import { gotoarticledetails } from "@/routes/create-routes"
 
 import BCNotify from '@/components/notify/index.vue'
 import partitionTextItem from './components/partitionTextItem.vue'
@@ -145,7 +145,7 @@ const data = reactive<Data>({
     showListBox: false
 })
 
-const formatTime = computed(()=>(time:number)=>{
+const formatTime = computed(() => (time:number) => {
     return agoTime(time)
 })
 
@@ -192,7 +192,7 @@ onMounted(async () => {
 })
 
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
@@ -205,57 +205,57 @@ onLoad((option:any) => {
     //     }).catch((err:any) => {})
     // })
 })
-onShow(()=>{
+onShow(() => {
     // data.showListBox = true;
     (paging.value as any).reload()
 
 })
-onHide(()=>{
+onHide(() => {
     // data.showListBox = false;
 })
 
 const paging = ref(null)
-const queryList = async (pageNumber:number, pageSize:number)=>{
+const queryList = async (pageNumber:number, pageSize:number) => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
 
         if (pageNumber == 1) {
-            getdiscussionList({},isRequireLogin).then((res:any) => {
+            getdiscussionList({}, isRequireLogin).then((res:any) => {
                 data.isRequireLogin = isRequireLogin
                 data.partitionList = res
-                console.log('data.partitionList',data.partitionList);
-            }).catch((err:any) => {})
+                console.log('data.partitionList', data.partitionList)
+            }).catch(() => {})
         }
 
-        data.showListBox = false;
+        data.showListBox = false
 
         discussionContentList({
-            query:{},
+            query: {},
             pageNumber,
-            pageSize,
-        },isRequireLogin).then((res:any) => {
+            pageSize
+        }, isRequireLogin).then((res:any) => {
             (paging.value as any).complete(res.data)
-            data.showListBox = true;
+            data.showListBox = true
 
-        }).catch((err:any) => {
+        }).catch(() => {
             (paging.value as any).complete([])
-        }).finally(()=>{
-            console.log('加载中.....');
+        }).finally(() => {
+            console.log('加载中.....')
         })
     })
-    
+
 }
 
 const partitionDetail = (item:any) => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
             bcNotify.value.show('请先登录')
-            setTimeout(()=>{
+            setTimeout(() => {
                 gotoLogin({})
-            },1000)
+            }, 1000)
             return
         }
-        gotodiscussListsonPage({discussionId:item.id, discussionName:item.name})
-        
+        gotodiscussListsonPage({ discussionId: item.id, discussionName: item.name })
+
     })
 }
 
@@ -263,9 +263,9 @@ const toDetail = (item:any) => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
             bcNotify.value.show('请先登录')
-            setTimeout(()=>{
+            setTimeout(() => {
                 gotoLogin({})
-            },1000)
+            }, 1000)
             return
         }
         gotoarticledetails({ id: item.id })
@@ -280,7 +280,7 @@ const goback = () => {
         gotoserviceIndexPage(true)
         return
     }
-    uni.navigateBack();
+    uni.navigateBack()
 }
 
 
@@ -295,8 +295,8 @@ const sharePage = () => {
         imageUrl: 'https://xcpublic.oss-cn-shenzhen.aliyuncs.com/webapplet/leyou/newpagemenu/jianwen_icon.svg',
         title: '讨论区',
         miniProgram: {
-            id: 'gh_fd20b530cb94', //微信小程序原始id
-            path: `/Create/pages/discussPage/discussListPage`, //点击链接进入的页面
+            id: 'gh_c2469c570746', //微信小程序原始id
+            path: `/pagesCnt/pages/discussPage/discussListPage`, //点击链接进入的页面
             type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
             webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接
         },
@@ -311,14 +311,14 @@ const sharePage = () => {
 
 // 微信小程序分享
 //#ifdef MP-WEIXIN
-onShareAppMessage((res:any)=>{
-    console.log('小程序分享');
-    
+onShareAppMessage((res:any) => {
+    console.log('小程序分享')
+
     return {
         title: '讨论区',
-        imageUrl : '',
-        desc : '讨论区内页',
-        path: `/Create/pages/discussPage/discussListPage`,
+        imageUrl: '',
+        desc: '讨论区内页',
+        path: `/pagesCnt/pages/discussPage/discussListPage`
     }
 })
 //#endif
@@ -380,7 +380,7 @@ defineExpose({
             z-index: 30;
         }
     }
-    
+
 
 }
 .partition_box{
