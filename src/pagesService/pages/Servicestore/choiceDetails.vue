@@ -16,22 +16,21 @@
 
                 </bc-page-navbar>
             </template>
-            <view class="details_box" v-if="detailObj.id">
+            <view v-if="detailObj.id" class="details_box">
                 <div class="swiper_box">
-                    <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500">
+                    <swiper :autoplay="true" :duration="500" :interval="5000" circular class="swiper">
                         <swiper-item
                               v-for="(item, index) in showswiper(
                                     detailObj.covers
                                 )"
                               :key="index"
                         >
-                            <image class="swiper_item" :src="item" mode="aspectFill"
+                            <image :src="item" class="swiper_item" mode="aspectFill"
                                    @click="preImage(index,showswiper(detailObj.covers))"/>
                         </swiper-item>
                     </swiper>
                     <div class="swiper_indicator">
                         <div
-                              class="swiper_indicator_item"
                               v-for="(item, index) in showswiper(
                                     detailObj.covers
                                 )"
@@ -40,6 +39,7 @@
                                     isswiper: swiperIndex == index,
                                     one_notright: notright(detailObj.covers, index)
                                 }"
+                              class="swiper_indicator_item"
                         ></div>
                     </div>
                 </div>
@@ -61,7 +61,6 @@
                         <div class="introduce_icon">
                             <div class="icon_item_box" @click="setColl">
                                 <image
-                                      class="icon_item_img"
                                       :src="
                                             getAssetsUrl(
                                                 isColl
@@ -69,12 +68,13 @@
                                                     : '/channel/collect.svg'
                                             )
                                         "
+                                      class="icon_item_img"
                                       mode="scaleToFill"
                                 />
                                 <text>收藏</text>
                             </div>
                             <div class="icon_item_box" @click="share">
-                                <image class="icon_item_img" :src="getAssetsUrl('/channel/share.svg')"
+                                <image :src="getAssetsUrl('/channel/share.svg')" class="icon_item_img"
                                        mode="scaleToFill"/>
                                 <text>分享</text>
                             </div>
@@ -126,7 +126,6 @@
                             <div class="title_text">收住</div>
                             <div class="tag_list">
                                 <div
-                                      class="tag_item"
                                       v-for="(
                                             item, index
                                         ) in detailObj.containTagNames"
@@ -134,6 +133,7 @@
                                       :class="{
                                             not_right: index + 1 == tagList.length
                                         }"
+                                      class="tag_item"
                                 >{{ item }}
                                 </div>
                             </div>
@@ -152,12 +152,13 @@
                                         }}{{ detailObj.address }}
                                     </div>
                                 </div>
-                                <image @click="address" class="address_icon" :src="getAssetsUrl('/channel/address.png')"
-                                       mode="scaleToFill"/>
+                                <image :src="getAssetsUrl('/channel/address.png')" class="address_icon"
+                                       mode="scaleToFill"
+                                       @click="address"/>
                             </div>
                         </div>
                         <div class="more_btn" @click="totextInstitution(detailObj.shopId)">
-                            <image class="more_icon" :src="getAssetsUrl('/channel/more_icon.png')" mode="scaleToFill"/>
+                            <image :src="getAssetsUrl('/channel/more_icon.png')" class="more_icon" mode="scaleToFill"/>
                             <div class="more_text">点击查看更多基本信息</div>
                         </div>
                     </div>
@@ -165,9 +166,9 @@
                 <!-- :class="{'have_max':!showmoreroom}" -->
                 <div class="more_room">
                     <div class="more_room_title">产品列表</div>
-                    <div class="more_room_item" v-for="item in showRoomList" :key="item.id">
+                    <div v-for="item in showRoomList" :key="item.id" class="more_room_item">
                         <div class="more_room_item_right">
-                            <image class="more_right_img" :src="item.mainPics && item.mainPics[0]" mode="scaleToFill"/>
+                            <image :src="item.mainPics && item.mainPics[0]" class="more_right_img" mode="scaleToFill"/>
                             <div class="more_right_text">
                                 <div class="more_right_title">{{ item.name }}</div>
                                 <div class="more_right_dace">
@@ -190,23 +191,22 @@
                             <div class="show_btn" @click="tuproduct(item.id)">查看</div>
                         </div>
                     </div>
-                    <div class="show_more_room" @click="showroom" v-if="productList.length > 2">
+                    <div v-if="productList.length > 2" class="show_more_room" @click="showroom">
                         <!-- {{productList.lengu-iconth}}个 -->
                         <div class="show_more_room_text">查看其他房型</div>
                         <!-- <u-icon name="arrow-down" v-if="!showmoreroom"></u-icon>
                         <u-icon name="arrow-up" v-else></u-icon> -->
                     </div>
-                    <div class="show_more_room" v-else>
+                    <div v-else class="show_more_room">
                         <div class="show_more_not_room_text">暂无更多房型</div>
                     </div>
                 </div>
                 <div class="img_list">
                     <div class="img_list_title">机构图集</div>
                     <div class="img_box">
-                        <image class="img_box_right" :src="detailObj.albums && detailObj.albums[0]" mode="aspectFill"/>
+                        <image :src="detailObj.albums && detailObj.albums[0]" class="img_box_right" mode="aspectFill"/>
                         <div class="img_box_left">
                             <image
-                                  class="img_box_left_top"
                                   :src="
                                         detailObj.albums && detailObj.albums[1]
                                             ? detailObj.albums &&
@@ -214,19 +214,20 @@
                                             : detailObj.albums &&
                                               detailObj.albums[0]
                                     "
+                                  class="img_box_left_top"
                                   mode="aspectFill"
                             />
                             <div class="img_box_left_bottom" @click="toimgdetails(detailObj.shopId)">
-                                <image class="view_img" :src="getAssetsUrl('/channel/view_box.png')"
+                                <image :src="getAssetsUrl('/channel/view_box.png')" class="view_img"
                                        mode="scaleToFill"/>
                                 <div class="view_text_box">
                                     <image
-                                          class="view_text_box_icon"
                                           :src="
                                                 getAssetsUrl(
                                                     '/channel/view_icon.png'
                                                 )
                                             "
+                                          class="view_text_box_icon"
                                           mode="scaleToFill"
                                     />
                                     <text class="view_text">查看图片</text>
@@ -245,11 +246,11 @@
             </template>
         </z-paging>
         <TnPopup v-model="popupShow"
+                 :closeable="true"
+                 :round="10"
+                 :safeAreaInsetBottom="false"
                  mode="center"
                  width="94%"
-                 :safeAreaInsetBottom="false"
-                 :round="10"
-                 :closeable="true"
                  @close="popupShow = false,makeType = 1,detailObj.phone = '',detailObj.code = ''"
         >
             <view class="popup-box">
@@ -271,35 +272,35 @@
                                 <view class="title">手机号</view>
                                 <view class="input">
                                     <TnInput
-                                          maxlength="11"
-                                          type="number"
-                                          placeholder="请输入手机号"
-                                          inputAlign="right"
+                                          v-model="detailObj.phone"
                                           :clearable="true"
                                           border="none"
-                                          v-model="detailObj.phone"
+                                          inputAlign="right"
+                                          maxlength="11"
+                                          placeholder="请输入手机号"
+                                          type="number"
                                     ></TnInput>
                                 </view>
                             </view>
-                            <view style="color: red; text-align: right; font-size: 24rpx;" v-if="isEmptyPhone">
+                            <view v-if="isEmptyPhone" style="color: red; text-align: right; font-size: 24rpx;">
                                 {{ phoneText }}
                             </view>
                             <view class="item row j-between i-center" style="border-bottom: none; margin-top: 50rpx;">
                                 <view class="title">验证码</view>
                                 <view class="input">
                                     <TnInput
-                                          type="number"
-                                          placeholder="请输入验证码"
-                                          inputAlign="right"
+                                          v-model="detailObj.code"
                                           :clearable="true"
                                           border="none"
-                                          v-model="detailObj.code"
-                                          @input="codeInput"
+                                          inputAlign="right"
                                           maxlength="4"
+                                          placeholder="请输入验证码"
+                                          type="number"
+                                          @input="codeInput"
                                     >
                                         <template v-slot:suffix>
-                                            <TnButton bg-color="white" text-color="#41A0FE" font-size="26rpx"
-                                                      :disabled="countdown > 0" @click="getCode">
+                                            <TnButton :disabled="countdown > 0" bg-color="white" font-size="26rpx"
+                                                      text-color="#41A0FE" @click="getCode">
                                                 {{ countdown > 0 ? `${countdown}秒后重新获取` : '获取验证码' }}
                                             </TnButton>
 
@@ -313,7 +314,7 @@
                 </block>
             </view>
             <view v-if="makeType == 3" class="successful">
-                <image src="@/static/appointment.png" mode="scaleToFill" class="successful_image"/>
+                <image class="successful_image" mode="scaleToFill" src="@/static/appointment.png"/>
                 <view class="successful_title">预约成功</view>
                 <view class="successful_desc">我们将很快为您处理，请留意回访电话。</view>
             </view>
@@ -322,12 +323,12 @@
             </view>
             <BCNotify ref="bcNotify"></BCNotify>
         </TnPopup>
-        <shareView @sharePage="sharePage" ref="shaView" :detailObj="shareObj" :status="1" :imgUrl="path"></shareView>
-        <yk-authpup ref="authpup" :isNativeHead="false" type="top" @changeAuth="callfun"
-                    permissionID="CALL_PHONE"></yk-authpup>
+        <shareView ref="shaView" :detailObj="shareObj" :imgUrl="path" :status="1" @sharePage="sharePage"></shareView>
+        <yk-authpup ref="authpup" :animation="true" :isNativeHead="false" permissionID="CALL_PHONE" type="top"
+                    @changeAuth="callfun"></yk-authpup>
     </view>
 </template>
-<script setup lang="ts">
+<script lang="ts" setup>
 import ykAuthpup from "@/components/yk-authpup/yk-authpup.vue"
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import TnInput from '@tuniao/tnui-vue3-uniapp/components/input/src/input.vue'
@@ -347,6 +348,8 @@ import { useRoute } from 'vue-router'
 import { onLoad } from "@dcloudio/uni-app"
 import dayjs from "dayjs" // Assuming you're using vue-router
 import { gototextInstitution, gotoimgdetails } from '@/routes/plateform-routes'
+import { gotoLogin } from "@/routes/public-routes"
+import { gotohealthproductDetails } from "@/routes/service-routes"
 
 const route = useRoute()
 const authpup = ref()
@@ -361,7 +364,7 @@ const tips = ref('获取验证码')
 const popupShow = ref(false)
 const showmoreroom = ref(false)
 const detailObj = reactive({})
-const productList = ref<any>([])
+const productList = ref<any[]>()
 const shareObj = ref({})
 const path = ref('')
 const isColl = ref(false)
@@ -384,11 +387,12 @@ const tagList = [
 
 const getAssetsUrl = computed(() => (str) => getAssetsPic(str))
 
-const showRoomList = computed(() => () => !showmoreroom.value ? productList.value.slice(0, 2) : productList.value)
+const showRoomList = computed(() => {
+    return !showmoreroom.value ? productList.value?.slice(0, 2) : productList.value
+})
 
 
 const timeFormat = computed(() => (time) => {
-    console.log(time)
     return dayjs.unix(time / 1000).format('YYYY-MM-DD')
 })
 const slogan = computed(() => {
@@ -450,16 +454,19 @@ const share = () => {
         shaView.value.open()
     }, 500)
 }
-// toColl(){
-// 	if (this.isColl) {
-// 		// 取消
-// 		this.isColl = false
-// 	}else{
-// 		// 收藏
-
-// 		this.isColl = true
-// 	}
-// },
+const tuproduct = (itemId: any) => {
+    PlatformManage.isRequireLogin().then((isRequireLogin) => {
+        if (isRequireLogin) {
+            bcNotify.value.show('请先登录')
+            setTimeout(() => {
+                gotoLogin({})
+            }, 2000)
+        }
+        else {
+            gotohealthproductDetails({ itemId })
+        }
+    })
+}
 // app分享参数
 const sharePage = () => {
     const shareType: any = import.meta.env.VITE_WEIXIN_OPEN

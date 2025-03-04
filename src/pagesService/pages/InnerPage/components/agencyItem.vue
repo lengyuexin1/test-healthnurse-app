@@ -146,7 +146,6 @@ const tochoiceDetails = (item) => {
     }
     if (item.businessType === 4) {
         // 机构详情
-        console.log(item)
         gotoServiceOrg({ itemId: item.id, isAd: item.isAd })
     }
     else {
