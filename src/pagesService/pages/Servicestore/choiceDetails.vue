@@ -291,9 +291,9 @@
                                     <TnInput
                                           v-model="detailObj.code"
                                           :clearable="true"
-                                          border="none"
+                                          :border="false"
                                           inputAlign="right"
-                                          maxlength="4"
+                                          :maxlength="4"
                                           placeholder="请输入验证码"
                                           type="number"
                                           @input="codeInput"
