@@ -361,7 +361,7 @@ const tips = ref('获取验证码')
 const popupShow = ref(false)
 const showmoreroom = ref(false)
 const detailObj = reactive({})
-const productList = ref([])
+const productList = ref<any>([])
 const shareObj = ref({})
 const path = ref('')
 const isColl = ref(false)
@@ -671,7 +671,6 @@ const getorganizationDetail = async (shopId, isAd) => {
             detailObj.mobile = res.mobile
         })
         Object.assign(detailObj, res)
-        console.log(detailObj)
         isColl.value = res.isFavorite
         // 注释上报
         // appear({ shopId })
@@ -680,10 +679,11 @@ const getorganizationDetail = async (shopId, isAd) => {
     }
 }
 
-const getagencylist = async (organizationId) => {
+const getagencylist = async (organizationId: any) => {
     try {
-        const res = await agencylist({ pageSize: 10, pageNumber: 1, query: { organizationId } })
-        productList.value = res || []
+        agencylist({ pageSize: 10, pageNumber: 1, query: { organizationId } }).then((res: any) => {
+            productList.value = res.data
+        })
     } catch (err) {
         console.log(err)
     }
