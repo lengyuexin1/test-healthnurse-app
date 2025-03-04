@@ -15,7 +15,7 @@
                     <TnSwipeAction @select="delGoods($event, item, index)">
                         <TnSwipeActionItem v-for="(ele, idx) in item.productList" :key="idx" :options="options" :auto-close="false">
                             <view class="goodsList tn-flex-center-center" @tap="clickGoods(ele)">
-                                <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" v-model="ele.checked" @change="changeSingle($event, index)"></TnCheckbox>
+                                <TnCheckbox size="lg" checked-shape="circle" active-color="#EA3E1A" :disabled="ele.isItemDeleted === 1" v-model="ele.checked" @change="changeSingle($event, index)"></TnCheckbox>
                                 <view class="goodsInfo tn-flex-row">
                                     <view class="left tn-flex-row">
                                         <image class="left_img" :src="ele.image" mode="scaleToFill" />
@@ -236,6 +236,7 @@ const changeSingle = (e: any, index: number) => {
         obj.checked == true
         if (obj.isItemDeleted == 1) {
             obj.checked = false
+            console.log(222222222222)
             return
         }
     })

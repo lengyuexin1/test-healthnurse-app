@@ -96,7 +96,7 @@
                     <view class="nav_list_box">
                         <view class="nav_list">
                             <view class="nav_item" @click="changeNav(item)"
-                                  :class="{ 'is_selected' : item.id == data.selectedId }"
+                                  :class="{ 'is_selected': item.id == data.selectedId }"
                                   v-for="(item, index) in data.navList" :key="index">
                                 <view>
                                     {{ item.name }}
@@ -137,7 +137,7 @@ import { oldExpoCategory, oldExpolist } from '@/api/goods-api'
 import {
     gotoServiceExpoClass,
     gotonewProduct,
-    gotoDiscussDetail,
+    // gotoDiscussDetail,
     gotoAllZone,
     gotoAllClass,
     gotoClassItemPage,

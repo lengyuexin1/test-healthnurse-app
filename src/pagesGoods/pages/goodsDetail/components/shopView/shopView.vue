@@ -35,7 +35,7 @@
                 <view class="seller_exp_tit">{{ baseInfo.applyId == 2 ? '服务质量' : '商品质量' }}</view>
                 <view class="seller_exp_desc">{{ baseInfo.applyId == 2 ? '服务好评率' : '商品好评率' }}<text>{{ baseInfo.applyId == 2
                     ?
-                    baseInfo.serviceGoodCommentRate : baseInfo.productGoodCommentRate }}%</text></view>
+                    baseInfo.serviceGoodCommentRate : baseInfo.productGoodCommentRate * 100 }}%</text></view>
             </view>
             <view class="seller_exp_li" style="padding:0px">
                 <view class="seller_exp_tit">客服表现</view>

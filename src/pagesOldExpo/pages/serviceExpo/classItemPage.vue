@@ -15,7 +15,7 @@
             <template #top>
                 <pageTopbg :zIndex="-1" ></pageTopbg>
                 <bc-page-navbar :title="data.categoryName" ></bc-page-navbar>
-                
+
 
                 <view class="top_inp_box">
                     <view class="inp_box" @click="tosearch">
@@ -35,8 +35,8 @@
                     />
                     <view class="item_right_text">
                         <view class="right_title">{{ item.shopName }}</view>
-                        
-                        
+
+
                         <view class="price_box">
                             <text class="price_left" v-if="true">
                                 <text class="price_number">主要品类: {{ item.categoryNames }}</text>
@@ -57,7 +57,7 @@
                     </view>
                 </view>
             </view>
-            
+
 
             <BCNotify ref="bcNotify"></BCNotify>
 
@@ -74,8 +74,8 @@ import { onLoad } from '@dcloudio/uni-app'
 
 import { getAssetsPic } from '@/common/setPicture'
 import { healthContentList } from "@/api/create-api"
-
-import { gotosearch, gotoServiceExpoClass, gotoDiscussDetail, gotoServiceStore } from '@/routes/service-routes'
+// gotoDiscussDetail
+import { gotosearch, gotoServiceExpoClass, gotoServiceStore } from '@/routes/service-routes'
 
 
 import BCNotify from '@/components/notify/index.vue'
@@ -92,7 +92,7 @@ interface Data {
 const data = reactive<Data>({
     dataList: [],
     categoryId: '',
-    categoryName: '',
+    categoryName: ''
 })
 
 
@@ -108,23 +108,23 @@ onLoad((option:any) => {
     data.categoryName = option.categoryName
 })
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
 
 const paging = ref()
-const queryList = async (pageNumber:number, pageSize:number)=>{
+const queryList = async (pageNumber:number, pageSize:number) => {
     oldExpolist({
         pageNumber,
         pageSize,
-        query:{
+        query: {
             isRecommend: 0,
             isFavorite: 0,
-            categoryId: data.categoryId,
+            categoryId: data.categoryId
         }
     }).then((res:any) => {
-        console.log('res',res.data);
+        console.log('res', res.data);
         (paging.value as any).complete(res.data)
     }).catch((err:any) => {
         (paging.value as any).complete([])
@@ -133,13 +133,13 @@ const queryList = async (pageNumber:number, pageSize:number)=>{
 
 
 const toServiceStore = (item:any) => {
-    console.log('item',item);
+    console.log('item', item)
     if (item.shopSource == 32) {
-        gotoDiscussDetail({shopId: item.shopId})
+        gotoDiscussDetail({ shopId: item.shopId })
         return
     }
-    gotoServiceStore({shopId: item.shopId, isAd: 0})
-    
+    gotoServiceStore({ shopId: item.shopId, isAd: 0 })
+
 }
 
 const tosearch = () => {
@@ -181,14 +181,14 @@ defineExpose({
         padding-bottom: 0rpx;
         box-sizing: border-box;
         display: flex;
-        
+
         .item_left_img{
             width: 132rpx;
             height: 132rpx;
             margin-right: 20rpx;
             border-radius: 12rpx;
             overflow: hidden;
-        }   
+        }
         .item_right_text{
             flex:1;
             padding-bottom:12rpx;
@@ -199,8 +199,8 @@ defineExpose({
                 font-weight: 500;
                 margin-bottom: 12rpx;
             }
-            
-            
+
+
             .price_box{
                 width: 100%;
                 display: flex;

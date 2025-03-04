@@ -18,6 +18,11 @@ export const getNoticeConfig = () => {
 export const sendMobileCode = (req) => {
     return http.user.get('/ali/sms/sendBindCode', req)
 }
+/* 机构详情获取手机号码 */
+export const consultCreate = (req) => {
+    return http.user.post('/v1/bc/api/consult/create', req)
+}
+
 /* 设置通知状态 */
 export const setNoticeConfig = (isPush: any) => {
     return http.message.post('/v1/bc/app/config/push', { isPush })

@@ -152,7 +152,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, toRef, computed, onMounted, nextTick,  } from 'vue'
+import { ref, reactive, toRef, computed, onMounted, nextTick  } from 'vue'
 import TnButton from '@tuniao/tnui-vue3-uniapp/components/button/src/button.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnNumberBox from '@tuniao/tnui-vue3-uniapp/components/number-box/src/number-box.vue'
@@ -186,34 +186,34 @@ interface Data {
     uniqueId:any,
     calculationInfo: any //支付信息
     quantity:number,
-    type:number,//商品类型 1普通商品 2组合商品
+    type:number, //商品类型 1普通商品 2组合商品
     remark:string, //备注
     delivery:any, // 地址
-    couparrList:any,//优惠券列表
-    grantList:any,//店铺优惠卷列表
+    couparrList:any, //优惠券列表
+    grantList:any, //店铺优惠卷列表
     grantCoupsList: any //选中的店铺优惠券id列表
-    platCoupsList:any,//平台优惠券列表
-    platCoups:any,//选中的平台优惠券
-    platCoupsCheckList:any,// 选中的通用优惠券id
-    calculationObj:any,//计算的支付金额
-    livePlayId: string,//直播间id
+    platCoupsList:any, //平台优惠券列表
+    platCoups:any, //选中的平台优惠券
+    platCoupsCheckList:any, // 选中的通用优惠券id
+    calculationObj:any, //计算的支付金额
+    livePlayId: string, //直播间id
 
 }
 const data = reactive<Data>({
-    showPage:false,
-    uniqueId:'',
+    showPage: false,
+    uniqueId: '',
     calculationInfo: {},
-    quantity:1,
-    type:1,
-    remark:'',
-    delivery:{},
-    couparrList:[],
-    grantList:[],
+    quantity: 1,
+    type: 1,
+    remark: '',
+    delivery: {},
+    couparrList: [],
+    grantList: [],
     grantCoupsList: [],
-    platCoupsList:[],
-    platCoups:{},
+    platCoupsList: [],
+    platCoups: {},
     platCoupsCheckList: [],
-    calculationObj:{},
+    calculationObj: {},
     livePlayId: ''
 })
 
@@ -225,13 +225,13 @@ const bcNotify = ref()
 const refCoup = ref()
 const refcurrency = ref()
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
 
 // 处理图片逗号
-const delcomma = computed(()=>(img:string)=>{
+const delcomma = computed(() => (img:string) => {
     if (img) {
         return img.replace(/,/g, "")
     }
@@ -242,7 +242,7 @@ const delcomma = computed(()=>(img:string)=>{
 
 
 // 是否是折扣券
-const isRebate = computed(()=>(typeId:number)=>{
+const isRebate = computed(() => (typeId:number) => {
     const cpuponTypeList = [1000004, 1000002, 10004, 10002, 100002, 100004]
     return cpuponTypeList.includes(typeId)
 })
@@ -303,13 +303,13 @@ const placeOrder = () => {
         livePlayId: data?.livePlayId
     }
 
-    console.log('buyData',buyData);
+    console.log('buyData', buyData)
 
     /* 生成订单 */
-    submitOrder(buyData).then((res:any)=>{
+    submitOrder(buyData).then((res:any) => {
         uppay(res)
-    }).catch((err:any)=>{
-        console.log('err1',err);
+    }).catch((err:any) => {
+        console.log('err1', err)
 
         bcNotify.value.error(err.message)
     })
@@ -321,8 +321,8 @@ const editNumber = (value: number) => {
         bcNotify.value.error('请输入正整数!')
         return
     }
-    initChoice();
-    calculationPrice();
+    initChoice()
+    calculationPrice()
 
 
 
@@ -335,7 +335,7 @@ const showfast = () => {
 
 const getAdreList = () => {
     // 获取地址
-    getAddressList().then((res:any)=>{
+    getAddressList().then((res:any) => {
         if (res.length <= 0) { return }
         for (const i in res) {
             if (res[i].isDefault == 1) {
@@ -361,19 +361,19 @@ const getShopCouponList = (item:any, index:number, isInit: boolean = false) => {
         itemId: itemList,
         canUse: 1,
         applyId: 3
-    }).then((res:any)=>{
+    }).then((res:any) => {
 
-        console.log('优惠券res',res);
+        console.log('优惠券res', res)
         data.couparrList[0] = res
         data.grantList = res
         if (!res.length) {
-            nextTick(()=>{
+            nextTick(() => {
                 isInit ? initgetCoupon(index) : getCoupon(index)
             })
             return
         }
 
-        nextTick(()=>{
+        nextTick(() => {
             isInit ? initgetCoupon(index) : getCoupon(index)
         })
     })
@@ -395,7 +395,7 @@ const getPingCouponList = (isInit: boolean = false) => {
 
     // data.calculationObj.paidAmount 使用店铺优惠券计算后价格
 
-    console.log('data.calculationObj.paidAmount',data.calculationObj.paidAmount);
+    console.log('data.calculationObj.paidAmount', data.calculationObj.paidAmount)
 
     getPlatCoupon({
         // 若选用了通用优惠券就传店铺优惠前价格 没有选用就选店铺优惠后价格
@@ -403,17 +403,17 @@ const getPingCouponList = (isInit: boolean = false) => {
         categoryId: 3,
         canUse: 1,
         itemId: itemIds
-    }).then((res:any)=>{
+    }).then((res:any) => {
         data.platCoupsList = res
 
         if (!res.length) {
-            nextTick(()=>{
+            nextTick(() => {
                 isInit ? initgetcurrencyCoupon() : getcurrencyCoupon(0)
             })
             return
         }
 
-        nextTick(()=>{
+        nextTick(() => {
             isInit ? initgetcurrencyCoupon() : getcurrencyCoupon(0)
         })
 
@@ -455,7 +455,7 @@ const calculationPrice = (isInitCoupon:boolean = false) => {
             data.calculationObj = res
 
             if (isInitCoupon && data.platCoupsCheckList.length == 0) {
-                console.log('初始化获取优惠券');
+                console.log('初始化获取优惠券')
                 // 需要默认选中店铺优惠券算出价格后再进行默认选中通用优惠券
                 getPingCouponList(true)
 
@@ -463,16 +463,16 @@ const calculationPrice = (isInitCoupon:boolean = false) => {
 
         })
         .catch((err) => {
-            console.log('err2',err);
+            console.log('err2', err)
 
-            nextTick(()=>{
-                bcNotify.value.error(err.message);
-                refCoup.value.closeCpup();
+            nextTick(() => {
+                bcNotify.value.error(err.message)
+                refCoup.value.closeCpup()
 
                 // 优惠券冲突或者价格异常 统一初始化通用优惠券选择
                 data.platCoups = {}
                 data.platCoupsCheckList = []
-                calculationPrice()
+                // calculationPrice()
                 // setTimeout(() => {
                 //     pageController.back()
                 // }, 2000)
@@ -491,7 +491,7 @@ const uppay = (orderId:string) => {
     })
     const openid = uni.getStorageSync('openid')
 
-    console.log('openid', openid);
+    console.log('openid', openid)
 
 
     /* 获取支付参数 */
@@ -499,9 +499,9 @@ const uppay = (orderId:string) => {
         orderId,
         openid: openid != '' ? openid : undefined,
         subAppId: 'wxba2158972baec41b',
-        subopenId: openid,
+        subopenId: openid
     }).then(async (res:any) => {
-        console.log('支付参数res',res);
+        console.log('支付参数res', res)
 
         /* 调起支付 */
         // #ifdef MP-WEIXIN || APP-PLUS
@@ -510,26 +510,26 @@ const uppay = (orderId:string) => {
             if (ret.isSuccess && ret.status === 'CPCN') {
                 setTimeout(() => {
                     toOrderDetail(res.orderId)
-                }, 800);
+                }, 800)
                 return false
             }
 
             // bcNotify.value.success('支付成功');
             setTimeout(() => {
                 toOrderDetail(res.orderId)
-            }, 800);
+            }, 800)
 
         }).catch(() => {
             // bcNotify.value.error('支付失败')
             setTimeout(() => {
                 toOrderDetail(res.orderId)
-            }, 800);
+            }, 800)
         })
         // #endif
     }).catch((err) => {
-        console.log('err3',err);
+        console.log('err3', err)
 
-        bcNotify.value.error(err.message);
+        bcNotify.value.error(err.message)
     }).finally(() => {
         uni.hideLoading()
     })
@@ -537,7 +537,7 @@ const uppay = (orderId:string) => {
 
 
 const toOrderDetail = (id:string) => {
-    GoodsOrderDetail(id,true)
+    GoodsOrderDetail(id, true)
 }
 
 
@@ -567,9 +567,9 @@ onMounted(() => {
 
 // 购物车结算
 const getCarPurchase = (list:any) => {
-    console.log('购物车结算',list)
+    console.log('购物车结算', list)
     cartPurchase({
-        entityIds:list
+        entityIds: list
     }).then((res:any) => {
         merchandise.value = res.shopList.map((x:any) => {
             return {
@@ -581,20 +581,20 @@ const getCarPurchase = (list:any) => {
 
         data.showPage = true
 
-        initChoice();
-        calculationPrice();
+        initChoice()
+        calculationPrice()
 
     })
 
 }
 
 // 商品直接结算
-const getGodsPurchase = ({optionDetailId, shopName, quantity, shopIcon, type}) => {
+const getGodsPurchase = ({ optionDetailId, shopName, quantity, shopIcon, type }) => {
     data.type = type
     goodsPurchase({
         optionDetailId,
         productType: type
-    }).then((res:any)=>{
+    }).then((res:any) => {
 
         merchandise.value = [{
             shopId: res.product.shopId,
@@ -618,14 +618,14 @@ const getGodsPurchase = ({optionDetailId, shopName, quantity, shopIcon, type}) =
 
         data.showPage = true
 
-        initChoice();
-        calculationPrice();
+        initChoice()
+        calculationPrice()
 
     }).catch((err:any) => {
-        console.log('err4',err);
+        console.log('err4', err)
 
-        nextTick(()=>{
-            bcNotify.value.error(err.message);
+        nextTick(() => {
+            bcNotify.value.error(err.message)
             setTimeout(() => {
                 pageController.back()
             }, 2000)
@@ -636,8 +636,8 @@ const getGodsPurchase = ({optionDetailId, shopName, quantity, shopIcon, type}) =
 
 // 初始化获取优惠券
 const initChoice = () => {
-    merchandise.value.forEach((item:any,index:number) => {
-        getShopCouponList(item,index,true)
+    merchandise.value.forEach((item:any, index:number) => {
+        getShopCouponList(item, index, true)
     })
 
 
@@ -678,12 +678,12 @@ const initgetcurrencyCoupon = () => {
 
 
 // 选中优惠券
-const selectCoup = (index:number,item:any, isInitCoupon: boolean = false) => {
+const selectCoup = (index:number, item:any, isInitCoupon: boolean = false) => {
 
-    let newArr = merchandise.value
+    const newArr = merchandise.value
     newArr[index] = reactive({
         ...newArr[index],
-        coupon:{
+        coupon: {
             ...item
         }
     })
@@ -694,8 +694,9 @@ const selectCoup = (index:number,item:any, isInitCoupon: boolean = false) => {
 
     // 处理默认选中的优惠券
     if (item) {
-        data.grantCoupsList.splice(0,1,item.grantedId)
-    }else{
+        data.grantCoupsList.splice(0, 1, item.grantedId)
+    }
+    else {
         data.grantCoupsList = []
     }
 
@@ -703,13 +704,14 @@ const selectCoup = (index:number,item:any, isInitCoupon: boolean = false) => {
 
 }
 
-const setcurrencyCoupon = (index:number,item:any) => {
+const setcurrencyCoupon = (index:number, item:any) => {
     // 处理默认选中的通用优惠券
     if (item) {
         data.platCoups = item
-        data.platCoupsCheckList.splice(0,1,item.grantedId)
+        data.platCoupsCheckList.splice(0, 1, item.grantedId)
 
-    }else{
+    }
+    else {
         data.platCoups = {}
         data.platCoupsCheckList = []
     }

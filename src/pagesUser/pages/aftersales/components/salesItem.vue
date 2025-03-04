@@ -49,7 +49,7 @@
                 <view class="serbtn" @click="gotoApply(1)">
                     申请售后
                 </view>
-                
+
             </view>
         </view>
         <u-toast ref="uToast" />
@@ -73,12 +73,12 @@ interface Data{
 const data = reactive<Data>({
 })
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
-const timeformat = computed(()=>(time:number)=>{
-    return formattime( time ,'YYYY-MM-DD HH:mm')
+const timeformat = computed(() => (time:number) => {
+    return formattime(time, 'YYYY-MM-DD HH:mm')
 })
 
 // 申请售后
@@ -108,12 +108,13 @@ const gotoApply = (type:number) => {
         // orderId: props.info.id,
         afterSaleId: props.info.afterSaleId,
         align: type
-    });
+    })
 
-    if ([131850,66571].includes(props.info.templateCodeId)) {
-        upServiceSales({salesObj})
-    }else{
-        upSales({salesObj})
+    if ([131586].includes(props.info.templateCodeId)) {
+        upSales({ salesObj })
+    }
+    else {
+        upServiceSales({ salesObj })
     }
 
 }

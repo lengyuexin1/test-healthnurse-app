@@ -40,7 +40,7 @@
         </view>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { getAssetsPic } from '@/common/setPicture'
@@ -66,7 +66,7 @@ const staCls = computed(() => {
     return index >= 0 ? colorArr[index] : colorArr[0]
 })
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
@@ -108,13 +108,13 @@ const sharePage = () => {
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .order-content {
     width: 100%;
-    height: 120rpx;
+    height: 70rpx;
     border-radius: 24rpx;
-    padding: 12rpx;
+    padding:20rpx 12rpx 12rpx 12rpx;
     box-sizing: border-box;
     margin-bottom: 18rpx;
 
@@ -250,4 +250,3 @@ const sharePage = () => {
         }
     }
 }</style>
-  

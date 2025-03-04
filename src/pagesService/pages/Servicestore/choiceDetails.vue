@@ -284,10 +284,10 @@
                                             placeholder="请输入验证码"
                                             inputAlign="right"
                                             :clearable="true"
-                                            border="none"
+                                            :border="false"
                                             v-model="detailObj.code"
                                             @input="codeInput"
-                                            maxlength="4"
+                                            :maxlength="4"
                                         >
                                             <template v-slot:suffix>
                                                 <TnButton bg-color="white" text-color="#41A0FE" font-size="26rpx" :disabled="countdown > 0" @click="getCode">
@@ -560,7 +560,7 @@ const getCode = async () => {
         const res = await sendMobileCode({ mobile: detailObj.phone })
         uni.hideLoading()
         if (res !== 1) {
-            smsCode.value = res
+            // smsCode.value = res
         }
         if (countdown.value === 0) {
             countdown.value = 60

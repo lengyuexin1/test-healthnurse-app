@@ -110,10 +110,9 @@ import { TempStorage } from "@bc/base"
 import { gotoBalanceOrder } from '@/routes/order-routes'
 import { gotoSalePutlogis } from '@/routes/goods-routes'
 import { getAssetsPic } from '@/common/setPicture'
-import { gotoCommentGoods } from '@/routes/user-routes'
+import { gotoCommentGoods, gotoAddressList } from '@/routes/user-routes'
 import { addWEventsListener } from '@/events/event-registry'
 import { CareEvents } from '@/events/care-events'
-
 import { gotoChatPage } from "@/routes/nim-routes"
 import { createTeam } from "@/api/nim-api"
 import { PlatformManage } from '@bc/sys'
@@ -131,6 +130,7 @@ interface Data {
     serviceInfo:any,
     detailObj:any,
     showreason:boolean,
+    addressId:string
     reasonList:any, // 订单取消原因列表
     reasonItemid:string,
     payId: string,
@@ -138,6 +138,7 @@ interface Data {
 }
 const data = reactive<Data>({
     osObj: {},
+    addressId: '',
     showInfo: false,
     serviceInfo: {},
     detailObj: {},
@@ -194,9 +195,11 @@ const vldTime = computed(() => (time:number) => {
 
 onMounted(() => {
     getDetail(props.orderId)
-    // addWEventsListener(CareEvents.Get__Address, (res) => {
-    //     setSitelAdres(res)
-    // })
+    addWEventsListener(CareEvents.Get__Address, (res) => {
+        data.addressId = res.id
+        console.log('res', res, data.addressId)
+        setSitelAdres(data)
+    })
 })
 
 // watch(()=> props.orderId,(newvalue,oldvalue)=>{
@@ -434,6 +437,8 @@ const operate = (type:string) => {
     }
     if (type == 'edit') {
         console.log('修改地址')
+
+        gotoAddressList()
     }
     if (type == 'view_express') {
         console.log('查看物流')
@@ -523,16 +528,16 @@ const clickComment = () => {
 const setSitelAdres = (data:any) => {
     console.log('456879', data)
 
-    const shopList = data.serviceInfo.shopList.map((x:any) => {
+    const shopList = data.serviceInfo?.shopList?.map((x:any) => {
         return {
             id: x.shopId,
             note: x.note
         }
     })
     editGodsOrder({
-        orderId: data.serviceInfo.id,
+        orderId: props?.orderId,
         shopList,
-        addressId: data.id
+        addressId: data.addressId
     }).then(() => {
         data.ressinfo = data
         bcNotify.value.show('修改成功')

@@ -38,7 +38,7 @@
             <template #left>
 
                 <view class="left_nva_box" v-if="data.categoryList.length > 0">
-                    <view class="navItem" @click="changeNav(index)" :class="{ 'is_select' : item.id == data.categoryList[data.categoryIndex].id }" v-for="(item, index) in data.categoryList" :key="item.id">
+                    <view class="navItem" @click="changeNav(index)" :class="{ 'is_select': item.id == data.categoryList[data.categoryIndex].id }" v-for="(item, index) in data.categoryList" :key="item.id">
                         <view>
                             {{ item.name }}
                         </view>
@@ -96,8 +96,8 @@ import BCNotify from '@/components/notify/index.vue'
 import { productList, oldExpoCategory, oldExpolist } from '@/api/goods-api'
 import { onLoad } from '@dcloudio/uni-app'
 import { Debounce } from '@/libs/antivibthrot'
-
-import { gotoDiscussDetail, gotoServiceStore, gotoClassItemPage } from '@/routes/service-routes'
+// gotoDiscussDetail
+import { gotoServiceStore, gotoClassItemPage } from '@/routes/service-routes'
 
 import WaterfallsFlow from '@/pagesOldExpo/pages/serviceExpo/components/WaterfallsFlow.vue'
 
@@ -113,13 +113,13 @@ const data = reactive<Data>({
     categoryList: [],
     categoryIndex: 0,
     pid: '',
-    title: '',
+    title: ''
 })
 
 
 const bcNotify = ref()
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
@@ -141,7 +141,7 @@ const queryList = async (pageNumber:number, pageSize:number) => {
     oldExpoCategory({
         pageNumber: 1,
         pageSize: 20,
-        query:{
+        query: {
             isPid: 0,
             pid: data.pid
         }
@@ -153,16 +153,16 @@ const queryList = async (pageNumber:number, pageSize:number) => {
             return
         }
 
-        let arr = [] as any
+        const arr = [] as any
 
         const promises = data.categoryList.map((item: any) => {
             return oldExpolist({
                 pageNumber: 1,
                 pageSize: 8,
-                query:{
+                query: {
                     isRecommend: 0,
                     isFavorite: 0,
-                    categoryId: item.id,
+                    categoryId: item.id
                 }
             }).then((resList:any) => {
                 arr.push({
@@ -170,79 +170,79 @@ const queryList = async (pageNumber:number, pageSize:number) => {
                     categoryName: item.name,
                     categorySonList: resList.data
                 })
-            });
-        });
+            })
+        })
 
         Promise.all(promises).then(() => {
-            console.log('data.categoryList',data.categoryList);
+            console.log('data.categoryList', data.categoryList)
 
-            let sortedArray2 = data.categoryList.map((item1:any) => {
+            const sortedArray2 = data.categoryList.map((item1:any) => {
                 // 从新排序
-                return arr.find((item2:any) => item2?.categoryId === item1.id);
+                return arr.find((item2:any) => item2?.categoryId === item1.id)
             }) as any
 
             (paging.value as any).complete(sortedArray2)
 
-            console.log('data.dataList', data.dataList);
+            console.log('data.dataList', data.dataList)
 
         }).catch((err:any) => {
             (paging.value as any).complete([])
-        });
+        })
 
 
-    });
+    })
 
 }
 
 const changeNav = (index:number) => {
     data.categoryIndex = index;
 
-    (paging.value as any).scrollIntoViewById('toView' + index , 150);
+    (paging.value as any).scrollIntoViewById('toView' + index, 150)
 
 }
 
 
-const clickwaterItem = (item:any) =>{
-    console.log('item',item);
+const clickwaterItem = (item:any) => {
+    console.log('item', item)
     if (item.shopSource == 32) {
-        gotoDiscussDetail({shopId: item.shopId})
+        gotoDiscussDetail({ shopId: item.shopId })
         return
     }
-    gotoServiceStore({shopId: item.shopId, isAd: 0})
+    gotoServiceStore({ shopId: item.shopId, isAd: 0 })
 
 }
 
 const toClassItemPage = (item:any) => {
-    gotoClassItemPage({ categoryId : item.categoryId, categoryName: item.categoryName })
+    gotoClassItemPage({ categoryId: item.categoryId, categoryName: item.categoryName })
 }
 
 
 
 // 退出页面
 const goback = () => {
-    uni.navigateBack();
+    uni.navigateBack()
 }
 
-const instance = getCurrentInstance(); // 获取组件实例
-const query = uni.createSelectorQuery().in(instance);
+const instance = getCurrentInstance() // 获取组件实例
+const query = uni.createSelectorQuery().in(instance)
 
 const pageScroll = (e:any) => {
 
     // #ifdef APP || H5
-    let scrollIndex = Math.floor(e.detail.scrollTop / 200)
+    const scrollIndex = Math.floor(e.detail.scrollTop / 200)
     data.categoryIndex = scrollIndex
     // #endif
 
     // #ifdef MP-WEIXIN
-    Debounce(()=>{
+    Debounce(() => {
         data.categoryList.forEach((item:any, index:number) => {
-            query.select( '#toView'+ index ).boundingClientRect((rect:any) => {
-                console.log('rect',rect);
+            query.select('#toView' + index).boundingClientRect((rect:any) => {
+                console.log('rect', rect)
 
                 if (rect.top <= 150 && rect.top >= 50) {
-                    console.log('rect.top',rect.top);
+                    console.log('rect.top', rect.top)
 
-                    data.categoryIndex = index;
+                    data.categoryIndex = index
                 }
             }).exec()
         })
