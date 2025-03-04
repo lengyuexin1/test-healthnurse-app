@@ -281,24 +281,28 @@
                                           type="number"
                                     ></TnInput>
                                 </view>
-                                <view style="color: red; text-align: right; font-size: 24rpx;" v-if="isEmptyPhone">{{ phoneText }}</view>
-                                <view class="item row j-between i-center" style="border-bottom: none; margin-top: 50rpx;">
-                                    <view class="title">验证码</view>
-                                    <view class="input">
-                                        <TnInput
-                                            type="number"
-                                            placeholder="请输入验证码"
-                                            inputAlign="right"
-                                            :clearable="true"
-                                            :border="false"
-                                            v-model="detailObj.code"
-                                            @input="codeInput"
-                                            :maxlength="4"
-                                        >
-                                            <template v-slot:suffix>
-                                                <TnButton bg-color="white" text-color="#41A0FE" font-size="26rpx" :disabled="countdown > 0" @click="getCode">
-                                    {{countdown > 0 ? `${countdown}秒后重新获取` : '获取验证码' }}
-                                    </TnButton>
+                            </view>
+                            <view v-if="isEmptyPhone" style="color: red; text-align: right; font-size: 24rpx;">
+                                {{ phoneText }}
+                            </view>
+                            <view class="item row j-between i-center" style="border-bottom: none; margin-top: 50rpx;">
+                                <view class="title">验证码</view>
+                                <view class="input">
+                                    <TnInput
+                                          v-model="detailObj.code"
+                                          :clearable="true"
+                                          border="none"
+                                          inputAlign="right"
+                                          maxlength="4"
+                                          placeholder="请输入验证码"
+                                          type="number"
+                                          @input="codeInput"
+                                    >
+                                        <template v-slot:suffix>
+                                            <TnButton :disabled="countdown > 0" bg-color="white" font-size="26rpx"
+                                                      text-color="#41A0FE" @click="getCode">
+                                                {{ countdown > 0 ? `${countdown}秒后重新获取` : '获取验证码' }}
+                                            </TnButton>
 
                                         </template>
                                     </TnInput>
