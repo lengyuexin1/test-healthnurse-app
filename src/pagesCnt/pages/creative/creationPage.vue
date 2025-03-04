@@ -439,8 +439,7 @@ onMounted(() => {
     // #endif
 
     // 乐悠平台创作公告：41
-    paper.value = useNoticeList(`${IMWEB_ENV()}41`, 10, (res) => {
-
+    paper.value = useNoticeList(`${IMWEB_ENV()}41`, 10, () => {
     })
     paper.value?.loadmore().then((res) => {
         console.log('公告数据', res)

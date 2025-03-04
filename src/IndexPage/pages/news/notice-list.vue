@@ -1,6 +1,7 @@
 <template>
     <view class="notice-list">
-        <z-paging ref="paging" v-model="data.dataList" @query="queryList" @onRefresh="getInitList" :auto-show-back-to-top="true">
+        <z-paging ref="paging" v-model="data.dataList" @query="queryList" @onRefresh="getInitList"
+                  :auto-show-back-to-top="true">
             <view class="list-box">
                 <NoticeItem v-for="(item, index) in data.dataList" :key="index" :item="item"></NoticeItem>
             </view>
@@ -14,6 +15,7 @@ import { onLoad } from "@dcloudio/uni-app"
 import NoticeItem from './components/notice-item.vue'
 import { dispatchWEvent, GlobalEvents } from '@/events/event-registry'
 import { type MessageList, useNoticeList, SessionSDK } from '@bc/msg'
+import { IMWEB_ENV } from "@/utils/handleEnv"
 
 //============================
 /** 基础参数 */
@@ -44,6 +46,7 @@ const queryList = (pageNumber: number, pageSize: number) => {
 }
 
 const getInitList = () => {
+    data.to = `${IMWEB_ENV()}41`
     paper = useNoticeList(data.to, limit, (res) => {
         console.log(res)
         paper.data.items.push(res)
@@ -75,10 +78,12 @@ onLoad((options) => {
     height: 100%;
     background-color: #F1F2F6;
 }
+
 .tabs-box {
     width: 100%;
     border-bottom: solid 1rpx #F0F0F0;
 }
+
 .list-box {
     flex: 1;
     width: 100%;
