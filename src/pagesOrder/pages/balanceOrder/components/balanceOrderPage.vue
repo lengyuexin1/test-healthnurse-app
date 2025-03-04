@@ -112,15 +112,6 @@
                             <!-- <view class="bala_cel_tit">代送凭证</view>
                             <view class="bala_cel_tip">请截图或拍照医院取药凭证、电子就诊卡、电子处方单等资料</view>
                             <view class="bala_cel_inp" style="margin-left:0;">
-                                <UploadLayout
-                                    @change="handleChange"
-                                    :maxCount="9"
-                                    width="60px"
-                                    height="60px"
-                                    v-model="fileList1"
-                                    uploadPath="errand"
-                                    uploadIcon="plus"
-                                />
                             </view> -->
                     <imgUpload v-model:imageArr="data.fileList1" :limit="3" ref="imgUploadref">
                         <template #uploadBtn>
@@ -296,7 +287,10 @@
                     </view>
                 </view>
             </template>
-              <!-- 优惠券 coupon-->
+            <!-- 配送方式 -->
+            <TnPicker v-model:open="data.deliveryShow" v-model="data.method.id" :data="data.deliveryList"
+            @confirm="pickerConfirm"></TnPicker>
+            <!-- 优惠券 coupon-->
             <choiceCoupon ref="recCoup" @getGroup="selectCoupon" :list="data.grantList" :coupsList="data.coupsList" />
             <TnDateTimePicker mode="datetime" v-model="data.startTime" v-model:open="data.openDateTimePicker" />
             <yk-authpup ref="authpupRef" type="top" :isNativeHead="false" @changeAuth="map" permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
@@ -306,6 +300,8 @@
 </template>
 
 <script setup lang="ts">
+
+import TnPicker from '@tuniao/tnui-vue3-uniapp/components/picker/src/picker.vue'
 import imgUpload from '@/components/upload/img-upload.vue'
 import TnDateTimePicker from '@tuniao/tnui-vue3-uniapp/components/date-time-picker/src/date-time-picker.vue'
 import TnInput from '@tuniao/tnui-vue3-uniapp/components/input/src/input.vue'
@@ -335,8 +331,6 @@ import { gotoAddressList } from '@/routes/user-routes'
 import { agencydetail, healthdetail, voucherdetail } from '@/api/service-api'
 import { gotoOrderDetail } from '@/routes/order-routes'
 import { getAssetsPic } from '@/common/setPicture'
-
-
 interface Props {
     uniqueId:any,
     handle:number
@@ -376,6 +370,7 @@ interface Data {
     shopId: string,
     fileList1:any,
     mobile:string,
+    deliveryList:any,
     openDateTimePicker:boolean,
     method: any, //配送方式
     couponIdx: number, //-1平台优惠 1店铺优惠
@@ -383,6 +378,7 @@ interface Data {
 
 }
 const data = reactive<Data>({
+    deliveryList: [{ label: '同城', value: 1 }, { label: '邮寄', value: 2 }],
     openDateTimePicker: false,
     hospital: {},
     fileList1: [],
@@ -430,8 +426,11 @@ const timeRef = ref()
 const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
-const getSerTime = (e:any) => {
-    data.startTime = e
+
+const pickerConfirm = (e) => {
+    const selectObj = data.deliveryList.filter(item => item.value == e)
+    data.method.label = selectObj[0].label
+    data.deliveryShow = false
 }
 const authpupRef = ref()
 const selectHosp = () => {
