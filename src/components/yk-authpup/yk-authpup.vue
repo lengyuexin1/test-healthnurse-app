@@ -68,7 +68,6 @@ const props = defineProps<Props>()
 const getSystemInfo = () => {
     uni.getSystemInfo({
         success: (e: any) => {
-            console.log(e)
             data.StatusBar = e.statusBarHeight + 44 + 'px' //用于自定义头部时，给手机状态栏留出位置,可通过isNativeHead这个参数控制
         }
     })

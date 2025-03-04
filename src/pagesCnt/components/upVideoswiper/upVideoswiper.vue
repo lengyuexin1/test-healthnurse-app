@@ -24,15 +24,16 @@
             </clUpload>
             <view class="bar"></view>
 
-            <view class="input">
+            <view>
                 <view class="up_title_inp">
-                    <TnInput placeholder="请输入标题(2~30个字)" :border="false" fontSize="16" v-model="data.title"
-                             clearable
-                             :maxlength="30"></TnInput>
+                    <TnInput class="tn-input" placeholder="请输入标题(2~30个字)" :border="false" fontSize="16"
+                             v-model="data.title"
+                             clearable :maxlength="30"></TnInput>
                 </view>
                 <view class="up_title_inp">
-                    <TnInput class="up_textarea" v-model="data.describe" type="textarea" placeholder="添加描述（选填）"
-                             :maxlength="500" show-word-limit/>
+                    <TnInput class="up_textarea tn-input" v-model="data.describe" type="textarea"
+                             placeholder="添加描述（选填）"
+                             :maxlength="500" show-word-limit height="300rpx" auto-height/>
                 </view>
             </view>
             <view v-if="data.isloadingImg" class="up_img_inp">
@@ -77,10 +78,12 @@
                 </view>
             </view>
 
-            <view class="bottom_box" slot="bottom">
-                <view class="bottom_box_draft" @tap="clickBtn(1)">保存草稿</view>
-                <view class="bottom_box_btn" @tap="clickBtn(2)">发布视频</view>
-            </view>
+            <template #bottom>
+                <view class="bottom_box">
+                    <view class="bottom_box_draft" @tap="clickBtn(1)">保存草稿</view>
+                    <view class="bottom_box_btn" @tap="clickBtn(2)">发布文章</view>
+                </view>
+            </template>
         </z-paging>
         <TnPicker
               v-model="data.categoryId"
@@ -142,7 +145,8 @@ interface Props {
     activityId: String,
     taskId: String, //任务id
     articleId: String, //草稿id
-    type: Number //话题
+    type: Number, //话题
+    id: String,//ID
 }
 
 const props = defineProps<Props>()
@@ -193,15 +197,18 @@ onMounted(() => {
 
     // 视频类型
     if (props.articleId !== '' && props.type == 2) {
+        console.dir(props)
         getDraftDetails({
-            contentId: props.articleId
+            id: props.id
         }).then((res) => {
-            data.title = res?.title
-            data.describe = res?.desc
-            data.channelId = res?.categoryId
-            data.channelName = res?.categoryName
-            data.fileList = [res.cover]
-            data.list = [res.videoUrl]
+            console.log(res)
+            const { baseInfo } = res
+            data.title = baseInfo?.title
+            data.describe = baseInfo?.desc
+            data.channelId = baseInfo?.categoryId
+            data.channelName = baseInfo?.categoryName
+            data.fileList = [baseInfo.cover]
+            data.list = [baseInfo.videoUrl]
             data.isloadingImg = true
         }).catch((err) => {
             bcNotify.value.error(err.message)
@@ -408,43 +415,48 @@ const clickBtn = (status) => {
     background-color: #f8f9f9;
 }
 
-.input {
-    // padding: 0 30rpx 30rpx 30rpx;
+// padding: 0 30rpx 30rpx 30rpx;
 
-    .up_title_inp {
-        margin: 0rpx 30rpx;
-        border-bottom: 2rpx solid #f2f2f2;
-        box-sizing: border-box;
-        height: 100rpx;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
+.up_title_inp {
+    margin: 15rpx 30rpx;
+    border-bottom: 2rpx solid #f2f2f2;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    .tn-input {
+        width: 100%;
     }
 
-    .up_text_inp {
-        margin: 5rpx 30rpx;
-        box-sizing: border-box;
+    .up_textarea {
+        min-height: 300rpx;
+    }
+}
 
-        .up_textarea {
-            min-height: 300rpx !important;
-            max-height: 500rpx !important;
-            width: 100%;
-        }
+.up_text_inp {
+    margin: 5rpx 30rpx;
+    box-sizing: border-box;
 
-        .topic_box {
-            display: flex;
-            align-items: center;
+    .up_textarea {
+        min-height: 300rpx !important;
+        max-height: 500rpx !important;
+        width: 100%;
+    }
 
-            .topic_item {
-                padding: 12rpx 16rpx;
-                box-sizing: border-box;
-                background: #f3f3f3;
-                border-radius: 28rpx;
-                text-align: center;
-                color: #7e7e7e;
-                font-size: 24rpx;
-                margin-right: 20rpx;
-            }
+    .topic_box {
+        display: flex;
+        align-items: center;
+
+        .topic_item {
+            padding: 12rpx 16rpx;
+            box-sizing: border-box;
+            background: #f3f3f3;
+            border-radius: 28rpx;
+            text-align: center;
+            color: #7e7e7e;
+            font-size: 24rpx;
+            margin-right: 20rpx;
         }
     }
 }

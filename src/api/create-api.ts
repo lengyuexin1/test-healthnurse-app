@@ -506,7 +506,8 @@ export const delMyContentList = (req: _v1_bc_app_article_user_tDeleteContent_pos
 
 // 获取草稿内容详情
 export const getDraftDetails = (req: _v1_bc_app_article_contentDetailsByDraft_get_req) => {
-    return http.content.get('/v1/bc/app/article/contentDetailsByDraft', req)
+    // return http.content.get('/v1/bc/app/article/contentDetailsByDraft', req)
+    return http.content.get('/v1/bc/app/content/audit/detail', req)
 }
 
 // 获取人脸识别的certifyId
@@ -1172,7 +1173,8 @@ export const newSavedraft = (req: any) => {
 
 /** 新版发布列表 */
 export const getnewContentList = (req: any) => {
-    return http.content.post('/v1/bc/app/article/myContentList', req)
+    // return http.content.post('/v1/bc/app/article/myContentList', req)
+    return http.content.post('/v1/bc/app/content/list', req)
 }
 
 /** 新版草稿列表 */
@@ -1290,4 +1292,33 @@ export const postReportsubmit = (req: any) => {
 // 音频列表
 export const getaudioList = (req: any) => {
     return http.content.post('/v1/bc/app/audio/list', req)
+}
+
+// 讨论分区列表
+export const getdiscussionList = (req:any,isRequireLogin:boolean = false) => {
+    if (isRequireLogin) {
+        return openHttp.content.get('/v1/bc/public/discussion/list', req)
+    }
+    return http.content.get('/v1/bc/public/discussion/list', req)
+}
+
+// 讨论内容列表
+export const discussionContentList = (req:any,isRequireLogin:boolean = false) => {
+    if (isRequireLogin) {
+        return openHttp.content.post('/v1/bc/public/discussion/content/list',req)
+    }
+    return http.content.post('/v1/bc/public/discussion/content/list',req)
+}
+
+// 讨论区模块列表
+export const discussionDetailList = (req:any,isRequireLogin:boolean = false) => {
+    if (isRequireLogin) {
+        return openHttp.post('/v1/bc/app/discussion/post/list',req)
+    }
+    return http.content.post('/v1/bc/app/discussion/post/list',req)
+}
+
+// 发布讨论内容
+export const upDiscussion = (req:any) => {
+    return http.content.post('/v1/bc/app/content/submit',req)
 }

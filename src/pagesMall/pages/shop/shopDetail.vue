@@ -68,7 +68,7 @@ import { onLoad } from "@dcloudio/uni-app"
 import { getAssetsPic } from '@/common/setPicture'
 import { addShopBrowerHistory, getBaseInfo } from "@/api/service-api"
 import { addShop, unHealthShop } from "@/api/user-api"
-import { servicelist } from "@/api/goods-api"
+import { productlist, servicelist } from "@/api/goods-api"
 import BCNotify from '@/components/notify/index.vue'
 import WaterfallsFlow from './components/WaterfallsFlow.vue'
 import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
@@ -110,7 +110,7 @@ const getAssetsUrl = computed(() => (src:string) => {
 })
 
 const queryList = (pageNumber: number, pageSize: number) => {
-    servicelist({
+    productlist({
         pageNumber,
         pageSize,
         query: {

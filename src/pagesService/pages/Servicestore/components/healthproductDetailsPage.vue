@@ -1,10 +1,10 @@
 <template>
     <view class="contraner">
         <z-paging
-            ref="paging"
-            :auto="false"
-            :refresher-enabled="false"
-            >
+              ref="paging"
+              :auto="false"
+              :refresher-enabled="false"
+        >
             <template #top>
                 <PageTopbg></PageTopbg>
                 <bc-page-navbar :title="'服务详情'">
@@ -18,33 +18,33 @@
             <view class="details_box" v-if="data.agencyObj.id">
                 <div class="swiper_box">
                     <swiper
-                        class="swiper"
-                        circular
-                        :autoplay="true"
-                        :interval="5000"
-                        :duration="500"
-                        @change="swiperchang"
+                          class="swiper"
+                          circular
+                          :autoplay="true"
+                          :interval="5000"
+                          :duration="500"
+                          @change="swiperchang"
                     >
                         <swiper-item
-                            v-for="(item, index) in showswiper(data.agencyObj.mainPics)"
-                            :key="index"
+                              v-for="(item, index) in showswiper(data.agencyObj.mainPics)"
+                              :key="index"
                         >
                             <image
-                                class="swiper_item"
-                                :src="item"
-                                mode="aspectFill"
-                                @click="preImage(index,showswiper(data.agencyObj.mainPics))"
+                                  class="swiper_item"
+                                  :src="item"
+                                  mode="aspectFill"
+                                  @click="preImage(index,showswiper(data.agencyObj.mainPics))"
                             />
                         </swiper-item>
                     </swiper>
                     <div class="swiper_indicator">
                         <div
-                            class="swiper_indicator_item"
-                            v-for="(item, index) in showswiper(
+                              class="swiper_indicator_item"
+                              v-for="(item, index) in showswiper(
                                 data.agencyObj.mainPics
                             )"
-                            :key="index"
-                            :class="{
+                              :key="index"
+                              :class="{
                                 isswiper: data.swiperIndex == index,
                                 one_notright: notright(
                                     data.agencyObj.mainPics,
@@ -65,9 +65,9 @@
                         <div class="introduce_icon">
                             <div class="icon_item_box" @click="share">
                                 <image
-                                    class="icon_item_img"
-                                    :src="getAssetsUrl('/channel/share.svg')"
-                                    mode="scaleToFill"
+                                      class="icon_item_img"
+                                      :src="getAssetsUrl('/channel/share.svg')"
+                                      mode="scaleToFill"
                                 />
                                 <text>分享</text>
                             </div>
@@ -78,8 +78,9 @@
                             <div class="price_text">
                                 ￥
                                 <text class="price_number">{{
-                                    (data.agencyObj.price / 100)
-                                }}</text>
+                                        (data.agencyObj.price / 100)
+                                    }}
+                                </text>
                             </div>
                         </div>
                     </div>
@@ -87,22 +88,22 @@
                         <div class="rule_title_box">
                             <div class="rule_title">{{ "限制" }}</div>
                             <div
-                                class="rule_text"
-                                v-if="data.agencyObj.isRestrictBuyQuantity == 0"
+                                  class="rule_text"
+                                  v-if="data.agencyObj.isRestrictBuyQuantity && data.agencyObj.isRestrictBuyQuantity>0"
                             >
-                                {{ "不限制购买" }}
-                            </div>
-                            <div class="rule_text" v-else>
                                 {{
                                     `每人限制${data.agencyObj.restrictBuyQuantity}张`
                                 }}
+                            </div>
+                            <div class="rule_text" v-else>
+                                {{ "不限制购买" }}
                             </div>
                         </div>
                         <div class="rule_title_box">
                             <div class="rule_title">{{ "须知" }}</div>
                             <div
-                                class="rule_text"
-                                v-if="data.agencyObj.isRestrictTime == 0"
+                                  class="rule_text"
+                                  v-if="data.agencyObj.isRestrictTime == 0"
                             >
                                 {{ "周一至周日全天可用·购买后" }}
                             </div>
@@ -120,9 +121,9 @@
                     <div class="package_title">套餐详情</div>
                     <div class="package_list">
                         <div
-                            class="package_item"
-                            v-for="item in data.agencyObj.itemList"
-                            :key="item.id"
+                              class="package_item"
+                              v-for="item in data.agencyObj.itemList"
+                              :key="item.id"
                         >
                             <div class="package_item_left">
                                 {{ item.name }}
@@ -140,8 +141,8 @@
                 </div>
 
                 <div
-                    class="comment_box"
-                    v-if="data.commentList.length != 0 && !data.needlogin"
+                      class="comment_box"
+                      v-if="data.commentList.length != 0 && !data.needlogin"
                 >
                     <div class="comment_box_title_box">
                         <div class="comment_box_title">
@@ -153,16 +154,16 @@
                         </div>
                     </div>
                     <div
-                        class="comment_box_item"
-                        :class="{ not_bottom: data.commentList.length == index + 1 }"
-                        v-for="(item, index) in data.commentList"
-                        :key="item.id"
+                          class="comment_box_item"
+                          :class="{ not_bottom: data.commentList.length == index + 1 }"
+                          v-for="(item, index) in data.commentList"
+                          :key="item.id"
                     >
                         <div class="comment_top">
                             <image
-                                class="comment_top_img"
-                                :src="item.userThumb"
-                                mode="scaleToFill"
+                                  class="comment_top_img"
+                                  :src="item.userThumb"
+                                  mode="scaleToFill"
                             />
                             <div>
                                 <div class="comment_top_name">
@@ -170,12 +171,12 @@
                                 </div>
                                 <div class="comment_top_rate">
                                     <TnRate
-                                        v-model="item.score"
-                                        :readonly="true"
-                                        inactive-color="#EBEBEB"
-                                        active-color="#FEE111"
-                                        gutter="4rpx"
-                                        size="24rpx"
+                                          v-model="item.score"
+                                          :readonly="true"
+                                          inactive-color="#EBEBEB"
+                                          active-color="#FEE111"
+                                          gutter="4rpx"
+                                          size="24rpx"
                                     />
                                 </div>
                             </div>
@@ -184,16 +185,16 @@
                             {{ item.comment }}
                         </div>
                         <div
-                            class="comment_img_list"
-                            v-if="item.pictures.length > 0"
+                              class="comment_img_list"
+                              v-if="item.pictures.length > 0"
                         >
                             <image
-                                v-for="(imgItem, imgIndex) in item.pictures"
-                                :key="imgIndex"
-                                class="comment_img"
-                                :src="imgItem"
-                                mode="aspectFill"
-                                @click="preImage(imgIndex, item.pictures)"
+                                  v-for="(imgItem, imgIndex) in item.pictures"
+                                  :key="imgIndex"
+                                  class="comment_img"
+                                  :src="imgItem"
+                                  mode="aspectFill"
+                                  @click="preImage(imgIndex, item.pictures)"
                             />
                         </div>
                         <div class="shop_reply_comment" v-if="item.reply">
@@ -205,23 +206,23 @@
                     </div>
                 </div>
                 <div
-                    class="not_comment_box"
-                    v-else-if="data.commentList.length == 0 && !data.needlogin"
+                      class="not_comment_box"
+                      v-else-if="data.commentList.length == 0 && !data.needlogin"
                 >
                     <div class="not_comment_title">全部评论</div>
                     <div class="not_img_box">
                         <image
-                            class="not_img"
-                            :src="getAssetsUrl('/empty/empty_icon_data.png')"
-                            mode="scaleToFill"
+                              class="not_img"
+                              :src="getAssetsUrl('/empty/empty_icon_data.png')"
+                              mode="scaleToFill"
                         />
                         <div class="not_text">暂无评论</div>
                     </div>
                 </div>
                 <div
-                    class="login_comment"
-                    v-else-if="data.needlogin"
-                    @click="tochoiceDetails(itemId, true)"
+                      class="login_comment"
+                      v-else-if="data.needlogin"
+                      @click="tochoiceDetails(itemId, true)"
                 >
                     <div class="login_comment_title">登陆后查看评论</div>
                     <div class="login_btn">去登陆</div>
@@ -236,12 +237,12 @@
 
                     <div class="img_list">
                         <image
-                            v-for="(item, index) in data.agencyObj.detailPics"
-                            :key="index"
-                            class="img_item"
-                            :src="item"
-                            mode="widthFix"
-                            @click="preImage(index, data.agencyObj.detailPics)"
+                              v-for="(item, index) in data.agencyObj.detailPics"
+                              :key="index"
+                              class="img_item"
+                              :src="item"
+                              mode="widthFix"
+                              @click="preImage(index, data.agencyObj.detailPics)"
                         />
                     </div>
                 </div>
@@ -250,15 +251,17 @@
             <template #bottom>
                 <div class="bottom_btn">
                     <div class="contact" @click="tobay">
-                        <text class="contact_text"> 立即抢购 </text>
+                        <text class="contact_text"> 立即抢购</text>
                     </div>
                 </div>
             </template>
 
         </z-paging>
 
-        <shareView ref="shareBox" @sharePage="sharePage" @sharePoster="sharePoster" :status="data.status" :imgUrl="data.shareimgUrl"></shareView>
-        <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="254" height="344" style="width:254px; height:344px"></canvas>
+        <shareView ref="shareBox" @sharePage="sharePage" @sharePoster="sharePoster" :status="data.status"
+                   :imgUrl="data.shareimgUrl"></shareView>
+        <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="254" height="344"
+                style="width:254px; height:344px"></canvas>
 
 
     </view>
@@ -267,7 +270,7 @@
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, getCurrentInstance } from 'vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
-import { healthdetail, godsCommList } from '@/api/service-api'
+import { healthdetail, godsCommList, agencydetail } from '@/api/service-api'
 import { gotoBalanceOrder } from '@/routes/order-routes'
 import { serviceComment } from '@/routes/service-routes'
 
@@ -291,13 +294,13 @@ interface Props {
 const props = defineProps<Props>()
 
 interface Data {
-    swiperIndex:number,
-    agencyObj:any,
-    commentList:any,
-    total:number,
-    needlogin:boolean,
-    status:number,
-    shareimgUrl:string,
+    swiperIndex: number,
+    agencyObj: any,
+    commentList: any,
+    total: number,
+    needlogin: boolean,
+    status: number,
+    shareimgUrl: string,
 }
 
 const data = reactive<Data>({
@@ -310,15 +313,15 @@ const data = reactive<Data>({
     shareimgUrl: ''
 })
 
-const getAssetsUrl = computed(() => (src:string) => {
+const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 
-const timeformat = computed(() => (time:number) => {
+const timeformat = computed(() => (time: number) => {
     return formattime(time, 'YYYY-MM-DD')
 })
 
-const showswiper = computed(() => (list:any) => {
+const showswiper = computed(() => (list: any) => {
     if (!list?.length) {
         return
     }
@@ -330,7 +333,7 @@ const showswiper = computed(() => (list:any) => {
     }
 })
 
-const notright = computed(() => (list:any, index:number) => {
+const notright = computed(() => (list: any, index: number) => {
     if (list.length == 1) {
         return true
     }
@@ -350,10 +353,11 @@ onMounted(() => {
 })
 
 
-const gethealthdetail = (id:string) => {
-    healthdetail({
+const gethealthdetail = (id: string) => {
+    agencydetail({
         id
-    }).then((res:any) => {
+    }).then((res: any) => {
+        console.log(res)
         data.agencyObj = res
         const shareObj = {
             title: res.name,
@@ -366,7 +370,7 @@ const gethealthdetail = (id:string) => {
         // data.priceItem = res.itemList[0]
     })
 }
-const getgodsCommList = (itemId:string) => {
+const getgodsCommList = (itemId: string) => {
     godsCommList({
         pageNumber: 1,
         pageSize: 3,
@@ -374,18 +378,17 @@ const getgodsCommList = (itemId:string) => {
             itemId,
             shopId: null
         }
-    }).then((res:any) => {
+    }).then((res: any) => {
         data.commentList = res.data
         data.total = res.total
     })
 }
 
 
-
-const swiperchang = (item:any) => {
+const swiperchang = (item: any) => {
     data.swiperIndex = item.detail.current
 }
-const preImage = (current:number, urls:any) => {
+const preImage = (current: number, urls: any) => {
     uni.previewImage({
         current,
         urls
@@ -397,7 +400,7 @@ const tohealthComment = () => {
     serviceComment(props.itemId, 2)
 }
 
-const tochoiceDetails = (itemId:string, tologin:boolean = false) => {
+const tochoiceDetails = (itemId: string, tologin: boolean = false) => {
     // 登录后查询详情
 }
 
@@ -429,7 +432,7 @@ const tobay = () => {
         if (sweixin) {
             uni.hideLoading()
 
-            PlatformManage.getToken().then((res:any) => {
+            PlatformManage.getToken().then((res: any) => {
                 console.log('获取userinfo', res)
                 sweixin.launchMiniProgram({
                     id: 'gh_c2469c570746',  // 小程序的原始ID，微信公众平台设置里有
@@ -445,7 +448,6 @@ const tobay = () => {
 
     // #endif
 }
-
 
 
 const instance = getCurrentInstance() // 获取组件实例
@@ -490,7 +492,7 @@ const sharePoster = async () => {
 
     const coverUrl = await drawBGIMG(data.agencyObj.mainPics[0])
     // 二维码链接图片
-    const qrimg =  await getQrcode(`/pagesService/pages/Servicestore/healthproductDetails?itemId=${data.agencyObj.id}`).then((img:any) => {
+    const qrimg = await getQrcode(`/pagesService/pages/Servicestore/healthproductDetails?itemId=${data.agencyObj.id}`).then((img: any) => {
         return img
     })
     const qrimgUrl = await drawBGIMG(qrimg)
@@ -555,28 +557,28 @@ const sharePoster = async () => {
     context.restore()
 
     context.draw(
-        false,
-        setTimeout(async () => {
-            uni.canvasToTempFilePath({
-                canvasId: 'mycanvas',
-                success: (res:any) => {
-                    data.shareimgUrl = res.tempFilePath
-                    data.status = 2
-                    title = ''
-                },
-                fail: err => {
-                    console.log(err)
-                    uni.showToast({
-                        icon: 'none',
-                        title: '生成失败,请稍后重试'
-                    })
-                },
-                complete: (ret) => {
-                    console.log('生成中....')
-                    uni.hideLoading()
-                }
-            }, instance)
-        }, 3000)
+          false,
+          setTimeout(async () => {
+              uni.canvasToTempFilePath({
+                  canvasId: 'mycanvas',
+                  success: (res: any) => {
+                      data.shareimgUrl = res.tempFilePath
+                      data.status = 2
+                      title = ''
+                  },
+                  fail: err => {
+                      console.log(err)
+                      uni.showToast({
+                          icon: 'none',
+                          title: '生成失败,请稍后重试'
+                      })
+                  },
+                  complete: (ret) => {
+                      console.log('生成中....')
+                      uni.hideLoading()
+                  }
+              }, instance)
+          }, 3000)
     )
 }
 
@@ -602,6 +604,7 @@ defineExpose({
     .details_box {
         padding: 20rpx;
         box-sizing: border-box;
+
         .swiper_box {
             width: 100%;
             height: 710rpx;
@@ -609,9 +612,11 @@ defineExpose({
             overflow: hidden;
             position: relative;
             margin-bottom: 20rpx;
+
             .swiper {
                 width: 100%;
                 height: 100%;
+
                 .swiper_item {
                     width: 100%;
                     height: 100%;
@@ -620,6 +625,7 @@ defineExpose({
                     background: #ffffff;
                 }
             }
+
             .swiper_indicator {
                 position: absolute;
                 bottom: 20rpx;
@@ -634,6 +640,7 @@ defineExpose({
                 justify-content: space-between;
                 padding: 8rpx 12rpx;
                 box-sizing: border-box;
+
                 .swiper_indicator_item {
                     width: 12rpx;
                     height: 12rpx;
@@ -641,16 +648,19 @@ defineExpose({
                     border-radius: 50%;
                     opacity: 0.4;
                     margin-right: 8rpx;
+
                     &.isswiper {
                         background: #ffffff;
                         opacity: 1;
                     }
+
                     &.one_notright {
                         margin-right: 0rpx;
                     }
                 }
             }
         }
+
         .introduce {
             width: 100%;
             border-radius: 24rpx;
@@ -658,44 +668,53 @@ defineExpose({
             padding: 30rpx;
             box-sizing: border-box;
             margin-bottom: 20rpx;
+
             .introduce_top {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 margin-bottom: 20rpx;
+
                 .introduce_title_box {
                     width: 75%;
+
                     .introduce_title {
                         color: #333333;
                         font-size: 34rpx;
                         margin-bottom: 16rpx;
                         font-weight: bold;
                     }
+
                     .introduce_rate_box {
                         display: flex;
                         align-items: center;
+
                         .introduce_num {
                             color: #ff9f3e;
                             margin-right: 16rpx;
                             margin-left: 8rpx;
                             font-size: 24rpx;
                         }
+
                         .introduce_rate {
                             color: #333333;
                             font-size: 24rpx;
                         }
                     }
                 }
+
                 .introduce_icon {
                     // width: 120rpx;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+
                     .icon_item_box {
                         color: #878787;
                         font-size: 20rpx;
                         display: flex;
                         flex-direction: column;
+
                         .icon_item_img {
                             width: 40rpx;
                             height: 40rpx;
@@ -704,9 +723,11 @@ defineExpose({
                     }
                 }
             }
+
             .device_list {
                 padding-bottom: 40rpx;
                 border-bottom: 1px solid #f0f0f0;
+
                 .discount_tag {
                     padding: 4rpx 8rpx;
                     box-sizing: border-box;
@@ -718,18 +739,22 @@ defineExpose({
                     margin-bottom: 8rpx;
                     width: fit-content;
                 }
+
                 .price_box {
                     display: flex;
                     align-items: center;
+
                     .price_text {
                         font-size: 24rpx;
                         color: #ff0000;
                         margin-right: 10rpx;
+
                         .price_number {
                             color: #ff0000;
                             font-size: 40rpx;
                         }
                     }
+
                     .price_through {
                         text-decoration: line-through;
                         font-size: 24rpx;
@@ -737,21 +762,25 @@ defineExpose({
                     }
                 }
             }
+
             .rule {
                 padding-top: 30rpx;
                 box-sizing: border-box;
                 width: 100%;
+
                 .rule_title_box {
                     display: flex;
                     align-items: center;
                     font-size: 28rpx;
                     margin-bottom: 16rpx;
                     width: 100%;
+
                     .rule_title {
                         color: #333333;
                         // margin-right: 30rpx;
                         width: 10%;
                     }
+
                     .rule_text {
                         color: #777777;
                         width: 89%;
@@ -759,37 +788,45 @@ defineExpose({
                 }
             }
         }
+
         .package {
             padding: 30rpx;
             box-sizing: border-box;
             background: #ffffff;
             border-radius: 24rpx;
             margin-bottom: 20rpx;
+
             .package_title {
                 color: #333333;
                 font-size: 32rpx;
                 margin-bottom: 40rpx;
                 font-weight: bold;
             }
+
             .package_list {
                 width: 100%;
+
                 .package_item {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
                     margin-bottom: 30rpx;
+
                     .package_item_left {
                         color: #333333;
                         font-size: 28rpx;
                     }
+
                     .package_item_right {
                         display: flex;
                         align-items: center;
+
                         .package_item_right_number {
                             font-size: 28rpx;
                             color: #999999;
                             margin-right: 20rpx;
                         }
+
                         .package_item_right_price {
                             color: #ff0000;
                             font-size: 28rpx;
@@ -805,16 +842,19 @@ defineExpose({
             background: #fff;
             border-radius: 24rpx;
             margin-bottom: 40rpx;
+
             .comment_box_title_box {
                 width: 100%;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 margin-bottom: 40rpx;
+
                 .comment_box_title {
                     color: #333333;
                     font-size: 32rpx;
                 }
+
                 .comment_box_show {
                     color: #999999;
                     font-size: 28rpx;
@@ -822,43 +862,51 @@ defineExpose({
                     align-items: center;
                 }
             }
+
             .comment_box_item {
                 margin-bottom: 30rpx;
                 padding-bottom: 30rpx;
                 box-sizing: border-box;
                 border-bottom: 2rpx solid #f2f2f2;
+
                 &.not_bottom {
                     margin-bottom: 0rpx;
                     padding-bottom: 0rpx;
                     border-bottom: none;
                 }
+
                 .comment_top {
                     display: flex;
                     align-items: center;
                     margin-bottom: 28rpx;
+
                     .comment_top_img {
                         width: 68rpx;
                         height: 68rpx;
                         border-radius: 50%;
                         margin-right: 20rpx;
                     }
+
                     .comment_top_box {
                         height: 68rpx;
                         display: flex;
                         flex-direction: column;
                         justify-content: space-between;
                     }
+
                     .comment_top_name {
                         color: #333333;
                         font-size: 28rpx;
                     }
                 }
+
                 .comment_text {
                     margin-bottom: 28rpx;
                     line-height: 44rpx;
                     color: #333333;
                     font-size: 28rpx;
                 }
+
                 .comment_img_list {
                     width: 100%;
                     margin-bottom: 28rpx;
@@ -872,7 +920,8 @@ defineExpose({
                         margin-right: 10rpx;
                     }
                 }
-                .shop_reply_comment{
+
+                .shop_reply_comment {
                     padding: 24rpx;
                     box-sizing: border-box;
                     background: #F5F5F5;
@@ -881,36 +930,43 @@ defineExpose({
                     font-size: 26rpx;
                     color: #666;
                 }
+
                 .comment_time {
                     font-size: 24rpx;
                     color: #999999;
                 }
             }
         }
+
         .not_comment_box {
             padding: 36rpx 30rpx;
             box-sizing: border-box;
             background: #fff;
             border-radius: 24rpx;
             margin-bottom: 20rpx;
+
             .not_comment_title {
                 color: #333333;
                 font-size: 32rpx;
             }
+
             .not_img_box {
                 display: flex;
                 align-items: center;
                 flex-direction: column;
+
                 .not_img {
                     width: 350rpx;
                     height: 350rpx;
                 }
+
                 .not_text {
                     font-size: 28rpx;
                     color: #999999;
                 }
             }
         }
+
         .login_comment {
             padding: 36rpx 30rpx;
             box-sizing: border-box;
@@ -925,6 +981,7 @@ defineExpose({
                 color: #333333;
                 font-size: 28rpx;
             }
+
             .login_btn {
                 background: #29c86f;
                 color: #fff;
@@ -946,27 +1003,30 @@ defineExpose({
                 align-items: center;
                 justify-content: center;
                 margin-bottom: 20rpx;
+
                 .details_title_left {
                     width: 52rpx;
                     height: 2px;
                     background: linear-gradient(
-                        90deg,
-                        #f2f3f5 0%,
-                        #8d8d8d 100%
+                                90deg,
+                                #f2f3f5 0%,
+                                #8d8d8d 100%
                     );
                     margin-right: 20rpx;
                 }
+
                 .img_details_title {
                     font-size: 28rpx;
                     color: #333333;
                 }
+
                 .details_title_right {
                     width: 52rpx;
                     height: 2px;
                     background: linear-gradient(
-                        90deg,
-                        #8d8d8d 0%,
-                        #f2f3f5 100%
+                                90deg,
+                                #8d8d8d 0%,
+                                #f2f3f5 100%
                     );
                     margin-left: 20rpx;
                 }
@@ -983,6 +1043,7 @@ defineExpose({
             }
         }
     }
+
     .bottom_btn {
         width: 100%;
         display: flex;
@@ -992,20 +1053,24 @@ defineExpose({
         padding-bottom: 48rpx;
         box-sizing: border-box;
         background: #ffffff;
+
         .contact {
             width: 686rpx;
             height: 84rpx;
-            background: linear-gradient( 90deg, #FE7D36 0%, #FE2D00 100%);
+            background: linear-gradient(90deg, #FE7D36 0%, #FE2D00 100%);
             border-radius: 46rpx;
             font-size: 32rpx;
             color: #ffffff;
             line-height: 84rpx;
             text-align: center;
+
             .contact_text {
                 margin-right: 12rpx;
             }
+
             .contact_price {
                 font-size: 24rpx;
+
                 .contact_price_text {
                     color: #ffda46;
                     font-size: 30rpx;
@@ -1023,7 +1088,8 @@ defineExpose({
         right: 4rpx;
     }
 }
-.bilvas{
+
+.bilvas {
     border-radius: 20rpx;
     position: relative;
     left: -750px;

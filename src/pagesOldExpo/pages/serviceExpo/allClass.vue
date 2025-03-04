@@ -1,18 +1,18 @@
 <template>
     <view class="container">
         <z-paging
-            ref="paging"
-            v-model="data.dataList"
-            :auto="true"
-            :fixed="true"
-            @query="queryList"
-            @scroll="pageScroll"
-            :defaultPageSize="10"
-            :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
-            empty-view-text="还没有数据哦~"
-            :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
-            :auto-show-back-to-top="true"
-            :loading-more-enabled="false"
+              ref="paging"
+              v-model="data.dataList"
+              :auto="true"
+              :fixed="true"
+              @query="queryList"
+              @scroll="pageScroll"
+              :defaultPageSize="10"
+              :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
+              empty-view-text="还没有数据哦~"
+              :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
+              :auto-show-back-to-top="true"
+              :loading-more-enabled="false"
 
         >
             <template #top>
@@ -26,7 +26,7 @@
                 <!-- #endif -->
 
 
-                <bc-page-navbar :title="data.title" ></bc-page-navbar>
+                <bc-page-navbar :title="data.title"></bc-page-navbar>
 
                 <!-- #ifdef APP-PLUS -->
                 <view class="placeholder"></view>
@@ -38,7 +38,9 @@
             <template #left>
 
                 <view class="left_nva_box" v-if="data.categoryList.length > 0">
-                    <view class="navItem" @click="changeNav(index)" :class="{ 'is_select': item.id == data.categoryList[data.categoryIndex].id }" v-for="(item, index) in data.categoryList" :key="item.id">
+                    <view class="navItem" @click="changeNav(index)"
+                          :class="{ 'is_select': item.id == data.categoryList[data.categoryIndex].id }"
+                          v-for="(item, index) in data.categoryList" :key="item.id">
                         <view>
                             {{ item.name }}
                         </view>
@@ -51,7 +53,7 @@
 
             <view class="page_content">
                 <template v-for="(item,index) in data.dataList" :key="item.categoryId">
-                    <view class="boxItem" v-if="item"  :id="'toView' + index">
+                    <view class="boxItem" v-if="item" :id="'toView' + index">
                         <view class="item_title_box" @click="toClassItemPage(item)">
                             <view class="item_title">{{ item.categoryName }}</view>
                             <view>
@@ -59,11 +61,12 @@
                             </view>
                         </view>
                         <view class="list_box">
-                            <view class="item_box" @click="clickwaterItem(sonItem)" v-for="sonItem in item.categorySonList" :key="sonItem.id">
+                            <view class="item_box" @click="clickwaterItem(sonItem)"
+                                  v-for="sonItem in item.categorySonList" :key="sonItem.id">
                                 <image
-                                    class="item_img"
-                                    :src="sonItem.shopThumb"
-                                    mode="aspectFill"
+                                      class="item_img"
+                                      :src="sonItem.shopThumb"
+                                      mode="aspectFill"
                                 />
                                 <view class="item_text">{{ sonItem.shopName }}</view>
                             </view>
@@ -71,9 +74,6 @@
                     </view>
                 </template>
             </view>
-
-
-
 
 
             <BCNotify ref="bcNotify"></BCNotify>
@@ -108,6 +108,7 @@ interface Data {
     pid: string
     title: string
 }
+
 const data = reactive<Data>({
     dataList: [],
     categoryList: [],
@@ -119,24 +120,21 @@ const data = reactive<Data>({
 
 const bcNotify = ref()
 
-const getAssetsUrl = computed(() => (src:string) => {
+const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 
 onMounted(async () => {
 })
 
-onLoad((option:any) => {
+onLoad((option: any) => {
     data.pid = option.pid
     data.title = option.title
 })
 
 
-
-
-
 const paging = ref(null)
-const queryList = async (pageNumber:number, pageSize:number) => {
+const queryList = async (pageNumber: number, pageSize: number) => {
 
     oldExpoCategory({
         pageNumber: 1,
@@ -145,7 +143,7 @@ const queryList = async (pageNumber:number, pageSize:number) => {
             isPid: 0,
             pid: data.pid
         }
-    }).then((res:any) => {
+    }).then((res: any) => {
         data.categoryList = res.data
 
         if (data.categoryList.length == 0) {
@@ -164,7 +162,7 @@ const queryList = async (pageNumber:number, pageSize:number) => {
                     isFavorite: 0,
                     categoryId: item.id
                 }
-            }).then((resList:any) => {
+            }).then((resList: any) => {
                 arr.push({
                     categoryId: item.id,
                     categoryName: item.name,
@@ -176,16 +174,16 @@ const queryList = async (pageNumber:number, pageSize:number) => {
         Promise.all(promises).then(() => {
             console.log('data.categoryList', data.categoryList)
 
-            const sortedArray2 = data.categoryList.map((item1:any) => {
+            const sortedArray2 = data.categoryList.map((item1: any) => {
                 // 从新排序
-                return arr.find((item2:any) => item2?.categoryId === item1.id)
+                return arr.find((item2: any) => item2?.categoryId === item1.id)
             }) as any
 
             (paging.value as any).complete(sortedArray2)
 
             console.log('data.dataList', data.dataList)
 
-        }).catch((err:any) => {
+        }).catch((err: any) => {
             (paging.value as any).complete([])
         })
 
@@ -194,7 +192,7 @@ const queryList = async (pageNumber:number, pageSize:number) => {
 
 }
 
-const changeNav = (index:number) => {
+const changeNav = (index: number) => {
     data.categoryIndex = index;
 
     (paging.value as any).scrollIntoViewById('toView' + index, 150)
@@ -202,20 +200,19 @@ const changeNav = (index:number) => {
 }
 
 
-const clickwaterItem = (item:any) => {
+const clickwaterItem = (item: any) => {
     console.log('item', item)
     if (item.shopSource == 32) {
-        gotoDiscussDetail({ shopId: item.shopId })
+        // gotoDiscussDetail({ shopId: item.shopId })
         return
     }
     gotoServiceStore({ shopId: item.shopId, isAd: 0 })
 
 }
 
-const toClassItemPage = (item:any) => {
+const toClassItemPage = (item: any) => {
     gotoClassItemPage({ categoryId: item.categoryId, categoryName: item.categoryName })
 }
-
 
 
 // 退出页面
@@ -226,7 +223,7 @@ const goback = () => {
 const instance = getCurrentInstance() // 获取组件实例
 const query = uni.createSelectorQuery().in(instance)
 
-const pageScroll = (e:any) => {
+const pageScroll = (e: any) => {
 
     // #ifdef APP || H5
     const scrollIndex = Math.floor(e.detail.scrollTop / 200)
@@ -235,8 +232,8 @@ const pageScroll = (e:any) => {
 
     // #ifdef MP-WEIXIN
     Debounce(() => {
-        data.categoryList.forEach((item:any, index:number) => {
-            query.select('#toView' + index).boundingClientRect((rect:any) => {
+        data.categoryList.forEach((item: any, index: number) => {
+            query.select('#toView' + index).boundingClientRect((rect: any) => {
                 console.log('rect', rect)
 
                 if (rect.top <= 150 && rect.top >= 50) {
@@ -251,17 +248,17 @@ const pageScroll = (e:any) => {
 
 }
 
-defineExpose({
-})
+defineExpose({})
 
 </script>
 
 <style lang="scss" scoped>
-.left_nva_box{
+.left_nva_box {
     width: 176rpx;
     height: 1500rpx;
     background: #FFFFFF;
-    .navItem{
+
+    .navItem {
         padding: 32rpx;
         padding-right: 0rpx;
         box-sizing: border-box;
@@ -269,11 +266,13 @@ defineExpose({
         color: #000002;
         font-weight: 400;
         position: relative;
-        &.is_select{
+
+        &.is_select {
             background: #F2F3F5;
             color: #EA3E1A;
         }
-        .select_box{
+
+        .select_box {
             width: 8rpx;
             height: 36rpx;
             background: #EA3E1A;
@@ -285,19 +284,22 @@ defineExpose({
         }
     }
 }
-.page_content{
+
+.page_content {
     padding: 20rpx;
     padding-bottom: 130rpx;
 
     box-sizing: border-box;
-    .boxItem{
+
+    .boxItem {
         width: 100%;
         background: #FFFFFF;
         border-radius: 32rpx;
         padding: 28rpx 0rpx;
         box-sizing: border-box;
         margin-bottom: 16rpx;
-        .item_title_box{
+
+        .item_title_box {
             width: 100%;
             padding: 0rpx 32rpx;
             box-sizing: border-box;
@@ -305,13 +307,15 @@ defineExpose({
             align-items: center;
             justify-content: space-between;
             margin-bottom: 40rpx;
-            .item_title{
+
+            .item_title {
                 color: #000002;
                 font-size: 30rpx;
                 font-weight: 500;
             }
         }
-        .list_box{
+
+        .list_box {
             // display: flex;
             // align-items: center;
             // justify-content: space-between;
@@ -321,7 +325,8 @@ defineExpose({
             grid-template-columns: auto auto auto auto;
             padding: 0rpx 8rpx;
             box-sizing: border-box;
-            .item_box{
+
+            .item_box {
                 flex-shrink: 0;
                 display: flex;
                 flex-direction: column;
@@ -329,27 +334,29 @@ defineExpose({
                 justify-content: center;
                 margin-bottom: 20rpx;
 
-                .item_img{
+                .item_img {
                     width: 60rpx;
                     height: 60rpx;
                     margin-bottom: 12rpx;
                 }
-                .item_text{
+
+                .item_text {
                     text-align: center;
                     font-size: 24rpx;
                     color: #727375;
                     font-weight: 400;
                     width: 120rpx;
                     white-space: nowrap; /*强制一行内显示*/
-                    overflow: hidden;/*溢出隐藏*/
-                    text-overflow: ellipsis;/*超出部分现实省略号*/
+                    overflow: hidden; /*溢出隐藏*/
+                    text-overflow: ellipsis; /*超出部分现实省略号*/
                 }
             }
 
         }
     }
 }
-.placeholder{
+
+.placeholder {
     width: 100%;
     padding: 90rpx 0;
 }

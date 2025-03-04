@@ -59,10 +59,10 @@
                             <div v-for="(item, index) in priceItemlist" :key="index"
                                 :class="{ 'isshow_region': index == priceIndex }" class="priceItem"
                                 @click="clickpriceItem(item, index)">
-                                <text v-if="!item.minPrice">{{ item.maxPrice | moneyFilter }}以下</text>
-                                <text v-if="item.minPrice && item.maxPrice">{{ item.minPrice | moneyFilter }}-{{
-                                    item.maxPrice | moneyFilter }}</text>
-                                <text v-if="!item.maxPrice">{{ item.minPrice | moneyFilter }}以上</text>
+                                <text v-if="!item.minPrice">{{ moneyFilter(item.maxPrice) }}以下</text>
+                                <text v-if="item.minPrice && item.maxPrice">{{ moneyFilter(item.minPrice)   }}-{{
+                                    moneyFilter(item.maxPrice)   }}</text>
+                                <text v-if="!item.maxPrice">{{ moneyFilter(item.minPrice)   }}以上</text>
                             </div>
                         </div>
                     </div>

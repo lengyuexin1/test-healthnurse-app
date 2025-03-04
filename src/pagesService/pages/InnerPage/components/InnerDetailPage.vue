@@ -3,12 +3,12 @@
           ref="paging"
           v-model="data.dataList"
           :auto="true"
-          :fixed="true"
-          @query="queryList"
           :defaultPageSize="6"
           :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
-          empty-view-text="还没有数据哦~"
           :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
+          :fixed="true"
+          empty-view-text="还没有数据哦~"
+          @query="queryList"
     >
 
         <template #top>
@@ -16,16 +16,17 @@
                 <bc-page-navbar title="机构详情"></bc-page-navbar>
                 <view class="top_inp_box">
                     <view class="inp_box" @click="tosearch">
-                        <TnIcon name="search" color="#666" size="26"></TnIcon>
+                        <TnIcon color="#666" name="search" size="26"></TnIcon>
                         <view class="inp_text">搜索</view>
                     </view>
                 </view>
                 <div class="menu">
-                    <div class="menu_item" @click="changeTab(index)" v-for="(item, index) in treList" :key="index">
-                        <text class="menu_item_text" :class="{ 'isclick': item.showregion }">{{ item.text }}</text>
-                        <image class="menu_item_img"
-                               :src="item.showregion ? getAssetsUrl('/channel/icon_down_highlig.png') : getAssetsUrl('/channel/icon_down.png')"
-                               mode="scaleToFill"/>
+                    <div v-for="(item, index) in treList" :key="index" class="menu_item" @click="changeTab(index)">
+                        <text :class="{ 'isclick': item.showregion }" class="menu_item_text">{{ item.text }}</text>
+                        <image
+                              :src="item.showregion ? getAssetsUrl('/channel/icon_down_highlig.png') : getAssetsUrl('/channel/icon_down.png')"
+                              class="menu_item_img"
+                              mode="scaleToFill"/>
                     </div>
                 </div>
                 <!-- <view class="top_icon_list">
@@ -47,18 +48,18 @@
                 </view> -->
             </TnSticky>
         </template>
-        <view class="screen_box" v-if="data.dataList.length">
+        <view v-if="data.dataList.length" class="screen_box">
             <!-- 列表 -->
             <agencyItem :agencyList="data.dataList" :coordinate="coordinate" :positioning="positioning"/>
         </view>
         <!-- <institutionList :dataList="data.dataList"></institutionList> -->
 
         <BCNotify ref="bcNotify"></BCNotify>
-        <TnPopup v-model="show" open-direction="top" :safeAreaInsetBottom="false" round="32rpx"
-                 :closeOnClickOverlay="true" @close="allClose">
-            <div class="menu_show_box" :style="'margin-top:' + navbarTop + 'px'">
+        <TnPopup v-model="show" :closeOnClickOverlay="true" :safeAreaInsetBottom="false" open-direction="top"
+                 round="32rpx" @close="allClose">
+            <div :style="'margin-top:' + navbarTop + 'px'" class="menu_show_box">
                 <!-- 区域菜单 -->
-                <div class="region_box" v-if="showregion">
+                <div v-if="showregion" class="region_box">
                     <div class="region_box_top">
                         <text class="region_box_top_text">当前城市:</text>
                         <text class="nowcity">广州</text>
@@ -66,8 +67,9 @@
                     <div class="region_box_list">
                         <!-- <u-grid col="3"> -->
                         <block v-for="(areaListItem, areaListIndex) in areaList" :key="areaListIndex">
-                            <div class="region_box_item" @click="clickarea(areaListItem, areaListIndex)"
-                                 :class="{ 'isshow_region': districtIds.includes(areaListItem.id) }">{{
+                            <div :class="{ 'isshow_region': districtIds.includes(areaListItem.id) }"
+                                 class="region_box_item"
+                                 @click="clickarea(areaListItem, areaListIndex)">{{
                                     areaListItem.name
                                 }}
                             </div>
@@ -77,20 +79,21 @@
                 </div>
 
                 <!-- 类别菜单 -->
-                <div class="category_box" v-if="showcategory">
+                <div v-if="showcategory" class="category_box">
                     <div class="category_box_list">
-                        <div v-for="(item, index) in categoryList" :key="index" class="category_box_item"
-                             @click="clickcategory(item, index)"
-                             :class="{ 'isshow_region': categoryIds.includes(item.id) }">{{ item.name }}
+                        <div v-for="(item, index) in categoryList" :key="index"
+                             :class="{ 'isshow_region': categoryIds.includes(item.id) }"
+                             class="category_box_item"
+                             @click="clickcategory(item, index)">{{ item.name }}
                         </div>
                     </div>
                 </div>
 
                 <!-- 价格菜单 -->
-                <div class="priceItem_box" v-if="showpriceItem">
+                <div v-if="showpriceItem" class="priceItem_box">
                     <div class="priceItem_box_list">
-                        <div class="priceItem" @click="priceIndex = 999"
-                             :class="{ 'isshow_region': priceIndex == 999 }">不限
+                        <div :class="{ 'isshow_region': priceIndex == 999 }" class="priceItem"
+                             @click="priceIndex = 999">不限
                         </div>
                         <div v-for="(item, index) in priceItemlist" :key="index"
                              :class="{ 'isshow_region': index == priceIndex }" class="priceItem"
@@ -117,11 +120,11 @@
         </template> -->
     </z-paging>
 
-    <yk-authpup ref="authpup" type="top" :isNativeHead="false" @changeAuth="getLocation"
-                permissionID="ACCESS_FINE_LOCATION" :animation="false"></yk-authpup>
+    <yk-authpup ref="authpup" :animation="false" :isNativeHead="false" permissionID="ACCESS_FINE_LOCATION"
+                type="top" @changeAuth="getLocation"></yk-authpup>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import { moneyFilter } from "@/common/filters"
 import TnSticky from '@tuniao/tnui-vue3-uniapp/components/sticky/src/sticky.vue'
 import { ref, reactive, computed, onMounted, defineExpose } from 'vue'
@@ -137,7 +140,6 @@ import BCNotify from '@/components/notify/index.vue'
 import institutionList from './institutionList.vue'
 import { getcategoryList, shoplist } from '@/api/service-api'
 import { getDistances } from '@/utils/distance'
-import { useRoute } from 'vue-router'
 import { gotosearch } from '@/routes/service-routes'
 
 const treList = ref([
@@ -168,10 +170,10 @@ const data = reactive<Data>({
 
 
 interface Props {
-    id: string,
-    templateId: number,
-    parentId: number,
-    pageTitle: string,
+    id: String,
+    templateId: Number,
+    parentId: Number,
+    pageTitle: String,
 }
 
 const props = defineProps<Props>()
@@ -180,7 +182,6 @@ const props = defineProps<Props>()
 onMounted(() => {
 })
 
-const route = useRoute()
 
 // Data properties
 const paging = ref()
@@ -273,7 +274,6 @@ const priceText = computed(() => (index) => {
 
 // OnMounted
 onMounted(() => {
-
     parentId.value = props.parentId || 440100
     templateId.value = props.templateId
 
@@ -352,6 +352,9 @@ const getnavbarTop = () => {
     // $u.getRect('#navbarTop').then((res) => {
     //     navbarTop.value = res.height
     // })
+    const sysInfo = uni.getSystemInfoSync()
+    console.log("sysInfo", sysInfo.statusBarHeight)
+    navbarTop.value = sysInfo?.statusBarHeight + 120
 }
 
 const getDistancesfun = () => {

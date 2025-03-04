@@ -7,7 +7,7 @@
                     <view class="salon_left">
                         <image
                             class="salon_left_img"
-                            :src="item.cover"
+                            :src="item.thumb"
                             mode="aspectFill"
                         />
                         <view class="salon_left_text">
@@ -27,7 +27,7 @@
                             <view class="btn to_join" v-else @click.stop="tojoinSalon(item)">加入</view>
                         </view>
                     </template>
-                    
+
                 </view>
             </view>
         </view>
@@ -39,7 +39,7 @@
                         class="posts_img"
                         :src="item.cover"
                         mode="aspectFill"
-                    />    
+                    />
                     <view class="posts_text">
                         <view class="posts_title">{{ item.title }}</view>
                         <view class="posts_time">{{ formatTime(item.utcExamined) }}</view>
@@ -47,7 +47,7 @@
                 </view>
             </view>
         </view>
-        
+
         <BCNotify ref="bcNotify"></BCNotify>
         <TnPopup v-model="data.showPopup">
             <view class="popup_box">
@@ -58,10 +58,10 @@
                     <view class="right_btn" @click="isExit">确定</view>
                 </view>
             </view>
-        </TnPopup> 
+        </TnPopup>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 import { agoTime } from '@/common/formatTime'
@@ -143,7 +143,7 @@ const toExit = (item:any) => {
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .container{
     padding: 30rpx 20rpx;
@@ -175,7 +175,7 @@ const toExit = (item:any) => {
                     height: 132rpx;
                     border-radius: 8rpx;
                     margin-right: 20rpx;
-                }   
+                }
                 .salon_left_text{
                     width: 370rpx;
                     margin-right: 20rpx;
@@ -306,4 +306,4 @@ const toExit = (item:any) => {
     }
 }
 </style>
- 
+

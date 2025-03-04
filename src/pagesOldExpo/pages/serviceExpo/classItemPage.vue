@@ -135,7 +135,7 @@ const queryList = async (pageNumber:number, pageSize:number) => {
 const toServiceStore = (item:any) => {
     console.log('item', item)
     if (item.shopSource == 32) {
-        gotoDiscussDetail({ shopId: item.shopId })
+        // gotoDiscussDetail({shopId: item.shopId})
         return
     }
     gotoServiceStore({ shopId: item.shopId, isAd: 0 })

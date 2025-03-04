@@ -1,7 +1,7 @@
 <template>
     <view class="container">
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
@@ -42,13 +42,13 @@
                         <text class="info-list-right-character mr-10">{{ changeStar(data.userinfo.mobile) }}</text>
                     </view>
                 </view>
-                <view class="info-list">
-                    <text class="info-list-title">爱聊资料</text>
-                    <view class="info-list-right" @tap="clickLoveChatEditInfo">
-                        <text class="info-list-right-character mr-10">去修改</text>
-                        <TnIcon name="right" color="#BEBEBE"/>
-                    </view>
-                </view>
+<!--                <view class="info-list">-->
+<!--                    <text class="info-list-title">爱聊资料</text>-->
+<!--                    <view class="info-list-right" @tap="clickLoveChatEditInfo">-->
+<!--                        <text class="info-list-right-character mr-10">去修改</text>-->
+<!--                        <TnIcon name="right" color="#BEBEBE"/>-->
+<!--                    </view>-->
+<!--                </view>-->
             </view>
             <view class="btn_box">
                 <view class="btn" @click="save">
@@ -58,10 +58,10 @@
 
             <yk-authpup ref="authpup" :isNativeHead="false" type="top" @changeAuth="uploadAvatar" permissionID="WRITE_EXTERNAL_STORAGE"></yk-authpup>
         </z-paging>
-        
+
         <kps-image-cutter @ok="onok" @cancel="oncancle" :url="data.imgurl" :fixed="true" :blob="false" :maxWidth="500"
         :maxHeight="500"></kps-image-cutter>
-        
+
         <!-- @confirm="save" -->
         <TnDateTimePicker v-model:open="data.show" v-model="data.userinfo.birthday" min-time="1960/1/1 00:00:00" :max-time="data.maxTime"></TnDateTimePicker>
 
@@ -69,7 +69,7 @@
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 import { onLoad, onReady } from '@dcloudio/uni-app'
@@ -147,7 +147,7 @@ const getUserCheck = () => {
             data.inputValue = data.userinfo.nickname
 
         })
-        
+
     })
 }
 
@@ -236,7 +236,7 @@ const save = () => {
         })
     }).catch((err:any)=>{
         bcNotify.value.show(err)
-        
+
     })
 }
 
@@ -263,7 +263,7 @@ const clickLoveChatEditInfo = () => {
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .showbox{
     position: fixed;
@@ -374,4 +374,4 @@ const clickLoveChatEditInfo = () => {
     width: 200rpx;
 }
 </style>
- 
+

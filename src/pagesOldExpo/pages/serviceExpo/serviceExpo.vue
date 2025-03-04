@@ -60,7 +60,7 @@
                         <swiper-item class="swiper_item" v-for="item in 1" :key="item">
                             <!-- item.cover -->
                             <!-- @click="liveList(item)" -->
-                            
+
                             <image
                                 class="live_swiper_img"
                                 :src="getAssetsUrl('/leyou/static/expo_banner.png')"
@@ -106,10 +106,10 @@
                 <view class="contentList_box">
                     <WaterfallsFlow :wfList="data.dataList" @waterItem="clickwaterItem"></WaterfallsFlow>
                 </view>
-                
+
             </view>
-           
-            
+
+
 
 
 
@@ -293,7 +293,7 @@ const clickwaterItem = (item:any) =>{
     // 区分普通分区还是新品分区
     if (data.selectedId != 111) {
         if (item.shopSource == 32) {
-            gotoDiscussDetail({shopId: item.shopId})
+            // gotoDiscussDetail({shopId: item.shopId})
             return
         }
         gotoServiceStore({shopId: item.shopId, isAd: 0})
@@ -306,9 +306,9 @@ const clickwaterItem = (item:any) =>{
         gotohealthproductDetails({itemId: item.id})
     }
 
-    
 
-    
+
+
 }
 
 const toClassPage = (item:any) => {
@@ -340,7 +340,7 @@ const changeNav = (item:any) => {
 
     if (item.id == 111) {
         console.log('新品专区');
-        
+
     }
 
     (paging.value as any).reload();
@@ -401,7 +401,7 @@ defineExpose({
             color: #6E6E6E;
             margin-left: 6rpx;
         }
-        
+
 
     }
 
@@ -410,7 +410,7 @@ defineExpose({
     padding: 40rpx 10rpx;
     box-sizing: border-box;
     background: #FFFFFF;
-    border-radius: 28rpx 28rpx 0rpx 0rpx;   
+    border-radius: 28rpx 28rpx 0rpx 0rpx;
 
     .zone_box{
         padding: 0rpx 40rpx;
@@ -454,14 +454,14 @@ defineExpose({
 
                     font-size: 20rpx;
                     color: #FFFFFF;
-                    
+
                     position: absolute;
                     top: 0;
                     right: 0;
                 }
 
             }
-            
+
         }
     }
     .live_swiper{
@@ -573,7 +573,7 @@ defineExpose({
                 .nav_item{
                     flex-shrink: 0;
                     flex-wrap: nowrap;
-        
+
                     font-weight: 400;
                     font-size: 32rpx;
                     color: #8C8C8C;
@@ -595,7 +595,7 @@ defineExpose({
 
                     }
                 }
-                
+
                 .nav_space{
                     flex-shrink: 0;
 
@@ -604,14 +604,14 @@ defineExpose({
 
                 }
             }
-            
+
         }
     }
     .contentList_box{
         background: #FAFAFA;
     }
 
-}   
+}
 
 </style>
 <style>

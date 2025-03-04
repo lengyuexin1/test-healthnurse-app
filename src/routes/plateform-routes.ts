@@ -124,10 +124,10 @@ export const gototextInstitution = (itemId: any) => {
 /**机构图集 */
 export const gotoimgdetails = (itemId: any) => {
     const route = {
-        path: '/Channel/pages/orderConfirm/imgInstitution',
+        path: '/pagesService/pages/Servicestore/imgInstitution',
         query: { itemId }
     } as any
-    return pageController.isTokenPush(route)
+    return pageController.push(route)
 }
 /** 康养详情 */
 export const gotohealthDetails = (itemId: any, isAd: any = 0, tologin = false) => {

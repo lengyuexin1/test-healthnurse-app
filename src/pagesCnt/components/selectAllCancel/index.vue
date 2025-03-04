@@ -11,7 +11,7 @@
                 </template>
 
                 <!-- 足迹列表、康养服务、康养适品 -->
-                <template v-else-if="['browerHistory', 'healthList'].includes(props.type)"> 
+                <template v-else-if="['browerHistory', 'healthList'].includes(props.type)">
                     <TrackList :item="item"></TrackList>
                 </template>
 
@@ -73,7 +73,7 @@ import HasChatList from './compontent/hasChatList.vue'
 import LiveList from './compontent/liveList.vue'
 
 const props = defineProps({
-    /** 
+    /**
      * @param {list}
      * 确保list数组中的对象有checked:false 属性值
      */
@@ -123,7 +123,7 @@ watch(() => props.list.map((item: any) => item.checked), (newVal, oldVal) => {
         data.allSelect = false
         return
     }
-    if (newVal.every((value: boolean) => value === true)) {  
+    if (newVal.every((value: boolean) => value)) {
         data.allSelect = true
     }
     else {
@@ -142,7 +142,6 @@ const clickItem = (item: any, index: number) => {
         props.list[index].checked = !props.list[index].checked
         return
     }
-    
     emit('clickItem', item)
 }
 
@@ -157,6 +156,9 @@ const clickBtn = () => {
     let ids = [] as any
     props.list.map((item: any) => {
         if (item.checked) {
+            console.log(item.checked && item)
+            console.log(props.type)
+            console.log(props.listType)
             /** 康养服务、康养适品需要返回id */
             if (props.type == 'healthList') {
                 if (props.listType == 'watchList') {

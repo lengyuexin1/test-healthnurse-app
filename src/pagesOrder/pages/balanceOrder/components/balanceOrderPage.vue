@@ -332,7 +332,7 @@ import BCNotify from '@/components/notify/index.vue'
 import { pageController } from '@bc/uni-tools'
 import { packPayment } from '@/libs/pay/pay-tools'
 import { gotoAddressList } from '@/routes/user-routes'
-import { healthdetail, voucherdetail } from '@/api/service-api'
+import { agencydetail, healthdetail, voucherdetail } from '@/api/service-api'
 import { gotoOrderDetail } from '@/routes/order-routes'
 import { getAssetsPic } from '@/common/setPicture'
 
@@ -772,9 +772,10 @@ const getEntityConfig = (optionId: any) => {
 
 // 获取机构订单详情
 const gethealthdetail = (id:string) => {
-    healthdetail({
+    agencydetail({
         id
     }).then((res:any) => {
+        console.log(res)
         data.agencyObj = res
 
         let sum = 0

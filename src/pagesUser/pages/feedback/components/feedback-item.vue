@@ -31,16 +31,16 @@ const dateTime = (time: number) => {
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .container {
     display: flex;
     flex-direction: column;
     width: 100%;
     padding: 30rpx;
-    margin: 24rpx 24rpx 0rpx 24rpx;
     background-color: white;
     border-radius: 24rpx;
+    margin: 10rpx 0;
 
     .status-wrap {
         display: flex;
@@ -51,7 +51,7 @@ const dateTime = (time: number) => {
         margin-bottom: 4rpx;
         font-size: 28rpx;
         color: #333333;
-        
+
         .date {
             margin-bottom: 20rpx;
             font-weight: bold;
@@ -61,7 +61,7 @@ const dateTime = (time: number) => {
         .handle {
             color: #29C86F;
         }
-        
+
         .unhandle {
             color: #FF1010;
         }

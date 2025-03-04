@@ -27,10 +27,10 @@ export const gotoServiceStore = (query: any) => {
 }
 
 // 机构详情
-export const gotoServiceOrg = (itemId: any) => {
+export const gotoServiceOrg = (query: any) => {
     const route = {
         path: '/pagesService/pages/Servicestore/choiceDetails',
-        query: { itemId }
+        query
     } as any
     return pageController.push(route)
 }
@@ -270,5 +270,32 @@ export const gotoSellerList = (query: any) => {
         path: '/pagesService/pages/serviceList/serviceList',
         query
     }
+    return pageController.push(route)
+}
+
+/** 讨论区 */
+export const gotodiscussListPage = () => {
+    const route = {
+        path: "/pagesCnt/pages/discussPage/discussListPage",
+        query: {}
+    } as any
+    return pageController.push(route)
+}
+
+/** 讨论区内页 */
+export const gotodiscussListsonPage = (query:any) => {
+    const route = {
+        path: "/pagesCnt/pages/discussPage/discussListsonPage",
+        query
+    } as any
+    return pageController.push(route)
+}
+
+/** 发布讨论 */
+export const gotoUpdiscuss = (query:any) => {
+    const route = {
+        path: "/pagesCnt/pages/discussPage/Updiscuss",
+        query
+    } as any
     return pageController.push(route)
 }

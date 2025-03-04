@@ -3,12 +3,12 @@
         <view class="WaterFall_item" @click="toDeatil">
             <image
                 class="WaterFall_img"
-                :src="item.cover"
+                :src="item.thumb"
                 mode="aspectFill"
             />
             <view class="WaterFall_text">
                 <view class="WaterFall_title">
-                    {{ item.title }}
+                    {{ item.name }}
                 </view>
                 <!-- item.courserDetail.isCharge == 1 -->
                 <view class="price_box" v-if="false">
@@ -20,7 +20,7 @@
                 <view class="WaterFall_author">
                     <image
                         class="author_img"
-                        :src="item.accountThumb"
+                        :src="item.accountAvatar"
                         mode="scaleToFill"
                     />
                     <view class="author_name">
@@ -31,7 +31,7 @@
         </view>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 
@@ -57,7 +57,7 @@ const toDeatil = () => {
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .WaterFall_item{
 
@@ -116,4 +116,4 @@ const toDeatil = () => {
     }
     }
 </style>
- 
+
