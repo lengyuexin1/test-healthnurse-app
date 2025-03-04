@@ -29,6 +29,17 @@
                 <view class="order_info">
                     <orderInfo :serviceInfo="data.serviceInfo" :showInfo="data.showInfo" ></orderInfo>
                 </view>
+            <div class="container_mation" v-if="isKeep">
+                <div class="contit">联系人信息</div>
+                <div class="mation row j-between">
+                    <div class="mattit">姓名</div>
+                    <div class="mattip">{{data.serviceInfo.contactPerson || '--'}}</div>
+                </div>
+                <div class="mation row j-between">
+                    <div class="mattit">联系人手机号</div>
+                    <div class="mattip">{{data.serviceInfo.contactMobile || '--'}}</div>
+                </div>
+            </div>
                 <!-- 联系客服 -->
                 <!-- 机构订单与服务订单区别展示 -->
                 <view class="question">
@@ -266,6 +277,9 @@ const gotoIMSessionChat = (type: number) => {
 }
 const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
+})
+const isKeep = computed(() => {
+    return [65795, 65796].includes(data.serviceInfo.templateCodeId)
 })
 /* 二维码大图 */
 const seeImg = () => {
@@ -650,6 +664,45 @@ const operate = (type: string) => {
 </script>
 
 <style lang="scss" scoped>
+.container_mation{
+    background: #fff;
+    border-radius: 24rpx;
+    padding: 30rpx;
+    box-sizing: border-box;
+    .contit {
+        font-size: 32rpx;
+        font-weight: bold;
+        color: #333333;
+    }
+    .mation {
+            margin-top: 42rpx;
+            align-items: flex-start;
+            .mattit {
+                margin-right: 56rpx;
+                font-size: 30rpx;
+                font-weight: bold;
+                color: #333333;
+                flex-shrink: 0;
+            }
+            .mattip {
+                font-size: 28rpx;
+                font-weight: 400;
+                color: #999999;
+                text-align: right;
+                word-break: break-all;
+            }
+            .matprice {
+                color: #f50606;
+            }
+            .matnumber {
+                color: #999999;
+            }
+            .matcop {
+                margin-left: 8rpx;
+            }
+        }
+}
+
 .container {
     padding: 20rpx;
     box-sizing: border-box;

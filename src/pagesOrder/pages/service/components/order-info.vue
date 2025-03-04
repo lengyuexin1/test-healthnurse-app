@@ -54,6 +54,43 @@
                 </view>
             </view>
         </view>
+
+        <template v-if="isKeep">
+                        <!-- 陪诊 -->
+                        <div class="mation row j-between">
+                            <div class="mattit" style="margin-right:26rpx;">就诊医院</div>
+                            <div class="mattip">{{serviceInfo.accompany.hospital.name || '--'}}</div>
+                        </div>
+                        <div class="mation row j-between">
+                            <div class="mattit" style="margin-right:26rpx;">就诊人</div>
+                            <div class="mattip">{{serviceInfo.accompany.patient || '--'}}</div>
+                        </div>
+                        <div class="mation row j-between" v-if="serviceInfo.accompany.patientMobile">
+                            <div class="mattit" style="margin-right:26rpx;">就诊人电话</div>
+                            <div class="mattip">{{serviceInfo.accompany.patientMobile}}</div>
+                        </div>
+                        <div class="mation row j-between">
+                            <div class="mattit" style="margin-right:26rpx;">就诊时间</div>
+                            <div class="mattip">{{ date(serviceInfo.utcVisitStart)}}</div>
+                        </div>
+                        <div class="mation row j-between" v-if="serviceInfo.accompany.deliveryMethodName">
+                            <div class="mattit" style="margin-right:26rpx;">代送方式</div>
+                            <div class="mattip">{{serviceInfo.accompany.deliveryMethodName}}</div>
+                        </div>
+                        <div class="mation row j-between" v-if="serviceInfo.addressInfo.id">
+                            <div class="mattit">配送地址</div>
+                            <div class="mattip">
+                                <div>{{serviceInfo.addressInfo.area}}{{serviceInfo.addressInfo.address}}</div>
+                                <div>{{serviceInfo.addressInfo.name}} {{serviceInfo.addressInfo.mobile}}</div>
+                            </div>
+                        </div>
+                        <div class="mation" v-if="serviceInfo.accompany?.deliveryCertificate?.length">
+                            <div class="mattit">代送凭证</div>
+                            <div class="mattip" style="margin-top:20rpx;">
+                                <!-- <u-album :urls="serviceInfo.accompany.deliveryCertificate" singleSize="120" multipleSize="60" singleMode="aspectFill"></u-album> -->
+                            </div>
+                        </div>
+         </template>
         <template v-if="!isKeep && !isinstitution">
             <view class="service_info_item" v-if="serviceInfo.addressInfo">
                 <view class="info_title" style="width:240rpx">服务地址</view>
@@ -74,7 +111,17 @@
                 </view>
             </view>
         </template>
-
+        <div class="content" v-if="isKeep">
+                <div class="contit">联系人信息</div>
+                <div class="mation row j-between">
+                    <div class="mattit">姓名</div>
+                    <div class="mattip">{{serviceInfo.contactPerson || '--'}}</div>
+                </div>
+                <div class="mation row j-between">
+                    <div class="mattit">联系人手机号</div>
+                    <div class="mattip">{{serviceInfo.contactMobile || '--'}}</div>
+                </div>
+            </div>
         <template v-else>
             <!-- && !ismany -->
             <div class="record_box" v-if="[131079,196611].includes(serviceInfo.status)">
@@ -195,6 +242,33 @@ const tominutes = (index: number) => {
 </script>
 
 <style lang="scss" scoped>
+ .mation {
+            margin-top: 42rpx;
+            align-items: flex-start;
+            .mattit {
+                margin-right: 56rpx;
+                font-size: 30rpx;
+                font-weight: bold;
+                color: #333333;
+                flex-shrink: 0;
+            }
+            .mattip {
+                font-size: 28rpx;
+                font-weight: 400;
+                color: #999999;
+                text-align: right;
+                word-break: break-all;
+            }
+            .matprice {
+                color: #f50606;
+            }
+            .matnumber {
+                color: #999999;
+            }
+            .matcop {
+                margin-left: 8rpx;
+            }
+        }
 .container {
     background: #fff;
     border-radius: 24rpx;
