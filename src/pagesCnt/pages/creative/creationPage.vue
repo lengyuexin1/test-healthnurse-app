@@ -18,7 +18,7 @@
                 </view>
             </template>
             <view class="top_up_box">
-                <view class="top_btn up" @click="toupArticle">
+                <view class="top_btn up" v-if="false" @click="toupArticle">
                     <image
                           class="top_up_icon"
                           :src="getAssetsUrl('/create/fabu.svg')"
@@ -124,18 +124,18 @@
 
                 </view>
 
-                <!--                <template v-if="data.announcementList.length">-->
-                <!--                    <swiper class="swiper" :autoplay="true" :circular="true" >-->
-                <!--                        <swiper-item class="swiper_item" v-for="(item,index) in data.announcementList" :key="index">-->
-                <!--                            <image-->
-                <!--                                @click="toActivityDetail(item)"-->
-                <!--                                class="announcement_img"-->
-                <!--                                :src="item.thumb"-->
-                <!--                                mode="aspectFill"-->
-                <!--                            />-->
-                <!--                        </swiper-item>-->
-                <!--                    </swiper>-->
-                <!--                </template>-->
+                <template v-if="data.announcementList.length">
+                    <swiper class="swiper" :autoplay="true" :circular="true">
+                        <swiper-item class="swiper_item" v-for="(item,index) in data.announcementList" :key="index">
+                            <image
+                                  @click="toActivityDetail(item)"
+                                  class="announcement_img"
+                                  :src="item.thumb"
+                                  mode="aspectFill"
+                            />
+                        </swiper-item>
+                    </swiper>
+                </template>
 
 
                 <view class="my_works">
@@ -308,8 +308,7 @@ import {
     assistantDetail,
     gotodataManage,
     gotoActivityDetail,
-    gotoNewUpcontentPage,
-    gotowithdrawalIncome
+    gotoNewUpcontentPage
 } from '@/routes/create-routes'
 import { gotoNoticeList, gotoChatPage } from '@/routes/nim-routes'
 import { agoTime } from '@/common/formatTime'
@@ -324,6 +323,7 @@ import { PlatformManage } from '@bc/sys'
 import { drawBGIMG } from '@/libs/canvas-tools'
 import { getQrcode } from "@/api/user-api"
 import { pageController } from '@bc/uni-tools'
+import { IMWEB_ENV } from "@/utils/handleEnv"
 
 
 interface Props {
@@ -375,10 +375,11 @@ const data = reactive<Data>({
     ],
     tagList: [
         { name: '全部', id: 0 },
-        { name: '已发布', id: 3 },
+        { name: '已发布', id: 5 },
         { name: '审核中', id: 2 },
-        { name: '未发布', id: 4 },
-        { name: '未通过', id: 5 }
+        // { name: '未发布', id: 4 },
+        { name: '未通过', id: 3 }
+        // { name: '仅自己可见', id: 6 },
     ],
     istag: 0,
     record: 9999,
@@ -438,10 +439,11 @@ onMounted(() => {
     // #endif
 
     // 乐悠平台创作公告：41
-    paper.value = useNoticeList('41', 10, (res) => {
+    paper.value = useNoticeList(`${IMWEB_ENV()}41`, 10, (res) => {
 
     })
     paper.value?.loadmore().then((res) => {
+        console.log('公告数据', res)
         data.noticeList = res
         res.map((item: any) => data.noticeData.push(item.attach.title))
     })
@@ -483,7 +485,7 @@ const queryList = (pageNumber: number, pageSize: number) => {
         pageNumber,
         pageSize,
         query: {
-            status: data.istag ? data.istag : null
+            audit: data.istag ? data.istag : null
         }
     }).then((res: any) => {
         (paging.value as any).complete(res.data)
@@ -577,9 +579,7 @@ const clickStagingList = (item: any) => {
     item.id == 1 && assistantDetail({})
     item.id == 2 && gotodataManage({ type: 2, isuser: 1 })
     item.id == 3 && gotoActivityIndex()
-    // item.id == 5 && bcNotify.value.show('敬请期待')
-    item.id == 5 && gotowithdrawalIncome()
-    // id： 6 草稿箱
+    item.id == 5 && bcNotify.value.show('敬请期待')
     item.id == 6 && gotoDraftList()
     item.id == 7 && gotoCreateSchool()
     item.id == 8 && gotoCommentSetting(data.pageObj.commentSet + '')
@@ -597,7 +597,7 @@ const clickStagingList = (item: any) => {
                 gotoChatPage({
                     to: res.tid,
                     scene: 'customer',
-                    originPage: 'pagesCnt/pages/creative/creationPage'
+                    originPage: 'Create/pages/creative/creationPage'
                 })
             }).catch((err) => {
                 bcNotify.value.show(err.message)
@@ -613,7 +613,6 @@ const clicktag = (item: any) => {
 }
 
 const openoperation = (item: any, index: number) => {
-    console.log(item)
     data.showPopup = true
     data.operationObj = item
     data.operationIndex = index
@@ -737,7 +736,7 @@ const sharePoster = async () => {
 
     const coverUrl = await drawBGIMG(data.operationObj.cover)
     // 二维码链接图片
-    let qrimg = await getQrcode(`/pagesCnt/pages/articledetails/articledetails?id=${data.operationObj.articleId}`).then((img) => {
+    let qrimg = await getQrcode(`/Create/pages/articledetails/articledetails?id=${data.operationObj.articleId}`).then((img) => {
         return img
     })
     const qrimgUrl = await drawBGIMG(qrimg)
@@ -842,8 +841,8 @@ const sharePage = () => {
         imageUrl: data.operationObj.cover,
         title: data.operationObj.title,
         miniProgram: {
-            id: 'gh_c2469c570746', //微信小程序原始id
-            path: `/pagesCnt/pages/articledetails/articledetails?id=${data.operationObj.articleId}`, //点击链接进入的页面
+            id: 'gh_fd20b530cb94', //微信小程序原始id
+            path: `/Create/pages/articledetails/articledetails?id=${data.operationObj.articleId}`, //点击链接进入的页面
             type: shareType, //0-正式版； 1-测试版； 2-体验版。 默认值为0
             webUrl: 'http://www.baochuncare.com'//兼容低版本的网页链接
         },
@@ -866,7 +865,7 @@ onShareAppMessage((res: any) => {
         title: data.operationObj.title,
         imageUrl: data.operationObj.cover,
         desc: '',
-        path: `/pagesCnt/pages/articledetails/articledetails?id=${data.operationObj.articleId}`
+        path: `/Create/pages/articledetails/articledetails?id=${data.operationObj.articleId}`
     }
 
     return {
@@ -908,7 +907,7 @@ defineExpose({})
         margin-left: 16rpx;
 
         &.up {
-            background: #48db97;
+            background: #EA3E1A;
         }
 
         &.draft {
@@ -1292,7 +1291,7 @@ defineExpose({})
             }
 
             .tag_item {
-                padding: 6rpx 20rpx;
+                padding: 6rpx 24rpx;
                 box-sizing: border-box;
                 border-radius: 26rpx;
                 display: flex;
@@ -1309,7 +1308,7 @@ defineExpose({})
                 }
 
                 .tag_item_text {
-                    font-size: 24rpx;
+                    font-size: 28rpx;
                 }
             }
         }

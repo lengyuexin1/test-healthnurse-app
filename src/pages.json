@@ -223,7 +223,7 @@
         {
           "path": "pages/Servicestore/setUpTextDetails",
           "style": {
-            "navigationBarTitleText": "机构文字详情",
+            "navigationBarTitleText": "机构详情",
             "enablePullDownRefresh": false
           }
         },
@@ -1462,6 +1462,115 @@
           "path": "pages/discussPage/Updiscuss",
           "style": {
             "navigationBarTitleText": "发布讨论",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pagesCreateSplit",
+      "pages": [
+        {
+          "path": "pages/enjoyRecord/enjoyRecord",
+          "style": {
+            "navigationBarTitleText": "享老记",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/enjoyRecord/upEnjoyRecord",
+          "style": {
+            "navigationBarTitleText": "发布享老记",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/enjoyRecord/createEnjoy",
+          "style": {
+            "navigationBarTitleText": "我的信息",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/enjoyRecord/friendCord",
+          "style": {
+            "navigationBarTitleText": "老友中心",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/enjoyRecord/filterPage",
+          "style": {
+            "navigationBarTitleText": "享老记",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/enjoyRecord/joinEnjoy",
+          "style": {
+            "navigationBarTitleText": "加入老友圈",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/enjoyRecord/enjoyEventList",
+          "style": {
+            "navigationBarTitleText": "大事记",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/enjoyRecord/enjoyEventDetail",
+          "style": {
+            "navigationBarTitleText": "详情",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/enjoyRecord/enjoyAlbum",
+          "style": {
+            "navigationBarTitleText": "老友记相册",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/enjoyRecord/enjoySecurity",
+          "style": {
+            "navigationBarTitleText": "安全保障",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/enjoyRecord/enjoyJurisdiction",
+          "style": {
+            "navigationBarTitleText": "权限管理",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/Upcontent/Upcontent",
+          "style": {
+            "navigationBarTitleText": "新版发布相册页",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "custom"
+          }
+        },
+        {
+          "path": "pages/Upcontent/newUpcontentPage",
+          "style": {
+            "navigationBarTitleText": "新版发布页",
             "enablePullDownRefresh": false,
             "navigationStyle": "custom"
           }

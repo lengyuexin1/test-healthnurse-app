@@ -506,7 +506,8 @@ export const delMyContentList = (req: _v1_bc_app_article_user_tDeleteContent_pos
 
 // 获取草稿内容详情
 export const getDraftDetails = (req: _v1_bc_app_article_contentDetailsByDraft_get_req) => {
-    return http.content.get('/v1/bc/app/article/contentDetailsByDraft', req)
+    // return http.content.get('/v1/bc/app/article/contentDetailsByDraft', req)
+    return http.content.get('/v1/bc/app/content/audit/detail', req)
 }
 
 // 获取人脸识别的certifyId
@@ -1172,7 +1173,8 @@ export const newSavedraft = (req: any) => {
 
 /** 新版发布列表 */
 export const getnewContentList = (req: any) => {
-    return http.content.post('/v1/bc/app/article/myContentList', req)
+    // return http.content.post('/v1/bc/app/article/myContentList', req)
+    return http.content.post('/v1/bc/app/content/list', req)
 }
 
 /** 新版草稿列表 */

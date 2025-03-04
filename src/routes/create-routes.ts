@@ -516,7 +516,7 @@ export const gotowithdrawalIncome = () => {
 
 export const Upcontent = (query:QueryParams) => {
     const  route = {
-        path: "/CreateSplit/pages/Upcontent/Upcontent",
+        path: "/pagesCreateSplit/pages/Upcontent/newUpcontentPage",
         query
     } as any
     return pageController.push(route)

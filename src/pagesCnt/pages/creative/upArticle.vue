@@ -18,14 +18,14 @@
                 <swiper-item>
                     <upArticleswiper :categoryId="data.categoryId" :topic="data.topic" :isDratType="data.isDratType"
                                      :articleId="data.articleId" :activityId="data.activityId" :taskId="data.taskId"
-                                     :type="data.type"
+                                     :type="data.type" :id="data.id"
                                      v-if="data.current == 0"></upArticleswiper>
                 </swiper-item>
                 <swiper-item>
                     <upVideoswiper :categoryId="data.categoryId" :topic="data.topic" :isDratType="data.isDratType"
                                    :articleId="data.articleId" :activityId="data.activityId" :taskId="data.taskId"
-                                   :type="data.type"
-                                                       v-if="data.current == 1"></upVideoswiper>
+                                   :type="data.type" :id="data.id"
+                                   v-if="data.current == 1"></upVideoswiper>
                 </swiper-item>
             </swiper>
         </z-paging-swiper>
@@ -54,7 +54,8 @@ interface Data {
     taskId: string,
     categoryId: string,
     topic: string,
-    type: number
+    type: number,
+    id: String
 }
 
 const data = reactive<Data>({
@@ -69,7 +70,8 @@ const data = reactive<Data>({
     activityId: '',
     taskId: "",
     articleId: '',
-    type: 0
+    type: 0,
+    id: ''
 })
 onLoad((options) => {
     data.articleId = options?.articleId
@@ -79,6 +81,7 @@ onLoad((options) => {
     data.type = Number(options?.type)
     data.isDratType = options.isDratType
     data.topic = options?.keyword
+    data.id = options?.id
     if (options?.type == 2) {
         data.current = 1
     }
@@ -105,9 +108,10 @@ const onswiperchange = (e: any) => {
 
 
 <style lang="scss" scoped>
-page{
+page {
     background: #ffffff;
 }
+
 .top_box {
     background: #ffffff;
     border-bottom: 2rpx solid #f2f2f2;

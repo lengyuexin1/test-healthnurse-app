@@ -137,7 +137,6 @@ import { oldExpoCategory, oldExpolist } from '@/api/goods-api'
 import {
     gotoServiceExpoClass,
     gotonewProduct,
-    gotoDiscussDetail,
     gotoAllZone,
     gotoAllClass,
     gotoClassItemPage,
@@ -291,7 +290,7 @@ const liveswiperChange = (e: any) => {
 const clickwaterItem = (item: any) => {
     console.log('item', item)
     if (item.shopSource == 32) {
-        gotoDiscussDetail({ shopId: item.shopId })
+        // gotoDiscussDetail({ shopId: item.shopId })
         return
     }
     gotoServiceStore({ shopId: item.shopId, isAd: 0 })
