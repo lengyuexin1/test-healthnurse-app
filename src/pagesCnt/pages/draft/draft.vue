@@ -89,10 +89,10 @@ const getAssetsUrl = computed(() => (src: string) => {
 
 const queryList = (pageNumber: number, pageSize: number) => {
     // myContentList({
-    myContentList({
+    getnewDraftList({
         query: {
-            status: 1 // 草稿
-            // title: '' // 草稿
+            // status: 1 // 草稿
+            title: '' // 草稿
         },
         pageNumber,
         pageSize
@@ -113,10 +113,11 @@ const clickItem = (item: any) => {
     //     ischange: 1,
     // })
     console.log(item)
-    gotoNewUpcontentPage({ type: item.type, articleId: item.articleId, isDratType: 1 })
+    gotoNewUpcontentPage({ type: item.type, articleId: item.articleId, isDratType: 1, id: item.id })
 }
 
 const del = (ids: any) => {
+    console.log(ids)
     data.ids = ids
     data.showdelBox = true
 }

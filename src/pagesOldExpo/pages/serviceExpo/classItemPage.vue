@@ -142,7 +142,7 @@ const toServiceStore = (item:any) => {
         gotoShopDetail(item.shopId)
         return
     }
-    gotoServiceStore({ item: item.shopId, isAd: 0 })
+    gotoServiceStore({ itemId: item.shopId, isAd: 0 })
 
 }
 

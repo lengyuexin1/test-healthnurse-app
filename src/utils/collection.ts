@@ -1,5 +1,5 @@
 import { deviceRecord, getWeixinSessionKey, marketingDetail } from '@/api/user-api'
-// import { WebTracking } from "@bc/api"
+import { WebTracking } from "@bc/api"
 import { PlatformManage } from "@bc/sys"
 
 const WEB_ENV: TEnv = import.meta.env.VITE_WEB_ENV as TEnv

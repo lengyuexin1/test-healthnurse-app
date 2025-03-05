@@ -27,10 +27,10 @@ export const gotoServiceStore = (query: any) => {
 }
 
 // 机构详情
-export const gotoServiceOrg = (itemId: any) => {
+export const gotoServiceOrg = (query: any) => {
     const route = {
         path: '/pagesService/pages/Servicestore/choiceDetails',
-        query: { itemId }
+        query
     } as any
     return pageController.push(route)
 }

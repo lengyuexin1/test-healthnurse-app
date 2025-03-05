@@ -9,33 +9,32 @@
                         <div class="item_text_title">{{ item.name }}</div>
                         <div class="descCs" v-if="templateId == 122">{{ item.desc }}</div>
                         <text class="item-info-pric" v-if="templateId == 122">￥{{
-                                (item.price / item.quantity) |
-                                      moneyFilter
+                                moneyFilter(item.price / item.quantity)
                             }}
                         </text>
                         <text class="item-info-optionName" v-if="templateId == 122">/起</text>
                         <text class="item-info-fakePrice" v-if="item.fakePrice">￥{{
-                                (item.fakePrice / item.quantity) |
-                                      moneyFilter
+                                moneyFilter(item.fakePrice / item.quantity)
                             }}
                         </text>
 
                         <view class="customer row i-center j-center" v-if="templateId == 122">
-                            <u-image src="/static/custip.svg" width="22rpx" height="22rpx" mode="aspectFill"></u-image>
+                            <image style="width: 22rpx;height: 22rpx;" src="/static/custip.svg"
+                                   mode="aspectFill"></image>
                             <text class="custtxt">客服</text>
                         </view>
 
                         <view class="seller row i-center" @click="navShopDetail" v-if="templateId == 122">
-                            <u-image v-if="item.shopThumb" :src="getShopPic(item.shopThumb) || ''"
-                                     errorIcon="error-circle"
-                                     width="30rpx" height="30rpx" radius="20" mode="aspectFill"></u-image>
+                            <image style="width: 30rpx;height: 30rpx;border-right: 20rpx;" v-if="item.shopThumb"
+                                   :src="getShopPic(item.shopThumb) || ''"
+                                   errorIcon="error-circle" mode="aspectFill"></image>
                             <view class="sel-tit u-line-1">{{ item.shopName || '' }}</view>
                         </view>
 
                         <div class="item_rate" v-if="isKangyang(item)">
                             <!-- 康养评分 -->
-                            <u-rate :count="5" v-model="item.score" inactive-icon="star-fill" inactiveColor="#EBEBEB"
-                                    activeColor="#FF983D" gutter="1" :readonly="true"></u-rate>
+                            <TnRate :count="5" v-model="item.score" inactive-icon="star-fill" inactiveColor="#EBEBEB"
+                                    activeColor="#FF983D" gutter="1" :readonly="true"></TnRate>
                             <text class="rate_num">{{ item.score }}</text>
                             <text class="comment_text">{{
                                     item.commentCnt ? (item.commentCnt + '条') : '暂无评论'
@@ -56,8 +55,7 @@
                             <div class="item_text_price" v-if="(item.minPrice || item.maxPrice) && item.applyId != 13">
                                 ￥
                                 <div class="item_text_pricenumber">{{
-                                        item.minPrice ? item.minPrice : item.maxPrice |
-                                              moneyFilter
+                                        moneyFilter(item.minPrice ? item.minPrice : item.maxPrice)
                                     }}
                                 </div>
                                 <div class="item_text_extend">/月</div>
@@ -80,15 +78,17 @@
 </template>
 
 <script setup lang="ts">
+import { moneyFilter } from '@/common/filters'
 import { getAreaDict } from "@/api/care-api"
 import { computed, onMounted, ref } from 'vue'
 import { setPriceVer } from '@/common/setPicture'
 import { gotoServiceOrg, gotoServiceStore, gotoserviceDetail } from '@/routes/service-routes'
 import { getDistances } from '@/utils/distance'
 import { gotohealthDetails } from "@/routes/plateform-routes"
+import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 
 const props = defineProps({
-    templateId: Number,
+    templateId: Number | String,
     agencyList: Array,
     positioning: Boolean,
     coordinate: Object,
@@ -112,10 +112,10 @@ const getdistance = computed(() => (lat, lng) => {
     }
     // Calculate distance
     const distance = getDistances(
-        props.coordinate.lat,
-        props.coordinate.lng,
-        lat,
-        lng
+          props.coordinate.lat,
+          props.coordinate.lng,
+          lat,
+          lng
     )
     return distance + 'km'
 })
@@ -146,7 +146,7 @@ const tochoiceDetails = (item) => {
     }
     if (item.businessType === 4) {
         // 机构详情
-        gotoServiceOrg(item.id)
+        gotoServiceOrg({ itemId: item.id, isAd: item.isAd })
     }
     else {
         //上门详情

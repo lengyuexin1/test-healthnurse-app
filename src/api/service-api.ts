@@ -163,6 +163,11 @@ export const healthlist = (req:_v1_bc_app_health_list_post_req) => {
 export const healthdetail = (req:_v1_bc_app_health_detail_get_req) => {
     return http.order.get('/v1/bc/app/health/detail', req)
 }
+/** 机构产品详情 */
+export const agencydetail = (req:_v1_bc_app_health_detail_get_req) => {
+    return http.order.get('/v1/bc/public/app/agency/detail', req)
+}
+
 
 /** 机构代金券详情 */
 export const voucherdetail = (req:any) => {

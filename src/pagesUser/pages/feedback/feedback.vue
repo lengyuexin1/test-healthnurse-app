@@ -127,7 +127,9 @@ onMounted(() => {
 .card_list{
     width: 100%;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
+    padding: 20rpx;
 }
 </style>
 

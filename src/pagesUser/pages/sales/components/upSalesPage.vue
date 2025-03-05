@@ -1,7 +1,7 @@
 <template>
     <view class="container" >
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
@@ -98,12 +98,12 @@
                         <view class="sometit">补充描述和证据</view>
                         <view class="salebox">
                             <view class="saleli row">
-                                <textarea 
+                                <textarea
                                 class="saleli_textarea"
-                                maxlength="200" 
-                                :count="true" 
-                                height="120" 
-                                border="none" 
+                                maxlength="200"
+                                :count="true"
+                                height="120"
+                                border="none"
                                 v-model="data.desc"
                                 :customStyle="{ backgroundColor: '#F9F9F9', paddingBottom: '20px' }"
                                 placeholder="补充描述，有助于保椿客服更好的助力售后问题"
@@ -130,27 +130,27 @@
                     </view>
                 </template>
             </view>
-            
+
             <template #bottom >
                 <view class="bottom_box" v-if="data.status === 1">
                     <view class="btn" @click="submit">立即申请</view>
                 </view>
             </template>
 
-            
+
             <TnPicker
                 v-model="data.pickerValue"
                 v-model:open="data.show"
                 :data="data.expressList"
-            /> 
+            />
     		<BCNotify ref="bcNotify"></BCNotify>
         </z-paging>
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
-import { ref, reactive, toRef, computed, onMounted, nextTick,  } from 'vue'
+import { ref, reactive, toRef, computed, onMounted, nextTick  } from 'vue'
 import { onLoad, onReady } from '@dcloudio/uni-app'
 
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -214,42 +214,42 @@ const data = reactive<Data>({
         }
     ],
 
-    serveDetail:null,
-    status:0,
-    typeId:2,
-    show:false,
-    fileList:[],
-    count:3,
-    pickerValue:999,
-    expressList:[],
-    desc:'',
-    refund:null,
-    quantity:1,
-    align:0,
-    afterSaleId:'',
+    serveDetail: null,
+    status: 0,
+    typeId: 2,
+    show: false,
+    fileList: [],
+    count: 3,
+    pickerValue: 999,
+    expressList: [],
+    desc: '',
+    refund: null,
+    quantity: 1,
+    align: 0,
+    afterSaleId: ''
 })
 
 
 const bcNotify = ref()
 
-const timeformat = computed(()=>(time:number)=>{
-    return formattime(time,'YYYY-MM-DD HH:mm')
+const timeformat = computed(() => (time:number) => {
+    return formattime(time, 'YYYY-MM-DD HH:mm')
 })
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
-const moreValue = computed(()=>(id:number)=>{
-    const filObj = data.expressList.filter((item:any)=>{
+const moreValue = computed(() => (id:number) => {
+    const filObj = data.expressList.filter((item:any) => {
         return item.value == id
     })
-    console.log('filObj',filObj);
-    
+    console.log('filObj', filObj)
+
     return filObj[0].label
 })
 
-onMounted(()=>{
+onMounted(() => {
     const tempStorage = new TempStorage()
     tempStorage.get(props!.salesObj).then((res:any) => {
         data.serveDetail = res.info
@@ -265,8 +265,8 @@ onMounted(()=>{
 const getAfterSalesReason = () => {
     getAftersaleReason({
         typeId: data.typeId
-    }).then((res:any)=>{
-        data.expressList = res.map((item:any)=>{
+    }).then((res:any) => {
+        data.expressList = res.map((item:any) => {
             return {
                 label: item.name,
                 value: item.id
@@ -285,14 +285,14 @@ const setType = (id:number) => {
 
 const imgUploadref = ref()
 const openUp = () => {
-    nextTick(()=>{
+    nextTick(() => {
         imgUploadref.value.chooseFileFun()
     })
 }
 
-const isValidNumber = (str: string) => {  
-    const numberPattern = /^-?\d+(\.\d+)?$/ // 匹配整数和小数  
-    return numberPattern.test(str) 
+const isValidNumber = (str: string) => {
+    const numberPattern = /^-?\d+(\.\d+)?$/ // 匹配整数和小数
+    return numberPattern.test(str)
 }
 
 const submit = () => {
@@ -311,7 +311,7 @@ const submit = () => {
             bcNotify.value.error('请输入正确的金额')
             return
         }
-        else{
+        else {
             if (data.refund <= 0) {
                 bcNotify.value.error('售后退款金额不能小于0')
                 return
@@ -335,12 +335,12 @@ const submit = () => {
 
     addAftersale()
 
-    
+
 }
 
 const addAftersale = () => {
 
-    let saleData = {
+    const saleData = {
         entityId: data.serveDetail.entityId,
         reasonId: data.pickerValue,
         typeId: data.typeId,
@@ -357,8 +357,8 @@ const addAftersale = () => {
             bcNotify.value.show('申请成功')
             setTimeout(() => {
                 gotowaitingSales({
-                    id:res,
-                    status:2
+                    id: res,
+                    status: 2
                 })
             }, 800)
         }).catch(err => {
@@ -371,8 +371,8 @@ const addAftersale = () => {
         bcNotify.value.show('申请成功')
         setTimeout(() => {
             gotowaitingSales({
-                id:res,
-                status:2
+                id: res,
+                status: 2
             })
         }, 800)
     }).catch(err => {
@@ -394,7 +394,7 @@ const editNumber = () => {
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .container{
     padding: 0 24rpx;
@@ -491,7 +491,7 @@ const editNumber = () => {
                 box-sizing: border-box;
                 background: #FBFBFB;
             }
-            
+
 
             .saletip {
                 font-size: 26rpx;
@@ -562,7 +562,7 @@ const editNumber = () => {
                 }
             }
         }
-        
+
     }
 }
 
@@ -669,4 +669,3 @@ const editNumber = () => {
     }
 }
 </style>
-  

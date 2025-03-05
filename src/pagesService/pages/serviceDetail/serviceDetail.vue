@@ -160,7 +160,7 @@
             <template #bottom>
                 <!--  @linkShop="linkAttendShop" @openCoupon="getCoupon"  @formBtn="openSelect" @goCart="linkCart" -->
                 <tabbar @clickTab="clickTab"
-                        :btnTxt="couparr.length && couparr[0].length ? '领券购买' : '立即下单'"></tabbar>
+                        :btnTxt="couparr.length && couparr[0].length ? '领券购买' : '立即下单'" :canConsult="orderObj.canConsult"></tabbar>
             </template>
         </z-paging>
 
@@ -178,6 +178,70 @@
     <!-- 分享 -->
     <shareView ref="shareBox" @sharePage="sharePage" @sharePoster="sharePoster" :status="status" :imgUrl="shareimgUrl">
     </shareView>
+    <TnPopup v-model="popupShow"
+                 mode="center"
+                  width="94%"
+                :safeAreaInsetBottom="false"
+                :round="10"
+                :closeable="true"
+                @close="popupShow = false,makeType = 1,reseObj.mobile = '',reseObj.code = ''"
+               >
+                    <view class="popup-box">
+                    <block v-if="makeType == 1">
+                        <view class="popup_box">
+                            <view class="content">
+                                <view class="item row j-between i-center">
+                                    <view class="title">手机号</view>
+                                    <view class="input">
+                                        <TnInput
+                                            :maxlength="11"
+                                            type="number"
+                                            placeholder="请输入手机号"
+                                            inputAlign="right"
+                                            :clearable="true"
+                                            :border="false"
+                                            v-model="reseObj.mobile"
+                                        ></TnInput>
+                                    </view>
+                                </view>
+                                <view style="color: red; text-align: right; font-size: 24rpx;" v-if="isEmptyPhone">{{ phoneText }}</view>
+                                <view class="item row j-between i-center" style="border-bottom: none; margin-top: 50rpx;">
+                                    <view class="title">验证码</view>
+                                    <view class="input">
+                                        <TnInput
+                                            type="number"
+                                            placeholder="请输入验证码"
+                                            inputAlign="right"
+                                            :clearable="true"
+                                            :border="false"
+                                            v-model="reseObj.code"
+
+                                            :maxlength="4"
+                                        >
+                                            <template v-slot:suffix>
+                                                <TnButton bg-color="white" text-color="#41A0FE" font-size="26rpx" :disabled="countdown > 0" @click="getCode">
+                                    {{countdown > 0 ? `${countdown}秒后重新获取` : '获取验证码' }}
+                                    </TnButton>
+
+                                            </template>
+                                        </TnInput>
+                                    </view>
+                                </view>
+
+                            </view>
+                        </view>
+                    </block>
+                </view>
+                <!-- <view v-if="makeType == 2" class="successful">
+                    <image src="@/static/appointment.png" mode="scaleToFill" class="successful_image" />
+                    <view class="successful_title">预约成功</view>
+                    <view class="successful_desc">我们将很快为您处理，请留意回访电话。</view>
+                </view> -->
+                <view class="popup_healt" @click="appointment">
+                    <view class="popup_but">{{makeType == 2 ? '知道了' : '立即预约' }}</view>
+                </view>
+            </TnPopup>
+            <BCNotify ref="bcNotify"></BCNotify>
     <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="254" height="344"
             style="width:254px; height:344px"></canvas>
 
@@ -189,7 +253,7 @@
 // import receiveCoupon from "@/components/receiveCoupon/receiveCoupon.vue"
 import { computed, getCurrentInstance, onMounted, reactive, ref, toRefs } from 'vue'
 import BCNotify from '@/components/notify/index.vue'
-
+import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import couponGet from "@/pagesGoods/components/receiveCoupon/couponGet.vue"
 import receiveCoupon from "@/pagesGoods/components/receiveCoupon/receiveCoupon.vue"
 import { onLoad, onReady, onShareAppMessage } from '@dcloudio/uni-app'
@@ -207,15 +271,14 @@ import { recommendList } from '@/api/goods-api'
 //     getFavoriteItem
 // } from "@/api/care-api"
 import { addItemBrowerHistory, cancelCollect, collectService, getServeDetail, itemCouponList } from "@/api/service-api"
-import { getQrcode, isFavoriteItem } from '@/api/user-api'
+import { getQrcode, isFavoriteItem, sendMobileCode, consultCreate } from '@/api/user-api'
 import { moneyFilter } from "@/common/filters"
 import { PlatformManage } from "@bc/sys"
 import { getAssetsPic } from "@/common/setPicture"
 import { pageController } from '@bc/uni-tools'
 import tabbar from "./components/detailTabbar/detailTabbar.vue"
-
+import TnInput from '@tuniao/tnui-vue3-uniapp/components/input/src/input.vue'
 import shareView from '@/pagesGoods/components/shareView/shareView.vue'
-
 import optionSelect from './components/optionSelect/optionSelect.vue'
 import commentView from "./components/discuss-view/commentView.vue"
 import shopView from "./components/shopView/shopView.vue"
@@ -226,18 +289,24 @@ import { drawBGIMG } from '@/libs/canvas-tools'
 import WaterfallsFlow from './components/WaterfallsFlow.vue'
 import { createTeam } from "@/api/nim-api"
 import { gotoChatPage } from "@/routes/nim-routes"
-
+const makeType = ref(1)
 const dataList: any = ref([])
 const isFavorite = ref(false)
 const currentSwiperIndex = ref(0)
 const baseId = ref('')
-const itemId = ref('')
+const reseObj = reactive({
+    mobile: '',
+    code: ''
+})
+const phoneText = ref('')
+const itemId = ref<any>('')
 const props = defineProps({
     itemId: {
         type: String,
         default: ''
     }
 })
+const isEmptyPhone = ref(false)
 const livePlayId = ref('')
 const paging = ref()
 const bcNotify = ref()
@@ -273,9 +342,9 @@ const shareData = reactive<any>({
     isshow: false,
     baseInfo: {}
 })
-
+const countdown = ref(0)
 const orderObj = ref()
-
+const popupShow = ref(false)
 const titleTop = ref(0)
 const titleRight = ref(0)
 const sBarHeight = ref(0)
@@ -345,7 +414,66 @@ onMounted(async () => {
 
     console.log(',data.titleRight', titleRight.value)
 })
+const isValidPhoneNumber = (phoneNumber) => {
+    const regex = /^1[0-9]{10}$/
+    return regex.test(phoneNumber)
+}
+const getCode = async () => {
+    if (!reseObj.mobile) {
+        isEmptyPhone.value = true
+        bcNotify.value.show('请填写手机号码')
+        return
+    }
+    if (!isValidPhoneNumber(reseObj.mobile)) {
+        isEmptyPhone.value = true
+        bcNotify.value.show('请填写正确的手机号码')
+        return
+    }
 
+    uni.showLoading({ title: '正在获取验证码' })
+    try {
+        const res = await sendMobileCode({ mobile: reseObj.mobile })
+        uni.hideLoading()
+        if (countdown.value === 0) {
+            countdown.value = 60
+            const intervalId = setInterval(() => {
+                if (countdown.value > 0) {
+                    countdown.value--
+                    isEmptyPhone.value = false
+                }
+                else {
+                    clearInterval(intervalId)
+                }
+            }, 1000)
+        }
+
+    }
+    catch (err:any) {
+        bcNotify.value.error(err.message)
+    }
+
+
+}
+const appointment = async () => {
+
+    if (makeType.value === 1 && !reseObj.mobile) {
+        return bcNotify.value.show('请输入正确手机号')
+    }
+    if (makeType.value === 1 && !reseObj.code) {
+        return bcNotify.value.show('请输入验证码')
+    }
+
+    try {
+        await consultCreate({ itemId: orderObj.value.id, mobile: reseObj.mobile || '', code: reseObj.code })
+        reseObj.mobile = ''
+        reseObj.code = ''
+        popupShow.value = false
+        bcNotify.value.show('预约成功')
+    }
+    catch (error:any) {
+        bcNotify.value.show(error.message)
+    }
+}
 const getDetail = (id: any) => {
 
     getServeDetail({
@@ -355,6 +483,8 @@ const getDetail = (id: any) => {
             id: res.item.id,
             thumb: res.item.thumb,
             name: res.item.name,
+            canConsult: res.item.canConsult,
+            shopId: res.item.shopId,
             desc: res.item.desc,
             multimedia: res.itemExt.multimedia.length > 1 ? res.itemExt.multimedia.splice(1) : res.itemExt.multimedia,
             noticeMultimedia: res.itemExt.noticeMultimedia,
@@ -402,6 +532,10 @@ const clickTab = (type: string) => {
             type == 'linkCart' && linkCart()
             type == 'addCart' && openSelect(true)
             type == 'balanceOrder' && openSelect(false)
+            if (type == 'balanceReserva') {
+                popupShow.value = true
+                makeType.value = 1
+            }
         }
     })
 }
@@ -517,9 +651,7 @@ const linkAttendShop = () => {
 }
 const getBaseInfo = (data: any) => {
     if (data.message || !data.id) {
-
         bcNotify.value.error(data.message)
-
         setTimeout(() => {
             pageController.back()
         }, 2000)
@@ -809,6 +941,91 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
+    .popup-box{
+       padding:30rpx;
+    }
+    .successful {
+        padding-top: 80rpx;
+        position: relative;
+        .successful_image {
+            width: 140rpx;
+            height: 140rpx;
+            left: 50%;
+            top: -150rpx;
+            transform: translateX(-50%);
+            position: absolute;
+        }
+        .successful_title {
+            font-size: 40rpx;
+            text-align: center;
+            color: #29c86f;
+            margin-top: 84rpx;
+        }
+        .successful_desc {
+            font-size: 24rpx;
+            color: #666666;
+            width: 100%;
+            text-align: center;
+            margin-top: 16rpx;
+        }
+    }
+    .popup_box {
+        .content {
+            min-height: 200rpx;
+            max-height: 700rpx;
+            font-size: 30rpx;
+            color: #666666;
+            padding: 20rpx 20rpx 5rpx 20rpx;
+            line-height: 50rpx;
+            margin-top: 50rpx;
+
+            .title {
+                flex-shrink: 0;
+                margin-right: 50rpx;
+            }
+        }
+    }
+    .popup_but {
+        height: 90rpx;
+        background: #29c86f;
+        border-radius: 46rpx;
+        font-size: 32rpx;
+        margin:32rpx;
+        text-align: center;
+        color: #ffffff;
+        line-height: 90rpx;
+    }
+    .title {
+        font-size: 36rpx;
+        color: #333333;
+        text-align: center;
+        font-weight: 500;
+        margin-bottom: 6rpx;
+    }
+    .box_phone {
+        font-size: 28rpx;
+        color: #9e9e9e;
+        padding-top: 24rpx;
+        text-align: center;
+    }
+    .popup_content {
+        background: #f7f7f7;
+        height: 100rpx;
+        padding: 0 30rpx;
+        display: flex;
+        font-size: 32rpx;
+        color: #333333;
+        margin-top: 40rpx;
+        justify-content: space-between;
+        border-radius: 12rpx;
+        align-items: center;
+        .popup_edit {
+            display: flex;
+            align-items: center;
+            font-size: 32rpx;
+            color: #2a9cff;
+        }
+    }
 #wrap {
     position: relative;
 }

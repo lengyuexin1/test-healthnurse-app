@@ -1,7 +1,7 @@
 <template>
     <view class="container" >
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
             >
@@ -30,7 +30,7 @@
                         </view>
                     </view>
                 </view>
-                <template>
+                <!-- <template> -->
                     <view class="some">
                         <view class="sometit">退款信息</view>
                         <view class="salebox">
@@ -70,12 +70,12 @@
                         <view class="sometit">补充描述和证据</view>
                         <view class="salebox">
                             <view class="saleli row">
-                                <textarea 
+                                <textarea
                                 class="saleli_textarea"
-                                maxlength="200" 
-                                :count="true" 
-                                height="120" 
-                                border="none" 
+                                maxlength="200"
+                                :count="true"
+                                height="120"
+                                border="none"
                                 v-model="data.desc"
                                 :customStyle="{ backgroundColor: '#F9F9F9', paddingBottom: '20px' }"
                                 placeholder="补充描述，有助于保椿客服更好的助力售后问题"
@@ -100,29 +100,29 @@
                             </view>
                         </view>
                     </view>
-                </template>
+                <!-- </template> -->
             </view>
-            
+
             <template #bottom >
                 <view class="bottom_box" >
                     <view class="btn" @click="submit">立即申请</view>
                 </view>
             </template>
 
-            
+
             <TnPicker
                 v-model="data.pickerValue"
                 v-model:open="data.show"
                 :data="data.expressList"
-            /> 
+            />
     		<BCNotify ref="bcNotify"></BCNotify>
         </z-paging>
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
-import { ref, reactive, toRef, computed, onMounted, nextTick,  } from 'vue'
+import { ref, reactive, toRef, computed, onMounted, nextTick  } from 'vue'
 
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnPicker from '@tuniao/tnui-vue3-uniapp/components/picker/src/picker.vue'
@@ -183,43 +183,44 @@ const data = reactive<Data>({
         }
     ],
 
-    serveDetail:null,
-    status:0,
-    typeId:5,
-    show:false,
-    fileList:[],
-    count:3,
-    pickerValue:999,
-    expressList:[],
-    desc:'',
-    refund:null,
-    quantity:1,
-    align:0,
-    afterSaleId:'',
+    serveDetail: null,
+    status: 0,
+    typeId: 5,
+    show: false,
+    fileList: [],
+    count: 3,
+    pickerValue: 999,
+    expressList: [],
+    desc: '',
+    refund: null,
+    quantity: 1,
+    align: 0,
+    afterSaleId: ''
 })
 
 
 const bcNotify = ref()
 
-const timeformat = computed(()=>(time:number)=>{
-    return formattime(time,'YYYY-MM-DD HH:mm')
+const timeformat = computed(() => (time:number) => {
+    return formattime(time, 'YYYY-MM-DD HH:mm')
 })
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
-const moreValue = computed(()=>(id:number)=>{
-    const filObj = data.expressList.filter((item:any)=>{
+const moreValue = computed(() => (id:number) => {
+    const filObj = data.expressList.filter((item:any) => {
         return item.value == id
     })
     return filObj[0].label
 })
 
-onMounted(()=>{
+onMounted(() => {
     const tempStorage = new TempStorage()
-    tempStorage.get(props!.salesObj).then((res:any) => {
+    tempStorage.get(props?.salesObj).then((res:any) => {
         data.serveDetail = res.info
+        console.log('res',  data.serveDetail)
         data.afterSaleId = res.afterSaleId
         data.align = res.align
 
@@ -234,8 +235,8 @@ onMounted(()=>{
 const getAfterSalesReason = () => {
     getAftersaleReason({
         typeId: 1
-    }).then((res:any)=>{
-        data.expressList = res.map((item:any)=>{
+    }).then((res:any) => {
+        data.expressList = res.map((item:any) => {
             return {
                 label: item.name,
                 value: item.id
@@ -253,7 +254,7 @@ const getAfterSalesReason = () => {
 
 const imgUploadref = ref()
 const openUp = () => {
-    nextTick(()=>{
+    nextTick(() => {
         imgUploadref.value.chooseFileFun()
     })
 }
@@ -266,7 +267,8 @@ const submit = () => {
     if (!data.refund) {
         bcNotify.value.error('请输入售后退款金额')
         return
-    }else{
+    }
+    else {
         if (data.refund <= 0) {
             bcNotify.value.error('售后退款金额不能小于0')
             return
@@ -289,13 +291,13 @@ const submit = () => {
 
     addAftersale()
 
-    
+
 }
 
 const addAftersale = () => {
 
-    // typeId 1 服务 typeId 2 3 4 商品 typeId 5 康养 
-    let saleData = {
+    // typeId 1 服务 typeId 2 3 4 商品 typeId 5 康养
+    const saleData = {
         entityId: data.serveDetail.entityId,
         reasonId: data.pickerValue,
         typeId: data.typeId,
@@ -309,17 +311,17 @@ const addAftersale = () => {
     if (!data.align) {
         // 再次售后
         saleAgainAdd(saleData).then((res) => {
-            console.log('res',res);
+            console.log('res', res)
             bcNotify.value.show('申请成功')
             setTimeout(() => {
                 gotowaitingSales({
-                    id:res,
-                    status:2
+                    id: res,
+                    status: 2
                 })
             }, 800)
         }).catch(err => {
             bcNotify.value.error(err.message)
-        }) 
+        })
         return
     }
     // 申请/修改售后
@@ -327,8 +329,8 @@ const addAftersale = () => {
         bcNotify.value.show('申请成功')
         setTimeout(() => {
             gotowaitingSales({
-                id:res,
-                status:2
+                id: res,
+                status: 2
             })
         }, 800)
     }).catch(err => {
@@ -350,7 +352,7 @@ const editNumber = () => {
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .container{
     padding: 0 24rpx;
@@ -457,7 +459,7 @@ const editNumber = () => {
                 box-sizing: border-box;
                 background: #FBFBFB;
             }
-            
+
 
             .saletip {
                 font-size: 26rpx;
@@ -528,7 +530,7 @@ const editNumber = () => {
                 }
             }
         }
-        
+
     }
 }
 
@@ -635,4 +637,3 @@ const editNumber = () => {
     }
 }
 </style>
-  

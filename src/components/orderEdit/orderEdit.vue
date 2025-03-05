@@ -275,8 +275,8 @@ const submit = async () => {
 
 const getAdres = (type = 0) => {
     const req = {}
-    if (type === 1) { req.shopId = props.shopId }
-    gotoAddressList(req, 'dizhi')
+    // if (type === 1) { req.shopId = props.shopId }
+    gotoAddressList()
 }
 
 const getSerTime = (e) => {

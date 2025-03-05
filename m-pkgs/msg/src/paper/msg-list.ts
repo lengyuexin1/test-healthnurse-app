@@ -70,6 +70,7 @@ export class MessageList {
     }
 
     protected async getData() {
+        console.log('============', this.options)
         const finalReq = Object.assign({}, this.options)
         //初始化参数校验
         if (this.req.lastMsgId) {

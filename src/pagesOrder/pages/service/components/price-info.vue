@@ -6,7 +6,7 @@
                 <div class="mattit">服务价格</div>
                 <div class="mattip">¥{{serviceInfo.priceInfo.amount / 100}}</div>
             </div>
-            <template>
+
                 <div class="mation" v-if="!isinstitution">
                     <div class="mattit">优惠信息</div>
                     <div class="mattip matprice">￥{{serviceInfo.priceInfo.discountAmount / 100}}</div>
@@ -15,7 +15,7 @@
                     <div class="mattit">购买数量</div>
                     <div class="mattip">x{{serviceInfo.info.quantity}}</div>
                 </div>
-            </template>
+
             <div class="mation row j-between">
                 <div class="mattit">{{serviceInfo.status === 65537 ? '待支付' : serviceInfo.status === 262146 ? '应支付' : '已支付'}}</div>
                 <div class="mattip matprice">¥{{serviceInfo.priceInfo.paidAmount / 100}}</div>
@@ -23,7 +23,7 @@
         </div>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 
@@ -37,14 +37,14 @@ const props = defineProps<Props>()
 
 
 onMounted(() => {
-
+    console.log(props.isinstitution)
 })
 
 
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .content{
     width: 100%;
@@ -108,4 +108,3 @@ onMounted(() => {
     }
 }
 </style>
-  

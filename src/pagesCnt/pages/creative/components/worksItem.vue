@@ -14,16 +14,16 @@
                 <view class="works_item_bottom">
                     <view class="works_item_bottom_left">
                         <view class="works_item_bottom_state">
-                            <text v-if="info.status == 3">已发布</text>
+                            <!-- <text v-if="info.status == 3">已发布</text>
                             <text v-if="info.status == 1">草稿</text>
                             <text v-if="info.status == 2">审核中</text>
                             <text v-if="info.status == 5">未通过</text>
                             <text v-if="info.status == 4">未发布</text>
-                            <text v-if="info.status == 6">仅自己可看</text>
-                            <!--                            <text v-if="info.audit.audit == 5">已发布</text>-->
-                            <!--                            <text v-if="info.audit.audit == 1">草稿</text>-->
-                            <!--                            <text v-if="info.audit.audit == 2">审核中</text>-->
-                            <!--                            <text v-if="info.audit.audit == 3">未通过</text>-->
+                            <text v-if="info.status == 6">仅自己可看</text> -->
+                            <text v-if="info.audit.audit == 5">已发布</text>
+                            <text v-if="info.audit.audit == 1">草稿</text>
+                            <text v-if="info.audit.audit == 2">审核中</text>
+                            <text v-if="info.audit.audit == 3">未通过</text>
                         </view>
                         <view class="works_item_bottom_time">
                             {{ timeformat(info.status == 3 || info.status == 5 ? info.utcExamined : info.utcCreated) }}
@@ -84,21 +84,21 @@ onMounted(() => {
 
 const toArticledetails = () => {
     console.log('props.info', props.info)
-    if (props.info.status == 5) {
+    if (props.info.audit.audit == 5) {
         if (props.info.type == 1 || props.info.type == 3) {
-            gotoarticledetails({ id: props.info.articleId })
+            gotoarticledetails({ id: props.info.id })
             return
         }
         if (props.info.type == 2) {
             // 创作中心进入到视频详情，是否需要特殊处理为仅单个视频不上下滚动
-            gotovideoPreview({ videoId: props.info.articleId, videoPagetype: 0 })
+            gotovideoPreview({ videoId: props.info.id, videoPagetype: 0 })
         }
     }
-    if (props.info.status == 2) {
+    if (props.info.audit.audit == 2) {
         emit('showPagebcNotify', '作品审核中...')
 
     }
-    if (props.info.status == 3) {
+    if (props.info.audit.audit == 3) {
         emit('showPagebcNotify', '作品被驳回...')
 
     }
@@ -109,17 +109,17 @@ const showoperate = () => {
 }
 
 const todataDateil = () => {
-    if (props.info.status == 5) {
+    if (props.info.audit.audit == 5) {
         assistantDetail({
             articleId: props.info.id,
             articleType: props.info.type
         })
     }
-    if (props.info.status == 2) {
+    if (props.info.audit.audit == 2) {
         emit('showPagebcNotify', '作品审核中...')
 
     }
-    if (props.info.status == 3) {
+    if (props.info.audit.audit == 3) {
         emit('showPagebcNotify', '作品被驳回...')
 
     }

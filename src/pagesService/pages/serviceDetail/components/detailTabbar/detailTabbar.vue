@@ -15,8 +15,9 @@
 			</view>
 		</view>
 		<view class="right">
-			<view class="btn u-line-1" @tap="bottomClick('addCart')">加入购物车</view>
+			<view class="btn u-line-1" @tap="bottomClick('addCart')" v-if="props.canConsult == 0">加入购物车</view>
 			<view class="btn u-line-1" @tap="bottomClick('balanceOrder')">{{btnTxt}}</view>
+			<view class="btn u-line-1" @tap="bottomClick('balanceReserva')" v-if="props.canConsult == 1">预约</view>
 		</view>
 	</view>
 </template>
@@ -32,24 +33,26 @@ interface Events {
 	(e: 'linkShop') :void,
 	(e: 'openCoupon') :void,
 	(e: 'goCart') :void,
-	(e: 'clickTab', type: string) : void, 
-
+	(e: 'clickTab', type: string) : void,
+	(e: 'balanceReserva', type: string) : void
 }
 const emit = defineEmits<Events>()
 
 
 const props = withDefaults(defineProps<{
 	btnTxt:string,
-}>(),{
-	btnTxt:'立即下单',
+	canConsult:number,
+}>(), {
+    btnTxt: '立即下单',
+    canConsult: 0
 })
 
-const getAssetsUrl = computed(()=>(url:string)=>{
-	return getAssetsPic(url)
+const getAssetsUrl = computed(() => (url:string) => {
+    return getAssetsPic(url)
 })
 
-const bottomClick = (linkType:string)=>{
-    emit('clickTab',linkType)
+const bottomClick = (linkType:string) => {
+    emit('clickTab', linkType)
 }
 
 

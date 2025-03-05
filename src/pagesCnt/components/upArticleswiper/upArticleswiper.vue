@@ -4,13 +4,14 @@
         <z-paging ref="paging" :auto="false" :refresher-enabled="false">
             <view class="up_inp_box">
                 <view class="up_title_inp">
-                    <TnInput placeholder="请输入标题(2~30个字)" :border="false" fontSize="16" v-model="data.title"
+                    <TnInput class="tn-input" placeholder="请输入标题(2~30个字)" :border="false" fontSize="16"
+                             v-model="data.title"
                              clearable
                              :maxlength="30"></TnInput>
                 </view>
                 <view class="up_text_inp">
                     <TnInput class="up_textarea" v-model="data.desc" type="textarea" placeholder="请输入正文"
-                             :maxlength="500" show-word-limit/>
+                             :maxlength="500" show-word-limit height="300rpx" auto-height/>
                     <!--                    <u&#45;&#45;textarea class="up_textarea" v-model="data.desc" :maxlength="500" placeholder="请输入正文"-->
                     <!--                                 border="none" :showWordLimit="true" count></u&#45;&#45;textarea>-->
                     <view class="topic_box" v-if="data.isaddac == 0 && props.topic.length != 0 && props.topic[0]">
@@ -63,10 +64,12 @@
                 </view>
             </view>
 
-            <view class="bottom_box" slot="bottom">
-                <view class="bottom_box_draft" @tap="clickBtn(1)">保存草稿</view>
-                <view class="bottom_box_btn" @tap="clickBtn(2)">发布文章</view>
-            </view>
+            <template #bottom>
+                <view class="bottom_box">
+                    <view class="bottom_box_draft" @tap="clickBtn(1)">保存草稿</view>
+                    <view class="bottom_box_btn" @tap="clickBtn(2)">发布文章</view>
+                </view>
+            </template>
         </z-paging>
         <!--        <view v-if="data.pickShow">-->
         <TnPicker
@@ -121,7 +124,8 @@ interface Props {
     taskId: String, //任务id
     isDratType: String, //是否草稿发布
     articleId: String, //草稿id
-    type: Number //话题
+    type: Number, //话题
+    id: String,//ID
 }
 
 const props = defineProps<Props>()
@@ -337,10 +341,6 @@ const clickBtn = (status) => {
 
 
 <style lang="scss" scoped>
-.up_text_inp ::v-deep .u-textarea {
-    padding: 15rpx 0;
-}
-
 .top_box {
     background: linear-gradient(180deg, #dff7ef 0%, #ffffff 170%);
     padding-bottom: 20rpx;
@@ -354,15 +354,19 @@ const clickBtn = (status) => {
         margin: 0rpx 30rpx;
         border-bottom: 2rpx solid #f2f2f2;
         box-sizing: border-box;
-        height: 100rpx;
         display: flex;
         align-items: center;
         justify-content: space-around;
+
+        .tn-input {
+            width: 100%;
+        }
     }
 
     .up_text_inp {
         margin: 5rpx 30rpx;
         box-sizing: border-box;
+        min-height: 300rpx;
 
         .up_textarea {
             min-height: 300rpx !important;

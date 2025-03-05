@@ -137,11 +137,11 @@ import { oldExpoCategory, oldExpolist } from '@/api/goods-api'
 import {
     gotoServiceExpoClass,
     gotonewProduct,
-    // gotoDiscussDetail,
     gotoAllZone,
     gotoAllClass,
     gotoClassItemPage,
     gotoServiceStore,
+    gotoShopDetail,
     gotosearch
 } from '@/routes/service-routes'
 
@@ -266,7 +266,7 @@ const queryList = async (pageNumber: number, pageSize: number) => {
     }).then((res: any) => {
         console.log('res', res.data);
         (paging.value as any).complete(res.data)
-    }).catch((err: any) => {
+    }).catch(() => {
         (paging.value as any).complete([])
     })
 
@@ -291,10 +291,10 @@ const liveswiperChange = (e: any) => {
 const clickwaterItem = (item: any) => {
     console.log('item', item)
     if (item.shopSource == 32) {
-        // gotoDiscussDetail({ shopId: item.shopId })
+        gotoShopDetail(item.shopId)
         return
     }
-    gotoServiceStore({ shopId: item.shopId, isAd: 0 })
+    gotoServiceStore({ itemId: item.shopId, isAd: 0 })
 
 }
 

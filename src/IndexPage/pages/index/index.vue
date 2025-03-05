@@ -268,8 +268,8 @@ const changeTabbar = (id: number, showrecommend: boolean) => {
     }
     if (id == 3) {
         // 底部创作入口
-        // gotoUpcontent()
-        gotouparticle()
+        gotoUpcontent()
+        // gotouparticle()
         return
     }
     data.tabbarId = id
@@ -500,10 +500,9 @@ const nextUp = (selectList: any, fileType: number) => {
             urlList
         })
 
-        gotoNewUpcontentPage({
+        Upcontent({
             UpurlList,
             isBackIndex: 1
-
         })
 
     }).catch((error) => {
