@@ -259,7 +259,7 @@ const data = reactive<Data>({
     titleTop: 0,
     titleRight: 0,
     startPoint: {},
-    showMuen: false,
+    showMuen: false
 
 
 
@@ -375,7 +375,7 @@ const queryList = (pageNumber:number, pageSize:number) => {
 // 类目
 const getSortList = () => {
     categoryShow({
-        id: 9
+        id: 10
     }).then((res:any) => {
         console.log('res', res)
         data.navList = [
@@ -383,9 +383,9 @@ const getSortList = () => {
             { id: 999, name: '推荐' },
             res[0],
             res[1],
-            { id: 2, name: '视频' },
-            { id: 3, name: '图片' },
-            { id: 998, name: '热榜' },
+            // { id: 2, name: '视频' },
+            // { id: 3, name: '图片' },
+            // { id: 998, name: '热榜' },
             res[2],
             res[3]
         ]
@@ -397,7 +397,7 @@ const getcontentAccountList = () => {
     getcoursefollowList({
         query: {
             isFans: 0,
-            happyType: 1
+            happyType: null
         },
         pageNumber: 1,
         pageSize: 100
@@ -432,7 +432,7 @@ const getList = (pageNumber:number, pageSize:number) => {
             status: 3,
             isRecommended: null,
             accountId: (data.accountId == 999) ? null : data.accountId,
-            happyType: 1
+            happyType: ''
 
         },
         pageNumber,
@@ -450,7 +450,7 @@ const getList = (pageNumber:number, pageSize:number) => {
         pageNumber,
         query: {
             rankType: data.rankType,
-            categoryIds: [9]
+            categoryIds: [10]
         }
     }).then((res:any) => {
         (paging.value as any).complete(res.data)
@@ -465,10 +465,10 @@ const logingetList = (pageNumber:number, pageSize:number) => {
         pageSize,
         pageNumber,
         query: {
-            categoryIds: (data.navid != 2 && data.navid != 3 && data.navid != 999) ? [data.navid] : [9],
+            categoryIds: (data.navid != 2 && data.navid != 3 && data.navid != 999) ? [data.navid] : [10],
             type: (data.navid == 2 || data.navid == 3) ? data.navid : null,
             // businessType : 7
-            sortType: (data.navid == 999 && pageNumber == 1) ? 7 : null,
+            sortType: (data.navid == 999 && pageNumber == 1) ? 7 : null
         }
     }
 
