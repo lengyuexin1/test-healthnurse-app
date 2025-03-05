@@ -133,7 +133,7 @@ const listen = () => {
 }
 
 const tabbatMenu = (item:any) => {
-    item.id == 1 && emit('showLifeMenu')
+    // item.id == 1 && emit('showLifeMenu')
     item.id == 2 && gotoallFollowPage()
     item.id == 3 && gotoChannel()
     item.id == 4 && gotofinList({ isfin: 1 })
