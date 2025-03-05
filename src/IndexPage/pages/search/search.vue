@@ -121,7 +121,7 @@ const tabList = [
     { sourceType: 1, name: '服务', type: null, businessTypeIds: null },
     { sourceType: 2, name: '商品', type: null, businessTypeIds: null },
     { sourceType: 3, name: '店铺', type: null, businessTypeIds: null },
-    { sourceType: 4, name: '文章', type: [1, 3], businessTypeIds: [5] },
+    { sourceType: 4, name: '文章', type: [1, 3], businessTypeIds: [98] },
     { sourceType: 4, name: '视频', type: [2], businessTypeIds: [5] }
 ]
 interface Data {
