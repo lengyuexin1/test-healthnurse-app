@@ -89,7 +89,7 @@
                             <div class="rule_title">{{ "限制" }}</div>
                             <div
                                   class="rule_text"
-                                  v-if="data.agencyObj.isRestrictBuyQuantity && data.agencyObj.isRestrictBuyQuantity>0"
+                                  v-if="data.agencyObj.isRestrictBuyQuantity && data.agencyObj.isRestrictBuyQuantity > 0"
                             >
                                 {{
                                     `每人限制${data.agencyObj.restrictBuyQuantity}张`
@@ -269,6 +269,7 @@
 
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, getCurrentInstance } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { healthdetail, godsCommList, agencydetail } from '@/api/service-api'
 import { gotoBalanceOrder } from '@/routes/order-routes'
@@ -301,6 +302,7 @@ interface Data {
     needlogin: boolean,
     status: number,
     shareimgUrl: string,
+    isHealth: 0|1
 }
 
 const data = reactive<Data>({
@@ -310,7 +312,8 @@ const data = reactive<Data>({
     total: 0,
     needlogin: false,
     status: 0,
-    shareimgUrl: ''
+    shareimgUrl: '',
+    isHealth: 0
 })
 
 const getAssetsUrl = computed(() => (src: string) => {
@@ -346,15 +349,18 @@ const notright = computed(() => (list: any, index: number) => {
 })
 
 const emit = defineEmits(["saveShareObj"])
-
+onLoad((option:any) => {
+    data.isHealth = option.isHealth || 0
+})
 onMounted(() => {
     gethealthdetail(props.itemId)
     getgodsCommList(props.itemId)
 })
 
 
-const gethealthdetail = (id: string) => {
-    agencydetail({
+const gethealthdetail = (id: any) => {
+    const fn = data.isHealth == 1 ? healthdetail : agencydetail
+    fn({
         id
     }).then((res: any) => {
         console.log(res)
@@ -557,28 +563,28 @@ const sharePoster = async () => {
     context.restore()
 
     context.draw(
-          false,
-          setTimeout(async () => {
-              uni.canvasToTempFilePath({
-                  canvasId: 'mycanvas',
-                  success: (res: any) => {
-                      data.shareimgUrl = res.tempFilePath
-                      data.status = 2
-                      title = ''
-                  },
-                  fail: err => {
-                      console.log(err)
-                      uni.showToast({
-                          icon: 'none',
-                          title: '生成失败,请稍后重试'
-                      })
-                  },
-                  complete: (ret) => {
-                      console.log('生成中....')
-                      uni.hideLoading()
-                  }
-              }, instance)
-          }, 3000)
+        false,
+        setTimeout(async () => {
+            uni.canvasToTempFilePath({
+                canvasId: 'mycanvas',
+                success: (res: any) => {
+                    data.shareimgUrl = res.tempFilePath
+                    data.status = 2
+                    title = ''
+                },
+                fail: err => {
+                    console.log(err)
+                    uni.showToast({
+                        icon: 'none',
+                        title: '生成失败,请稍后重试'
+                    })
+                },
+                complete: (ret) => {
+                    console.log('生成中....')
+                    uni.hideLoading()
+                }
+            }, instance)
+        }, 3000)
     )
 }
 

@@ -186,6 +186,14 @@
           }
         },
         {
+					"path": "pages/classPage/allFollowPage",
+					"style": {
+						"navigationBarTitleText": "全部内容关注",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
+        {
           "path": "pages/my/update",
           "style": {
             "navigationStyle": "custom",
@@ -872,6 +880,14 @@
             "enablePullDownRefresh": false
           }
         },
+        {
+					"path": "pages/communityRule/communityIndex",
+					"style": {
+						"navigationBarTitleText": "社区公约",
+						"navigationStyle": "custom",
+						"enablePullDownRefresh": false
+					}
+				},
         {
           "path": "pages/communityRule/ruleCore",
           "style": {

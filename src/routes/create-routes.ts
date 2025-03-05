@@ -33,7 +33,8 @@ export const gotouparticle = (query:any, del:boolean = false) => {
 
     if (del) {
         return pageController.replace(route)
-    }else{
+    }
+    else {
         return pageController.push(route)
     }
 
@@ -74,7 +75,7 @@ export const gotoarticledetailVoice = (query:any) => {
 export const gotodataManage = (query:dataQuery) => {
     const route = {
         path: "/pagesCnt/pages/followPage/follow",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -83,7 +84,7 @@ export const gotodataManage = (query:dataQuery) => {
 export const gotoauthor = (query:any) => {
     const route = {
         path: "/pagesCnt/pages/author/author",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -92,7 +93,7 @@ export const gotoauthor = (query:any) => {
 export const gotocourseList = (query:any) => {
     const route = {
         path: "/pagesCnt/pages/course/course",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -109,7 +110,7 @@ export const gotocourseList = (query:any) => {
 export const gotocourseVideo = (listId:string) => {
     const route = {
         path: "/pagesCnt/pages/course/courseVideo",
-        query: {listId},
+        query: { listId }
     } as any
     return pageController.push(route)
 }
@@ -118,7 +119,7 @@ export const gotocourseVideo = (listId:string) => {
 export const gotoSalonDetail = (query:any) => {
     const route = {
         path: "/pagesCnt/pages/salon/detail",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -127,7 +128,7 @@ export const gotoSalonDetail = (query:any) => {
 export const gotoSalonManage = (query:any) => {
     const route = {
         path: "/pagesCnt/pages/salon/manage",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -153,7 +154,7 @@ export const gotoInviteFriends = (query: any) => {
 export const gotoUpsalonPostsPage = (query:any) => {
     const route = {
         path: "/pagesCnt/pages/salon/upsalonPosts",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -171,7 +172,7 @@ export const gotoUpsalonPostsPage = (query:any) => {
 export const gotoUpPosts = (query:any) => {
     const route = {
         path: "/pagesCnt/pages/salon/UpPosts",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -180,7 +181,7 @@ export const gotoUpPosts = (query:any) => {
 export const gotosalonPostsDetailPage = (query:any) => {
     const route = {
         path: "/pagesCnt/pages/salon/salonPostsDetail",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -188,7 +189,7 @@ export const gotosalonPostsDetailPage = (query:any) => {
 export const gotoActivityDetail = (query:any) => {
     const route = {
         path: "/pagesCnt/pages/activity/activityDetail",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -197,7 +198,7 @@ export const gotoActivityDetail = (query:any) => {
 export const gotoSchoolArticleDetail = (query: any) => {
     const route = {
         path: "/pagesCnt/pages/school/schoolArticleDetail",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -206,7 +207,7 @@ export const gotoSchoolArticleDetail = (query: any) => {
 export const gotocreationPage = () => {
     const route = {
         path: "/pagesCnt/pages/creative/creationPage",
-        query: {},
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -215,7 +216,7 @@ export const gotocreationPage = () => {
 export const gotoCommentSetting = (type: string) => {
     const route = {
         path: "/pagesCnt/pages/comment/comment",
-        query: { type },
+        query: { type }
     } as any
     return pageController.push(route)
 }
@@ -224,7 +225,7 @@ export const gotoCommentSetting = (type: string) => {
 export const gotoActivityIndex = () => {
     const route = {
         path: "/pagesCnt/pages/activity/index",
-        query: {},
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -233,7 +234,7 @@ export const gotoActivityIndex = () => {
 export const gotoDraftList = () => {
     const route = {
         path: "/pagesCnt/pages/draft/draft",
-        query: {},
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -242,7 +243,7 @@ export const gotoDraftList = () => {
 export const gotoCreateSchool = () => {
     const route = {
         path: "/pagesCnt/pages/school/school",
-        query: {},
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -257,7 +258,7 @@ export const gotoCreateSchool = () => {
 export const assistantDetail = (query:any) => {
     const route = {
         path: "/pagesCnt/pages/dataAssistant/dataAssistant",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -266,7 +267,7 @@ export const assistantDetail = (query:any) => {
 export const gotoAddMerchant = (type: string) => {
     const route = {
         path: "/pagesCnt/pages/addMerchant/addMerchant",
-        query: { type },
+        query: { type }
     } as any
     return pageController.push(route)
 }
@@ -274,7 +275,7 @@ export const gotoAddMerchant = (type: string) => {
 export const gotoAddMerchantSuccess = () => {
     const route = {
         path: "/pagesCnt/pages/addMerchant/success",
-        query: {},
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -283,7 +284,7 @@ export const gotoAddMerchantSuccess = () => {
 export const upChatPage = (query:any) => {
     const route = {
         path: "/pagesCnt/pages/likechat/upChat",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -292,7 +293,7 @@ export const upChatPage = (query:any) => {
 export const gotochatDetail = (query:any) => {
     const route = {
         path: "/pagesCnt/pages/likechat/chatDetail",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -310,7 +311,7 @@ export const gotochatDetail = (query:any) => {
 export const gotovideoPreview = (query:any) => {
     const route = {
         path: "/pagesCnt/pages/videoPreview/videoPreview",
-        query,
+        query
     } as any
     return pageController.push(route)
 
@@ -318,15 +319,16 @@ export const gotovideoPreview = (query:any) => {
 
 /** 享老记 */
 // uniqueId 发布参数 默认不传
-export const gotoenjoyRecord = ( isdel:number = 0) => {
+export const gotoenjoyRecord = (isdel:number = 0) => {
     const route = {
         path: "/CreateSplit/pages/enjoyRecord/enjoyRecord",
-        query : {},
+        query: {}
     } as any
 
     if (isdel == 1) {
         return pageController.replace(route)
-    }else{
+    }
+    else {
         return pageController.push(route)
     }
 
@@ -343,7 +345,7 @@ export const gotoenjoyRecord = ( isdel:number = 0) => {
 export const gotoUpenjoyRecord = (query:any) => {
     const route = {
         path: "/CreateSplit/pages/enjoyRecord/upEnjoyRecord",
-        query,
+        query
     } as any
 
     return pageController.push(route)
@@ -356,7 +358,7 @@ export const gotoUpenjoyRecord = (query:any) => {
 export const gotocreateEnjoy = (query : any) => {
     const route = {
         path: "/CreateSplit/pages/enjoyRecord/createEnjoy",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -365,7 +367,7 @@ export const gotocreateEnjoy = (query : any) => {
 export const gotofriendCord = () => {
     const route = {
         path: "/CreateSplit/pages/enjoyRecord/friendCord",
-        query: {},
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -373,7 +375,7 @@ export const gotofriendCord = () => {
 /** APP 创建直播间 */
 export const gotoCreateLive = () => {
     const route = {
-        path: "/Live/pages/createLive/createLive",
+        path: "/Live/pages/createLive/createLive"
     } as any
     return pageController.push(route)
 }
@@ -389,7 +391,7 @@ export const gotoPreviewLive = (query: any) => {
 export const gotofilterPage = () => {
     const route = {
         path: "/CreateSplit/pages/enjoyRecord/filterPage",
-        query: {},
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -397,11 +399,12 @@ export const gotofilterPage = () => {
 export const gotoLiveShow = (query: any, ispush: number = 1) => {
     const route = {
         path: "/Live/pages/liveShow/liveShow",
-        query,
+        query
     } as any
     if (ispush == 1) {
         return pageController.replace(route)
-    }else{
+    }
+    else {
         return pageController.push(route)
     }
 }
@@ -410,11 +413,12 @@ export const gotoLiveShow = (query: any, ispush: number = 1) => {
 export const gotowxLive = (query:any, ispush: number = 1) => {
     const route = {
         path: "/Live/pages/wxLive/wxLive",
-        query,
+        query
     } as any
     if (ispush == 1) {
         return pageController.replace(route)
-    }else{
+    }
+    else {
         return pageController.push(route)
     }
 }
@@ -423,7 +427,7 @@ export const gotowxLive = (query:any, ispush: number = 1) => {
 export const gotoEndLive = (query:any) => {
     const route = {
         path: "/Live/pages/endLive/endLive",
-        query,
+        query
     } as any
     return pageController.replace(route)
 }
@@ -432,7 +436,7 @@ export const gotoEndLive = (query:any) => {
 export const gotojoinEnjoy = (query:any) => {
     const route = {
         path: "/CreateSplit/pages/enjoyRecord/joinEnjoy",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -441,7 +445,7 @@ export const gotojoinEnjoy = (query:any) => {
 export const gotoEventList = (query:any) => {
     const route = {
         path: "/CreateSplit/pages/enjoyRecord/enjoyEventList",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -450,7 +454,7 @@ export const gotoEventList = (query:any) => {
 export const gotoenjoyEventDetail = (query:any) => {
     const route = {
         path: "/CreateSplit/pages/enjoyRecord/enjoyEventDetail",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -459,7 +463,7 @@ export const gotoenjoyEventDetail = (query:any) => {
 export const gotoenjoyAlbum = (query: any) => {
     const route = {
         path: "/CreateSplit/pages/enjoyRecord/enjoyAlbum",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -468,7 +472,7 @@ export const gotoenjoyAlbum = (query: any) => {
 export const gotoenjoySecurity = () => {
     const route = {
         path: "/CreateSplit/pages/enjoyRecord/enjoySecurity",
-        query: {},
+        query: {}
     } as any
     return pageController.push(route)
 }
@@ -484,7 +488,7 @@ export const gotoenjoySecurity = () => {
 export const gotoenjoyJurisdiction = (query:any) => {
     const route = {
         path: "/CreateSplit/pages/enjoyRecord/enjoyJurisdiction",
-        query,
+        query
     } as any
     return pageController.push(route)
 }
@@ -571,3 +575,15 @@ export const gotosubmitReport = (query:any) => {
     } as any
     return pageController.replace(route)
 }
+
+/**
+ * 全部内容关注页
+ */
+export const gotoallFollowPage = () => {
+    const route = {
+        path: '/IndexPage/pages/classPage/allFollowPage',
+        query: {}
+    } as any
+    return pageController.push(route)
+}
+

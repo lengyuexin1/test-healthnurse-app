@@ -33,14 +33,14 @@
 
             <template #left>
                 <view class="left_nva_box" v-if="data.categoryList.length > 0">
-                    <view class="navItem" @click="changeNav(index)" :class="{ 'is_select' : item.id == data.categoryList[data.categoryIndex].id }" v-for="(item, index) in data.categoryList" :key="item.id">
+                    <view class="navItem" @click="changeNav(index)" :class="{ 'is_select': item.id == data.categoryList[data.categoryIndex].id }" v-for="(item, index) in data.categoryList" :key="item.id">
                         <view>
                             {{ item.name }}
                         </view>
                         <view class="select_box" v-if="item.id == data.categoryList[data.categoryIndex].id"></view>
                     </view>
                 </view>
-                
+
             </template>
 
             <view class="page_content">
@@ -94,7 +94,7 @@ interface Data {
 const data = reactive<Data>({
     dataList: [],
     categoryList: [],
-    categoryIndex: 0,
+    categoryIndex: 0
 })
 
 
@@ -106,7 +106,7 @@ onMounted(async () => {
 })
 
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
@@ -117,7 +117,7 @@ const queryList = async (pageNumber:number, pageSize:number) => {
     oldExpoCategory({
         pageNumber: 1,
         pageSize: 20,
-        query:{
+        query: {
             isPid: 1
         }
     }).then((res:any) => {
@@ -131,56 +131,57 @@ const queryList = async (pageNumber:number, pageSize:number) => {
         let arr = [] as any
         arr = data.categoryList.map((item:any) => {
             return item.id
-        });
+        })
 
-        
+
         productList({
             categoryIds: arr
         }).then((Listres:any) => {
-            (paging.value as any).complete(Listres);
-            console.log('data.dataList',data.dataList);
-            
+            (paging.value as any).complete(Listres)
+            console.log('data.dataList', data.dataList)
+
         })
-    });
+    })
 
 }
 
 const changeNav = (index:number) => {
     data.categoryIndex = index;
-    
-    (paging.value as any).scrollIntoViewById('toView' + index , 150);
+
+    (paging.value as any).scrollIntoViewById('toView' + index, 150)
 
 }
 
 const todetail = (item:any) => {
-    console.log('item111',item);
-    
+    console.log('item111', item)
+
     if (item.productType == 1) {
         gotogoodsDetail(item.id)
-    } else {
-        gotohealthproductDetails({itemId: item.id})
+    }
+    else {
+        gotohealthproductDetails({ itemId: item.id, isHealth: 1 })
     }
 }
 
-const instance = getCurrentInstance(); // 获取组件实例
-const query = uni.createSelectorQuery().in(instance);
+const instance = getCurrentInstance() // 获取组件实例
+const query = uni.createSelectorQuery().in(instance)
 
 const pageScroll = (e:any) => {
-    Debounce(()=>{
+    Debounce(() => {
         data.categoryList.forEach((item:any, index:number) => {
-            query.select( '#toView'+ index ).boundingClientRect((rect:any) => { 
+            query.select('#toView' + index).boundingClientRect((rect:any) => {
                 if (rect.top <= 150 && rect.top >= 50) {
-                    data.categoryIndex = index;
+                    data.categoryIndex = index
                 }
             }).exec()
         })
     }, 500)
-    
+
 }
 
 // 退出页面
 const goback = () => {
-    uni.navigateBack();
+    uni.navigateBack()
 }
 
 defineExpose({

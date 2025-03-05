@@ -171,6 +171,7 @@ interface Data{
     lng: number
     discussionId: string
     discussionName: string
+    release: boolean
 }
 const data = reactive<Data>({
     inputValue: '',
@@ -191,7 +192,8 @@ const data = reactive<Data>({
     lat: 0,
     lng: 0,
     discussionId: '',
-    discussionName: ''
+    discussionName: '',
+    release: false
 })
 
 const timeformat = computed(() => {
@@ -202,6 +204,10 @@ const timeformat = computed(() => {
 onLoad((option:any) => {
     data.discussionId = option.discussionId
     data.discussionName = option.discussionName
+
+    // data.lng = 0
+    // data.lat = 0
+    // data.regionText = "保椿集团"
 })
 
 
@@ -292,10 +298,13 @@ const createFun = () => {
 // data.coverList[0]
 const toUp = () => {
     if (!data.isNext) {
-    	bcNotify.value.error('内容未输入完全')
+        bcNotify.value.error('内容未输入完全')
         return
     }
-
+    if (data.release) {
+        return
+    }
+    data.release = true
     upDiscussion({
         baseInfo: {
             title: data.inputValue,
@@ -311,13 +320,14 @@ const toUp = () => {
             tagIds: [10],
             tagNames: ['讨论区']
         }
-    }).then((res:any) => {
-    	bcNotify.value.show('发布成功')
+    }).then(() => {
+        bcNotify.value.show('发布成功')
         setTimeout(() => {
             uni.navigateBack()
-        }, 2000)
+        }, 1000)
     }).catch((err:any) => {
         bcNotify.value.error(err.message)
+        data.release = false
     })
 }
 

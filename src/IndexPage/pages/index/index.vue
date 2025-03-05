@@ -254,6 +254,7 @@ onReady(() => {
     // platformRef.value.listonLoad()
 })
 const changeTabbar = (id: number, showrecommend: boolean) => {
+    hidetabbarTop(id == 1)
     if (id == 1) {
         setTimeout(() => {
             if (platformRef.value) {
@@ -282,7 +283,7 @@ const changeTabbar = (id: number, showrecommend: boolean) => {
 const tabbarRef = ref()
 const hidetabbarTop = (val: boolean) => {
 
-    (tabbarRef.value as any).hideTop(val);
+    (tabbarRef.value as any).hideTop(val)
 }
 
 const showMenu = () => {
@@ -399,7 +400,7 @@ const fromAlbumImg = () => {
     uni.chooseImage({
         count: 9,
         sourceType: ['album'],
-        success: function (res) {
+        success: function(res) {
             console.log('res.tempFilePath1', res.tempFilePaths)
             nextUp(res.tempFilePaths, 1)
         }
@@ -411,7 +412,7 @@ const fromCameraImg = () => {
     uni.chooseImage({
         sourceType: ['camera'],
         count: 1,
-        success: function (res) {
+        success: function(res) {
             console.log('res.tempFilePath2', res.tempFilePaths)
             nextUp(res.tempFilePaths, 1)
         }
@@ -423,7 +424,7 @@ const fromAlbumVideo = () => {
     uni.chooseVideo({
         count: 1,
         sourceType: ['album'],
-        success: function (res) {
+        success: function(res) {
             console.log('res.tempFilePath3', res.tempFilePath)
             nextUp([res.tempFilePath], 2)
 
@@ -436,7 +437,7 @@ const fromCameraVideo = () => {
     uni.chooseVideo({
         count: 1,
         sourceType: ['camera'],
-        success: function (res) {
+        success: function(res) {
             console.log('res.tempFilePath4', res.tempFilePath)
             nextUp([res.tempFilePath], 2)
         }

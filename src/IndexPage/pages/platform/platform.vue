@@ -265,7 +265,7 @@ const data = reactive<Data>({
     showAiSearch: false,
     isTouch: false,
     touchSearchText: '',
-    RECORDER: uni.getRecorderManager(),
+    RECORDER: uni.getRecorderManager()
 
 })
 
@@ -331,7 +331,7 @@ onMounted(async () => {
             return
         }
         data.activityType = true
-    }).catch((error: any) => {
+    }).catch(() => {
         data.activityType = false
     })
 
@@ -388,13 +388,13 @@ onMounted(async () => {
     console.log(data)
 
     data.RECORDER.onStart(() => {
-        console.log('开始录音');
+        console.log('开始录音')
 
     })
 
     // 结束录音
     data.RECORDER.onStop((e: any) => {
-        console.log('结束录音e', e);
+        console.log('结束录音e', e)
 
     })
 
@@ -505,11 +505,11 @@ const gotocarrySearch = () => {
 
 const scanCode = () => {
     uni.scanCode({
-        success: function (res) {
-            console.log('扫码res', res);
+        success: function(res) {
+            console.log('扫码res', res)
 
-            let [path, str] = res.path.split('?');
-            let [type, scene] = str.split('=');
+            const [path, str] = res.path.split('?')
+            const [type, scene] = str.split('=')
 
             getQRPage({ scene }).then((page) => {
                 console.log('page', page)
@@ -523,8 +523,8 @@ const scanCode = () => {
 
             // gotoScanCode(path,sceneObj)
 
-            console.log('path', path);
-            console.log('str', str);
+            console.log('path', path)
+            console.log('str', str)
 
 
         }
@@ -557,7 +557,7 @@ const gethidNavList = (list: any) => {
 }
 
 const changeChannelTabs = (item: any) => {
-    data.channelId = item.id;
+    data.channelId = item.id
 
     // (indexListRef.value as any).pagingReload(true)
 
@@ -565,7 +565,7 @@ const changeChannelTabs = (item: any) => {
 
 const changeToplist = (item: any, index: number) => {
     data.topIndex = index
-    data.rankType = item.id;
+    data.rankType = item.id
     // (indexListRef.value as any).pagingReload(true)
 
 }
@@ -581,16 +581,16 @@ const initLive = (type: number) => {
     }).then((res: any) => {
         let key = ''
         if (type == 5) {
-            key = 'channel';
+            key = 'channel'
         }
         if (type == 6) {
-            key = 'course';
+            key = 'course'
         }
         if (type == 8) {
-            key = 'salon';
+            key = 'salon'
         }
 
-        data.liveType[key] = res.data.length > 0 ? true : false
+        data.liveType[key] = res.data.length > 0
     })
 }
 
@@ -610,7 +610,7 @@ const openAisearch = () => {
 
 }
 
-let timer = ref<any>(null)
+const timer = ref<any>(null)
 
 const startTime = () => {
     timer.value = setTimeout(() => {
@@ -623,7 +623,7 @@ const startTime = () => {
         })
 
         data.RECORDER.onStart(() => {
-            console.log('开始录音111');
+            console.log('开始录音111')
         })
 
     }, 300)
@@ -639,7 +639,7 @@ const endTime = () => {
 
     // 结束录音
     data.RECORDER.onStop((e: any) => {
-        console.log('结束录音222', e);
+        console.log('结束录音222', e)
         uploadAudio(e.tempFilePath).then((oss: any) => {
             console.log('oss', oss)
 
@@ -647,7 +647,7 @@ const endTime = () => {
                 data.touchSearchText = res.replace(/^[#*]+|[#*]+$/g, "").replace(/[.。，,]+/g, "").trim()
 
                 setTimeout(() => {
-                    console.log('data.touchSearchText', data.touchSearchText);
+                    console.log('data.touchSearchText', data.touchSearchText)
                     data.showAiSearch = false
                     gotosearch({
                         searchText: data.touchSearchText,
@@ -667,6 +667,7 @@ const endTime = () => {
 }
 
 const changeTabbarTop = (val: boolean) => {
+    console.log("changeTabbarTop")
     emit('changeTabbarTop', val)
 }
 

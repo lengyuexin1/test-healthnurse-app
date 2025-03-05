@@ -210,7 +210,7 @@ import BCNotify from '@/components/notify/index.vue'
 import WaterfallsFlow from '../platform/components/WaterfallsFlow.vue'
 import { gotoRegister, gotogoodsDetail, gotogoodsRanking } from '@/routes/goods-routes'
 import { gotoCitychange, invitationDetail } from '@/routes/user-routes'
-import { gotoServiceStore, gotoserviceDetail, toInnerPage,gotodiscussListPage, gotosearch, gotoShopDetail, gotoserviceLnnerPage, gotoServiceExpo, gotoLiveSelection } from '@/routes/service-routes'
+import { gotoServiceStore, gotoserviceDetail, toInnerPage, gotodiscussListPage, gotosearch, gotoShopDetail, gotoserviceLnnerPage, gotoServiceExpo, gotoLiveSelection } from '@/routes/service-routes'
 import { PlatformManage } from '@bc/sys'
 import { gotoLogin } from "@/routes/public-routes"
 import { setPageBank, bannerList, columnList, columnDetail, productList, activeDetail } from "@/api/setite-api"
@@ -513,7 +513,7 @@ const clickActivityList = (item: any) => {
             return
         }
         item == 1 && gotoServiceExpo()
-        item == 2 && gotoLiveSelection()
+        item == 2 && bcNotify.value.show('敬请期待')//gotoLiveSelection()
         item == 3 && gotogoodsRanking()
         item == 4 && gotoRegister()
         item == 5 && gotodiscussListPage()

@@ -264,13 +264,13 @@
                     <view class="bottom_content_box">
 
                         <view class="flexinp_box">
-                            <view class="bottom_inp_box">
-                                <view class="not_bottom_inp" style="opacity:0"></view>
+                            <view class="bottom_inp_box" @click="showtextarea">
+
                                 <!-- 底部输入框 -->
                                 <!-- v-if="data.showtextbtn" -->
-                                <!-- @blur="closekeyboard"  @click="showtextarea" -->
+                                <!-- @blur="closekeyboard" -->
 
-                                <!-- <textarea
+                                <textarea
                                     class="bottom_inp"
                                     :auto-height="true"
                                     :focus="data.showtextbtn"
@@ -296,7 +296,7 @@
                                     :src="getAssetsUrl('/leyou/create/emoji_icon.svg')"
                                     mode="scaleToFill"
                                     @click.stop="showEmoBox"
-                                /> -->
+                                />
                             </view>
                             <!--  v-if="!data.iskeyboard" -->
                             <view class="icon_list" v-if="!data.iskeyboard">

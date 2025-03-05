@@ -820,3 +820,13 @@ export const gotoPlatformQualification = (query: any) => {
     }
     return pageController.push(route)
 }
+
+
+/** 发现、附件列表页 */
+export const gotofinList = (query:any) => {
+    const route = {
+        path: "/pagesUser/pages/enclosure/findList",
+        query
+    } as any
+    return pageController.push(route)
+}
