@@ -111,17 +111,6 @@
                 </view>
             </view>
         </template>
-        <div class="content" v-if="isKeep">
-                <div class="contit">联系人信息</div>
-                <div class="mation row j-between">
-                    <div class="mattit">姓名</div>
-                    <div class="mattip">{{serviceInfo.contactPerson || '--'}}</div>
-                </div>
-                <div class="mation row j-between">
-                    <div class="mattit">联系人手机号</div>
-                    <div class="mattip">{{serviceInfo.contactMobile || '--'}}</div>
-                </div>
-            </div>
         <template v-else>
             <!-- && !ismany -->
             <div class="record_box" v-if="[131079,196611].includes(serviceInfo.status)">
@@ -405,7 +394,7 @@ const tominutes = (index: number) => {
         display: flex;
         //align-items: center;
         justify-content: space-between;
-        margin-bottom: 40rpx;
+        margin: 20rpx 0;
 
         .info_title {
             font-size: 30rpx;
