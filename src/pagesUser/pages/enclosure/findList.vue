@@ -84,8 +84,8 @@ onReady(() => {
         // #endif
 
         // #ifndef APP-PLUS
-        getLocation()
         // #endif
+        getLocation()
 
         return
     }
@@ -94,9 +94,9 @@ onReady(() => {
 })
 
 const bcNotify = ref()
-const paging = ref()
+const paging = ref([])
 const queryList = (pageNumber:number, pageSize:number) => {
-    const query = data.isfin ?
+    const query = !data.isfin ?
         {
             lat: data.lat,
             lng: data.lng

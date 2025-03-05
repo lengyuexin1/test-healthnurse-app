@@ -381,13 +381,14 @@ const getSortList = () => {
         data.navList = [
             { id: 1, name: '关注' },
             { id: 999, name: '推荐' },
-            res[0],
-            res[1],
+            ...res
+            // res[0],
+            // res[1],
             // { id: 2, name: '视频' },
             // { id: 3, name: '图片' },
             // { id: 998, name: '热榜' },
-            res[2],
-            res[3]
+            // res[2],
+            // res[3]
         ]
     })
 }
