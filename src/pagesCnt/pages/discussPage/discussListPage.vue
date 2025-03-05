@@ -1,24 +1,26 @@
 <template>
     <view class="container">
         <z-paging
-            ref="paging"
-            v-model="data.dataList"
-            :auto="true"
-            :fixed="true"
-            @query="queryList"
-            :defaultPageSize="10"
-            :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
-            empty-view-text="还没有数据哦~"
-            :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
-            :auto-show-back-to-top="true"
-            :auto-scroll-to-top-when-reload="false"
+              ref="paging"
+              v-model="data.dataList"
+              :auto="true"
+              :fixed="true"
+              @query="queryList"
+              :defaultPageSize="10"
+              :empty-view-img="getAssetsUrl('/empty/empty_icon_data.png')"
+              empty-view-text="还没有数据哦~"
+              :empty-view-img-style="{ width: '320rpx', height: '320rpx' }"
+              :auto-show-back-to-top="true"
+              :auto-scroll-to-top-when-reload="false"
         >
             <template #top>
-                
-                <PageTopbg :zIndex="-1" :addheight="250" :bgstyle="'background: linear-gradient( 180deg, #FFE3DE 0%, #F8F9F9 100%);'"></PageTopbg>
 
-                <view class="navbar_box" :style="{ paddingTop: data.titleTop + 'px', paddingRight: data.titleRight + 'px' }">
-                    <view class="top_box" :style="{ height: data.sBarHeight + 'px' }" >
+                <PageTopbg :zIndex="-1" :addheight="250"
+                           :bgstyle="'background: linear-gradient( 180deg, #FFE3DE 0%, #F8F9F9 100%);'"></PageTopbg>
+
+                <view class="navbar_box"
+                      :style="{ paddingTop: data.titleTop + 'px', paddingRight: data.titleRight + 'px' }">
+                    <view class="top_box" :style="{ height: data.sBarHeight + 'px' }">
                         <view class="back_icon" @click="goback">
                             <TnIcon name="left" color="#2F2F2F" size="38" :bold="true"/>
                             <!-- #ifdef MP-WEIXIN -->
@@ -32,9 +34,9 @@
 
                         <view class="page_share" @click="sharePage" v-if="!data.isRequireLogin">
                             <image
-                                class="share_img"
-                                :src="getAssetsUrl('/leyou/newpagemenu/fenxiang.svg')"
-                                mode="scaleToFill"
+                                  class="share_img"
+                                  :src="getAssetsUrl('/leyou/newpagemenu/fenxiang.svg')"
+                                  mode="scaleToFill"
                             />
                             <!-- #ifdef MP-WEIXIN -->
                             <button open-type="share"></button>
@@ -49,11 +51,12 @@
 
 
             <view class="partition_box">
-                <view class="partition_item" @click="partitionDetail(item)" v-for="item in data.partitionList" :key="item.id">
+                <view class="partition_item" @click="partitionDetail(item)" v-for="item in data.partitionList"
+                      :key="item.id">
                     <image
-                        class="partition_img"
-                        :src="item.thumb"
-                        mode="scaleToFill"
+                          class="partition_img"
+                          :src="item.thumb"
+                          mode="scaleToFill"
                     />
                     <view class="partition_text">
                         <view class="partition_title">{{ item.name }}</view>
@@ -64,7 +67,7 @@
             </view>
 
             <view class="page_title">最新讨论</view>
-            
+
             <view class="content_box" v-if="data.dataList.length != 0">
                 <view class="content_list">
                     <view class="content_List_item" v-for="item in data.dataList" :key="item.id">
@@ -72,14 +75,14 @@
                             <view class="item_top_left">
                                 <!-- :src="getAssetsUrl('/leyou/newpagemenu/haowu_icon.svg')" -->
                                 <image
-                                    class="type_img"
-                                    :src="item.discussion.thumb"
-                                    mode="scaleToFill"
+                                      class="type_img"
+                                      :src="item.discussion.thumb"
+                                      mode="scaleToFill"
                                 />
                                 <view class="type_text">
                                     <view class="type_title">{{ item.discussion.name }}</view>
                                     <view class="type_uptext">
-                                        <view class="up_time">{{formatTime(item.utcCreated)}}</view>
+                                        <view class="up_time">{{ formatTime(item.utcCreated) }}</view>
                                         <view class="up_author">@{{ item.accountName }}</view>
                                     </view>
                                 </view>
@@ -115,7 +118,7 @@ import { PlatformManage } from "@bc/sys"
 import { gotoLogin } from "@/routes/public-routes"
 import { gotodiscussListsonPage } from '@/routes/service-routes'
 // gotoarticledetails
-
+import { gotoarticledetails } from '@/routes/create-routes'
 import BCNotify from '@/components/notify/index.vue'
 import partitionTextItem from './components/partitionTextItem.vue'
 
@@ -135,6 +138,7 @@ interface Data {
     isRequireLogin: boolean
     showListBox: boolean
 }
+
 const data = reactive<Data>({
     titleTop: 0,
     titleRight: 0,
@@ -145,7 +149,7 @@ const data = reactive<Data>({
     showListBox: false
 })
 
-const formatTime = computed(()=>(time:number)=>{
+const formatTime = computed(() => (time: number) => {
     return agoTime(time)
 })
 
@@ -167,7 +171,6 @@ onMounted(async () => {
     // #endif
 
 
-
     // #ifdef MP-WEIXIN
     // 获取系统状态栏高度
     data.sBarHeight = uni.getSystemInfoSync().statusBarHeight!
@@ -177,7 +180,6 @@ onMounted(async () => {
     // 计算顶部右侧偏移量
     data.titleRight = width + 8
     // #endif
-
 
 
     // #ifdef APP-PLUS || H5
@@ -192,11 +194,11 @@ onMounted(async () => {
 })
 
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 
-onLoad((option:any) => {
+onLoad((option: any) => {
     // PlatformManage.isRequireLogin().then((isRequireLogin) => {
     //     getdiscussionList({},isRequireLogin).then((res:any) => {
     //         data.isRequireLogin = isRequireLogin
@@ -205,67 +207,68 @@ onLoad((option:any) => {
     //     }).catch((err:any) => {})
     // })
 })
-onShow(()=>{
+onShow(() => {
     // data.showListBox = true;
     (paging.value as any).reload()
 
 })
-onHide(()=>{
+onHide(() => {
     // data.showListBox = false;
 })
 
 const paging = ref(null)
-const queryList = async (pageNumber:number, pageSize:number)=>{
+const queryList = async (pageNumber: number, pageSize: number) => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
 
         if (pageNumber == 1) {
-            getdiscussionList({},isRequireLogin).then((res:any) => {
+            getdiscussionList({}, isRequireLogin).then((res: any) => {
                 data.isRequireLogin = isRequireLogin
                 data.partitionList = res
-                console.log('data.partitionList',data.partitionList);
-            }).catch((err:any) => {})
+                console.log('data.partitionList', data.partitionList)
+            }).catch((err: any) => {
+            })
         }
 
-        data.showListBox = false;
+        data.showListBox = false
 
         discussionContentList({
-            query:{},
+            query: {},
             pageNumber,
-            pageSize,
-        },isRequireLogin).then((res:any) => {
+            pageSize
+        }, isRequireLogin).then((res: any) => {
             (paging.value as any).complete(res.data)
-            data.showListBox = true;
+            data.showListBox = true
 
-        }).catch((err:any) => {
+        }).catch((err: any) => {
             (paging.value as any).complete([])
-        }).finally(()=>{
-            console.log('加载中.....');
+        }).finally(() => {
+            console.log('加载中.....')
         })
     })
-    
+
 }
 
-const partitionDetail = (item:any) => {
+const partitionDetail = (item: any) => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
             bcNotify.value.show('请先登录')
-            setTimeout(()=>{
+            setTimeout(() => {
                 gotoLogin({})
-            },1000)
+            }, 1000)
             return
         }
-        gotodiscussListsonPage({discussionId:item.id, discussionName:item.name})
-        
+        gotodiscussListsonPage({ discussionId: item.id, discussionName: item.name })
+
     })
 }
 
-const toDetail = (item:any) => {
+const toDetail = (item: any) => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
             bcNotify.value.show('请先登录')
-            setTimeout(()=>{
+            setTimeout(() => {
                 gotoLogin({})
-            },1000)
+            }, 1000)
             return
         }
         gotoarticledetails({ id: item.id })
@@ -280,7 +283,7 @@ const goback = () => {
         gotoserviceIndexPage(true)
         return
     }
-    uni.navigateBack();
+    uni.navigateBack()
 }
 
 
@@ -311,32 +314,32 @@ const sharePage = () => {
 
 // 微信小程序分享
 //#ifdef MP-WEIXIN
-onShareAppMessage((res:any)=>{
-    console.log('小程序分享');
-    
+onShareAppMessage((res: any) => {
+    console.log('小程序分享')
+
     return {
         title: '讨论区',
-        imageUrl : '',
-        desc : '讨论区内页',
-        path: `/Create/pages/discussPage/discussListPage`,
+        imageUrl: '',
+        desc: '讨论区内页',
+        path: `/Create/pages/discussPage/discussListPage`
     }
 })
 //#endif
 
 
-defineExpose({
-})
+defineExpose({})
 
 </script>
 
 <style lang="scss" scoped>
-.navbar_box{
+.navbar_box {
     // #ifdef APP-PLUS || H5
     padding-bottom: 12rpx;
     // #endif
 
     margin-bottom: 24rpx;
-    .top_box{
+
+    .top_box {
 
         padding: 10rpx;
 
@@ -348,29 +351,33 @@ defineExpose({
 
         // #ifdef APP-PLUS || H5
         width: 100%;
-        height: auto!important;
+        height: auto !important;
         // #endif
-        .title_text{
+        .title_text {
             font-weight: 500;
             font-size: 34rpx;
             color: #333333;
             margin-left: 16rpx;
         }
     }
-    .back_icon{
+
+    .back_icon {
         margin-right: 20rpx;
         display: flex;
         align-items: center;
     }
-    .page_share{
+
+    .page_share {
         width: 48rpx;
         height: 48rpx;
         position: relative;
-        .share_img{
+
+        .share_img {
             width: 100%;
             height: 100%;
         }
-        button{
+
+        button {
             position: absolute;
             top: 0;
             right: 0;
@@ -380,43 +387,50 @@ defineExpose({
             z-index: 30;
         }
     }
-    
+
 
 }
-.partition_box{
+
+.partition_box {
     padding: 16rpx 24rpx;
     box-sizing: border-box;
     display: grid;
     grid-gap: 22rpx;
     grid-template-columns: auto auto;
-    .partition_item{
+
+    .partition_item {
         padding: 28rpx 24rpx;
         box-sizing: border-box;
         background: #FFFFFF;
         border-radius: 12rpx;
         display: flex;
         align-items: center;
-        .partition_img{
+
+        .partition_img {
             width: 108rpx;
             height: 108rpx;
             margin-right: 16rpx;
         }
-        .partition_text{
+
+        .partition_text {
             display: flex;
             flex-direction: column;
-            .partition_title{
+
+            .partition_title {
                 font-weight: 500;
                 font-size: 30rpx;
                 color: #333333;
                 margin-bottom: 4rpx;
             }
-            .partition_desc{
+
+            .partition_desc {
                 font-weight: 400;
                 font-size: 22rpx;
                 color: #666666;
                 margin-bottom: 8rpx;
             }
-            .partition_number{
+
+            .partition_number {
                 font-weight: 400;
                 font-size: 22rpx;
                 color: #999999;
@@ -424,54 +438,65 @@ defineExpose({
         }
     }
 }
-.page_title{
+
+.page_title {
     font-weight: 500;
     font-size: 30rpx;
     color: #333333;
     padding: 14rpx 36rpx;
 }
-.content_box{
+
+.content_box {
     padding: 0rpx 24rpx;
     box-sizing: border-box;
-    .content_list{
+
+    .content_list {
         padding: 30rpx;
         box-sizing: border-box;
         background: #FFFFFF;
         border-radius: 24rpx;
-        .content_List_item{
+
+        .content_List_item {
             padding-bottom: 30rpx;
             margin-bottom: 30rpx;
             border-bottom: 2rpx solid #F2F2F2;
-            .item_top_box{
+
+            .item_top_box {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 margin-bottom: 30rpx;
-                .item_top_left{
+
+                .item_top_left {
                     display: flex;
                     align-items: center;
-                    .type_img{
+
+                    .type_img {
                         width: 80rpx;
                         height: 80rpx;
                         margin-right: 16rpx;
                     }
-                    .type_text{
-                        .type_title{
+
+                    .type_text {
+                        .type_title {
                             font-size: 28rpx;
                             font-weight: 500;
                             color: #333333;
                             margin-bottom: 6rpx;
                         }
-                        .type_uptext{
+
+                        .type_uptext {
                             display: flex;
                             align-items: center;
                             font-weight: 400;
                             font-size: 24rpx;
                             color: #666666;
-                            .up_time{
+
+                            .up_time {
                                 margin-right: 16rpx;
                             }
-                            .up_author{
+
+                            .up_author {
                                 width: 280rpx;
                                 white-space: nowrap; /*强制一行内显示*/
                                 overflow: hidden; /*溢出隐藏*/
@@ -480,7 +505,8 @@ defineExpose({
                         }
                     }
                 }
-                .join_btn{
+
+                .join_btn {
                     display: flex;
                     align-items: center;
                     padding: 8rpx 22rpx;
@@ -499,7 +525,7 @@ defineExpose({
 
 </style>
 <style>
-page{
+page {
     background: #F8F8F8;
 }
 </style>

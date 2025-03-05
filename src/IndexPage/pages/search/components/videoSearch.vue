@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { gotoArticledetails } from '@/route/plateform-routes' // 文章详情
+import { gotoArticledetails } from '@/routes/plateform-routes' // 文章详情
 import { getAssetsPic } from '@/common/setPicture.js'
 export default {
     naem: 'videoSearch',

@@ -1,15 +1,15 @@
 <template>
     <view class="container">
         <z-paging
-		ref="paging"
-		:auto="false"
-		:refresher-enabled="false"
-        @scroll="pagingScroll"
-		>
+              ref="paging"
+              :auto="false"
+              :refresher-enabled="false"
+              @scroll="pagingScroll"
+        >
             <template #top>
                 <view id="pageTop">
                     <pageTopbg :zIndex="-1"></pageTopbg>
-                    <bc-page-navbar :title="' '" >
+                    <bc-page-navbar :title="' '">
                         <template #back>
                             <view @click="goback">
                                 <TnIcon name="left" size="38" :bold="true"/>
@@ -23,9 +23,9 @@
                     <view class="author_box">
                         <view class="author_avatar_box" @click="tobloggerPage">
                             <image
-                                class="avatar_img"
-                                :src="data.articledetailsObj.accountThumb"
-                                mode="scaleToFill"
+                                  class="avatar_img"
+                                  :src="data.articledetailsObj.accountThumb"
+                                  mode="scaleToFill"
                             />
                             <view class="author_name_box">
                                 <view class="author_name">{{ data.articledetailsObj.accountName }}</view>
@@ -34,7 +34,7 @@
                         </view>
                         <template v-if="data.articledetailsObj.isUser != 1">
                             <view class="follow_btn_box" v-if="data.articledetailsObj.isFans != 1" @click="Subscribe">
-                                <TnIcon name="add" />
+                                <TnIcon name="add"/>
                                 <view class="follow_btn">关注</view>
                             </view>
                             <view class="del_follow_btn" v-else @click="Subscribe">
@@ -66,28 +66,32 @@
                         <view class="voicePlayBox" :class="{ 'isFixedVoice': data.showFixedVoiceBox }">
                             <view class="voice_left_box">
                                 <image
-                                    class="voice_cover"
-                                    :src="data.articledetailsObj.cover"
-                                    mode="aspectFill"
+                                      class="voice_cover"
+                                      :src="data.articledetailsObj.cover"
+                                      mode="aspectFill"
                                 />
                                 <view class="voice_title" v-if="data.maxsliderValue <= 0">听全文</view>
-                                <view class="voice_title" v-else>听全文{{ '·约' + Math.ceil(data.maxsliderValue / 60) + '分钟' }}</view>
+                                <view class="voice_title" v-else>
+                                    听全文{{ '·约' + Math.ceil(data.maxsliderValue / 60) + '分钟' }}
+                                </view>
                             </view>
                             <view class="voice_right_box" @click="changePlay">
                                 <view class="play_number" v-if="!(data.maxsliderValue <= 0)">
                                     <view class="slider_number">
-                                        <TnCountDown :time="data.sliderValue" separator-mode="en" :auto-start="false" text-color="#999999" :show-hour="false" />
+                                        <TnCountDown :time="data.sliderValue" separator-mode="en" :auto-start="false"
+                                                     text-color="#999999" :show-hour="false"/>
                                     </view>
                                     <view class="separate_text">/</view>
                                     <view class="slider_number">
-                                        <TnCountDown :time="data.maxsliderValue" separator-mode="en" :auto-start="false" text-color="#999999" :show-hour="false"/>
+                                        <TnCountDown :time="data.maxsliderValue" separator-mode="en" :auto-start="false"
+                                                     text-color="#999999" :show-hour="false"/>
                                     </view>
                                 </view>
                                 <view class="play_box">
                                     <image
-                                        class="play_icon"
-                                        :src="getAssetsUrl(data.voiceIsPlay ? '/leyou/video/voiceplay_icon.svg' : '/leyou/video/voicepause_icon.svg')"
-                                        mode="scaleToFill"
+                                          class="play_icon"
+                                          :src="getAssetsUrl(data.voiceIsPlay ? '/leyou/video/voiceplay_icon.svg' : '/leyou/video/voicepause_icon.svg')"
+                                          mode="scaleToFill"
                                     />
                                 </view>
 
@@ -99,17 +103,18 @@
 
                     <!-- 富文本类型 -->
                     <!-- <template v-if="data.articledetailsObj.type == 1"> -->
-                        <view class="article_title" v-if="data.articledetailsObj.type == 1 || data.articledetailsObj.type == 3">
-                            {{ data.articledetailsObj.title }}
-                        </view>
-                        <view class="article_content">
-                            <!-- <view v-html="data.articledetailsObj.detail"></view> -->
-                            <mpHtml
-                            :content="data.articledetailsObj.detail"
-                            :tag-style="data.pStyle"
-                            />
+                    <view class="article_title"
+                          v-if="data.articledetailsObj.type == 1 || data.articledetailsObj.type == 3">
+                        {{ data.articledetailsObj.title }}
+                    </view>
+                    <view class="article_content">
+                        <!-- <view v-html="data.articledetailsObj.detail"></view> -->
+                        <mpHtml
+                              :content="data.articledetailsObj.detail"
+                              :tag-style="data.pStyle"
+                        />
 
-                        </view>
+                    </view>
                     <!-- </template> -->
 
                     <!-- 图文类型 -->
@@ -117,19 +122,19 @@
                         <view class="img_text_content">
                             <view class="swiper_box">
                                 <swiper
-                                    class="swiper"
-                                    circular
-                                    :autoplay="true"
-                                    :interval="5000"
-                                    :duration="500"
-                                    @change="swiperchang"
+                                      class="swiper"
+                                      circular
+                                      :autoplay="true"
+                                      :interval="5000"
+                                      :duration="500"
+                                      @change="swiperchang"
                                 >
                                     <swiper-item v-for="(item,index) in data.articledetailsObj.images" :key="index">
                                         <image
-                                            class="swiper_img"
-                                            :src="item"
-                                            mode="aspectFill"
-                                            @click="preImage(index,data.articledetailsObj.images)"
+                                              class="swiper_img"
+                                              :src="item"
+                                              mode="aspectFill"
+                                              @click="preImage(index,data.articledetailsObj.images)"
                                         />
                                     </swiper-item>
                                 </swiper>
@@ -139,7 +144,8 @@
                                     {{ data.articledetailsObj.images.length }}
                                 </view>
                             </view>
-                            <view class="article_title" v-if="data.articledetailsObj.type == 1 || data.articledetailsObj.type == 3">
+                            <view class="article_title"
+                                  v-if="data.articledetailsObj.type == 1 || data.articledetailsObj.type == 3">
                                 {{ data.articledetailsObj.title }}
                             </view>
                             <view class="article_img_text">
@@ -162,26 +168,27 @@
                         </view>
                     </view>
                 </view>
-                <view class="acricle_desc">免责声明：本内容来自保椿照护平台创作者，不代表保椿照护的观点和立场。 </view>
-                <!-- <view class="comment_box" id="commentView">
+                <view class="acricle_desc">免责声明：本内容来自保椿照护平台创作者，不代表保椿照护的观点和立场。</view>
+                <view class="comment_box" id="commentView">
                     <view class="comment_title_box">
                         <view
-                        class="comment_title"
-                        v-for="(item,index) in data.commentTopList" :key="item.id"
-                        @click="changecommentTop(index)"
-                        :class="{ 'is_Select': data.commentTopindex == index }"
+                              class="comment_title"
+                              v-for="(item,index) in data.commentTopList" :key="item.id"
+                              @click="changecommentTop(index)"
+                              :class="{ 'is_Select': data.commentTopindex == index }"
                         >
-                            <view> {{ item.name }} {{ item.number ? item.number : '--' }} </view>
+                            <view> {{ item.name }} {{ item.number ? item.number : '--' }}</view>
                             <view v-if="data.commentTopindex == index" class="select_spage"></view>
                         </view>
 
                     </view>
-                    <template v-if="(data.commentTopindex == 0 && data.comList.length == 0) || (data.commentTopindex == 1 && data.likeList.length == 0) || (data.commentTopindex == 2 && data.favoriteList.length == 0)">
-                        <view class="note_comment" >
+                    <template
+                          v-if="(data.commentTopindex == 0 && data.comList.length == 0) || (data.commentTopindex == 1 && data.likeList.length == 0) || (data.commentTopindex == 2 && data.favoriteList.length == 0)">
+                        <view class="note_comment">
                             <image
-                                class="note_comment_img"
-                                :src="getAssetsUrl('/empty/empty_icon_data.png')"
-                                mode="scaleToFill"
+                                  class="note_comment_img"
+                                  :src="getAssetsUrl('/empty/empty_icon_data.png')"
+                                  mode="scaleToFill"
                             />
                             <view class="note_comment_text">暂无数据</view>
                         </view>
@@ -189,17 +196,20 @@
                     <template v-else>
 
                         <template v-if="data.commentTopindex == 0">
-                            <view class="comment_item"  @touchstart="startTime(item,1)" @touchend="endTime" v-for="(item,index) in data.comList" :key="item.id">
-                                <commentItem :commentInfo="item" :commentIndex="index" @showMoreComment="showComment(item,index)" @delcomment="todeleteComment" @sonlikeup="likeup" @sonlikebelow="likebelow"></commentItem>
+                            <view class="comment_item" @touchstart="startTime(item,1)" @touchend="endTime"
+                                  v-for="(item,index) in data.comList" :key="item.id">
+                                <commentItem :commentInfo="item" :commentIndex="index"
+                                             @showMoreComment="showComment(item,index)" @delcomment="todeleteComment"
+                                             @sonlikeup="likeup" @sonlikebelow="likebelow"></commentItem>
                             </view>
                         </template>
                         <template v-if="data.commentTopindex == 1">
                             <view class="user_List">
                                 <view class="user_item" v-for="(item,index) in data.likeList" :key="item.id">
                                     <image
-                                        class="user_img"
-                                        :src="item.thumb"
-                                        mode="scaleToFill"
+                                          class="user_img"
+                                          :src="item.thumb"
+                                          mode="scaleToFill"
                                     />
                                     <view class="user_name">{{ item.name }}</view>
                                     <view class="user_utcModified">{{ formatTime(item.utcModified) }}</view>
@@ -210,9 +220,9 @@
                             <view class="user_List">
                                 <view class="user_item" v-for="(item,index) in data.favoriteList" :key="item.id">
                                     <image
-                                        class="user_img"
-                                        :src="item.thumb"
-                                        mode="scaleToFill"
+                                          class="user_img"
+                                          :src="item.thumb"
+                                          mode="scaleToFill"
                                     />
                                     <view class="user_name">{{ item.name }}</view>
                                     <view class="user_utcModified">{{ formatTime(item.utcModified) }}</view>
@@ -222,7 +232,7 @@
 
                     </template>
 
-                </view> -->
+                </view>
 
                 <!-- <view class="spag_box" :style="{ 'height': data.bottomBox + 'px' }"></view> -->
             </view>
@@ -250,14 +260,14 @@
                 </view> -->
 
                 <view
-                v-if="data.showBottom"
-                class="bottom_box"
-                :style="{
+                      v-if="data.showBottom"
+                      class="bottom_box"
+                      :style="{
                     'z-index': data.crown ? 10080 : 0
                 }"
-                id="bottomBox"
+                      id="bottomBox"
                 >
-                <!--  v-if="data.showtextbtn" -->
+                    <!--  v-if="data.showtextbtn" -->
 
                     <!-- <emojiItem @upEmojiItem="upEmojiItem"></emojiItem> -->
 
@@ -271,19 +281,19 @@
                                 <!-- @blur="closekeyboard" -->
 
                                 <textarea
-                                    class="bottom_inp"
-                                    :auto-height="true"
-                                    :focus="data.showtextbtn"
-                                    :placeholder="data.placeholderText"
-                                    placeholder-style="color: #B5B5B5;line-height: 38rpx;"
-                                    v-model="data.textMsg"
-                                    @focus="openkeyboard"
-                                    @blur="closekeyboard"
-                                    :show-confirm-bar="false"
-                                    cursor-spacing="20"
-                                    :adjust-position="false"
-                                    :auto-blur="true"
-                                    v-if="data.showtextbtn"/>
+                                      class="bottom_inp"
+                                      :auto-height="true"
+                                      :focus="data.showtextbtn"
+                                      :placeholder="data.placeholderText"
+                                      placeholder-style="color: #B5B5B5;line-height: 38rpx;"
+                                      v-model="data.textMsg"
+                                      @focus="openkeyboard"
+                                      @blur="closekeyboard"
+                                      :show-confirm-bar="false"
+                                      cursor-spacing="20"
+                                      :adjust-position="false"
+                                      :auto-blur="true"
+                                      v-if="data.showtextbtn"/>
 
                                 <view class="not_bottom_inp" v-else>
                                     <view class="not_bottom_inp_text" v-if="data.textMsg == ''">赶快加入评论吧~</view>
@@ -291,45 +301,45 @@
                                 </view>
 
                                 <image
-                                    v-if="data.showtextbtn"
-                                    class="inp_icon"
-                                    :src="getAssetsUrl('/leyou/create/emoji_icon.svg')"
-                                    mode="scaleToFill"
-                                    @click.stop="showEmoBox"
+                                      v-if="data.showtextbtn"
+                                      class="inp_icon"
+                                      :src="getAssetsUrl('/leyou/create/emoji_icon.svg')"
+                                      mode="scaleToFill"
+                                      @click.stop="showEmoBox"
                                 />
                             </view>
                             <!--  v-if="!data.iskeyboard" -->
                             <view class="icon_list" v-if="!data.iskeyboard">
                                 <view class="icon_item" @click="tocomment">
                                     <image
-                                        class="icon_img"
+                                          class="icon_img"
 
-                                        mode="scaleToFill"
+                                          mode="scaleToFill"
                                     />
                                     <view class="icon_text"></view>
                                 </view>
                                 <view class="icon_item" @click="tocollect">
                                     <image
-                                        class="icon_img"
-                                        :src="data.articledetailsObj.isFavorite == 1 ? getAssetsUrl('/channel/collect_highlight.svg') : getAssetsUrl('/channel/collect.svg')"
-                                        mode="scaleToFill"
+                                          class="icon_img"
+                                          :src="data.articledetailsObj.isFavorite == 1 ? getAssetsUrl('/channel/collect_highlight.svg') : getAssetsUrl('/channel/collect.svg')"
+                                          mode="scaleToFill"
                                     />
                                     <view class="icon_text">收藏</view>
                                 </view>
                                 <view class="icon_item" @click="tolike">
                                     <image
-                                        class="icon_img"
-                                        :src="data.articledetailsObj.isLike == 1 ? getAssetsUrl('/channel/like_highlight.svg') : getAssetsUrl('/channel/like.svg')"
-                                        mode="scaleToFill"
+                                          class="icon_img"
+                                          :src="data.articledetailsObj.isLike == 1 ? getAssetsUrl('/channel/like_highlight.svg') : getAssetsUrl('/channel/like.svg')"
+                                          mode="scaleToFill"
                                     />
                                     <view class="icon_text">点赞</view>
                                 </view>
                                 <!-- @click="share" -->
-                                <view class="icon_item" @click="share" style="margin-right: 0rpx;" >
+                                <view class="icon_item" @click="share" style="margin-right: 0rpx;">
                                     <image
-                                        class="icon_img"
-                                        :src="getAssetsUrl('/channel/share.svg')"
-                                        mode="scaleToFill"
+                                          class="icon_img"
+                                          :src="getAssetsUrl('/channel/share.svg')"
+                                          mode="scaleToFill"
                                     />
                                     <view class="icon_text">分享</view>
                                 </view>
@@ -351,128 +361,136 @@
 
             <TnPopup v-model="data.show" open-direction="bottom" :zIndex="10060">
                 <view class="action_box" :style="{ 'padding-bottom': (data.bottomBox + 10) + 'px' }">
-                <view class="action_top" @click="closeAction">
-                    <view class="action_top_title">{{data.Soncomment.length}}条回复</view>
-                    <image
-                        class="action_top_title_img"
-                        :src="getAssetsUrl('/channel/out.svg')"
-                        mode="scaleToFill"
-                    />
-                </view>
-                <view class="Landlord">
-                    <image
-                        class="Landlord_img"
-                        :src="data.soncommentObj.userThumb"
-                        mode="scaleToFill"
-                    />
-                    <view class="Landlord_text_box">
-                        <view class="Landlord_top_box">
-                            <view class="Landlord_top_name_box">
-                                <view class="Landlord_top_name">{{data.soncommentObj.userName}}</view>
-                                <view class="isLandlord" >楼主</view>
-                                <view class="isLandlord" v-if="data.soncommentObj.isUser == 1 ">我</view>
-                                <view class="isLandlord" v-if="data.soncommentObj.isAuthor == 1 ">作者</view>
-                            </view>
-                            <view class="Landlord_top_icon">
-                                <view class="like_up" @click="likeup(data.soncommentObj.id,data.soncommentObj.isLike,1,true)">
-                                    <image
-                                        class="like_up_img"
-                                        :src="data.soncommentObj.isLike == 1 ? getAssetsUrl('/channel/like_highlight.svg') : getAssetsUrl('/channel/like.svg')"
-                                        mode="scaleToFill"
-                                    />
-                                    <text class="like_text">{{data.soncommentObj.cntLike}}</text>
+                    <view class="action_top" @click="closeAction">
+                        <view class="action_top_title">{{ data.Soncomment.length }}条回复</view>
+                        <image
+                              class="action_top_title_img"
+                              :src="getAssetsUrl('/channel/out.svg')"
+                              mode="scaleToFill"
+                        />
+                    </view>
+                    <view class="Landlord">
+                        <image
+                              class="Landlord_img"
+                              :src="data.soncommentObj.userThumb"
+                              mode="scaleToFill"
+                        />
+                        <view class="Landlord_text_box">
+                            <view class="Landlord_top_box">
+                                <view class="Landlord_top_name_box">
+                                    <view class="Landlord_top_name">{{ data.soncommentObj.userName }}</view>
+                                    <view class="isLandlord">楼主</view>
+                                    <view class="isLandlord" v-if="data.soncommentObj.isUser == 1 ">我</view>
+                                    <view class="isLandlord" v-if="data.soncommentObj.isAuthor == 1 ">作者</view>
                                 </view>
-                                <view class="like_below" @click="likebelow(data.soncommentObj.id,data.soncommentObj.isStep,1)" v-if="false">
-                                    <image
-                                        class="like_below_img"
-                                        :src="data.soncommentObj.isStep == 1 ? getAssetsUrl('/channel/like_highlight.svg') : getAssetsUrl('/channel/like.svg')"
-                                        mode="scaleToFill"
-                                    />
-                                    <text class="like_text">{{data.soncommentObj.cntStep}}</text>
+                                <view class="Landlord_top_icon">
+                                    <view class="like_up"
+                                          @click="likeup(data.soncommentObj.id,data.soncommentObj.isLike,1,true)">
+                                        <image
+                                              class="like_up_img"
+                                              :src="data.soncommentObj.isLike == 1 ? getAssetsUrl('/channel/like_highlight.svg') : getAssetsUrl('/channel/like.svg')"
+                                              mode="scaleToFill"
+                                        />
+                                        <text class="like_text">{{ data.soncommentObj.cntLike }}</text>
+                                    </view>
+                                    <view class="like_below"
+                                          @click="likebelow(data.soncommentObj.id,data.soncommentObj.isStep,1)"
+                                          v-if="false">
+                                        <image
+                                              class="like_below_img"
+                                              :src="data.soncommentObj.isStep == 1 ? getAssetsUrl('/channel/like_highlight.svg') : getAssetsUrl('/channel/like.svg')"
+                                              mode="scaleToFill"
+                                        />
+                                        <text class="like_text">{{ data.soncommentObj.cntStep }}</text>
+                                    </view>
                                 </view>
                             </view>
-                        </view>
-                        <view class="Landlord_content">
-                            {{data.soncommentObj.comment}}
-                        </view>
-                        <view class="Landlord_bottom">
-                            <view class="Landlord_bottom_comment">
-                                {{ formatTime(data.soncommentObj.utcCreated) }} · {{ '广州' }}
+                            <view class="Landlord_content">
+                                {{ data.soncommentObj.comment }}
                             </view>
-                            <view class="Landlord_bottom_del" v-if="data.soncommentObj.isUser == 1" @click="todeleteComment(data.soncommentObj.id,1)">
-                                删除
+                            <view class="Landlord_bottom">
+                                <view class="Landlord_bottom_comment">
+                                    {{ formatTime(data.soncommentObj.utcCreated) }} · {{ '广州' }}
+                                </view>
+                                <view class="Landlord_bottom_del" v-if="data.soncommentObj.isUser == 1"
+                                      @click="todeleteComment(data.soncommentObj.id,1)">
+                                    删除
+                                </view>
                             </view>
                         </view>
                     </view>
-                </view>
-                <view class="all_son_comment">全部回复</view>
-                <scroll-view :scroll-y="true" >
-                    <view class="son_comment_scroll">
+                    <view class="all_son_comment">全部回复</view>
+                    <scroll-view :scroll-y="true">
+                        <view class="son_comment_scroll">
 
-                        <view class="son_comment_item" @touchstart="startTime(item,0)" @touchend="endTime" :class="{ 'not_bottom': index + 1 == data.Soncomment.length }" v-for="(item,index) in data.Soncomment" :key="item.commentId">
-                            <image
-                                class="son_comment_thumb"
-                                :src="item.userThumb"
-                                mode="scaleToFill"
-                            />
-                            <view class="son_comment_text_box">
-                                <view class="son_comment_name_box">
-                                    <view class="son_comment_nameandtag">
-                                        <view class="son_comment_name">{{ item.userName }}</view>
-                                        <view class="son_comment_tag" v-if="item.isPostmaster == 1">楼主</view>
-                                        <view class="son_comment_tag" v-if="item.isUser == 1">我</view>
-                                        <view class="son_comment_tag" v-if="item.isAuthor == 1">作者</view>
-                                    </view>
-                                    <view class="son_comment_icon">
-                                        <view class="like_up" @click="likeup(item.commentId,item.isLike,0)">
-                                            <image
-                                                class="like_up_img"
-                                                :src="item.isLike == 1 ? getAssetsUrl('/channel/like_highlight.svg') : getAssetsUrl('/channel/like.svg')"
-                                                mode="scaleToFill"
-                                            />
-                                            <text class="like_text">{{item.cntLike}}</text>
+                            <view class="son_comment_item" @touchstart="startTime(item,0)" @touchend="endTime"
+                                  :class="{ 'not_bottom': index + 1 == data.Soncomment.length }"
+                                  v-for="(item,index) in data.Soncomment" :key="item.commentId">
+                                <image
+                                      class="son_comment_thumb"
+                                      :src="item.userThumb"
+                                      mode="scaleToFill"
+                                />
+                                <view class="son_comment_text_box">
+                                    <view class="son_comment_name_box">
+                                        <view class="son_comment_nameandtag">
+                                            <view class="son_comment_name">{{ item.userName }}</view>
+                                            <view class="son_comment_tag" v-if="item.isPostmaster == 1">楼主</view>
+                                            <view class="son_comment_tag" v-if="item.isUser == 1">我</view>
+                                            <view class="son_comment_tag" v-if="item.isAuthor == 1">作者</view>
                                         </view>
-                                        <view class="like_below" @click="likebelow(item.commentId,item.isStep,0)" v-if="false">
-                                            <image
-                                                class="like_below_img"
-                                                :src="item.isStep == 1 ? getAssetsUrl('/channel/like_highlight.svg') : getAssetsUrl('/channel/like.svg')"
-                                                mode="scaleToFill"
-                                            />
-                                            <text class="like_text">{{item.cntStep}}</text>
+                                        <view class="son_comment_icon">
+                                            <view class="like_up" @click="likeup(item.commentId,item.isLike,0)">
+                                                <image
+                                                      class="like_up_img"
+                                                      :src="item.isLike == 1 ? getAssetsUrl('/channel/like_highlight.svg') : getAssetsUrl('/channel/like.svg')"
+                                                      mode="scaleToFill"
+                                                />
+                                                <text class="like_text">{{ item.cntLike }}</text>
+                                            </view>
+                                            <view class="like_below" @click="likebelow(item.commentId,item.isStep,0)"
+                                                  v-if="false">
+                                                <image
+                                                      class="like_below_img"
+                                                      :src="item.isStep == 1 ? getAssetsUrl('/channel/like_highlight.svg') : getAssetsUrl('/channel/like.svg')"
+                                                      mode="scaleToFill"
+                                                />
+                                                <text class="like_text">{{ item.cntStep }}</text>
+                                            </view>
                                         </view>
                                     </view>
-                                </view>
-                                <view class="quotecomment" v-if="item.quoteComment && item.quoteComment != ''">
-                                    {{ `@${item.replyUser}:` + item.quoteComment }}
-                                </view>
-                                <view class="son_comment_content">
-                                    {{item.comment}}
-                                </view>
-                                <view class="son_comment_bottom">
-                                    <view class="son_comment_bottom_box">
-                                        <view class="son_comment_reply" @click="sonQuotereply(item,index)">
-                                            <view class="son_comment_reply_text">回复</view>
-                                            <TnIcon name="right" size="20rpx" />
+                                    <view class="quotecomment" v-if="item.quoteComment && item.quoteComment != ''">
+                                        {{ `@${item.replyUser}:` + item.quoteComment }}
+                                    </view>
+                                    <view class="son_comment_content">
+                                        {{ item.comment }}
+                                    </view>
+                                    <view class="son_comment_bottom">
+                                        <view class="son_comment_bottom_box">
+                                            <view class="son_comment_reply" @click="sonQuotereply(item,index)">
+                                                <view class="son_comment_reply_text">回复</view>
+                                                <TnIcon name="right" size="20rpx"/>
 
+                                            </view>
+                                            <view class="son_comment_time">
+                                                {{ formatTime(item.utcCreated) }}
+                                                ·
+                                                {{ '广州' }}
+                                            </view>
                                         </view>
-                                        <view class="son_comment_time">
-                                            {{ formatTime(item.utcCreated) }}
-                                            ·
-                                            {{ '广州' }}
+                                        <view class="son_comment_del" v-if="item.isUser == 1"
+                                              @click="todeletesonComment(item.commentId,0)">
+                                            删除
                                         </view>
-                                    </view>
-                                    <view class="son_comment_del" v-if="item.isUser == 1" @click="todeletesonComment(item.commentId,0)">
-                                        删除
                                     </view>
                                 </view>
                             </view>
+                            <view class="son_comment_spage"></view>
                         </view>
-                        <view class="son_comment_spage"></view>
-                    </view>
 
-                </scroll-view>
-		        <BCNotify ref="sonbcNotify"></BCNotify>
-            </view>
+                    </scroll-view>
+                    <BCNotify ref="sonbcNotify"></BCNotify>
+                </view>
             </TnPopup>
 
             <TnPopup v-model="data.showTouch" open-direction="bottom" :zIndex="10066" radius="32" @close="cancelPopup">
@@ -497,18 +515,19 @@
                 <BCNotify ref="TouchbcNotify"></BCNotify>
 
             </TnPopup>
-		    <BCNotify ref="bcNotify"></BCNotify>
+            <BCNotify ref="bcNotify"></BCNotify>
             <shareView
-            ref="shareBox"
-            @reportFun="reportFun"
-            @shareFun="shareFun"
-            @sharePage="sharePage"
-            @sharePoster="sharePoster"
-            :status="data.status"
-            :imgUrl="data.shareimgUrl"
-            :showReport="data.articledetailsObj.isUser == 1 ? false : true"
+                  ref="shareBox"
+                  @reportFun="reportFun"
+                  @shareFun="shareFun"
+                  @sharePage="sharePage"
+                  @sharePoster="sharePoster"
+                  :status="data.status"
+                  :imgUrl="data.shareimgUrl"
+                  :showReport="data.articledetailsObj.isUser == 1 ? false : true"
             ></shareView>
-            <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="254" height="344" style="width:254px; height:344px"></canvas>
+            <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="254" height="344"
+                    style="width:254px; height:344px"></canvas>
 
             <TnOverlay :show="data.showtextbtn" :duration="250" :opacity="0" :zIndex="10070" @click="hiddeOverlay"/>
 
@@ -517,8 +536,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted, defineExpose, nextTick, getCurrentInstance } from 'vue'
-import { onShow, onHide } from '@dcloudio/uni-app'
+import { computed, defineExpose, getCurrentInstance, onMounted, reactive, ref } from 'vue'
+import { onHide, onShow } from '@dcloudio/uni-app'
 
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
@@ -529,30 +548,29 @@ import pageTopbg from '@/components/page-topbg/page-topbg.vue'
 import commentItem from './commentItem.vue'
 
 import {
-    unCommentLike,
-    commentLike,
     articleaddView,
-    viewTime,
-    retransmission,
-    getnewContentDetail,
+    commentLike,
+    deletenewComment,
+    getaudioList,
     getnewcommentList,
     getnewcommentRelyList,
+    getnewContentDetail,
+    getnewLike,
+    newfavorite,
+    newfollow,
     postnewrecover,
     postnewreview,
-    deletenewComment,
-    newfavorite,
+    retransmission,
+    unCommentLike,
     unnewFavorite,
-    getnewLike,
-    unnewLike,
     unnewfollow,
-    newfollow,
-    getaudioList
-
+    unnewLike,
+    viewTime
 } from '@/api/create-api'
-import { likeLists, favoriteList } from '@/api/user-api'
+import { favoriteList, getQrcode, likeLists } from '@/api/user-api'
 import { agoTime } from '@/common/formatTime'
 import { getAssetsPic } from '@/common/setPicture'
-import { gotoauthor, gotoarticledetailVoice, gotoReportPage } from '@/routes/create-routes'
+import { gotoarticledetailVoice, gotoauthor, gotoReportPage } from '@/routes/create-routes'
 import { gotoIndex } from "@/routes/public-routes"
 
 // import shareView from '@/pagesCnt/components/shareView/shareView.vue'
@@ -560,68 +578,62 @@ import shareView from '@/pagesCnt/components/shareorreportView/shareorreportView
 
 import BCNotify from '@/components/notify/index.vue'
 import { drawBGIMG } from '@/libs/canvas-tools'
-import { getQrcode } from "@/api/user-api"
 
 import createCollectAndReport from "@/utils/collection"
-import { Debounce } from '@/libs/antivibthrot'
 
 import mpHtml from '@/pagesCnt/uni_modules/mp-html/components/mp-html/mp-html.vue'
 import { PlatformManage } from "@bc/sys"
-import { getVoiceFile, queryVoice } from '@/common/getvoiceToken'
-
-import { addWEventsListener } from '@/events/event-registry'
-import { CareEvents } from '@/events/care-events'
 
 import shinnXEmoji from '@/uni_modules/shinn-xEmoji/components/shinn-xEmoji/shinn-xEmoji.vue'
-import emojiItem from '@/pagesCnt/components/emojiItem/emojiItem.vue'
 
 interface Props {
-    contentId:string,
+    contentId: string,
     commentId: string,
     replyId: string,
     isIm: number,
     type: string
 }
+
 const props = defineProps<Props>()
 
 interface Data {
-    articledetailsObj:any,
-    getpageTopH:number,
-    swiperIndex:number,
-    comList:any,
-    crown:boolean,
-    pStyle:any,
-    showtextbtn:boolean,
-    placeholderText:string,
-    textMsg:string,
-    iskeyboard:boolean,
-    isshowReply:boolean,
-    show:boolean,
-    keyboardH:number,
-    bottomBox:number,
-    soncommentObj:any,
-    Soncomment:any,
-    upusercommentId:string,
-    userId:string,
-    quoteComment:string,
-    commentId:string,
-    isQuotereply:boolean,
-    articledId:string,
-    commentIndex:number,
-    lastcomment:string,
-    commentTopList:any,
-    commentTopindex:number,
-    showBottom:boolean,
-    status:number,
-    shareimgUrl:string,
+    articledetailsObj: any,
+    getpageTopH: number,
+    swiperIndex: number,
+    comList: any,
+    crown: boolean,
+    pStyle: any,
+    showtextbtn: boolean,
+    placeholderText: string,
+    textMsg: string,
+    iskeyboard: boolean,
+    isshowReply: boolean,
+    show: boolean,
+    keyboardH: number,
+    bottomBox: number,
+    soncommentObj: any,
+    Soncomment: any,
+    upusercommentId: string,
+    userId: string,
+    quoteComment: string,
+    commentId: string,
+    isQuotereply: boolean,
+    articledId: string,
+    commentIndex: number,
+    lastcomment: string,
+    commentTopList: any,
+    commentTopindex: number,
+    showBottom: boolean,
+    status: number,
+    shareimgUrl: string,
     startlooktime: number,
     likeList: any,
     favoriteList: any,
     pageVoice: boolean
     showTouch: boolean
-    touchTitle:string
+    touchTitle: string
     storageItem: any
-    showItemdel:boolean
+    showItemdel: boolean
     isTopcomment: boolean
     voiceObj: any
     voiceIsPlay: boolean
@@ -630,6 +642,7 @@ interface Data {
     showFixedVoiceBox: boolean
     hiddenEmojiBox: boolean
 }
+
 const data = reactive<Data>({
     articledetailsObj: {},
     getpageTopH: 45,
@@ -687,10 +700,10 @@ const data = reactive<Data>({
 
 })
 
-const formatTime = computed(() => (time:number) => {
+const formatTime = computed(() => (time: number) => {
     return agoTime(time)
 })
-const getAssetsUrl = computed(() => (src:string) => {
+const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 const bcNotify = ref()
@@ -706,7 +719,8 @@ onMounted(() => {
     commentList(props.contentId)
     getpageTop()
 
-    articleaddView({ articleId: props.contentId }).then(() => {})
+    articleaddView({ articleId: props.contentId }).then(() => {
+    })
     data.startlooktime = new Date().getTime()
 
     // addWEventsListener(CareEvents.Get__Address, (res) => {
@@ -731,7 +745,7 @@ onHide(() => {
 
 })
 
-const saveSrc = (e:any) => {
+const saveSrc = (e: any) => {
     // innerAudioContext.autoplay = true;
 
     innerAudioContext.src = e[0].audioUrl
@@ -796,13 +810,11 @@ const closeVoice = () => {
 }
 
 
-
-
-const getDetails = (contentId:string) => {
+const getDetails = (contentId: string) => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         getnewContentDetail({
             id: contentId
-        }, isRequireLogin).then((res:any) => {
+        }, isRequireLogin).then((res: any) => {
             console.log('Newres', res)
             data.articledetailsObj = res
             // data.articledetailsObj.detail = data.articledetailsObj.detail.replace(/>&nbsp;</g, "><")
@@ -831,7 +843,7 @@ const getDetails = (contentId:string) => {
             if (data.articledetailsObj.isAudio == 1) {
                 getaudioList({
                     articleId: contentId
-                }).then((res:any) => {
+                }).then((res: any) => {
                     saveSrc(res)
                 })
             }
@@ -861,8 +873,7 @@ const getDetails = (contentId:string) => {
             // }
 
 
-
-        }).catch((err:any) => {
+        }).catch((err: any) => {
             console.log('errerrerr', err)
 
             data.articledetailsObj = {}
@@ -879,7 +890,7 @@ const getDetails = (contentId:string) => {
 
 }
 
-const commentList = (articleId:string) => {
+const commentList = (articleId: string) => {
     getnewcommentList({
         pageNumber: 1,
         pageSize: 1000,
@@ -890,7 +901,8 @@ const commentList = (articleId:string) => {
             happyType: 98
 
         }
-    }).then((res:any) => {
+    }).then((res: any) => {
+        console.log('评论数据', res)
         data.comList = res.data
 
         if (props.type == 'comment_reply_list') {
@@ -953,18 +965,18 @@ const query = uni.createSelectorQuery().in(instance)
 
 const getpageTop = () => {
     setTimeout(() => {
-        query.select('#bottomBox').boundingClientRect((view:any) => {
+        query.select('#bottomBox').boundingClientRect((view: any) => {
             data.bottomBox = view.height
         }).exec()
 
-        query.select('#pageTop').boundingClientRect((view:any) => { //目标位置的节点：类class或者id
+        query.select('#pageTop').boundingClientRect((view: any) => { //目标位置的节点：类class或者id
             data.getpageTopH = view.height
         }).exec()
     }, 800)
 }
 
 // 计算是否需要吸顶
-const pagingScroll = (e:any) => {
+const pagingScroll = (e: any) => {
     if (e.detail.scrollTop >= 200) {
         data.showFixedVoiceBox = true
     }
@@ -974,12 +986,12 @@ const pagingScroll = (e:any) => {
 
 }
 
-const swiperchang = (e:any) => {
+const swiperchang = (e: any) => {
     data.swiperIndex = e.detail.current + 1
 }
 
 // 图片预览
-const preImage = (current:number, urls:any) => {
+const preImage = (current: number, urls: any) => {
     uni.previewImage({
         current,
         urls
@@ -992,7 +1004,7 @@ const showtextarea = () => {
 }
 
 // 评论框获取焦点
-const openkeyboard = (event:any) => {
+const openkeyboard = (event: any) => {
     // if (data.needlogin) {
     //     data.toArticledetails(data.articledId, '请先登录')
     //     return
@@ -1014,7 +1026,6 @@ const openkeyboard = (event:any) => {
         data.keyboardH = 186
 
     }
-
 
 
     console.log('data.keyboardH', data.keyboardH)
@@ -1050,7 +1061,6 @@ const closekeyboard = () => {
         }, 500)
     }
     console.log('展开表情失去焦点')
-
 
 
 }
@@ -1140,7 +1150,7 @@ const sending = () => {
     }, 500)
 }
 
-const upEmojiItem = (text:string) => {
+const upEmojiItem = (text: string) => {
     console.log('text', text)
 
     data.textMsg = text
@@ -1150,7 +1160,7 @@ const upEmojiItem = (text:string) => {
 }
 
 // 展开更多评论
-const showComment = (item:any, index:number) => {
+const showComment = (item: any, index: number) => {
     data.show = true
 
     data.upusercommentId = item.commentId
@@ -1181,7 +1191,7 @@ const showComment = (item:any, index:number) => {
 }
 
 // 获取回复列表
-const getcommentRelyList = (commentId:string, replyId?: string) => {
+const getcommentRelyList = (commentId: string, replyId?: string) => {
 
     // commentRelyList({
     getnewcommentRelyList({
@@ -1194,13 +1204,13 @@ const getcommentRelyList = (commentId:string, replyId?: string) => {
         },
         pageNumber: 1,
         pageSize: 100
-    }).then((res:any) => {
+    }).then((res: any) => {
         data.Soncomment = res.data
     })
 }
 
 // 展开更多评论之后的引用回复拉起键盘
-const sonQuotereply = (item:any, index:number) => {
+const sonQuotereply = (item: any, index: number) => {
 
     data.showtextbtn = true
 
@@ -1229,9 +1239,8 @@ const closeAction = () => {
 }
 
 
-
 // 评论点赞
-const likeup = (id:string, isLike:number, isComment:number, isTop:boolean = false) => {
+const likeup = (id: string, isLike: number, isComment: number, isTop: boolean = false) => {
     if (isLike == 1) {
         tounCommentLike(id, 1, isComment, isTop)
     }
@@ -1240,7 +1249,7 @@ const likeup = (id:string, isLike:number, isComment:number, isTop:boolean = fals
     }
 }
 // 点踩
-const likebelow = (id:string, isStep:number, isComment:number) => {
+const likebelow = (id: string, isStep: number, isComment: number) => {
     if (isStep == 1) {
         tounCommentLike(id, 2, isComment)
     }
@@ -1250,10 +1259,10 @@ const likebelow = (id:string, isStep:number, isComment:number) => {
 }
 
 
-const tounCommentLike = (id:string, likeType:number, isComment:number, isTop:boolean = false) => {
+const tounCommentLike = (id: string, likeType: number, isComment: number, isTop: boolean = false) => {
 
     unCommentLike({
-    // unnewCommentLike({
+        // unnewCommentLike({
         id,
         likeType,
         isComment
@@ -1270,10 +1279,10 @@ const tounCommentLike = (id:string, likeType:number, isComment:number, isTop:boo
         }
     })
 }
-const tocommentLike = (id:string, likeType:number, isComment:number, isTop:boolean = false) => {
+const tocommentLike = (id: string, likeType: number, isComment: number, isTop: boolean = false) => {
 
     commentLike({
-    // newcommentLike({
+        // newcommentLike({
         id,
         likeType,
         isComment
@@ -1291,7 +1300,7 @@ const tocommentLike = (id:string, likeType:number, isComment:number, isTop:boole
     })
 }
 // 删除评论
-const todeleteComment = (id:string, isComment:number) => {
+const todeleteComment = (id: string, isComment: number) => {
 
     // deleteComment({
     deletenewComment({
@@ -1310,7 +1319,7 @@ const todeleteComment = (id:string, isComment:number) => {
         bcNotify.value.show('评论删除')
     })
 }
-const todeletesonComment = (id:string, isComment:number) => {
+const todeletesonComment = (id: string, isComment: number) => {
 
     // deleteComment({
     deletenewComment({
@@ -1325,7 +1334,7 @@ const todeletesonComment = (id:string, isComment:number) => {
 }
 
 // 回复评论
-const topostrecover = (commentId:string, replyId:string, replyUser:string, quoteComment:string, content:string, replyUserId:string) => {
+const topostrecover = (commentId: string, replyId: string, replyUser: string, quoteComment: string, content: string, replyUserId: string) => {
 
     // postrecover({
     postnewrecover({
@@ -1347,12 +1356,12 @@ const topostrecover = (commentId:string, replyId:string, replyUser:string, quote
         commentList(data.articledId)
         getcommentRelyList(data.commentId)
         sonbcNotify.value.show('回复成功')
-    }).catch((res:any) => {
+    }).catch((res: any) => {
         sonbcNotify.value.error(res.message)
     })
 }
 // 发文章评论
-const topostreview = (content:string) => {
+const topostreview = (content: string) => {
 
     // postreview({
     postnewreview({
@@ -1369,7 +1378,7 @@ const topostreview = (content:string) => {
         data.commentTopList[0].number++
 
         bcNotify.value.show('评论成功')
-    }).catch((res:any) => {
+    }).catch((res: any) => {
         bcNotify.value.error(res.message)
     })
 }
@@ -1401,7 +1410,7 @@ const tolike = () => {
 }
 
 
-const tofavorite = (articleId:string) => {
+const tofavorite = (articleId: string) => {
 
     // favorite({
     newfavorite({
@@ -1417,7 +1426,7 @@ const tofavorite = (articleId:string) => {
 
     })
 }
-const tounFavorite = (articleId:string) => {
+const tounFavorite = (articleId: string) => {
     // unFavorite({
     unnewFavorite({
         articleId: [articleId],
@@ -1434,7 +1443,7 @@ const tounFavorite = (articleId:string) => {
     })
 }
 
-const togetLike = (articleId:string) => {
+const togetLike = (articleId: string) => {
 
     // getLike({
     getnewLike({
@@ -1450,7 +1459,7 @@ const togetLike = (articleId:string) => {
     })
 }
 
-const tounLike = (articleId:string) => {
+const tounLike = (articleId: string) => {
     // unLike({
     unnewLike({
         articleIds: [articleId],
@@ -1484,7 +1493,7 @@ const Subscribe = () => {
         tofollow(data.articledetailsObj.accountId)
     }
 }
-const tofollow = (accountId:string) => {
+const tofollow = (accountId: string) => {
 
     // follow({
     newfollow({
@@ -1494,11 +1503,11 @@ const tofollow = (accountId:string) => {
     }).then(() => {
         bcNotify.value.show('关注成功')
         getDetails(data.articledId)
-    }).catch((err:any) => {
+    }).catch((err: any) => {
         bcNotify.value.error(err.message)
     })
 }
-const tounfollow = (accountId:string) => {
+const tounfollow = (accountId: string) => {
 
     // unfollow({
     unnewfollow({
@@ -1511,7 +1520,7 @@ const tounfollow = (accountId:string) => {
     })
 }
 
-const getlikeLists = (articleId:string) => {
+const getlikeLists = (articleId: string) => {
     likeLists({
         pageNumber: 1,
         pageSize: 1000,
@@ -1520,12 +1529,12 @@ const getlikeLists = (articleId:string) => {
             happyType: 1,
             isUser: 0
         }
-    }).then((res:any) => {
+    }).then((res: any) => {
         data.likeList = res.data
     })
 }
 
-const getfavoriteList = (articleId:string) => {
+const getfavoriteList = (articleId: string) => {
     favoriteList({
         pageNumber: 1,
         pageSize: 1000,
@@ -1534,13 +1543,13 @@ const getfavoriteList = (articleId:string) => {
             articleId
         },
         sorts: []
-    }).then((res:any) => {
+    }).then((res: any) => {
         data.favoriteList = res.data
     })
 }
 
 
-const changecommentTop = (index:number) => {
+const changecommentTop = (index: number) => {
 
     data.commentTopindex = index
 
@@ -1553,7 +1562,8 @@ const changecommentTop = (index:number) => {
 }
 
 const sharRetransmission = () => {
-    retransmission({ articleId: data.articledId }).then(() => {})
+    retransmission({ articleId: data.articledId }).then(() => {
+    })
 }
 
 const shareBox = ref()
@@ -1573,7 +1583,7 @@ const sharePoster = async () => {
 
     const coverUrl = await drawBGIMG(data.articledetailsObj.cover)
     // 二维码链接图片
-    const qrimg =  await getQrcode(`/pagesCnt/pages/articledetails/articledetails?id=${data.articledetailsObj.id}`).then((img) => {
+    const qrimg = await getQrcode(`/pagesCnt/pages/articledetails/articledetails?id=${data.articledetailsObj.id}`).then((img) => {
         return img
     })
     const qrimgUrl = await drawBGIMG(qrimg)
@@ -1638,40 +1648,40 @@ const sharePoster = async () => {
     context.restore()
 
     context.draw(
-        false,
-        setTimeout(async () => {
-            uni.canvasToTempFilePath({
-                canvasId: 'mycanvas',
-                success: (res:any) => {
-                    (shareBox.value as any).open()
-                    data.showBottom = false
+          false,
+          setTimeout(async () => {
+              uni.canvasToTempFilePath({
+                  canvasId: 'mycanvas',
+                  success: (res: any) => {
+                      (shareBox.value as any).open()
+                      data.showBottom = false
 
-                    data.shareimgUrl = res.tempFilePath
-                    data.status = 2
-                    title = ''
-                    sharRetransmission()
-                    uni.hideLoading()
+                      data.shareimgUrl = res.tempFilePath
+                      data.status = 2
+                      title = ''
+                      sharRetransmission()
+                      uni.hideLoading()
 
-                },
-                fail: err => {
-                    console.log(err)
-                    uni.showToast({
-                        icon: 'none',
-                        title: '生成失败,请稍后重试'
-                    })
-                    uni.hideLoading()
+                  },
+                  fail: err => {
+                      console.log(err)
+                      uni.showToast({
+                          icon: 'none',
+                          title: '生成失败,请稍后重试'
+                      })
+                      uni.hideLoading()
 
-                },
-                complete: (ret) => {
-                    console.log('生成中....')
-                    uni.showLoading({
-                        title: '加载中...'
-                    })
-                    uni.hideLoading()
+                  },
+                  complete: (ret) => {
+                      console.log('生成中....')
+                      uni.showLoading({
+                          title: '加载中...'
+                      })
+                      uni.hideLoading()
 
-                }
-            }, instance)
-        }, 3000)
+                  }
+              }, instance)
+          }, 3000)
     )
 
 
@@ -1748,7 +1758,7 @@ const delVoice = () => {
 }
 
 const timer = ref<any>(null)
-const startTime = (item:any, commentType:number) => {
+const startTime = (item: any, commentType: number) => {
     timer.value = setTimeout(() => {
         console.log('item', item)
         data.showTouch = true
@@ -1843,10 +1853,6 @@ const reportFun = () => {
 }
 
 
-
-
-
-
 defineExpose({
     getpageData,
     closeShare,
@@ -1859,23 +1865,25 @@ defineExpose({
 
 
 <style lang="scss" scoped>
-.acricle_desc{
+.acricle_desc {
     color: #666666;
     font-size: 28rpx;
     padding: 0 34rpx 20rpx 34rpx;
 }
-.content{
+
+.content {
     width: 100%;
     position: relative;
 
-    .rich_text{
+    .rich_text {
         padding: 40rpx 0rpx;
         box-sizing: border-box;
         background: #fff;
         border-radius: 24rpx;
         position: relative;
         margin-bottom: 20rpx;
-        .article_title{
+
+        .article_title {
             padding: 0rpx 32rpx;
             box-sizing: border-box;
             font-weight: 600;
@@ -1883,7 +1891,8 @@ defineExpose({
             color: #333333;
             margin-bottom: 28rpx;
         }
-        .author_box{
+
+        .author_box {
             padding: 0rpx 32rpx;
             box-sizing: border-box;
             width: 100%;
@@ -1891,30 +1900,35 @@ defineExpose({
             align-items: center;
             justify-content: space-between;
             margin-bottom: 28rpx;
-            .author_avatar_box{
+
+            .author_avatar_box {
                 display: flex;
                 align-items: center;
-                .avatar_img{
+
+                .avatar_img {
                     width: 64rpx;
                     height: 64rpx;
                     border-radius: 50%;
                     margin-right: 12rpx;
                 }
-                .author_name_box{
-                    .author_name{
+
+                .author_name_box {
+                    .author_name {
                         font-size: 28rpx;
                         font-weight: 500;
                         color: #333333;
                         margin-bottom: 2rpx;
                     }
-                    .article_time{
+
+                    .article_time {
                         font-weight: 400;
                         color: #999999;
                         font-size: 24rpx;
                     }
                 }
             }
-            .follow_btn_box{
+
+            .follow_btn_box {
                 display: flex;
                 align-items: center;
                 padding: 6rpx 20rpx;
@@ -1923,12 +1937,14 @@ defineExpose({
                 color: #fff;
                 font-size: 26rpx;
                 border-radius: 24rpx;
-                .follow_btn{
+
+                .follow_btn {
                     margin-right: 8rpx;
 
                 }
             }
-            .del_follow_btn{
+
+            .del_follow_btn {
                 padding: 6rpx 20rpx;
                 box-sizing: border-box;
                 display: flex;
@@ -1941,11 +1957,13 @@ defineExpose({
 
             }
         }
-        .voice_box{
+
+        .voice_box {
             width: 100%;
             padding: 20rpx;
             box-sizing: border-box;
-            .voice_item_box{
+
+            .voice_item_box {
                 width: 100%;
                 display: flex;
                 align-items: center;
@@ -1955,24 +1973,29 @@ defineExpose({
                 background: #F5F5F5;
                 padding: 16rpx;
                 box-sizing: border-box;
-                .voice_item_left{
+
+                .voice_item_left {
                     display: flex;
                     align-items: center;
-                    .voice_img{
+
+                    .voice_img {
                         width: 48rpx;
                         height: 48rpx;
                         margin-right: 12rpx;
                     }
-                    .voice_title{
+
+                    .voice_title {
                         font-weight: 400;
                         font-size: 28rpx;
                         color: #242424;
                     }
                 }
-                .voice_item_right{
+
+                .voice_item_right {
                     display: flex;
                     align-items: center;
-                    .voice_number{
+
+                    .voice_number {
                         font-weight: 400;
                         font-size: 28rpx;
                         color: #666666;
@@ -1981,7 +2004,8 @@ defineExpose({
                 }
 
             }
-            .voicePlayBox{
+
+            .voicePlayBox {
                 width: 100%;
                 background: #F5F5F5;
                 border-radius: 40rpx;
@@ -1992,44 +2016,51 @@ defineExpose({
                 box-sizing: border-box;
 
 
-                &.isFixedVoice{
+                &.isFixedVoice {
                     width: 718rpx;
                     position: fixed;
                     z-index: 100;
                     top: 200rpx;
                     left: 16rpx;
                 }
-                .voice_left_box{
+
+                .voice_left_box {
                     display: flex;
                     align-items: center;
-                    .voice_cover{
+
+                    .voice_cover {
                         width: 64rpx;
                         height: 64rpx;
                         margin-right: 16rpx;
                         border-radius: 50%;
                     }
-                    .voice_title{
+
+                    .voice_title {
                         font-weight: 400;
                         font-size: 28rpx;
                         color: #242424;
                     }
                 }
-                .voice_right_box{
+
+                .voice_right_box {
                     display: flex;
                     align-items: center;
-                    .play_number{
+
+                    .play_number {
                         display: flex;
                         align-items: center;
                         font-size: 24rpx;
                         color: #999999;
                         font-weight: 400;
                         margin-right: 18rpx;
-                        .separate_text{
+
+                        .separate_text {
                             margin: 0rpx 6rpx;
                         }
 
                     }
-                    .play_box{
+
+                    .play_box {
                         width: 52rpx;
                         height: 52rpx;
                         background: #FFFFFF;
@@ -2040,7 +2071,7 @@ defineExpose({
                         justify-content: center;
                     }
 
-                    .play_icon{
+                    .play_icon {
                         width: 28rpx;
                         height: 28rpx;
                     }
@@ -2048,11 +2079,12 @@ defineExpose({
             }
         }
 
-        .article_content{
+        .article_content {
             padding: 0rpx 32rpx;
             box-sizing: border-box;
         }
-        .video_content{
+
+        .video_content {
             position: sticky;
             top: 0;
             width: 100%;
@@ -2060,48 +2092,58 @@ defineExpose({
             z-index: 1;
             background: #fff;
             margin-bottom: 32rpx;
-            &.is_fixed{
+
+            &.is_fixed {
                 position: fixed;
             }
         }
-        .seizeseat{
+
+        .seizeseat {
             width: 100%;
             height: 424rpx;
             margin-bottom: 32rpx;
 
         }
-        .video_text_box{
+
+        .video_text_box {
             padding: 0rpx 32rpx;
             box-sizing: border-box;
-            .video_title{
+
+            .video_title {
                 font-size: 32rpx;
                 color: #333333;
                 font-weight: 600;
                 margin-bottom: 12rpx;
             }
-            .video_play_number{
+
+            .video_play_number {
                 color: #999999;
                 font-size: 24rpx;
                 font-weight: 400;
             }
         }
-        .img_text_content{
+
+        .img_text_content {
             box-sizing: border-box;
             width: 100%;
-            .swiper_box{
+
+            .swiper_box {
                 position: relative;
                 width: 100%;
                 height: 750rpx;
                 margin-bottom: 32rpx;
-                .swiper{
+
+                .swiper {
                     width: 100%;
                     height: 100%;
-                    .swiper_img{
+
+                    .swiper_img {
                         width: 100%;
                         height: 100%;
                     }
                 }
-                .swiper_number_box{
+
+                .swiper_number_box {
                     position: absolute;
                     bottom: 20rpx;
                     right: 20rpx;
@@ -2115,23 +2157,25 @@ defineExpose({
                 }
             }
 
-            .article_img_text{
+            .article_img_text {
                 padding: 0rpx 30rpx;
                 box-sizing: border-box;
                 font-size: 30rpx;
                 color: #333333;
                 line-height: 52rpx;
                 box-sizing: border-box;
-                word-break:break-all
+                word-break: break-all
             }
         }
     }
-    .comment_box{
+
+    .comment_box {
         padding: 40rpx 32rpx;
         box-sizing: border-box;
         background: #fff;
         border-radius: 24rpx;
-        .comment_title_box{
+
+        .comment_title_box {
             display: flex;
             align-items: center;
             padding-bottom: 24rpx;
@@ -2139,16 +2183,19 @@ defineExpose({
             width: 100%;
             border-bottom: 2rpx solid #F2F2F2;
             margin-bottom: 30rpx;
-            .comment_title{
+
+            .comment_title {
                 font-size: 32rpx;
                 color: #666;
                 font-weight: 500;
                 margin-right: 60rpx;
                 position: relative;
-                &.is_Select{
+
+                &.is_Select {
                     color: #333333;
                 }
-                .select_spage{
+
+                .select_spage {
                     position: absolute;
                     bottom: 0;
                     left: 50%;
@@ -2161,58 +2208,70 @@ defineExpose({
             }
 
         }
-        .comment_item{
+
+        .comment_item {
             margin-bottom: 30rpx;
         }
-        .user_List{
+
+        .user_List {
             min-height: 360rpx;
-            .user_item{
+
+            .user_item {
                 display: flex;
                 align-items: center;
                 margin-bottom: 30rpx;
-                .user_img{
+
+                .user_img {
                     width: 56rpx;
                     height: 56rpx;
                     border-radius: 50%;
                     margin-right: 16rpx;
                 }
-                .user_name{
+
+                .user_name {
                     color: #666666;
                     font-size: 28rpx;
                     margin-right: 16rpx;
                 }
-                .user_utcModified{
+
+                .user_utcModified {
                     font-size: 24rpx;
                     color: #999999;
                 }
             }
         }
-        .note_comment{
+
+        .note_comment {
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            .note_comment_img{
+
+            .note_comment_img {
                 width: 280rpx;
                 height: 280rpx;
             }
-            .note_comment_text{
+
+            .note_comment_text {
                 color: #B5B5B5;
                 font-size: 30rpx;
                 margin-bottom: 40rpx;
             }
         }
     }
-    .spag_box{
+
+    .spag_box {
         width: 100%;
 
     }
-    .location{
+
+    .location {
         padding: 40rpx 30rpx;
         padding-top: 20rpx;
         padding-bottom: 0rpx;
         box-sizing: border-box;
-        .location_box{
+
+        .location_box {
 
             width: 100%;
             padding: 12rpx;
@@ -2221,19 +2280,21 @@ defineExpose({
             border-radius: 8rpx;
             display: flex;
             align-items: center;
-            .location_text{
+
+            .location_text {
                 margin-left: 8rpx;
                 color: #666666;
                 font-size: 24rpx;
                 width: 88%;
                 white-space: nowrap; /*强制一行内显示*/
-                overflow: hidden;/*溢出隐藏*/
-                text-overflow: ellipsis;/*超出部分现实省略号*/
+                overflow: hidden; /*溢出隐藏*/
+                text-overflow: ellipsis; /*超出部分现实省略号*/
             }
         }
     }
 }
-.bottom_box{
+
+.bottom_box {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -2242,7 +2303,7 @@ defineExpose({
     padding: 20rpx 28rpx;
     padding-bottom: 64rpx;
     box-sizing: border-box;
-    box-shadow: 0rpx -4rpx 12rpx rgba(0,0,0,0.06);
+    box-shadow: 0rpx -4rpx 12rpx rgba(0, 0, 0, 0.06);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2250,18 +2311,19 @@ defineExpose({
     z-index: 10080;
 
 
-    .emoji_box{
+    .emoji_box {
         width: 100%;
         height: 96rpx;
         position: relative;
-        .emoji_list{
+
+        .emoji_list {
             display: flex;
             align-items: center;
             padding-right: 100rpx;
             box-sizing: border-box;
             overflow-x: scroll;
 
-            .emoji_item{
+            .emoji_item {
                 display: flex;
                 align-items: center;
                 flex-shrink: 0;
@@ -2277,7 +2339,8 @@ defineExpose({
 
             }
         }
-        .add_emoji{
+
+        .add_emoji {
             position: absolute;
             top: 0;
             right: 0;
@@ -2288,43 +2351,48 @@ defineExpose({
             align-items: center;
             justify-content: flex-end;
 
-            background: linear-gradient( 90deg, rgba(255,255,255,0) 0%, #FFFFFF 30%);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 30%);
             box-sizing: border-box;
 
-            .add_emoji_img{
+            .add_emoji_img {
                 width: 48rpx;
                 height: 48rpx;
             }
         }
     }
-    .bottom_content_box{
-        .flexinp_box{
+
+    .bottom_content_box {
+        .flexinp_box {
             display: flex;
             align-items: center;
-            .bottom_inp_box{
+
+            .bottom_inp_box {
                 position: relative;
 
-                .not_bottom_inp{
+                .not_bottom_inp {
                     width: 398rpx;
                     height: 74rpx;
                     background: #F5F5F5;
                     border-radius: 38rpx;
                     padding: 16rpx 32rpx;
                     box-sizing: border-box;
-                    .not_bottom_inp_text{
+
+                    .not_bottom_inp_text {
                         color: #B5B5B5;
                         font-size: 28rpx;
                     }
-                    .have_textMsg{
+
+                    .have_textMsg {
                         font-size: 28rpx;
                         color: #333333;
                         width: 100%;
                         white-space: nowrap; /*强制一行内显示*/
-                        overflow: hidden;/*溢出隐藏*/
-                        text-overflow: ellipsis;/*超出部分现实省略号*/
+                        overflow: hidden; /*溢出隐藏*/
+                        text-overflow: ellipsis; /*超出部分现实省略号*/
                     }
                 }
-                .bottom_inp{
+
+                .bottom_inp {
                     width: 552rpx;
                     min-height: 72rpx !important;
                     border-radius: 36rpx;
@@ -2336,7 +2404,8 @@ defineExpose({
                     overflow: hidden;
                     box-sizing: border-box;
                 }
-                .inp_icon{
+
+                .inp_icon {
                     width: 38rpx;
                     height: 38rpx;
                     position: absolute;
@@ -2345,23 +2414,28 @@ defineExpose({
                     z-index: 1000;
                 }
             }
-            .icon_list{
+
+            .icon_list {
                 display: flex;
                 margin-left: 20rpx;
-                .icon_item{
+
+                .icon_item {
                     margin-right: 36rpx;
-                    .icon_img{
+
+                    .icon_img {
                         width: 40rpx;
                         height: 40rpx;
                     }
-                    .icon_text{
+
+                    .icon_text {
                         color: #666666;
                         font-size: 20rpx;
                         line-height: 20rpx;
                     }
                 }
             }
-            .sending{
+
+            .sending {
                 margin-left: 30rpx;
                 padding: 10rpx 26rpx;
                 background: #EA3E1A;
@@ -2380,91 +2454,107 @@ defineExpose({
             }
         }
 
-        .have_bottom{
+        .have_bottom {
             width: 100%;
         }
     }
-    .ct_emoji_Box{
-        &.hidden_box{
+
+    .ct_emoji_Box {
+        &.hidden_box {
             display: none;
         }
     }
 
 }
-.more_comment_box{
+
+.more_comment_box {
     padding: 40rpx 32rpx;
     box-sizing: border-box;
     background: #fff;
     width: 100%;
     max-height: 800rpx;
-    .more_comment_top{
+
+    .more_comment_top {
         display: flex;
         align-items: center;
         justify-content: space-between;
         width: 100%;
         margin-bottom: 38rpx;
-        .all_comment_number{
+
+        .all_comment_number {
             font-size: 32rpx;
             color: #333333;
         }
     }
-    .son_comment_item{
+
+    .son_comment_item {
         width: 100%;
         height: 200rpx;
         border: 2rpx solid red;
     }
 }
-.action_box{
+
+.action_box {
     padding: 40rpx 32rpx;
     padding-bottom: 90rpx;
     box-sizing: border-box;
     min-height: 1160rpx;
     display: flex;
     flex-direction: column;
-    .action_top{
+
+    .action_top {
         width: 100%;
         margin-bottom: 24rpx;
         display: flex;
         align-items: center;
-        .action_top_title{
+
+        .action_top_title {
             width: 100%;
             text-align: center;
         }
-        .action_top_title_img{
+
+        .action_top_title_img {
             width: 32rpx;
             height: 32rpx;
         }
     }
-    .Landlord{
+
+    .Landlord {
         width: 100%;
         // min-height: 200rpx;
         display: flex;
         margin-bottom: 20rpx;
         border-bottom: 2rpx solid #F2F2F2;
-        .Landlord_img{
+
+        .Landlord_img {
             width: 56rpx;
             height: 56rpx;
             border-radius: 50%;
             margin-right: 16rpx;
         }
-        .Landlord_text_box{
+
+        .Landlord_text_box {
             flex: 1;
             margin-bottom: 16rpx;
-            .Landlord_top_box{
+
+            .Landlord_top_box {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 height: 56rpx;
                 line-height: 32rpx;
-                .Landlord_top_name_box{
+
+                .Landlord_top_name_box {
                     display: flex;
                     align-items: center;
-                    .Landlord_top_name{
+
+                    .Landlord_top_name {
                         color: #333333;
                         font-size: 28rpx;
                         margin-right: 16rpx;
                     }
-                    .isLandlord{
+
+                    .isLandlord {
                         background: #EBF9F1;
                         color: #29C86F;
                         font-size: 20rpx;
@@ -2474,36 +2564,43 @@ defineExpose({
                         margin-right: 10rpx;
                     }
                 }
-                .Landlord_top_icon{
+
+                .Landlord_top_icon {
                     display: flex;
                     align-items: center;
-                    .like_up{
+
+                    .like_up {
                         display: flex;
                         align-items: center;
                         margin-right: 24rpx;
-                        .like_up_img{
+
+                        .like_up_img {
                             width: 34rpx;
                             height: 34rpx;
                             margin-right: 8rpx;
                         }
                     }
-                    .like_below{
+
+                    .like_below {
                         display: flex;
                         align-items: center;
                         margin-right: 24rpx;
-                        .like_below_img{
+
+                        .like_below_img {
                             transform: rotate(180deg);
                             width: 34rpx;
                             height: 34rpx;
                             margin-right: 8rpx;
                         }
                     }
-                    .like_text{
+
+                    .like_text {
                         font-size: 24rpx;
                     }
                 }
             }
-            .Landlord_content{
+
+            .Landlord_content {
                 width: 100%;
                 font-size: 26rpx;
                 color: #666666;
@@ -2512,56 +2609,68 @@ defineExpose({
                 line-height: 36rpx;
                 text-align: left;
             }
-            .Landlord_bottom{
+
+            .Landlord_bottom {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                .Landlord_bottom_comment{
+
+                .Landlord_bottom_comment {
                     color: #999999;
                     font-size: 22rpx;
                     margin-right: 12rpx;
                     text-align: center;
                     line-height: 40rpx;
                 }
-                .Landlord_bottom_del{
+
+                .Landlord_bottom_del {
                     color: #999999;
                     font-size: 24rpx;
                 }
             }
         }
     }
-    .all_son_comment{
+
+    .all_son_comment {
         font-weight: bold;
         color: #333333;
         font-size: 32rpx;
         margin-bottom: 28rpx;
         text-align: left;
     }
-    .son_comment_scroll{
+
+    .son_comment_scroll {
         max-height: 690rpx;
-        .son_comment_item{
+
+        .son_comment_item {
             width: 100%;
             display: flex;
             margin-bottom: 44rpx;
-            &.not_bottom{
+
+            &.not_bottom {
                 margin-bottom: 0;
             }
-            .son_comment_thumb{
+
+            .son_comment_thumb {
                 width: 56rpx;
                 height: 56rpx;
                 margin-right: 16rpx;
                 border-radius: 50%;
             }
-            .son_comment_text_box{
+
+            .son_comment_text_box {
                 flex: 1;
-                .son_comment_name_box{
+
+                .son_comment_name_box {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
                     margin-bottom: 18rpx;
-                    .son_comment_nameandtag{
+
+                    .son_comment_nameandtag {
                         display: flex;
-                        .son_comment_name{
+
+                        .son_comment_name {
                             color: #333333;
                             font-size: 28rpx;
                             max-width: 430rpx;
@@ -2569,7 +2678,8 @@ defineExpose({
                             overflow: hidden;
                             text-overflow: ellipsis;
                         }
-                        .son_comment_tag{
+
+                        .son_comment_tag {
                             background: #EBF9F1;
                             color: #29C86F;
                             font-size: 20rpx;
@@ -2579,36 +2689,43 @@ defineExpose({
                             margin: 0rpx 10rpx;
                         }
                     }
-                    .son_comment_icon{
+
+                    .son_comment_icon {
                         display: flex;
                         align-items: center;
-                        .like_up{
+
+                        .like_up {
                             display: flex;
                             align-items: center;
                             margin-right: 24rpx;
-                            .like_up_img{
+
+                            .like_up_img {
                                 width: 34rpx;
                                 height: 34rpx;
                                 margin-right: 8rpx;
                             }
                         }
-                        .like_below{
+
+                        .like_below {
                             display: flex;
                             align-items: center;
                             margin-right: 24rpx;
-                            .like_below_img{
+
+                            .like_below_img {
                                 transform: rotate(180deg);
                                 width: 34rpx;
                                 height: 34rpx;
                                 margin-right: 8rpx;
                             }
                         }
-                        .like_text{
+
+                        .like_text {
                             font-size: 24rpx;
                         }
                     }
                 }
-                .quotecomment{
+
+                .quotecomment {
                     padding: 16rpx;
                     padding-bottom: 10rpx;
                     box-sizing: border-box;
@@ -2628,7 +2745,8 @@ defineExpose({
                     line-clamp: 2;
                     -webkit-box-orient: vertical;
                 }
-                .son_comment_content{
+
+                .son_comment_content {
                     width: 100%;
                     font-size: 26rpx;
                     color: #666666;
@@ -2637,14 +2755,17 @@ defineExpose({
                     line-height: 36rpx;
                     text-align: left;
                 }
-                .son_comment_bottom{
+
+                .son_comment_bottom {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
-                    .son_comment_bottom_box{
+
+                    .son_comment_bottom_box {
                         display: flex;
                         align-items: center;
-                        .son_comment_reply{
+
+                        .son_comment_reply {
                             height: 40rpx;
                             background: #F2F2F2;
                             border-radius: 24rpx;
@@ -2656,53 +2777,60 @@ defineExpose({
                             margin-right: 12rpx;
                             font-size: 22rpx;
                             color: #666666;
-                            .son_comment_reply_text{
+
+                            .son_comment_reply_text {
                                 margin-right: 8rpx;
                             }
                         }
-                        .son_comment_time{
+
+                        .son_comment_time {
                             color: #999999;
                             font-size: 22rpx;
                         }
                     }
-                    .son_comment_del{
+
+                    .son_comment_del {
                         color: #999999;
                         font-size: 24rpx;
                     }
                 }
             }
         }
-        .son_comment_spage{
+
+        .son_comment_spage {
             width: 100%;
         }
     }
 }
-.bilvas{
+
+.bilvas {
     border-radius: 20rpx;
     position: relative;
     left: -750px;
 }
 
-.fixed_Voice{
+.fixed_Voice {
     position: fixed;
     right: 26rpx;
     bottom: 250rpx;
 
-    .voice_img_box{
+    .voice_img_box {
         position: relative;
         width: 108rpx;
         height: 108rpx;
         border: 4rpx solid #E4E4E4;
         border-radius: 50%;
         overflow: hidden;
-        .voice_img{
+
+        .voice_img {
             width: 100%;
             height: 100%;
             position: absolute;
             top: 0;
             left: 0;
         }
-        .voice_bg_box{
+
+        .voice_bg_box {
             width: 100%;
             height: 100%;
             position: absolute;
@@ -2715,7 +2843,8 @@ defineExpose({
         }
 
     }
-    .voice_icon{
+
+    .voice_icon {
         position: absolute;
         top: -12rpx;
         right: -8rpx;
@@ -2732,7 +2861,7 @@ defineExpose({
     }
 }
 
-.bottom_voiceBox{
+.bottom_voiceBox {
     width: 690rpx;
     background: #FFE5DF;
     border-radius: 42rpx;
@@ -2747,11 +2876,13 @@ defineExpose({
     align-items: center;
     justify-content: space-between;
     z-index: 100;
-    .voiceright_box{
+
+    .voiceright_box {
         display: flex;
         align-items: center;
         justify-content: center;
-        .voice_img{
+
+        .voice_img {
             margin: 0rpx 24rpx;
             width: 64rpx;
             height: 64rpx;
@@ -2760,7 +2891,8 @@ defineExpose({
         }
 
     }
-    .voiceleft_box{
+
+    .voiceleft_box {
         width: 52rpx;
         height: 52rpx;
         border-radius: 50%;
@@ -2768,7 +2900,8 @@ defineExpose({
         display: flex;
         align-items: center;
         justify-content: center;
-        .play_icon{
+
+        .play_icon {
             width: 28rpx;
             height: 28rpx;
 
@@ -2776,11 +2909,12 @@ defineExpose({
     }
 }
 
-.touch_box{
+.touch_box {
     width: 100%;
     background: #fff;
-    .touch_top_box{
-        .touch_title{
+
+    .touch_top_box {
+        .touch_title {
             padding: 32rpx;
             box-sizing: border-box;
             text-align: center;
@@ -2788,7 +2922,8 @@ defineExpose({
             font-size: 24rpx;
             font-weight: 400;
         }
-        .touch_item{
+
+        .touch_item {
             padding: 32rpx;
             box-sizing: border-box;
             text-align: center;
@@ -2797,19 +2932,22 @@ defineExpose({
             color: #333333;
             font-size: 32rpx;
             font-weight: 400;
-            &.del_btn{
+
+            &.del_btn {
                 color: #EA3E1A;
             }
         }
 
     }
-    .touch_bottom_box{
-        .bottom_spage{
+
+    .touch_bottom_box {
+        .bottom_spage {
             width: 100%;
             height: 20rpx;
             background: #F8F8F8;
         }
-        .out_touch_btn{
+
+        .out_touch_btn {
             padding: 32rpx;
             box-sizing: border-box;
             text-align: center;
@@ -2824,17 +2962,19 @@ defineExpose({
 </style>
 
 <style>
-    page {
-        height: 100%;
-    }
-    video {
-        width: 100%;
-        height: 424rpx;
-        object-fit: contain;
-        /* position: absolute; */
-        z-index: 10070;
-    }
-    video:focus {
-        outline:none;
-    }
+page {
+    height: 100%;
+}
+
+video {
+    width: 100%;
+    height: 424rpx;
+    object-fit: contain;
+    /* position: absolute; */
+    z-index: 10070;
+}
+
+video:focus {
+    outline: none;
+}
 </style>
