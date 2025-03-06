@@ -107,8 +107,8 @@
             </div>
             <!-- 配送方式 -->
             <TnPicker v-model="parameter.deliveryMethodId" v-model:open="deliveryShow" :data="deliveryList" @confirm="setDelivery" />
-            <BCNotify ref="bCNotifyRef"></BCNotify>
 		</TnPopup>
+        <BCNotify ref="bCNotifyRef"></BCNotify>
 
     </div>
 </template>
@@ -262,10 +262,9 @@ const submit = async () => {
         } : null
     }).then(() => {
         bCNotifyRef.value.show('修改成功')
-
         emit('updateOrder')
-    }).catch(err => {
-        bCNotifyRef.value.show(err.message)
+    }).catch((err) => {
+        bCNotifyRef.value.error(err.message)
     })
 
     close()

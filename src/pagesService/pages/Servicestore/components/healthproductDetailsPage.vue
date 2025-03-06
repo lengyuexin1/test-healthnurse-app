@@ -251,7 +251,13 @@
             <template #bottom>
                 <div class="bottom_btn">
                     <div class="contact" @click="tobay">
-                        <text class="contact_text"> 立即抢购</text>
+                        <text class="contact_text"> 立即咨询</text>
+                        <text class="contact_price">
+                            ￥
+                            <text class="contact_price_text">{{ moneyFilter(data.agencyObj.price) }}</text>
+                            <text>/{{ data.agencyObj.unit == 1 ? '日' : '月' }}</text>
+
+                        </text>
                     </div>
                 </div>
             </template>
@@ -268,28 +274,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted, getCurrentInstance } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { moneyFilter } from '@/common/filters'
+import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
-import { healthdetail, godsCommList, agencydetail } from '@/api/service-api'
-import { gotoBalanceOrder } from '@/routes/order-routes'
+import { agencydetail, godsCommList } from '@/api/service-api'
 import { serviceComment } from '@/routes/service-routes'
 
 import { getAssetsPic } from '@/common/setPicture'
 import { formattime } from '@/common/formatTime'
-import { TempStorage } from "@bc/base"
 
 import shareView from '@/pagesService/components/shareView/shareView.vue'
 import { drawBGIMG } from '@/libs/canvas-tools'
 import { getQrcode } from "@/api/user-api"
 import { gotoIndex } from "@/routes/public-routes"
+import { gotoChatPage } from "@/routes/nim-routes"
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 import { PlatformManage } from "@bc/sys"
+import { createTeam } from "@/api/nim-api"
 
 
 interface Props {
-    itemId: string
+    itemId: string,
+    shopId: string
 }
 
 const props = defineProps<Props>()
@@ -302,7 +309,6 @@ interface Data {
     needlogin: boolean,
     status: number,
     shareimgUrl: string,
-    isHealth: 0|1
 }
 
 const data = reactive<Data>({
@@ -312,8 +318,7 @@ const data = reactive<Data>({
     total: 0,
     needlogin: false,
     status: 0,
-    shareimgUrl: '',
-    isHealth: 0
+    shareimgUrl: ''
 })
 
 const getAssetsUrl = computed(() => (src: string) => {
@@ -349,18 +354,15 @@ const notright = computed(() => (list: any, index: number) => {
 })
 
 const emit = defineEmits(["saveShareObj"])
-onLoad((option:any) => {
-    data.isHealth = option.isHealth || 0
-})
+
 onMounted(() => {
     gethealthdetail(props.itemId)
     getgodsCommList(props.itemId)
 })
 
 
-const gethealthdetail = (id: any) => {
-    const fn = data.isHealth == 1 ? healthdetail : agencydetail
-    fn({
+const gethealthdetail = (id: string) => {
+    agencydetail({
         id
     }).then((res: any) => {
         console.log(res)
@@ -411,48 +413,67 @@ const tochoiceDetails = (itemId: string, tologin: boolean = false) => {
 }
 
 const tobay = () => {
-    // 跳转购买页面传入2表示机构订单
-    const uniqueId = TempStorage.savewx({
-        itemId: data.agencyObj.id
-    })
-    // #ifdef MP-WEIXIN
-    gotoBalanceOrder(uniqueId, 2)
-    // #endif
-
-
-    // #ifdef APP-PLUS
-    const payJSON = JSON.stringify({
-        itemId: data.agencyObj.id
-    })
-    const shareType = import.meta.env.VITE_WEIXIN_OPEN
-
-    // APP跳转小程序进行支付
-    plus.share.getServices((res: any) => {
-        let sweixin = null as any
-        for (const i in res) {
-            if (res[i].id == 'weixin') {
-                sweixin = res[i]
-            }
-        }
-        // 唤醒微信小程序
-        if (sweixin) {
-            uni.hideLoading()
-
-            PlatformManage.getToken().then((res: any) => {
-                console.log('获取userinfo', res)
-                sweixin.launchMiniProgram({
-                    id: 'gh_c2469c570746',  // 小程序的原始ID，微信公众平台设置里有
-                    type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
-                    path: `/pagesOrder/pages/balanceOrder/balanceOrder?payJSON=${payJSON}&userId=${res.id}&handle=2`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
-                    extraData: {
-                        'payJSON': payJSON
-                    }
-                })
+    PlatformManage.getToken().then((token: any) => {
+        console.log(token)
+        console.log(data.agencyObj)
+        createTeam({
+            userId: token.id,
+            userName: token.nickname,
+            userThumb: token.avatar,
+            flag: 1, // 1小程序用户，2服务人员
+            shopId: props.shopId,
+            type: 2 // 1平台，2店铺
+        }).then((res: any) => {
+            console.log(res)
+            gotoChatPage({
+                to: res.tid,
+                scene: 'customer',
+                originPage: 'pagesService/pages/Servicestore/healthproductDetails'
             })
-        }
+        })
     })
-
-    // #endif
+    // // 跳转购买页面传入2表示机构订单
+    // const uniqueId = TempStorage.savewx({
+    //     itemId: data.agencyObj.id
+    // })
+    // // #ifdef MP-WEIXIN
+    // gotoBalanceOrder(uniqueId, 2)
+    // // #endif
+    //
+    //
+    // // #ifdef APP-PLUS
+    // const payJSON = JSON.stringify({
+    //     itemId: data.agencyObj.id
+    // })
+    // const shareType = import.meta.env.VITE_WEIXIN_OPEN
+    //
+    // // APP跳转小程序进行支付
+    // plus.share.getServices((res: any) => {
+    //     let sweixin = null as any
+    //     for (const i in res) {
+    //         if (res[i].id == 'weixin') {
+    //             sweixin = res[i]
+    //         }
+    //     }
+    //     // 唤醒微信小程序
+    //     if (sweixin) {
+    //         uni.hideLoading()
+    //
+    //         PlatformManage.getToken().then((res: any) => {
+    //             console.log('获取userinfo', res)
+    //             sweixin.launchMiniProgram({
+    //                 id: 'gh_c2469c570746',  // 小程序的原始ID，微信公众平台设置里有
+    //                 type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
+    //                 path: `/pagesOrder/pages/balanceOrder/balanceOrder?payJSON=${payJSON}&userId=${res.id}&handle=2`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
+    //                 extraData: {
+    //                     'payJSON': payJSON
+    //                 }
+    //             })
+    //         })
+    //     }
+    // })
+    //
+    // // #endif
 }
 
 
@@ -1063,7 +1084,7 @@ defineExpose({
         .contact {
             width: 686rpx;
             height: 84rpx;
-            background: linear-gradient(90deg, #FE7D36 0%, #FE2D00 100%);
+            background: #29C86F;
             border-radius: 46rpx;
             font-size: 32rpx;
             color: #ffffff;

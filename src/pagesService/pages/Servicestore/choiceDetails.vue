@@ -463,7 +463,7 @@ const tuproduct = (itemId: any) => {
             }, 2000)
         }
         else {
-            gotohealthproductDetails({ itemId })
+            gotohealthproductDetails({ itemId, shopId: detailObj.shopId })
         }
     })
 }

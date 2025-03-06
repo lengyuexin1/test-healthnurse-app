@@ -336,7 +336,7 @@ const confirmDel = () => {
 
         // // 如果该店铺下只有一个商品，删除商品后，删除该店铺
         // if (props.dataList[data.delGoodsItemIndex].productList.length == 0) {
-        //     props.dataList.splice(data.delGoodsItemIndex, 1)
+        props.dataList.splice(data.delGoodsItemIndex, 1)
         // }
 
         // 修改标题的商品总数
@@ -546,6 +546,7 @@ const clickwaterItem = (item:any) => {
     padding: 20rpx;
     position: fixed;
     bottom: 0;
+    z-index: 10;
     background-color: #FFFFFF;
     box-shadow: 0 -4rpx 12rpx 2rpx rgba(0, 0, 0, .06);
 

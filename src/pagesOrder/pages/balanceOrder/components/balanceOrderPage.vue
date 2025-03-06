@@ -847,7 +847,7 @@ const placeOrder = () => {
         return
     }
     if (dataCheck(consumerVisi.value && data.archives.id, '请选择被照护人') ||
-                dataCheck(consumerAdrs.value && !data.location?.id, '请选择地址') ||
+                // dataCheck(consumerAdrs.value && !data.location?.id, '请选择地址') ||
                 dataCheck(consumerTime.value && !data.startTime, '请选择时间') ||
                 // dataCheck(hospitalVisi.value && !data.hospital.name, '请选择医院') ||
                 dataCheck(methodVisi.value && !data.method.id, '请选择寄送方式') ||
@@ -914,7 +914,8 @@ const placeOrder = () => {
 
             patient: informationVisi.value ? archives?.name || data.archivesName : null, //就诊人名称
             patientMobile: archives?.mobile ||  data.mobile || null, //就诊人手机号
-            deliveryMethod: null, //配送方式 id
+
+            deliveryMethod: methodVisi.value ? data.method.id : null, //配送方式 id
             deliveryCertificate: null //代取凭证
 
         }
