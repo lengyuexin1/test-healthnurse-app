@@ -232,6 +232,7 @@
           "path": "pages/Servicestore/setUpTextDetails",
           "style": {
             "navigationBarTitleText": "机构详情",
+            "navigationStyle": "custom",
             "enablePullDownRefresh": false
           }
         },
@@ -253,6 +254,13 @@
         },
         {
           "path": "pages/Servicestore/healthproductDetails",
+          "style": {
+            "navigationBarTitleText": "乐悠产品详情",
+            "navigationStyle": "custom",
+            "enablePullDownRefresh": false
+          }
+        },{
+          "path": "pages/Servicestore/productDetails",
           "style": {
             "navigationBarTitleText": "乐悠产品详情",
             "navigationStyle": "custom",

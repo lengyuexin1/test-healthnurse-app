@@ -234,7 +234,8 @@ const searchinp = (item: any) => {
 
 const toclassifyPage = (item: any) => {
     console.log('跳转分类页面', item)
-
+    gotogoodsDetail(item.productId)
+return
     if (item.id == '90') {
         gotoserviceLnnerPage({ id: 88 })
         return

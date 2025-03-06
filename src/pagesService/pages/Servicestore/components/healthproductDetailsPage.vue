@@ -251,13 +251,13 @@
             <template #bottom>
                 <div class="bottom_btn">
                     <div class="contact" @click="tobay">
-                        <text class="contact_text"> 立即咨询</text>
-                        <text class="contact_price">
-                            ￥
-                            <text class="contact_price_text">{{ moneyFilter(data.agencyObj.price) }}</text>
-                            <text>/{{ data.agencyObj.unit == 1 ? '日' : '月' }}</text>
+                        <text class="contact_text"> 立即购买</text>
+<!--                        <text class="contact_price">-->
+<!--                            ￥-->
+<!--                            <text class="contact_price_text">{{ moneyFilter(data.agencyObj.price) }}</text>-->
+<!--                            <text>/{{ data.agencyObj.unit == 1 ? '日' : '月' }}</text>-->
 
-                        </text>
+<!--                        </text>-->
                     </div>
                 </div>
             </template>
@@ -413,67 +413,67 @@ const tochoiceDetails = (itemId: string, tologin: boolean = false) => {
 }
 
 const tobay = () => {
-    PlatformManage.getToken().then((token: any) => {
-        console.log(token)
-        console.log(data.agencyObj)
-        createTeam({
-            userId: token.id,
-            userName: token.nickname,
-            userThumb: token.avatar,
-            flag: 1, // 1小程序用户，2服务人员
-            shopId: props.shopId,
-            type: 2 // 1平台，2店铺
-        }).then((res: any) => {
-            console.log(res)
-            gotoChatPage({
-                to: res.tid,
-                scene: 'customer',
-                originPage: 'pagesService/pages/Servicestore/healthproductDetails'
-            })
-        })
-    })
-    // // 跳转购买页面传入2表示机构订单
-    // const uniqueId = TempStorage.savewx({
-    //     itemId: data.agencyObj.id
-    // })
-    // // #ifdef MP-WEIXIN
-    // gotoBalanceOrder(uniqueId, 2)
-    // // #endif
-    //
-    //
-    // // #ifdef APP-PLUS
-    // const payJSON = JSON.stringify({
-    //     itemId: data.agencyObj.id
-    // })
-    // const shareType = import.meta.env.VITE_WEIXIN_OPEN
-    //
-    // // APP跳转小程序进行支付
-    // plus.share.getServices((res: any) => {
-    //     let sweixin = null as any
-    //     for (const i in res) {
-    //         if (res[i].id == 'weixin') {
-    //             sweixin = res[i]
-    //         }
-    //     }
-    //     // 唤醒微信小程序
-    //     if (sweixin) {
-    //         uni.hideLoading()
-    //
-    //         PlatformManage.getToken().then((res: any) => {
-    //             console.log('获取userinfo', res)
-    //             sweixin.launchMiniProgram({
-    //                 id: 'gh_c2469c570746',  // 小程序的原始ID，微信公众平台设置里有
-    //                 type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
-    //                 path: `/pagesOrder/pages/balanceOrder/balanceOrder?payJSON=${payJSON}&userId=${res.id}&handle=2`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
-    //                 extraData: {
-    //                     'payJSON': payJSON
-    //                 }
-    //             })
+    // PlatformManage.getToken().then((token: any) => {
+    //     console.log(token)
+    //     console.log(data.agencyObj)
+    //     createTeam({
+    //         userId: token.id,
+    //         userName: token.nickname,
+    //         userThumb: token.avatar,
+    //         flag: 1, // 1小程序用户，2服务人员
+    //         shopId: props.shopId,
+    //         type: 2 // 1平台，2店铺
+    //     }).then((res: any) => {
+    //         console.log(res)
+    //         gotoChatPage({
+    //             to: res.tid,
+    //             scene: 'customer',
+    //             originPage: 'pagesService/pages/Servicestore/healthproductDetails'
     //         })
-    //     }
+    //     })
     // })
-    //
-    // // #endif
+    // 跳转购买页面传入2表示机构订单
+    const uniqueId = TempStorage.savewx({
+        itemId: data.agencyObj.id
+    })
+    // #ifdef MP-WEIXIN
+    gotoBalanceOrder(uniqueId, 2)
+    // #endif
+
+
+    // #ifdef APP-PLUS
+    const payJSON = JSON.stringify({
+        itemId: data.agencyObj.id
+    })
+    const shareType = import.meta.env.VITE_WEIXIN_OPEN
+
+    // APP跳转小程序进行支付
+    plus.share.getServices((res: any) => {
+        let sweixin = null as any
+        for (const i in res) {
+            if (res[i].id == 'weixin') {
+                sweixin = res[i]
+            }
+        }
+        // 唤醒微信小程序
+        if (sweixin) {
+            uni.hideLoading()
+
+            PlatformManage.getToken().then((res: any) => {
+                console.log('获取userinfo', res)
+                sweixin.launchMiniProgram({
+                    id: 'gh_c2469c570746',  // 小程序的原始ID，微信公众平台设置里有
+                    type: shareType, // 小程序版本  0-正式版； 1-测试版； 2-体验版。
+                    path: `/pagesOrder/pages/balanceOrder/balanceOrder?payJSON=${payJSON}&userId=${res.id}&handle=2`, // 小程序的页面，使用传递的参数在小程序内部判断跳转到指定页面
+                    extraData: {
+                        'payJSON': payJSON
+                    }
+                })
+            })
+        }
+    })
+
+    // #endif
 }
 
 

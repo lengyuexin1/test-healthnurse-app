@@ -7,7 +7,7 @@
         >
             <template #top>
                 <PageTopbg></PageTopbg>
-                <bc-page-navbar :title="'机构详情'">
+                <bc-page-navbar :title="pageTitle">
                     <!--                        <template #back>-->
                     <!--                            <view class="nav_back" @click="goback">-->
                     <!--                                <TnIcon name="left" color="#333333" size="38" :bold="true"/>-->
@@ -337,21 +337,21 @@ import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { getAssetsPic } from '@/common/setPicture'
-import { formattime } from '@/common/formatTime'
 import BCNotify from '@/components/notify/index.vue'
 
-import { sendMobileCode, getDestroyInfo, unHealthShop, addShop } from '@/api/user-api'
-import { organizationDetail, agencylist, getOrganEsList, prebookSave } from '@/api/service-api'
+import { addShop, getDestroyInfo, sendMobileCode, unHealthShop } from '@/api/user-api'
+import { agencylist, getOrganEsList, organizationDetail, prebookSave } from '@/api/service-api'
 import { PlatformManage } from '@bc/sys'
-import { ref, reactive, computed, onMounted, onBeforeMount, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { onLoad } from "@dcloudio/uni-app"
 import dayjs from "dayjs" // Assuming you're using vue-router
-import { gototextInstitution, gotoimgdetails } from '@/routes/plateform-routes'
+import { gotoimgdetails, gotoproductDetails, gototextInstitution } from '@/routes/plateform-routes'
 import { gotoLogin } from "@/routes/public-routes"
 import { gotohealthproductDetails } from "@/routes/service-routes"
 
 const route = useRoute()
+const pageTitle = ref('')
 const authpup = ref()
 const countdown = ref(0)
 const makeType = ref(1)
@@ -463,7 +463,8 @@ const tuproduct = (itemId: any) => {
             }, 2000)
         }
         else {
-            gotohealthproductDetails({ itemId, shopId: detailObj.shopId })
+            gotoproductDetails(itemId, detailObj.shopId)
+            // gotohealthproductDetails({ itemId, shopId: detailObj.shopId })
         }
     })
 }
@@ -531,12 +532,7 @@ onLoad((options: any) => {
 })
 
 onMounted(() => {
-    if (process.env.PLATFORM === 'app') {
-        // This will be executed in APP-PLUS
-    }
-    else {
-        // getLocation()
-    }
+
 })
 
 watch(() => route, (newVal) => {
@@ -597,8 +593,7 @@ const getCode = async () => {
             }, 1000)
         }
 
-    }
-    catch (err) {
+    } catch (err) {
         bcNotify.value.show(err.message)
     }
 
@@ -638,8 +633,7 @@ const queryList = async () => {
             query: { businessType: 4 }
         })
         dataList.value = res
-    }
-    catch (err) {
+    } catch (err) {
         console.log(err)
     }
 }
@@ -666,8 +660,7 @@ const appointment = async () => {
         makeType.value = 3
         detailObj.phone = ''
         detailObj.code = ''
-    }
-    catch (error) {
+    } catch (error) {
         bcNotify.value.show(error.message)
     }
 }
@@ -680,12 +673,12 @@ const getorganizationDetail = async (shopId, isAd) => {
         getDestroyInfo().then(res => {
             detailObj.mobile = res.mobile
         })
+        pageTitle.value = res.shopName
         Object.assign(detailObj, res)
         isColl.value = res.isFavorite
         // 注释上报
         // appear({ shopId })
-    }
-    catch (err) {
+    } catch (err) {
         console.log(err)
     }
 }
@@ -695,8 +688,7 @@ const getagencylist = async (organizationId: any) => {
         agencylist({ pageSize: 10, pageNumber: 1, query: { organizationId } }).then((res: any) => {
             productList.value = res.data
         })
-    }
-    catch (err) {
+    } catch (err) {
         console.log(err)
     }
 }

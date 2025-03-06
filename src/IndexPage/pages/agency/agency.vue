@@ -99,10 +99,10 @@
                             <div v-for="(item, index) in data.priceItemlist" :key="index"
                                  :class="{ 'isshow_region': index == data.priceIndex }" class="priceItem"
                                  @click="clickpriceItem(item, index)">
-                                <text v-if="!item.minPrice">{{ item.maxPrice }}以下</text>
-                                <text v-if="item.minPrice && item.maxPrice">{{ item.minPrice }}-{{ item.maxPrice }}
+                                <text v-if="!item.minPrice">{{ moneyFilter(item.maxPrice) }}以下</text>
+                                <text v-if="item.minPrice && item.maxPrice">{{ moneyFilter(item.minPrice) }}-{{ moneyFilter(item.maxPrice) }}
                                 </text>
-                                <text v-if="!item.maxPrice">{{ item.minPrice }}以上</text>
+                                <text v-if="!item.maxPrice">{{ moneyFilter(item.minPrice) }}以上</text>
                             </div>
                         </div>
                     </div>
@@ -143,6 +143,7 @@ import agencyItem from "@/components/agencyItem/agencyItem.vue"
 import { computed, onMounted, reactive, ref, watch } from "vue"
 import { organizationList } from "@/api/service-api"
 import { getSonList } from "@/api/user-api"
+import { moneyFilter } from "@/common/filters"
 
 const authpup = ref()
 const paging = ref()

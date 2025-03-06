@@ -47,12 +47,12 @@
                     <!--                            <TnIcon name="right" color="#BEBEBE" size="30"></TnIcon>-->
                     <!--                        </view>-->
                     <!--                    </view>-->
-                    <!--                    <view class="operate_item" @click="toReportList">-->
-                    <!--                        <view class="operate_title">举报管理</view>-->
-                    <!--                        <view class="operate_right">-->
-                    <!--                            <TnIcon name="right" color="#BEBEBE" size="30"></TnIcon>-->
-                    <!--                        </view>-->
-                    <!--                    </view>-->
+                    <view class="operate_item" @click="toReportList">
+                        <view class="operate_title">举报管理</view>
+                        <view class="operate_right">
+                            <TnIcon name="right" color="#BEBEBE" size="30"></TnIcon>
+                        </view>
+                    </view>
                 </view>
 
 

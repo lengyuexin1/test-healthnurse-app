@@ -107,7 +107,7 @@ export const addShopBrowerHistory = (req: _v1_bc_app_shop_brower_history_add_pos
 }
 
 // 加入足迹
-export const addItemBrowerHistory = (req: _v1_bc_app_item_brower_history_add_post_req) => {
+export const addItemBrowerHistory = (req: any) => {
     return http.user.post('/v1/bc/app/item_browse_history/add', req)
 }
 

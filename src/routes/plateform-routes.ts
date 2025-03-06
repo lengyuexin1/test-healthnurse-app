@@ -103,11 +103,11 @@ export const gotochoiceDetails = (itemId: any, isAd: any = 0, tologin = false) =
 /** 产品详情 */
 export const gotoproductDetails = (itemId: any, shopId: any, shopName: any, tologin = false) => {
     const route = {
-        path: '/Channel/pages/orderConfirm/productDetails',
+        path: '/pagesService/pages/Servicestore/productDetails',
         query: { itemId, shopId, shopName }
     } as any
     if (!tologin) {
-        return pageController.isTokenPush(route)
+        return pageController.push(route)
     }
     else {
         return pageController.logingPush(route, '请先登录')

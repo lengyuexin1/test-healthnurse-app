@@ -9,7 +9,9 @@
               :empty-view-img-style="{ width: '320rpx',height: '320rpx' }"
               :auto="false"
         >
-
+            <template #top>
+                <bc-page-navbar :title="pageTitle"></bc-page-navbar>
+            </template>
             <view class="text_details">
                 <view class="text_box" v-if="detailObj.content">
                     {{ detailObj.content }}
@@ -21,16 +23,18 @@
 </template>
 <script setup>
 import { organizationDetail } from '@/api/service-api'
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { onLoad } from '@dcloudio/uni-app'
 
 const route = useRoute()
 const detailObj = reactive({})
+const pageTitle = ref('')
 onLoad(async (options) => {
 
     const res = await organizationDetail({ shopId: options.itemId, isAd: 0 })
     Object.assign(detailObj, res)
+    pageTitle.value = res.headline
 })
 
 </script>

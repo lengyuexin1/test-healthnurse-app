@@ -59,7 +59,7 @@ class PageController {
 
     isTokenPush(route: IRoute) {
         const url = UrlTools.buildUrlByParams(route.path, route.query)
-        if (!uni.getStorageSync('USER_MOD@app_token')) {
+        if (!uni.getStorageSync('USER_MOD@token_token')) {
             uni.showModal({
                 content: '登录已失效, 请重新登陆',
                 success: function(res) {
