@@ -336,7 +336,7 @@ const confirmDel = () => {
 
         // // 如果该店铺下只有一个商品，删除商品后，删除该店铺
         // if (props.dataList[data.delGoodsItemIndex].productList.length == 0) {
-        //     props.dataList.splice(data.delGoodsItemIndex, 1)
+        props.dataList.splice(data.delGoodsItemIndex, 1)
         // }
 
         // 修改标题的商品总数
