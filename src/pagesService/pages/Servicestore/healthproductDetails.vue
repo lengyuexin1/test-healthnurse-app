@@ -1,9 +1,9 @@
 <template>
     <view class="container">
-        <healthproductDetailsPage ref="healthproductRef" :itemId="data.itemId" @saveShareObj="saveShareObj"></healthproductDetailsPage>
+        <healthproductDetailsPage ref="healthproductRef" :itemId="data.itemId" :shopId="data.shopId" @saveShareObj="saveShareObj"></healthproductDetailsPage>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 import healthproductDetailsPage from './components/healthproductDetailsPage.vue'
@@ -13,6 +13,7 @@ import { onLoad, onShareAppMessage } from '@dcloudio/uni-app'
 
 interface Data {
     itemId: string,
+    shopId: string,
     shareObj: any,
     shareId: string,
 }
@@ -30,6 +31,7 @@ onMounted(() => {
 
 onLoad((option:any)=>{
     data.itemId = option.itemId
+    data.shopId = option.shopId
 })
 
 // 保存分享信息
@@ -56,8 +58,8 @@ onShareAppMessage((res:any)=>{
 //#endif
 
 </script>
-  
+
 <style lang="scss" scoped>
 
 </style>
- 
+

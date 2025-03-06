@@ -546,6 +546,7 @@ const clickwaterItem = (item:any) => {
     padding: 20rpx;
     position: fixed;
     bottom: 0;
+    z-index: 10;
     background-color: #FFFFFF;
     box-shadow: 0 -4rpx 12rpx 2rpx rgba(0, 0, 0, .06);
 
