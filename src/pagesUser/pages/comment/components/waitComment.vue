@@ -29,7 +29,7 @@ const props = defineProps({
 })
 
 const formatTime = (date: any) => {
-    const datetime = dayjs(date)
+    const datetime = dayjs(date * 1000)
     return datetime.format('YYYY/MM/DD HH:mm:ss')
 }
 
