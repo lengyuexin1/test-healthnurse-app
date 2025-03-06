@@ -1,30 +1,30 @@
 <template>
     <view class="container">
         <z-paging
-            ref="paging" 
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
         >
             <view class="pageGoback_icon" @click="goback">
                 <TnIcon name="left" color="#fff" size="38" :bold="true"/>
             </view>
-            <view class="video_swiper_box" :style="'height:'+ data.screenHeight +'px'">
-                <swiper 
-                    class="swiper" 
-                    :autoplay="false" 
-                    :vertical="true" 
+            <view class="video_swiper_box" :style="'height:' + data.screenHeight + 'px'">
+                <swiper
+                    class="swiper"
+                    :autoplay="false"
+                    :vertical="true"
                     :current="data.swiperCurrent"
                     :disable-touch="data.istouch"
                     @change="changeVideoSwiper"
                     >
-                    <swiper-item 
+                    <swiper-item
                         class="swiper_item"
                         v-for="(item, index) in data.videos" :key="item"
                     >
                     <view class="video_box" v-show="!data.show && !data.showDescPopup">
                             <!-- #ifdef MP-WEIXIN -->
                             <!-- data.showcontrols -->
-                            <video 
+                            <video
                             :id="'videoView' + index"
                             :src="data.videoDetail.videoUrl"
                             :show-fullscreen-btn="false"
@@ -48,7 +48,7 @@
                             <DomVideoPlayer
                                 ref="domVideoPlayer"
                                 :src="data.videoDetail.videoUrl"
-                                
+
                                 :controls="true"
                                 :autoplay="false"
                                 :loop="true"
@@ -59,7 +59,7 @@
                             />
                             <!-- #endif -->
 
-                            
+
 
                             <view class="full_screen_btn">
                                 <image
@@ -70,7 +70,7 @@
                                 <view class="full_screen_text" @click="toFullscreen">全屏观看</view>
                             </view>
                             <!-- #ifdef MP-WEIXIN -->
-                            <image  
+                            <image
                                 @click="clickVideo"
                                 v-if="!data.isPlay"
                                 class="play_icon"
@@ -80,7 +80,7 @@
                             <!-- #endif -->
 
                         </view>
-                        
+
                         <view class="fixed_box">
                             <view class="author_box" @click="tofollow">
                                 <image
@@ -99,7 +99,7 @@
                                 <view class="operation_item" @click="tolike">
                                     <image
                                         class="operation_img"
-                                        :src="getAssetsUrl( data.videoDetail.isLike == 0 ? '/leyou/video/like-icon.svg' : '/leyou/video/active-like-icon.svg') " 
+                                        :src="getAssetsUrl( data.videoDetail.isLike == 0 ? '/leyou/video/like-icon.svg' : '/leyou/video/active-like-icon.svg') "
                                         mode="scaleToFill"
                                     />
                                     <view class="operation_text">{{ data.videoDetail.cntLike }}</view>
@@ -115,7 +115,7 @@
                                 <view class="operation_item" @click="tocollection">
                                     <image
                                         class="operation_img"
-                                        :src="getAssetsUrl(data.videoDetail.isFavorite == 0 ? '/leyou/video/collection-icon.svg':'/leyou/video/active-collection-icon.svg')" 
+                                        :src="getAssetsUrl(data.videoDetail.isFavorite == 0 ? '/leyou/video/collection-icon.svg' : '/leyou/video/active-collection-icon.svg')"
                                         mode="scaleToFill"
                                     />
                                     <view class="operation_text">{{ data.videoDetail.cntCollect }}</view>
@@ -138,15 +138,15 @@
                             <view class="course_author">{{ data.videoDetail.accountName }}</view>
                             <view class="course_dace" v-if="data.videoDetail.desc">
                                 <template v-if="props.videoPagetype == 3" >
-                                    <text 
-                                        class="tagtext" 
-                                        v-for="(Tagitem,index) in data.videoDetail.tagNames" 
+                                    <text
+                                        class="tagtext"
+                                        v-for="(Tagitem,index) in data.videoDetail.tagNames"
                                         :key="index"
                                     >
                                         #{{ Tagitem }}
                                     </text>
                                 </template>
-                                
+
                                 <text>{{ coursedesc(data.videoDetail.desc) }}</text>
                                 <text class="show_dace_btn" @click="data.showDescPopup = true">展开</text>
                             </view>
@@ -170,7 +170,7 @@
                                 <view class="course_text">
                                     尊重原创，严禁转载
                                 </view>
-                                <view v-if="props.videoPagetype == 1" class="bulletchat_box" :class="{ 'is_open' : !data.showBarrage }" @click="changeBarrage">
+                                <view v-if="props.videoPagetype == 1" class="bulletchat_box" :class="{ 'is_open': !data.showBarrage }" @click="changeBarrage">
                                     <view class="open_btn" v-if="data.showBarrage">
                                         <text>开</text>
                                     </view>
@@ -183,7 +183,7 @@
                             </view>
                         </view>
 
-                        
+
 
                     </swiper-item>
                 </swiper>
@@ -195,7 +195,7 @@
                 <view class="comment_box">
                     <view class="comment_top">
                         <view></view>
-                        <view class="comment_number">{{ Number(data.total) ? (data.total+' 条评论') : '暂无评论' }}</view>
+                        <view class="comment_number">{{ Number(data.total) ? (data.total + ' 条评论') : '暂无评论' }}</view>
                         <view @click="data.show = false">
                             <TnIcon name="close" color="#333333" size="38" :bold="true"/>
                         </view>
@@ -222,7 +222,7 @@
                                         <view class="del_text" v-if="item.isUser == 1" @click="todeleteComment(item.commentId,1)">删除</view>
                                     </view>
 
-                                    
+
                                     <view class="comment_item not_bottom" v-for="sonitem in item.commentRelyLists" :key="sonitem.id">
                                         <view class="comment_left" >
                                             <image
@@ -289,7 +289,7 @@
                         <view v-if="!data.showtextbtn" class="bottom_inp" @click="showtextarea">
                             善语结善缘，恶言伤人心~~
                         </view>
-                        <view 
+                        <view
                             v-else
                             class="textarea_box"
                             >
@@ -320,10 +320,10 @@
                             <view class="send_btn" @click="pushcomment">发送</view>
                         </view>
 
-                        <view class="ct_emoji_Box" :class="{ 'hidden_box' : data.hiddenEmojiBox }">
+                        <view class="ct_emoji_Box" :class="{ 'hidden_box': data.hiddenEmojiBox }">
                             <shinnXEmoji :show="true" @change="changeEmoji"></shinnXEmoji>
                         </view>
-                        
+
                         <view class="bottom_space" v-if="data.keyboardH == 0" ></view>
                         <view class="bottom_space" v-else :style="{ 'height': data.keyboardH  + 'px' }"></view>
                     </view>
@@ -383,9 +383,9 @@
                     <view class="all_son_comment">全部回复</view>
                     <scroll-view :scroll-y="true" >
                         <view class="son_comment_scroll">
-                            <view 
-                            class="son_comment_item" 
-                            :class="{ 'not_bottom': index + 1 == data.Soncomment.length }" 
+                            <view
+                            class="son_comment_item"
+                            :class="{ 'not_bottom': index + 1 == data.Soncomment.length }"
                             v-for="(item,index) in data.Soncomment" :key="item.commentId"
                             >
                                 <image
@@ -450,7 +450,7 @@
                         <view v-if="!data.showtextbtn" class="bottom_inp" @click="showtextarea">
                             善语结善缘，恶言伤人心~~
                         </view>
-                        <view 
+                        <view
                             v-else
                             class="textarea_box"
                             >
@@ -481,10 +481,10 @@
                             <view class="send_btn" @click="pushcomment">发送</view>
                         </view>
 
-                        <view class="ct_emoji_Box" :class="{ 'hidden_box' : data.hiddenEmojiBox }">
+                        <view class="ct_emoji_Box" :class="{ 'hidden_box': data.hiddenEmojiBox }">
                             <shinnXEmoji :show="true" @change="changeEmoji"></shinnXEmoji>
                         </view>
-                        
+
                         <view class="bottom_space" v-if="data.keyboardH == 0" ></view>
                         <view class="bottom_space" v-else :style="{ 'height': data.keyboardH  + 'px' }"></view>
                     </view>
@@ -507,7 +507,7 @@
                         <TnIcon name="right" color="#333333"/>
                     </view>
                 </view>
-                
+
 
             </TnOverlay>
 
@@ -546,7 +546,7 @@
                     </view>
                 </view>
 
-                
+
             </TnPopup>
 
 
@@ -577,12 +577,12 @@
 
 	    <BCNotify ref="bcNotify"></BCNotify>
 
-        <shareView 
-        ref="shareBox" 
-        @reportFun="reportFun" 
-        @sharePage="sharePage" 
-        @sharePoster="sharePoster" 
-        :status="data.status" 
+        <shareView
+        ref="shareBox"
+        @reportFun="reportFun"
+        @sharePage="sharePage"
+        @sharePoster="sharePoster"
+        :status="data.status"
         :imgUrl="data.shareimgUrl"
         :showReport="data.videoDetail.isUser == 1 ? false : true"
 
@@ -592,7 +592,7 @@
 
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted, getCurrentInstance, nextTick } from 'vue'
 
@@ -613,12 +613,12 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
 import TnOverlay from '@tuniao/tnui-vue3-uniapp/components/overlay/src/overlay.vue'
 
-import { 
+import {
     contentShareDetails,
     articleaddView,
     viewTime,
     retransmission,
-    
+
     unCommentLike,
     commentLike,
 
@@ -636,7 +636,7 @@ import {
     newfollow,
     createVideoList,
     chatList,
-    escontentlist,
+    escontentlist
 } from '@/api/create-api'
 
 import { agoTime } from '@/common/formatTime'
@@ -658,6 +658,7 @@ import emojiItem from '@/pagesCnt/components/emojiItem/emojiItem.vue'
 interface Props {
     videoId:string,
     videoPagetype:number,
+    categoryId: string
 }
 const props = defineProps<Props>()
 
@@ -725,7 +726,7 @@ interface Data{
     showBarrage: boolean,
     danmuList: any,
     videoWidth: number,
-    videoHeight: number,  
+    videoHeight: number,
     showTouch: boolean
     storageItem: any
     showItemdel:boolean
@@ -736,46 +737,46 @@ interface Data{
 
 }
 const data = reactive<Data>({
-    dataList:[],
+    dataList: [],
     screenHeight: 700,
-    getpageTopH:84,
-    videoIndex:0,
-    pageinstance:{},
+    getpageTopH: 84,
+    videoIndex: 0,
+    pageinstance: {},
     minOffset: 20, //最小偏移量，低于这个值不响应滑动处理
     minTime: 60, // 最小时间，单位：毫秒，低于这个值不响应滑动处理
     startX: 0, //开始时的X坐标
     startY: 0, //开始时的Y坐标
     startTime: 0, //开始时的毫秒数
-    swiperCurrent:0,
+    swiperCurrent: 0,
     touchNum: 0,
-    show:false,
-    istouch:false,//是否禁止用户对轮播图的滑动
-    overlayHeight:0,
-    keyboardH:0,
-    iskeyboard:false,
-    textMsg:'',
-    showtextbtn:false,
+    show: false,
+    istouch: false, //是否禁止用户对轮播图的滑动
+    overlayHeight: 0,
+    keyboardH: 0,
+    iskeyboard: false,
+    textMsg: '',
+    showtextbtn: false,
 
-    videos:[],
-    pageNumber:1,
+    videos: [],
+    pageNumber: 1,
     pageSize: 10,
-    
-    videoDetail:{},//视频详情
 
-    commentList:[],
-    total:0,
+    videoDetail: {}, //视频详情
 
-    showOverlay:false,
+    commentList: [],
+    total: 0,
 
-    detailObj:{},
-    showDescBtn:false,
-    showDescPopup:false,
-    isPlay:false,
-    isFull:false,
-    showcontrols:true,
+    showOverlay: false,
 
-    status:1,
-    shareimgUrl:'',
+    detailObj: {},
+    showDescBtn: false,
+    showDescPopup: false,
+    isPlay: false,
+    isFull: false,
+    showcontrols: true,
+
+    status: 1,
+    shareimgUrl: '',
     startlooktime: 0,
 
     upusercommentId: '',
@@ -792,7 +793,7 @@ const data = reactive<Data>({
     placeholderText: '说点什么吧~',
     isNeedlogin: false,
 
-    shopReviewsList:{},
+    shopReviewsList: {},
 
     upCommentTime: 0,
     bulletChatList: [],
@@ -800,14 +801,14 @@ const data = reactive<Data>({
     danmuList: [],
 
     videoWidth: 0,
-    videoHeight: 0,  
+    videoHeight: 0,
     showTouch: false,
     storageItem: {},
-    showItemdel:true,
-    touchTitle:"",
+    showItemdel: true,
+    touchTitle: "",
     isTopcomment: true,
-    showBottom:true,
-    hiddenEmojiBox: true,
+    showBottom: true,
+    hiddenEmojiBox: true
 
 })
 
@@ -817,8 +818,8 @@ const domVideoPlayer = ref() as any
 onMounted(() => {
 
     // #ifdef APP-PLUS || H5
-    console.log('domVideoPlayer',domVideoPlayer);
-    
+    console.log('domVideoPlayer', domVideoPlayer)
+
 
     // setTimeout(() => {
     //     const currRef = domVideoPlayer.value
@@ -826,55 +827,56 @@ onMounted(() => {
     // }, 500)
 
     // #endif
-    
+
     getpageTop()
 
-    videoDetail(props.videoId);
-    articleaddView({articleId:props.videoId}).then(()=>{})
+    videoDetail(props.videoId)
+    articleaddView({ articleId: props.videoId }).then(() => {})
 
-    data.startlooktime = new Date().getTime();
+    data.startlooktime = new Date().getTime()
 
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         data.isNeedlogin = isRequireLogin
     })
 
-    console.log('props.videoPagetype',props.videoPagetype);
+    console.log('props.videoPagetype', props.videoPagetype)
 
     data.videos.unshift(props.videoId)
     getVideos()
-    
+
     initVideo()
 })
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
-const formatTime = computed(()=>(time:number)=>{
+const formatTime = computed(() => (time:number) => {
     return agoTime(time)
 })
-const coursedesc = computed(()=>(text:string)=>{
+const coursedesc = computed(() => (text:string) => {
     if (!text) {
         return text
     }
     if (text.length > 30) {
         data.showDescBtn = true
-        return text.slice(0,30) + '...'
-    }else{
+        return text.slice(0, 30) + '...'
+    }
+    else {
         data.showDescBtn = false
         return text
     }
 })
 
-const instance = getCurrentInstance(); // 获取组件实例
-const query = uni.createSelectorQuery().in(instance);
+const instance = getCurrentInstance() // 获取组件实例
+const query = uni.createSelectorQuery().in(instance)
 
 // 获取顶部高度以及计算页面高度
-const getpageTop = () => {  
+const getpageTop = () => {
 
-    const winInfo = uni.getSystemInfoSync();
-    data.videoWidth = winInfo.windowWidth; // 设备宽度
-    data.videoHeight = winInfo.windowHeight; // 设备高度
-    data.screenHeight = winInfo.windowHeight; // 设备高度
+    const winInfo = uni.getSystemInfoSync()
+    data.videoWidth = winInfo.windowWidth // 设备宽度
+    data.videoHeight = winInfo.windowHeight // 设备高度
+    data.screenHeight = winInfo.windowHeight // 设备高度
 
     // setTimeout(()=>{
     //     query.select( '#pageTop' ).boundingClientRect((view:any) => { //目标位置的节点：类class或者id
@@ -882,7 +884,7 @@ const getpageTop = () => {
     //         data.screenHeight = (data.videoHeight - data.getpageTopH)
 
     //         console.log('data.getpageTopH',data.getpageTopH);
-    //         console.log('data.screenHeight',data.screenHeight);            
+    //         console.log('data.screenHeight',data.screenHeight);
 
     //     }).exec()
     // },800)
@@ -893,29 +895,29 @@ const paging = ref()
 const queryList = (pageNumber:number, pageSize:number) => {
     data.pageNumber = pageNumber
     if (data.pageNumber == 1) {
-        videoDetail(props.videoId);
+        videoDetail(props.videoId)
         return
     }
 }
 
 const getVideos = () => {
     if (props.videoPagetype == 0) {
-        console.log('康养百科视频列表');
+        console.log('康养百科视频列表')
         escontentlist({
             pageNumber: data.pageNumber,
             pageSize: 6,
             query: {
-                categoryIds: [9],
+                categoryIds: props.categoryId ? [props.categoryId] : [],
                 sortType: null,
-                type: 2,
+                type: 2
             }
         }).then((res:any) => {
             handleVideos(res.data)
-            
+
         })
     }
     if (props.videoPagetype == 1) {
-        console.log('聊天视频列表');
+        console.log('聊天视频列表')
         chatList({
             pageNumber: data.pageNumber,
             pageSize: 6,
@@ -930,7 +932,7 @@ const getVideos = () => {
         })
     }
     if (props.videoPagetype == 2) {
-        console.log('发现、附近视频列表');
+        console.log('发现、附近视频列表')
         nearbyList({
             pageNumber: data.pageNumber,
             pageSize: 10,
@@ -942,13 +944,13 @@ const getVideos = () => {
         })
     }
     if (props.videoPagetype == 3) {
-        console.log('创作短片视频列表');
+        console.log('创作短片视频列表')
         createVideoList({
             pageNumber: data.pageNumber,
             pageSize: 6,
-            query: {name: null}
+            query: { name: null }
         }).then((res:any) => {
-            console.log('videosres',res.data);
+            console.log('videosres', res.data)
 
             handleVideos(res.data)
 
@@ -964,7 +966,7 @@ const getVideos = () => {
 
 // 处理视频列表id
 const handleVideos = (list:any) => {
-    let videosList = list.map((item:any) => {
+    const videosList = list.map((item:any) => {
         return item.id
     })
 
@@ -975,8 +977,8 @@ const handleVideos = (list:any) => {
 
     data.videos = data.videos.filter((value, index, self) => self.indexOf(value) === index)
 
-    console.log('获取到并处理data.videos',data.videos);
-    
+    console.log('获取到并处理data.videos', data.videos)
+
 
 }
 
@@ -985,54 +987,54 @@ const changeVideoSwiper = (e:any) => {
     // #ifdef MP-WEIXIN
 
     // 上一个视频
-    const firstVideo = uni.createVideoContext(`videoView${data.swiperCurrent}`,instance);
-    firstVideo.pause();
+    const firstVideo = uni.createVideoContext(`videoView${data.swiperCurrent}`, instance)
+    firstVideo.pause()
 
-    data.swiperCurrent = e.detail.current;
+    data.swiperCurrent = e.detail.current
     // 下一个视频
 
-    videoDetail(data.videos[data.swiperCurrent]);
-    
-    const secondVideo = uni.createVideoContext(`videoView${data.swiperCurrent}`,instance);
-    secondVideo.play();
-    
+    videoDetail(data.videos[data.swiperCurrent])
+
+    const secondVideo = uni.createVideoContext(`videoView${data.swiperCurrent}`, instance)
+    secondVideo.play()
+
     // #endif
 
     // #ifdef APP-PLUS || H5
     // app视频ref
     const appFirstVideo = domVideoPlayer.value[data.swiperCurrent]
-    appFirstVideo.pause();
-    
-    data.swiperCurrent = e.detail.current;
+    appFirstVideo.pause()
 
-    videoDetail(data.videos[data.swiperCurrent]);
+    data.swiperCurrent = e.detail.current
+
+    videoDetail(data.videos[data.swiperCurrent])
 
     const appSecondVideo = domVideoPlayer.value[data.swiperCurrent]
-    appSecondVideo.play();
+    appSecondVideo.play()
 
-    console.log('domVideoPlayer',domVideoPlayer);
-    console.log('data.swiperCurrent',data.swiperCurrent);
+    console.log('domVideoPlayer', domVideoPlayer)
+    console.log('data.swiperCurrent', data.swiperCurrent)
 
     // #endif
 
-    if((data.swiperCurrent + 1) == data.videos.length){
+    if ((data.swiperCurrent + 1) == data.videos.length) {
         data.pageNumber = data.pageNumber + 1
         getVideos()
-        console.log('继续获取');
+        console.log('继续获取')
     }
 
 
-    console.log('data.videos',data.videos);
+    console.log('data.videos', data.videos)
 }
 
 
 const showRefresh = () => {
-    (paging.value as any).reload();
+    (paging.value as any).reload()
 }
 const postviewTime = () => {
     const endlooktime = new Date().getTime()
     const time = (endlooktime - data.startlooktime) / 1000
-    
+
     viewTime({
         viewTime: time,
         articleId: props.videoId
@@ -1047,9 +1049,9 @@ const bcNotify = ref()
 
 const tologin = () => {
     bcNotify.value.show('请先登录')
-    setTimeout(()=>{
+    setTimeout(() => {
         gotoLogin({})
-    },1000)
+    }, 1000)
 }
 
 // 视频详情
@@ -1058,89 +1060,89 @@ const videoDetail = (contentId:string) => {
         if (isRequireLogin) {
             contentShareDetails({
                 contentId
-            }).then((res : any)=>{
+            }).then((res : any) => {
                 handleObj(res)
-            }).catch((error:any)=>{
-                console.log('error',error);
+            }).catch((error:any) => {
+                console.log('error', error)
                 bcNotify.value.error('视频不存在')
-                setTimeout(()=>{
+                setTimeout(() => {
                     uni.navigateBack()
-                },2000)
+                }, 2000)
             })
             return
         }
 
         getnewContentDetail({
             id: contentId
-        }).then((res : any)=>{
+        }).then((res : any) => {
             handleObj(res)
-        }).catch((error:any)=>{
-            console.log('error',error);
+        }).catch((error:any) => {
+            console.log('error', error)
             bcNotify.value.error('视频不存在')
-            setTimeout(()=>{
+            setTimeout(() => {
                 uni.navigateBack()
-            },2000)
+            }, 2000)
         })
 
     })
 }
 
 const handleObj = (res:any) => {
-    data.videoDetail = res;
+    data.videoDetail = res
 
     if (data.videoDetail.status == 4) {
 	    bcNotify.value.error('视频已下架')
         setTimeout(() => {
             goback()
-        }, 2000);
+        }, 2000)
         return
     }
-    
 
-    // 
-    data.videoDetail.cntLike = Math.floor(Math.random() * 900) + 100;
-    data.videoDetail.cntComment = Math.floor(Math.random() * 900) + 100;
-    data.videoDetail.cntCollect = Math.floor(Math.random() * 900) + 100;
-    data.videoDetail.cntRetransmission = Math.floor(Math.random() * 900) + 100;
-    // 
+
+    //
+    data.videoDetail.cntLike = Math.floor(Math.random() * 900) + 100
+    data.videoDetail.cntComment = Math.floor(Math.random() * 900) + 100
+    data.videoDetail.cntCollect = Math.floor(Math.random() * 900) + 100
+    data.videoDetail.cntRetransmission = Math.floor(Math.random() * 900) + 100
+    //
 
     const shareObj = {
         title: res.title,
         imageUrl: res.cover,
         id: res.id,
-        desc: '',
+        desc: ''
     }
     data.detailObj = {
         id: res.id,
         title: res.title,
         accountName: res.accountName,
         accountThumb: res.accountThumb,
-        cover: res.cover,
+        cover: res.cover
     }
-    emit('saveShareObj',shareObj)
+    emit('saveShareObj', shareObj)
 
     initVideo()
     // 预览上报
     distinguishPreview(data.videoDetail.tagIds[0])
-    
+
 }
 
-const initVideo = () =>{
-    setTimeout(()=>{
+const initVideo = () => {
+    setTimeout(() => {
         let videoView = null
 
         // #ifdef MP-WEIXIN
-        videoView = uni.createVideoContext(`videoView${data.swiperCurrent}`,instance)
+        videoView = uni.createVideoContext(`videoView${data.swiperCurrent}`, instance)
         // #endif
 
         // #ifdef APP-PLUS || H5
         videoView = domVideoPlayer.value[data.swiperCurrent]
-        
+
         // #endif
 
 
         videoView.play()
-    },800)
+    }, 800)
 }
 
 const goback = () => {
@@ -1154,9 +1156,9 @@ const goback = () => {
 
 const toFullscreen = () => {
     // #ifdef MP-WEIXIN
-    const fullvideo = uni.createVideoContext(`videoView${data.swiperCurrent}`,instance)
+    const fullvideo = uni.createVideoContext(`videoView${data.swiperCurrent}`, instance)
     fullvideo.requestFullScreen()
-    
+
     // #endif
 
 
@@ -1193,21 +1195,21 @@ const videoTime = (e: any) => {
 
 
     // console.log('data.upCommentTime',data.upCommentTime);
-    
-    if (Math.floor(data.upCommentTime) == 1) {
-        Debounce(()=>{
-            console.log('视频播放发送上报');
 
-            
+    if (Math.floor(data.upCommentTime) == 1) {
+        Debounce(() => {
+            console.log('视频播放发送上报')
+
+
             videoPlayDistinguish(data.videoDetail.tagIds[0])
             // createCollectAndReport().videoPlayReport()
         }, 100)
     }
     if (Math.floor(data.upCommentTime) == Math.floor(duration * 0.98)) {
-        Debounce(()=>{
-            console.log('视频完播发送上报');
+        Debounce(() => {
+            console.log('视频完播发送上报')
 
-            
+
             videoOverPlayDistinguish(data.videoDetail.tagIds[0])
             // createCollectAndReport().videoPlayOverReport()
 
@@ -1216,17 +1218,17 @@ const videoTime = (e: any) => {
 
     for (let i = 0; i < data.bulletChatList.length; i++) {
         if (Math.trunc(data.upCommentTime) == data.bulletChatList[i].scrollingTime) {
-            console.log('匹配发送弹幕',data.bulletChatList[i]);
+            console.log('匹配发送弹幕', data.bulletChatList[i])
             if (data.showBarrage) {
-                console.log('发送弹幕');
-                const videoView = uni.createVideoContext(`videoView${data.swiperCurrent}`,instance)
+                console.log('发送弹幕')
+                const videoView = uni.createVideoContext(`videoView${data.swiperCurrent}`, instance)
                 videoView.sendDanmu({
                     text: data.bulletChatList[i].comment,
-                    color: '#fff',
-                });
+                    color: '#fff'
+                })
             }
-            data.bulletChatList.splice(i, 1);
-            i--; 
+            data.bulletChatList.splice(i, 1)
+            i--
             break
         }
     }
@@ -1234,7 +1236,7 @@ const videoTime = (e: any) => {
 
 
 
-    
+
 
 }
 
@@ -1253,37 +1255,37 @@ const tolike = () => {
 
     if (data.videoDetail.isLike == 0) {
         getnewLike({
-            articleId:data.videoDetail.id,
-            happyType: 98,
+            articleId: data.videoDetail.id,
+            happyType: 98
 
         }).then(() => {
-            data.videoDetail.isLike ++
-            data.videoDetail.cntLike ++
+            data.videoDetail.isLike++
+            data.videoDetail.cntLike++
 
             if (props.videoPagetype == 1) {
                 const likeChatItem = uni.getStorageSync('likeChatItem')
-                uni.setStorageSync('likeChatItem',{
+                uni.setStorageSync('likeChatItem', {
                     index: likeChatItem.index,
                     direction: likeChatItem.direction,
                     toload: true,
                     add: true,
-                    reduce: false,
+                    reduce: false
                 })
             }
 
-        }) 
-        
+        })
+
         return
     }
     unnewLike({
         articleIds: [data.videoDetail.id],
-        happyType: 98,
+        happyType: 98
 
     }).then(() => {
-        data.videoDetail.isLike --
-        data.videoDetail.cntLike --
-    }) 
-    
+        data.videoDetail.isLike--
+        data.videoDetail.cntLike--
+    })
+
 }
 
 // 视频收藏
@@ -1300,27 +1302,27 @@ const tocollection = () => {
     }
     if (data.videoDetail.isFavorite == 0) {
         newfavorite({
-            articleId:data.videoDetail.id,
-            happyType: 98,
+            articleId: data.videoDetail.id,
+            happyType: 98
 
         }).then(() => {
-            data.videoDetail.isFavorite ++ 
-            data.videoDetail.cntCollect ++ 
-            data.showOverlay = true;
-            
-            setTimeout(()=>{
+            data.videoDetail.isFavorite++
+            data.videoDetail.cntCollect++
+            data.showOverlay = true
+
+            setTimeout(() => {
                 data.showOverlay = false
-            },2000)
-        }) 
+            }, 2000)
+        })
         return
     }
     unnewFavorite({
         articleId: [data.videoDetail.id],
-        happyType: 98,
+        happyType: 98
 
     }).then(() => {
-        data.videoDetail.isFavorite --
-        data.videoDetail.cntCollect --
+        data.videoDetail.isFavorite--
+        data.videoDetail.cntCollect--
     })
 }
 
@@ -1344,40 +1346,40 @@ const tofollow = () => {
 
     if (data.videoDetail.isFans == 0) {
         newfollow({
-            accountId:data.videoDetail.accountId,
-            happyType: 98,
+            accountId: data.videoDetail.accountId,
+            happyType: 98
 
         }).then(() => {
-            data.videoDetail.isFans ++
-        }).catch((error:any)=>{
+            data.videoDetail.isFans++
+        }).catch((error:any) => {
             bcNotify.value.error(error.message)
         })
 
         return
     }
     unnewfollow({
-        accountId:data.videoDetail.accountId,
-        happyType: 98,
+        accountId: data.videoDetail.accountId,
+        happyType: 98
 
     }).then(() => {
-        data.videoDetail.isFans --
-    }).catch((error:any)=>{
+        data.videoDetail.isFans--
+    }).catch((error:any) => {
         bcNotify.value.error(error.message)
     })
-    
+
 }
 
 
 // 频道评论
 const contentcommentList = () => {
     getnewcommentList({
-        pageNumber:1,
-        pageSize:200,
-        query:{
-            articleId:data.videoDetail.id,
-            happyType: 98,
+        pageNumber: 1,
+        pageSize: 200,
+        query: {
+            articleId: data.videoDetail.id,
+            happyType: 98
         }
-    }).then((res:any)=>{
+    }).then((res:any) => {
         data.commentList = res.data
         data.total = res.total
     })
@@ -1387,21 +1389,21 @@ const getcommentRelyList = (commentId:string) => {
     getnewcommentRelyList({
         query: {
             commentId,
-            happyType: 98,
+            happyType: 98
         },
         pageNumber: 1,
         pageSize: 100
     }).then((res:any) => {
         data.Soncomment = res.data
     })
-    
+
 }
 
 // 发内容评论
 const pushcomment = () => {
 
     if (data.textMsg == '') {
-		bcNotify.value.error('请输入评论')
+        bcNotify.value.error('请输入评论')
         return
     }
     data.upusercommentId = data.upusercommentId == '' ? data.lastcomment : data.upusercommentId
@@ -1409,25 +1411,25 @@ const pushcomment = () => {
     if (data.showSonPopup && !data.isshowReply) {
 
         console.log('回复列表的回复', data.showSonPopup, !data.isshowReply)
-        topostrecover(data.commentId, data.commentId, '', '', data.textMsg,data.userId)
+        topostrecover(data.commentId, data.commentId, '', '', data.textMsg, data.userId)
 
     }
     else if (data.showSonPopup && data.isshowReply) {
 
         console.log('展开评论弹窗引用回复', data.showSonPopup, data.isshowReply)
-        topostrecover(data.commentId, data.upusercommentId, data.placeholderText, data.quoteComment, data.textMsg,data.userId)
+        topostrecover(data.commentId, data.upusercommentId, data.placeholderText, data.quoteComment, data.textMsg, data.userId)
 
     }
     else {
         if (data.isQuotereply) {
 
-        console.log('没有引用评论的回复', data.isQuotereply)
-        topostrecover(data.commentId, data.commentId, '', '', data.textMsg,data.userId)
-        data.textMsg = ''
-        return
-    }
-    topostreview(data.textMsg)
-    console.log('发送文章的评论', props.videoId)
+            console.log('没有引用评论的回复', data.isQuotereply)
+            topostrecover(data.commentId, data.commentId, '', '', data.textMsg, data.userId)
+            data.textMsg = ''
+            return
+        }
+        topostreview(data.textMsg)
+        console.log('发送文章的评论', props.videoId)
 
     }
     data.upusercommentId = ''
@@ -1443,7 +1445,7 @@ const pushcomment = () => {
 const sonbcNotify = ref()
 
 // 回复评论
-const topostrecover = (commentId:string, replyId:string, replyUser:string , quoteComment:string, content:string, replyUserId:string) => {
+const topostrecover = (commentId:string, replyId:string, replyUser:string, quoteComment:string, content:string, replyUserId:string) => {
     postnewrecover({
         commentId,
         replyId,
@@ -1454,11 +1456,11 @@ const topostrecover = (commentId:string, replyId:string, replyUser:string , quot
         articleId: data.videoDetail.id,
         utcCreated: Date.now(),
         isAuthor: 0,
-        happyType: 98,
+        happyType: 98
     }).then(() => {
         contentcommentList()
         getcommentRelyList(data.commentId)
-		sonbcNotify.value.show('回复成功')
+        sonbcNotify.value.show('回复成功')
     }).catch((res:any) => {
         sonbcNotify.value.error(res.message)
     })
@@ -1468,18 +1470,18 @@ const topostrecover = (commentId:string, replyId:string, replyUser:string , quot
 // 发文章评论
 const topostreview = (content:string) => {
     postnewreview({
-        articleId:data.videoDetail.id,
+        articleId: data.videoDetail.id,
         content,
         isAuthor: 0,
         utcCreated: Date.now(),
-        happyType: 98,
-    }).then(()=>{
-        data.videoDetail.cntComment ++
+        happyType: 98
+    }).then(() => {
+        data.videoDetail.cntComment++
         data.textMsg = ''
         contentcommentList()
-    }).catch((error:any)=>{
-		// bcNotify.value.error('评论内容包含不良信息，提交失败!')
-		bcNotify.value.error(error.message)
+    }).catch((error:any) => {
+        // bcNotify.value.error('评论内容包含不良信息，提交失败!')
+        bcNotify.value.error(error.message)
         data.textMsg = ''
     })
 
@@ -1506,13 +1508,14 @@ const todeleteComment = (id:string, isComment:number) => {
     deletenewComment({
         id,
         isComment,
-        happyType: 98,
+        happyType: 98
 
     }).then(() => {
         if (isComment) {
             contentcommentList()
             closeAction()
-        }else{
+        }
+        else {
             getcommentRelyList(data.commentId)
         }
         bcNotify.value.show('评论删除')
@@ -1520,7 +1523,7 @@ const todeleteComment = (id:string, isComment:number) => {
 
 }
 
-const changelike = (id:any,islike:number, isComment:number,) => {
+const changelike = (id:any, islike:number, isComment:number) => {
     if (data.isNeedlogin) {
         tologin()
         return
@@ -1528,31 +1531,34 @@ const changelike = (id:any,islike:number, isComment:number,) => {
     if (islike) {
         unCommentLike({
             id,
-            likeType:1,
+            likeType: 1,
             isComment
-        }).then(()=>{
+        }).then(() => {
             if (isComment == 1) {
                 contentcommentList()
-            }else{
-                getcommentRelyList(data.commentId)
             }
-        })
-
-    }else{
-        commentLike({
-            id,
-            likeType:1,
-            isComment
-        }).then(()=>{
-            if (isComment == 1) {
-                contentcommentList()
-            }else{
+            else {
                 getcommentRelyList(data.commentId)
             }
         })
 
     }
-    
+    else {
+        commentLike({
+            id,
+            likeType: 1,
+            isComment
+        }).then(() => {
+            if (isComment == 1) {
+                contentcommentList()
+            }
+            else {
+                getcommentRelyList(data.commentId)
+            }
+        })
+
+    }
+
 }
 
 
@@ -1573,7 +1579,7 @@ const showcomment = () => {
     data.istouch = true
     let videoView = null
     // #ifdef MP-WEIXIN
-    videoView = uni.createVideoContext(`videoView${data.swiperCurrent}`,instance)
+    videoView = uni.createVideoContext(`videoView${data.swiperCurrent}`, instance)
     // #endif
 
     // #ifdef APP-PLUS || H5
@@ -1586,7 +1592,7 @@ const showcomment = () => {
 const close = () => {
     let videoView = null
     // #ifdef MP-WEIXIN
-    videoView = uni.createVideoContext(`videoView${data.swiperCurrent}`,instance)
+    videoView = uni.createVideoContext(`videoView${data.swiperCurrent}`, instance)
     // #endif
 
     // #ifdef APP-PLUS || H5
@@ -1608,8 +1614,8 @@ const showMoreComment = (item:any) => {
     data.quoteComment = item.comment
     data.commentId = item.commentId
 
-    console.log('data.userId',data.userId);
-    
+    console.log('data.userId', data.userId)
+
 
     data.lastcomment = item.commentId
 
@@ -1629,7 +1635,7 @@ const showMoreComment = (item:any) => {
     }
 
     getcommentRelyList(item.commentId)
-    
+
 }
 
 // 展开更多评论之后的引用回复拉起键盘
@@ -1658,17 +1664,18 @@ const pause = () => {
 
 // 仅小程序点击视频事件
 const clickVideo = () => {
-    console.log('data.swiperCurrent',data.swiperCurrent);
-    
-    const videoView = uni.createVideoContext(`videoView${data.swiperCurrent}`,instance)
-    console.log('videoView',videoView);
-    
+    console.log('data.swiperCurrent', data.swiperCurrent)
+
+    const videoView = uni.createVideoContext(`videoView${data.swiperCurrent}`, instance)
+    console.log('videoView', videoView)
+
     if (data.isPlay) {
         videoView.pause()
-    }else{
+    }
+    else {
         videoView.play()
     }
-    console.log('单击视频',data.isPlay);
+    console.log('单击视频', data.isPlay)
 }
 
 const fullscreenchange = () => {
@@ -1711,10 +1718,10 @@ const toCollectLists = () => {
 }
 
 const toGoodsDetail = () => {
-    gotoServiceStore({shopId: data.shopReviewsList.id, isAd: 0})
+    gotoServiceStore({ shopId: data.shopReviewsList.id, isAd: 0 })
 }
 
-const shareBox = ref();
+const shareBox = ref()
 const share = () => {
     if (data.isNeedlogin) {
         tologin()
@@ -1734,7 +1741,7 @@ const closeShare = () => {
 }
 
 const sharRetransmission = () => {
-    retransmission({ articleId: props.videoId }).then(()=>{})
+    retransmission({ articleId: props.videoId }).then(() => {})
 }
 
 const sharePoster = async () => {
@@ -1742,7 +1749,7 @@ const sharePoster = async () => {
     const coverUrl = await drawBGIMG(data.videoDetail.cover)
 
     // 二维码链接图片
-    let qrimg =  await getQrcode(`/pagesCnt/pages/videoPreview/videoPreview?videoId=${props.videoId}&videoPagetype=${props.videoPagetype}`).then((img:any)=>{
+    const qrimg =  await getQrcode(`/pagesCnt/pages/videoPreview/videoPreview?videoId=${props.videoId}&videoPagetype=${props.videoPagetype}`).then((img:any) => {
         return img
     })
     const qrimgUrl = await drawBGIMG(qrimg)
@@ -1761,20 +1768,20 @@ const sharePoster = async () => {
     let accountName = data.videoDetail.accountName//作者，店铺名
 
     if (title.length > 8) {
-        title = title.slice(0,8) + "..."
+        title = title.slice(0, 8) + "..."
     }
     if (accountName.length > 8) {
-        accountName = accountName.slice(0,8) + "..."
+        accountName = accountName.slice(0, 8) + "..."
     }
-            
-    const context = uni.createCanvasContext('mycanvas',instance)
+
+    const context = uni.createCanvasContext('mycanvas', instance)
 
 
-    context.clearRect(0, 0, 254, 344);
+    context.clearRect(0, 0, 254, 344)
     // 背景白块
     context.setFillStyle('#ffffff')
     context.fillRect(0, 0, 254, 344)
-            
+
     // 底部白块
     context.setFillStyle('#ffffff')
     context.fillRect(0, 258, 258, 94)
@@ -1793,27 +1800,27 @@ const sharePoster = async () => {
     context.fillText(accountName, 40, 324)
     context.setFillStyle('#999999')
     context.setFontSize(12)
-            
+
     // 背景图片
     context.drawImage(coverUrl, 0, 0, 275, 255)
 
 
     context.save()
-    context.arc(24, 320, 10, 0, Math.PI * 2);
+    context.arc(24, 320, 10, 0, Math.PI * 2)
     context.fill()//保证图片无bug填充
-    context.clip();//画了圆 再剪切 原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内
+    context.clip()//画了圆 再剪切 原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内
 
     context.drawImage(accountThumb, 14, 310, 20, 20)
     context.restore()
 
     context.draw(
         false,
-        setTimeout( async () => {
+        setTimeout(async () => {
             uni.canvasToTempFilePath({
-                canvasId:'mycanvas',
+                canvasId: 'mycanvas',
                 success: (res:any) => {
-                    (shareBox.value as any).open();
-                    data.showBottom = false;
+                    (shareBox.value as any).open()
+                    data.showBottom = false
 
                     data.shareimgUrl = res.tempFilePath
                     data.status = 2
@@ -1832,15 +1839,15 @@ const sharePoster = async () => {
 
                 },
                 complete: (ret) => {
-                    console.log('生成中....');
+                    console.log('生成中....')
                     uni.hideLoading()
                     uni.showLoading({
                         title: '加载中...'
-                    });
+                    })
                     uni.hideLoading()
 
                 }
-            },instance)
+            }, instance)
         }, 3000)
     )
 
@@ -1874,10 +1881,10 @@ const sharePage = () => {
 // #endif
 
 
-const changeBarrage = () =>{
+const changeBarrage = () => {
     data.showBarrage = !data.showBarrage
     uni.setStorageSync('showChatBarrage', data.showBarrage)
-    console.log('data.showBarrage',data.showBarrage);
+    console.log('data.showBarrage', data.showBarrage)
 }
 
 // 预览上报
@@ -1892,8 +1899,8 @@ const typePreviewReport = (type: string) => {
 // 上报区分
 const distinguishPreview = (type: string) => {
 
-    console.log('预览类型type',type);
-    
+    console.log('预览类型type', type)
+
     type == '1' && typePreviewReport('channel')
     type == '4' && typePreviewReport('chat')
     type == '5' && typePreviewReport('find')
@@ -1903,20 +1910,20 @@ const distinguishPreview = (type: string) => {
 
 // 播放上报
 const videoPlayReport = (type: string) => {
-    Debounce(()=>{
-        createCollectAndReport().videoPlayReport(type,data.videos[data.swiperCurrent])
-        console.log('播放上报指定id',data.videos[data.swiperCurrent]);
+    Debounce(() => {
+        createCollectAndReport().videoPlayReport(type, data.videos[data.swiperCurrent])
+        console.log('播放上报指定id', data.videos[data.swiperCurrent])
 
-    },300)
+    }, 300)
 }
 
 // 完播上报
 const videoPlayOverReport = (type:string) => {
-    Debounce(()=>{
-        createCollectAndReport().videoPlayOverReport(type,data.videos[data.swiperCurrent])
-        console.log('完播上报指定id',data.videos[data.swiperCurrent]);
-        
-    },300)
+    Debounce(() => {
+        createCollectAndReport().videoPlayOverReport(type, data.videos[data.swiperCurrent])
+        console.log('完播上报指定id', data.videos[data.swiperCurrent])
+
+    }, 300)
 }
 
 
@@ -1939,33 +1946,35 @@ const videoOverPlayDistinguish = (type: string) => {
 }
 
 
-let timer = ref<any>(null)
-const startTime = (item:any,commentType:number) => {
-    timer.value = setTimeout(()=>{
-        console.log('item',item);
+const timer = ref<any>(null)
+const startTime = (item:any, commentType:number) => {
+    timer.value = setTimeout(() => {
+        console.log('item', item)
         data.showTouch = true
-        
+
         data.storageItem = item
-        
+
         if (item.isUser == 1) {
             data.showItemdel = true
-        }else{
+        }
+        else {
             data.showItemdel = false
         }
 
-        data.touchTitle = `@${item.userName}${ data.showItemdel ? '(我)' : '' }: ${item.comment}`
+        data.touchTitle = `@${item.userName}${data.showItemdel ? '(我)' : ''}: ${item.comment}`
 
 
         if (commentType) {
             data.isTopcomment = true
-        }else{
+        }
+        else {
             data.isTopcomment = false
         }
 
 
-        data.showBottom = false;
+        data.showBottom = false
 
-    },1000)
+    }, 1000)
 
 }
 const endTime = () => {
@@ -1979,7 +1988,7 @@ const cancelPopup = () => {
 }
 
 const TouchbcNotify = ref()
-const touchCopy = () =>{
+const touchCopy = () => {
     uni.setClipboardData({
         data: data.storageItem.comment,
         showToast: false,
@@ -1992,33 +2001,34 @@ const touchCopy = () =>{
 
 const touchDelbtn = () => {
     if (data.isTopcomment) {
-        console.log('顶部评论删除');
-        todeleteComment(data.storageItem.commentId,1)
-    }else{
-        console.log('不是顶部评论');
-        todeleteComment(data.storageItem.commentId,0)
+        console.log('顶部评论删除')
+        todeleteComment(data.storageItem.commentId, 1)
+    }
+    else {
+        console.log('不是顶部评论')
+        todeleteComment(data.storageItem.commentId, 0)
     }
     cancelPopup()
 }
 
 const toReportPage = () => {
-    console.log('data.isTopcomment',data.isTopcomment);
-	console.log('data.storageItem',data.storageItem);
+    console.log('data.isTopcomment', data.isTopcomment)
+    console.log('data.storageItem', data.storageItem)
 
-    let query = data.isTopcomment ? {
-		applicableTypes: 4,
-		toUserId: data.storageItem.userId,
+    const query = data.isTopcomment ? {
+        applicableTypes: 4,
+        toUserId: data.storageItem.userId,
         objectName: `${data.storageItem.userName}: ${data.storageItem.comment}`,
         objectId: data.storageItem.commentId
 
     } : {
-		applicableTypes: 4,
+        applicableTypes: 4,
         isreply: data.storageItem.quoteComment ? 1 : 0,
-		toUserId: data.storageItem.userId,
+        toUserId: data.storageItem.userId,
         objectName: `${data.storageItem.userName}: ${data.storageItem.comment}`,
         objectId: data.storageItem.quoteComment ? data.storageItem.commentId : data.storageItem.replyId
 
-	}
+    }
 
     gotoReportPage(query)
 }
@@ -2039,13 +2049,13 @@ const showEmoBox = () => {
     data.hiddenEmojiBox = false
     // 多行文本获取焦点
     data.showtextbtn = true
-    
-    console.log('data.keyboardH',data.keyboardH);
-    console.log('data.showtextbtn',data.showtextbtn);
-}   
+
+    console.log('data.keyboardH', data.keyboardH)
+    console.log('data.showtextbtn', data.showtextbtn)
+}
 
 const changeEmoji = (e: any) => {
-    console.log('e',e);
+    console.log('e', e)
     // data.keyboardH = 0
     // data.hiddenEmojiBox = true;
     data.textMsg = data.textMsg + e
@@ -2055,12 +2065,12 @@ const changeEmoji = (e: any) => {
 }
 
 const upEmojiItem = (text:string) => {
-    console.log('text',text);
+    console.log('text', text)
 
     data.textMsg = text
     pushcomment()
 
-    
+
 }
 
 
@@ -2074,7 +2084,7 @@ defineExpose({
 
 
 </script>
-  
+
 <style lang="scss" scoped>
 .container{
     position: relative;
@@ -2231,7 +2241,7 @@ defineExpose({
                 }
                 .location{
                     .location_box{
-                    
+
                         width: 100%;
                         padding: 12rpx 0rpx;
                         padding-top: 0rpx;
@@ -2317,9 +2327,9 @@ defineExpose({
                     }
                 }
             }
-            
+
         }
-        
+
     }
 }
 .comment_box{
@@ -2471,7 +2481,7 @@ defineExpose({
             }
         }
     }
-    
+
 }
 
 .desc_popup_box{
@@ -2536,7 +2546,7 @@ defineExpose({
                         margin-right: 12rpx;
                     }
                 }
-                
+
             }
         }
         .desc_box{
@@ -2549,7 +2559,7 @@ defineExpose({
             .desc_content{
                 font-weight: 400;
                 font-size: 28rpx;
-                color: #666666; 
+                color: #666666;
                 line-height: 52rpx;
                 word-break: break-all;
             }
@@ -2888,7 +2898,7 @@ defineExpose({
                 z-index: 1000;
             }
         }
-        
+
     }
     .ct_emoji_Box{
         &.hidden_box{
@@ -2935,13 +2945,13 @@ defineExpose({
         color: #FFFFFF;
         font-weight: 400;
 
-        white-space: nowrap;    
+        white-space: nowrap;
     }
     .bottom_space{
         width: 100%;
         height: 68rpx;
     }
-    
+
 }
 .bilvas{
     border-radius: 20rpx;
@@ -2973,7 +2983,7 @@ defineExpose({
                 color: #EA3E1A;
             }
         }
-        
+
     }
     .touch_bottom_box{
         .bottom_spage{

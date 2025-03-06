@@ -1,17 +1,18 @@
 <template>
     <view class="container">
-        <videoPreviewPage 
-        ref="coursevideo" 
-        @saveShareObj="saveShareObj" 
-        :videoPagetype="data.videoPagetype" 
-        :videoId="data.videoId" 
+        <videoPreviewPage
+        ref="coursevideo"
+        @saveShareObj="saveShareObj"
+        :videoPagetype="data.videoPagetype"
+        :videoId="data.videoId"
+        :categoryId="data.categoryId"
         ></videoPreviewPage>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
-import { onLoad, onShareAppMessage, onShow, onUnload} from '@dcloudio/uni-app'
+import { onLoad, onShareAppMessage, onShow, onUnload } from '@dcloudio/uni-app'
 
 import videoPreviewPage from './components/videoPreviewPage.vue'
 import { retransmission } from '@/api/create-api'
@@ -22,21 +23,23 @@ interface Data {
     shareObj:any,
     shareId:string,
     videoPagetype:number,
+    categoryId: string
 }
 const data = reactive<Data>({
-    videoId:'',
-    shareObj:{},
-    shareId:'',
-    videoPagetype:0,
+    videoId: '',
+    shareObj: {},
+    shareId: '',
+    videoPagetype: 0,
+    categoryId: ''
 })
 
 onMounted(() => {
 })
 
-onLoad((option:any)=>{
+onLoad((option:any) => {
     data.videoId = option.videoId
     data.videoPagetype = option.videoPagetype ? option.videoPagetype : 0
-    
+    option.categoryId && (data.categoryId = option.categoryId)
 })
 
 
@@ -44,8 +47,8 @@ onLoad((option:any)=>{
 const saveShareObj = (item:any) => {
     data.shareObj = {
         title: item.title,
-        imageUrl : item.imageUrl,
-        desc : item.desc,
+        imageUrl: item.imageUrl,
+        desc: item.desc
     }
     data.shareId = item.id
 
@@ -55,24 +58,24 @@ const saveShareObj = (item:any) => {
 const coursevideo = ref()
 
 // 页面关闭生命周期
-onUnload(()=>{
+onUnload(() => {
     (coursevideo.value as any).postviewTime()
 })
 
 // 微信小程序分享
 //#ifdef MP-WEIXIN
-onShareAppMessage((res:any)=>{
+onShareAppMessage((res:any) => {
     console.log('小程序分享');
     (coursevideo.value as any).closeShare();
-    (coursevideo.value as any).sharRetransmission();
+    (coursevideo.value as any).sharRetransmission()
     return {
         ...data.shareObj,
-        path: `/pagesCnt/pages/videoPreview/videoPreview?videoId=${data.videoId}&videoPagetype=${data.videoPagetype}`,
+        path: `/pagesCnt/pages/videoPreview/videoPreview?videoId=${data.videoId}&videoPagetype=${data.videoPagetype}`
     }
 })
 //#endif
 
-onShow(()=>{
+onShow(() => {
     // (coursevideo.value as any).showRefresh()
 })
 
@@ -80,7 +83,7 @@ onShow(()=>{
 
 
 </script>
-  
+
 <style>
 page{
     background: #000;
@@ -90,4 +93,3 @@ page{
 <style lang="scss" scoped>
 
 </style>
-  

@@ -558,7 +558,7 @@ const waterItem = (item:any) => {
                 return
             }
             if (item.type == 2) {
-                gotovideoPreview({ videoId: item.id, videoPagetype: 0 })
+                gotovideoPreview({ videoId: item.id, videoPagetype: 0, categoryId: ![2, 3, 999].includes(data.navid) ? data.navid : 10 })
                 return
             }
             if (item.type == 99) {
