@@ -299,10 +299,11 @@ const kuaiRou = (data: any) => {
         ids: [data]
     }
     columnList(dares).then(res => {
-        console.log(res[0].categoryIds)
         conApi.value = true
         dataCates.value = res[0].categoryIds
+        console.log('参数', res[0].categoryIds)
         // queryList(1, 10)
+        paging.value.reload()
     })
 }
 
@@ -432,8 +433,10 @@ const getLocation = () => {
 }
 const queryList = (pageNumber, pageSize) => {
     if (!conApi.value) {
-        return false
+        paging.value.complete([])
+        return 
     }
+    console.log('测试')
     recommendList({
         pageNumber,
         pageSize,
