@@ -74,7 +74,7 @@
                         </view>
                         <view class="withdrawal_proup_but" @click="submit">提现</view>
                     </view>
-                    <view class="withdrawal_proup_text">微信绑定手机号需与保椿生活绑定手机号一致，显示未绑定微信，请解绑后重试，可退出登录选择【微信登录】保证一致，现金72小时内打款至微信。</view>
+                    <view class="withdrawal_proup_text">微信绑定手机号需与保椿照护绑定手机号一致，显示未绑定微信，请解绑后重试，可退出登录选择【微信登录】保证一致，现金72小时内打款至微信。</view>
                 </view>
             </TnPopup>
             <BCNotify ref="bcNotify"></BCNotify>
@@ -166,7 +166,7 @@ const clickWithd = () => {
     homePage({}).then((res: any) => {
         if (!res.cardId) {
             if (getClient.value == 'WEIXIN') {
-                bcNotify.value.show('因技术升级原因,请您前往保椿生活APP进行实名认证')
+                bcNotify.value.show('因技术升级原因,请您前往保椿照护APP进行实名认证')
                 return
             }
             else if (getClient.value == 'APP') {

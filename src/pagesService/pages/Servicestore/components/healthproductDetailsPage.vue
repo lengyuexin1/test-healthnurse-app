@@ -277,7 +277,7 @@
 import { moneyFilter } from '@/common/filters'
 import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
-import { agencydetail, godsCommList } from '@/api/service-api'
+import { agencydetail, godsCommList, healthdetail } from '@/api/service-api'
 import { serviceComment } from '@/routes/service-routes'
 
 import { getAssetsPic } from '@/common/setPicture'
@@ -292,6 +292,7 @@ import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
 import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 import { PlatformManage } from "@bc/sys"
 import { createTeam } from "@/api/nim-api"
+import { TempStorage } from "@bc/base"
 
 
 interface Props {
@@ -362,7 +363,7 @@ onMounted(() => {
 
 
 const gethealthdetail = (id: string) => {
-    agencydetail({
+    healthdetail({
         id
     }).then((res: any) => {
         console.log(res)

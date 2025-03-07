@@ -571,7 +571,7 @@ import { favoriteList, getQrcode, likeLists } from '@/api/user-api'
 import { agoTime } from '@/common/formatTime'
 import { getAssetsPic } from '@/common/setPicture'
 import { gotoarticledetailVoice, gotoauthor, gotoReportPage } from '@/routes/create-routes'
-import { gotoIndex } from "@/routes/public-routes"
+import { gotoIndex, gotoLogin } from "@/routes/public-routes"
 
 // import shareView from '@/pagesCnt/components/shareView/shareView.vue'
 import shareView from '@/pagesCnt/components/shareorreportView/shareorreportView.vue'
@@ -742,8 +742,30 @@ onHide(() => {
     console.log('页面隐藏停止播报1')
     innerAudioContext.pause()
     // innerAudioContext.destroy()
-
 })
+
+const isLogin = () => {
+    console.log('==========未登录=============')
+    return new Promise((resolve, reject) => {
+        PlatformManage.isRequireLogin().then((isRequireLogin) => {
+            if (isRequireLogin) {
+                bcNotify.value.error('请先登录')
+                const routes = getCurrentPages() as any
+                const curRoute = routes[routes.length - 1].route
+                const param = '?id=' + props.contentId
+                console.log('跳转参数', param)
+                uni.setStorageSync('saveCurRoute', curRoute + param)
+                setTimeout(() => {
+                    gotoLogin({ toSaveRoute: 1 })
+                }, 1000)
+                reject(false)
+            }
+            resolve(true)
+        })
+    })
+
+
+}
 
 const saveSrc = (e: any) => {
     // innerAudioContext.autoplay = true;
@@ -1009,6 +1031,10 @@ const openkeyboard = (event: any) => {
     //     data.toArticledetails(data.articledId, '请先登录')
     //     return
     // }
+    if (!isLogin()) {
+        return
+    }
+
     console.log('获取焦点')
 
     data.iskeyboard = true
@@ -1377,7 +1403,7 @@ const topostreview = (content: string) => {
 
         data.commentTopList[0].number++
 
-        bcNotify.value.show('评论成功')
+        bcNotify.value.show('评论成功，正在审核中...')
     }).catch((res: any) => {
         bcNotify.value.error(res.message)
     })
@@ -1385,6 +1411,9 @@ const topostreview = (content: string) => {
 
 // 收藏
 const tocollect = () => {
+    if (!isLogin()) {
+        return
+    }
     if (!data.articledetailsObj.accountId || data.articledetailsObj.status == 4) {
         return
     }
@@ -1398,6 +1427,9 @@ const tocollect = () => {
 
 // 点赞
 const tolike = () => {
+    if (!isLogin()) {
+        return
+    }
     if (!data.articledetailsObj.accountId || data.articledetailsObj.status == 4) {
         return
     }
@@ -1486,12 +1518,17 @@ const tobloggerPage = () => {
 }
 
 const Subscribe = () => {
+    if (!isLogin()) {
+        return
+    }
     if (data.articledetailsObj.isFans == 1) {
         tounfollow(data.articledetailsObj.accountId)
     }
     else {
         tofollow(data.articledetailsObj.accountId)
     }
+
+
 }
 const tofollow = (accountId: string) => {
 
@@ -1825,7 +1862,9 @@ const cancelPopup = () => {
 const toReportPage = () => {
     console.log('data.isTopcomment', data.isTopcomment)
     console.log('data.storageItem', data.storageItem)
-
+    if (!isLogin()) {
+        return
+    }
     const query = data.isTopcomment ? {
         applicableTypes: 4,
         toUserId: data.storageItem.userId,
@@ -1844,12 +1883,20 @@ const toReportPage = () => {
 }
 
 const reportFun = () => {
-    gotoReportPage({
-        applicableTypes: 8,
-        objectName: data.articledetailsObj.title,
-        objectId: data.articledetailsObj.id
+    PlatformManage.isRequireLogin().then((isRequireLogin) => {
+        if (isRequireLogin) {
+            bcNotify.value.error('请先登录')
+            setTimeout(() => {
+                gotoLogin({})
+            }, 1000)
+            return
+        }
+        gotoReportPage({
+            applicableTypes: 8,
+            objectName: data.articledetailsObj.title,
+            objectId: data.articledetailsObj.id
+        })
     })
-
 }
 
 

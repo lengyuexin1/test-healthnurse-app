@@ -8,7 +8,7 @@
     <view class="main" >
         <view class="input" v-if="data.currentTabIndex == 0">
             <view class="input_title">手机号登录/注册</view>
-            <view class="input_teltip">首次验证通过，即注册保椿生活账号</view>
+            <view class="input_teltip">首次验证通过，即注册保椿照护账号</view>
             <view class="codeLogin">
                 <TnInput type="number" :maxlength="11" height="108rpx" :clearable="true" v-model="data.mobile" placeholder="请输入手机号码" custom-class="inp" >
                     <template #prefix>

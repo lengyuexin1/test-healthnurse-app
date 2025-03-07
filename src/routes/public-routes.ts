@@ -7,6 +7,7 @@ import { appLogins } from '@/libs/appLogin'
 
 //===============================================================
 /** 个人中心相关路由 */
+
 //===============================================================
 
 /** 跳转到 登录页 */
@@ -20,13 +21,13 @@ interface loginQuery {
 
 /**
  * logtype => 登录方式 1或者没传表示 一键登录
- * inviteId => 邀请id 
+ * inviteId => 邀请id
  * retainPage => 表示保留跳转页
  * toSaveRoute => 表示跳转保留的路径
  */
 export const gotoLogin = (query: loginQuery) => {
-    
-    let type : (null|number) = null
+
+    let type: (null | number) = null
 
     // #ifdef MP-WEIXIN || H5
     type = 1
@@ -36,7 +37,7 @@ export const gotoLogin = (query: loginQuery) => {
     type = 2
     // #endif
 
-    console.log('type',type);
+    console.log('type', type)
 
     let path = ''
 
@@ -52,16 +53,19 @@ export const gotoLogin = (query: loginQuery) => {
             path,
             query
         } as any
-        
+
         if (query.retainPage == 1 && query.logtype != 2) {
             return pageController.push(route)
-        }else if (query.retainPage == 1 && query.logtype == 2){
+        }
+        else if (query.retainPage == 1 && query.logtype == 2) {
             return pageController.replace(route)
-        }else{
+        }
+        else {
             return pageController.reLaunch(route)
         }
 
-    }else{
+    }
+    else {
         // 处理手机号码登录
         if (query.logtype == 2) {
             path = '/pages/login/login'
@@ -75,21 +79,18 @@ export const gotoLogin = (query: loginQuery) => {
         if (query.logtype == 1 || !query.logtype) {
 
             const route = {
-                path : '/pages/login/login',
+                path: '/pages/login/login',
                 query: { logtype: 2 }
             } as any
             return pageController.reLaunch(route)
-            
-            appLogins(()=>{
-                console.log('app一键登录');
+
+            appLogins(() => {
+                console.log('app一键登录')
             })
         }
 
     }
 
-    
-
-    
 
 }
 
@@ -100,8 +101,8 @@ export const gotoIndex = () => {
         path: '/IndexPage/pages/index/index'
     } as any
 
-    console.log('route.path',route.path);
-    
+    console.log('route.path', route.path)
+
     return pageController.reLaunch(route)
 }
 

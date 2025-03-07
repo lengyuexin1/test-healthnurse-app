@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
         >
@@ -14,22 +14,22 @@
                     :src="getAssetsUrl('/leyou/create/enjoybg.svg')"
                     mode="scaleToFill"
                 />
-                
+
             </template>
-            
+
             <view class="space_box"></view>
             <view class="page_content">
                 <view class="title">
                     产品介绍
-                </view>   
+                </view>
                 <view class="content_text">
-                    享老记是保椿生活中一款私域分享医子，创建圈子后，可以和亲朋好友分享自己的享老生活，并且定时产生云相册，帮助用户记录日常美好生活。
-                </view>         
+                    享老记是保椿照护中一款私域分享医子，创建圈子后，可以和亲朋好友分享自己的享老生活，并且定时产生云相册，帮助用户记录日常美好生活。
+                </view>
                 <view class="create_btn" @click="tocreateEnjoy">
                     立即创建
                 </view>
                 </view>
-            
+
 		</z-paging>
 
         <BCNotify ref="bcNotify"></BCNotify>

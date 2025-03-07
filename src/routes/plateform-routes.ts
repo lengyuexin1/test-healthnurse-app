@@ -154,7 +154,7 @@ export const gotovoucherDetails = (id: any, tologin = false) => {
 /** 康养产品详情*/
 export const gotohealthproductDetails = (itemId: any, tologin = false) => {
     const route = {
-        path: '/Channel/pages/orderConfirm/healthproductDetails',
+        path: '/pagesService/pages/Servicestore/healthproductDetails',
         query: { itemId }
     } as any
     if (!tologin) {
