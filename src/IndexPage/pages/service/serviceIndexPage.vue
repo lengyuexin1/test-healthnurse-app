@@ -922,7 +922,7 @@ defineExpose({
 
         .swiper {
             width: 100%;
-            height: 144rpx;
+            height: 200rpx;
 
             .swiper_item {
                 width: 100%;

@@ -111,7 +111,7 @@ defineExpose({
     box-sizing: border-box;
 
     .menu_item {
-        padding: 30rpx;
+        padding: 30rpx 30rpx 10rpx 30rpx;
         box-sizing: border-box;
         background: #FFFFFF;
         border-radius: 32rpx;
@@ -143,18 +143,18 @@ defineExpose({
                 width: 20%;
 
                 .item_img {
-                    width: 90rpx;
+                    width: 80rpx;
                     height: 80rpx;
                     margin-bottom: 12rpx;
                     border-radius: 10rpx;
                 }
 
                 .item_text {
-                    font-size: 28rpx;
+                    font-size: 24rpx;
                     color: #333333;
                     font-weight: 400;
-                    height: 40rpx;
-                    margin-bottom: 16rpx;
+                    // height: 40rpx;
+                    margin-bottom: 20rpx;
                     text-align: center;
                 }
             }

@@ -556,7 +556,7 @@ defineExpose({
         border-radius: 12rpx;
         overflow: hidden;
         // width: 730rpx;
-        height: 144rpx;
+        height: 200rpx;
         margin: auto;
         padding-top: 10rpx;
         box-sizing: border-box;
