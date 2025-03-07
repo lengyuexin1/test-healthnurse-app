@@ -433,7 +433,7 @@ const getList = (pageNumber:number, pageSize:number) => {
             status: 3,
             isRecommended: null,
             accountId: (data.accountId == 999) ? null : data.accountId,
-            happyType: ''
+            happyType: null
 
         },
         pageNumber,
@@ -684,7 +684,7 @@ const myTouchEnd = (e:any) => {
         justify-content: center;
         padding: 0rpx;
         box-sizing: border-box;
-        background: linear-gradient(180deg, #FDD9CD -40%, #F8F8F8 200%);
+        // background: linear-gradient(180deg, #FDD9CD -40%, #F8F8F8 200%);
         &.is_showMenu{
             width: 20%;
             padding: 0rpx 10rpx;

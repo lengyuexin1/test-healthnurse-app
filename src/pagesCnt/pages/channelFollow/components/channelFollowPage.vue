@@ -48,7 +48,7 @@
         </z-paging>
     </view>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 import BCNotify from '@/components/notify/index.vue'
@@ -72,17 +72,17 @@ interface Data {
     accountId: string | null,
 }
 const data = reactive<Data>({
-    dataList:[],
-    attentionList:[],
-    accountId: '',
+    dataList: [],
+    attentionList: [],
+    accountId: ''
 })
 
 onMounted(() => {
 
-    
+
 })
 
-const getAssetsUrl = computed(()=>(src:string)=> {
+const getAssetsUrl = computed(() => (src:string) => {
     return getAssetsPic(src)
 })
 
@@ -95,37 +95,37 @@ const queryList = (pageNumber:number, pageSize:number) => {
         getcoursefollowList({
             query: {
                 isFans: 0,
-                happyType:1
+                happyType: null
             },
             pageNumber: 1,
             pageSize: 100
-        }).then((res:any)=>{
+        }).then((res:any) => {
             data.attentionList = [
-                ...res.data,
+                ...res.data
             ]
         })
     }
     getappcontentList({
         query: {
-           isFans:1,
-           categoryId: null,
-           status: 3,
-           isRecommended: null,
-           happyType: 1,
-           accountId: !data.accountId ? null : data.accountId
-       },
-       pageNumber,
-       pageSize
-    }).then((res:any)=>{
+            isFans: 1,
+            categoryId: null,
+            status: 3,
+            isRecommended: null,
+            happyType: null,
+            accountId: !data.accountId ? null : data.accountId
+        },
+        pageNumber,
+        pageSize
+    }).then((res:any) => {
         (paging.value as any).complete(res.data)
-    });
+    })
 }
 
 const bcNotify = ref()
 
 const clickauthor = (item:any) =>  {
 
-    console.log('关注作者',item);
+    console.log('关注作者', item)
 
     if (data.accountId == item.accountId) {
         data.accountId = null
@@ -149,21 +149,21 @@ const goback = () => {
 }
 
 const waterItem = (item:any) => {
-    console.log('item',item);
+    console.log('item', item)
     if (item.type == 1 || item.type == 3) {
-        gotoarticledetails({id:item.id})
+        gotoarticledetails({ id: item.id })
         return
     }
     if (item.type == 2) {
         const listId = TempStorage.savewx({
-            videoIdlist:[item.id],
+            videoIdlist: [item.id]
         })
         gotocourseVideo(listId)
     }
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .top_box{
     margin-bottom: 30rpx;
@@ -221,4 +221,3 @@ const waterItem = (item:any) => {
     box-sizing: border-box;
 }
 </style>
-  
