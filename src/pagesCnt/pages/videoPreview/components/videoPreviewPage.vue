@@ -441,8 +441,6 @@
                         </view>
 
                     </scroll-view>
-
-                    <BCNotify ref="sonbcNotify"></BCNotify>
                     <view class="bottom_inp_box" v-if="data.showSonPopup">
                         <emojiItem @upEmojiItem="upEmojiItem"></emojiItem>
 
@@ -1430,6 +1428,7 @@ const pushcomment = () => {
         }
         topostreview(data.textMsg)
         console.log('发送文章的评论', props.videoId)
+        sonbcNotify.value.show('评论成功，正在审核中...')
 
     }
     data.upusercommentId = ''

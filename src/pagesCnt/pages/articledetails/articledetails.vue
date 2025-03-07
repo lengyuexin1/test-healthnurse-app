@@ -30,6 +30,7 @@ const data = reactive<Data>({
 })
 
 onLoad((option:any) => {
+    console.log('内容参数', option)
     data.contentId = option.id
     data.commentId = option?.commentId ?? ''
     data.replyId = option?.replyId ?? ''

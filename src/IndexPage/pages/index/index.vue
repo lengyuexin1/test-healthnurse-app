@@ -230,7 +230,7 @@ onShow(() => {
     console.log('data.tabbarId', data.tabbarId)
 
     if (data.tabbarId == 1) {
-        console.log('返回主页刷新');
+        // console.log('返回主页刷新');
 
         (platformRef.value as any).getCity();
         (platformRef.value as any).reloadPage()
@@ -239,7 +239,7 @@ onShow(() => {
         (serviceRef.value as any).getCity()
     }
     if (data.tabbarId == 5) {
-        console.log('刷新个人中心');
+        // console.log('刷新个人中心');
         (myref.value as any).getuserInfo()
     }
 
@@ -247,7 +247,7 @@ onShow(() => {
 
 
 onHide(() => {
-    console.log('隐藏首页11')
+    // console.log('隐藏首页11')
 
 })
 onReady(() => {
@@ -258,7 +258,7 @@ const changeTabbar = (id: number, showrecommend: boolean) => {
     if (id == 1) {
         setTimeout(() => {
             if (platformRef.value) {
-                console.log('首页初始化22');
+                // console.log('首页初始化22');
                 (platformRef.value as any).imgInitIndex()
             }
         }, 600)

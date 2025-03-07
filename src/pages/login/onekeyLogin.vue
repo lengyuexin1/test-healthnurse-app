@@ -7,7 +7,7 @@
                 mode="scaleToFill"
             /> -->
             <image class="inp_login" src="/static/bc_logo.png" mode="aspectFit"></image>
-            <view class="login_title">保椿生活</view>
+            <view class="login_title">保椿照护</view>
 
             <view class="log_btn" @click="loginNext">一键登录/注册</view>
 
@@ -35,7 +35,7 @@
                     <image class="getPhone-content-image" src="/static/bc_logo.png" mode="aspectFit"></image>
                 </view>
                 <view class="getPhone-content-list">
-                    <text style="font-size: 34rpx;color: #303133;">保椿生活申请获得以下权限</text>
+                    <text style="font-size: 34rpx;color: #303133;">保椿照护申请获得以下权限</text>
                     <view style="margin-top: 25rpx;">
                         <text style="color:#18b566;font-size: 28rpx;margin-right:6rpx;">●</text>
                         <text style="font-size: 28rpx;color: #909399;"> 获得你的手机号</text>

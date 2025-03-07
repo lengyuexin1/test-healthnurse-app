@@ -61,9 +61,9 @@
             <view class="content">
                 <view class="title">群主须知</view>
                 <view class="detail">
-                    <view>1.群主应当履行对群聊房间的监督管理职责，严格依据相关法律法规、保椿生活用户协议、保椿生活用户行为规范等相关规定规范群成员的行为和信息发布;</view>
+                    <view>1.群主应当履行对群聊房间的监督管理职责，严格依据相关法律法规、保椿照护用户协议、保椿照护用户行为规范等相关规定规范群成员的行为和信息发布;</view>
                     <view>2.群主应当积极维护群聊房间内的聊天秩序，营造良好的交流氛围，提供积极健康的聊天话题，并且及时处理群成员之间的矛盾，以维护群聊房间的安全健康，保证群成员的用户体验;</view>
-                    <view>3.群主应当确保群聊房间中不存在相关法律法规、保椿生活用户协议、保椿生活用户行为规范禁止的任何不良信息或行为;</view>
+                    <view>3.群主应当确保群聊房间中不存在相关法律法规、保椿照护用户协议、保椿照护用户行为规范禁止的任何不良信息或行为;</view>
                     <view>4.群主发现其群聊房间内存在不合理或不合法的行为，则群主应积极采取警告，将其踢出群聊房</view>
                     <view>5.群主在群聊房间管理过程中不得出现以下违规行为:</view>
                     <view>a.开设引战群聊，故意挑起群成员争端,破坏聊天室正常氛围，引导群成员恶意言语</view>
@@ -73,7 +73,7 @@
                     <view>e.开设群聊提供非法服务，包括但不限于:非法医疗咨询或服务、非法通讯服务等;</view>
                     <view>f.主动为群成员开展违法违规等行为提供便利，包括但不限于:色情交易、违法违禁品交易、炸房交易、传谣造谣、未经他人允许公开泄露他人隐私秘密、侵犯他人知识产权、传播涉及危害未成年人身心健康不良信息和行为的;</view>
                     <view>h.其他损害官方和平台利益的行为;</view>
-                    <view>k.如果群主怠于履行上述义务，甚至为群成员开展违法违规或违反以上条例的行为提供便利的，则保椿生活官方有权根据其违法违规行为追究相关责任。</view>
+                    <view>k.如果群主怠于履行上述义务，甚至为群成员开展违法违规或违反以上条例的行为提供便利的，则保椿照护官方有权根据其违法违规行为追究相关责任。</view>
                 </view>
                 <view class="btn tn-flex-center-center">
                     <TnButton shape="round" width="240rpx" height="70rpx" font-size="30rpx" bg-color="#EA3E1A" text-color="#FFFFFF" @tap="clickBtn">
@@ -85,7 +85,7 @@
     </view>
     <BCNotify ref="bcNotify"></BCNotify>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -172,21 +172,21 @@ const clickRandom = () => {
 const generateChineseChars = (numChars: number) => {
     const chineseChars = ['我', '你', '他', '她', '它', '中', '国', '欢', '迎', '来', '到', '保', '照', '护']
 
-    // 确保请求的字符数不超过数组长度  
+    // 确保请求的字符数不超过数组长度
     numChars = Math.min(numChars, chineseChars.length)
-    let selectedChars: any = []  
-    while (selectedChars.length < numChars) {  
-        // 生成一个随机索引  
+    let selectedChars: any = []
+    while (selectedChars.length < numChars) {
+        // 生成一个随机索引
         const randomIndex = Math.floor(Math.random() * chineseChars.length)
-          
-        // 检查该字符是否已被选中  
-        if (!selectedChars.includes(chineseChars[randomIndex])) {  
-            // 如果没有被选中，则添加到结果数组中  
+
+        // 检查该字符是否已被选中
+        if (!selectedChars.includes(chineseChars[randomIndex])) {
+            // 如果没有被选中，则添加到结果数组中
             selectedChars.push(chineseChars[randomIndex])
-        }  
-    }  
-      
-    // 将字符数组转换为字符串并返回  
+        }
+    }
+
+    // 将字符数组转换为字符串并返回
     return selectedChars.join('')
 }
 
@@ -249,7 +249,7 @@ onMounted(() => {
     getcategoryList()
 })
 </script>
-  
+
 <style lang="scss" scoped>
 .container {
     width: 100%;
@@ -448,4 +448,4 @@ onMounted(() => {
     background-color: #F5F5F5;
 }
 </style>
- 
+

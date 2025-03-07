@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
-        <z-paging 
-            ref="paging" 
+        <z-paging
+            ref="paging"
             :auto="false"
             :refresher-enabled="false"
         >
@@ -47,7 +47,7 @@
                         </view>
                         <view class="item_right">
                             <view class="item_right_text">
-                                {{ data.pageObj.cardId ? '已实名' : '未实名' }}    
+                                {{ data.pageObj.cardId ? '已实名' : '未实名' }}
                             </view>
                             <TnIcon name="right" color="#777777" size="40rpx"></TnIcon>
                         </view>
@@ -81,8 +81,8 @@
                     </view>
                 </view>
             </view>
-            
-              
+
+
 		</z-paging>
 
         <BCNotify ref="bcNotify"></BCNotify>
@@ -152,7 +152,7 @@ onShow(() => {
 
 const toAuthentication = () => {
     if (data.getClient == 'WEIXIN') {
-        bcNotify.value.show('因技术升级原因,请您前往保椿生活APP进行实名认证')
+        bcNotify.value.show('因技术升级原因,请您前往保椿照护APP进行实名认证')
         return
     }
 

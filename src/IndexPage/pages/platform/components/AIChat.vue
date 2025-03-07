@@ -11,7 +11,7 @@
         <view class="list tn-flex-column">
             <scroll-view scroll-y :scroll-top="data.scrollTop" :style="{ height: props.parentHeight - 66 + 'px' }">
                 <view class="left">
-                    <view class="content">Hi！我是保椿生活AI聊天机器人，您有问题可以随便问我~</view>
+                    <view class="content">Hi！我是保椿照护AI聊天机器人，您有问题可以随便问我~</view>
                 </view>
                 <block v-for="(item, index) in data.historyTextList" :key="index">
                     <view class="left" v-if="item.role == 'assistant'">
@@ -111,7 +111,7 @@ interface Data {
     sparkResult: string
     historyTextList: any
     tempRes: string,
-    
+
     // #ifndef H5
     RECORDER: any
     recordLength: number
@@ -206,7 +206,7 @@ const sendToSpark = async () => {
         }
     })
     console.log(socketTask);
-    
+
     socketTask.onError((res: any) => {
         console.log("连接发生错误，请检查appid是否填写", res)
     })
@@ -216,7 +216,7 @@ const sendToSpark = async () => {
             "content": data.TEXT.trim()
         })
         console.log(data.historyTextList);
-        
+
         console.info("wss的onOpen成功执行...", res)
         // 第一帧..........................................
         console.log('open成功...')
@@ -237,7 +237,7 @@ const sendToSpark = async () => {
                     "text": [
                         {
                             "role": "system",
-                            "content": "你是由保椿构建的认知智能模型,你必须以保椿生活小助理身份来对接下来的问题进行回答"
+                            "content": "你是由保椿构建的认知智能模型,你必须以保椿照护小助理身份来对接下来的问题进行回答"
                         },
                         {
                             "role": "user",
@@ -282,12 +282,12 @@ const sendToSpark = async () => {
             data.sparkResult = data.sparkResult + dataArray[i].content
             data.tempRes = data.tempRes + dataArray[i].content
             data.historyTextList[data.historyTextList.length - 1].content = data.tempRes + dataArray[i].content
-            
+
             setTimeout(() => {
                 data.scrollTop = data.scrollTop + 100
             }, 0)
         }
-        // realThis.sparkResult =realThis.sparkResult+ 
+        // realThis.sparkResult =realThis.sparkResult+
         let temp = JSON.parse(res.data)
         // console.log("0726",temp.header.code)
         if (temp.header.code !== 0) {
@@ -363,7 +363,7 @@ const getWebSocketUrl = () => {
         var host = "spark-api.xf-yun.com";
         var apiKeyName = "api_key";
         var date = new Date().toUTCString();
-        
+
         var algorithm = "hmac-sha256";
         var headers = "host date request-line";
         var signatureOrigin = `host: ${host}\ndate: ${date}\nGET ${httpUrlPath} HTTP/1.1`;
@@ -476,7 +476,7 @@ onMounted(() => {
     // 录音结束事件
     data.RECORDER.onStop((e: any) => {
         data.isRecord = false
-        
+
         if (data.handleStop) {
             console.log('取消录音发送')
         }
@@ -487,7 +487,7 @@ onMounted(() => {
             uploadAudio(e.tempFilePath).then((oss: any) => {
                 console.log(oss)
                 console.log('%c [ oss ]-477', 'font-size:13px; background:pink; color:#bf2c9f;', oss)
-                
+
                 speechText({ url: oss.url }).then((res: any) => {
                     console.log('%c [ res ]-480', 'font-size:13px; background:pink; color:#bf2c9f;', res)
                     data.TEXT = res
@@ -508,7 +508,7 @@ onMounted(() => {
 })
 
 </script>
-  
+
 <style lang="scss" scoped>
 .container {
     width: 100%;
@@ -525,7 +525,7 @@ onMounted(() => {
             font-size: 26rpx;
             color: #575C6A;
             align-items: center;
-            
+
             .AI {
                 width: 68rpx;
                 height: 68rpx;
@@ -677,4 +677,3 @@ onMounted(() => {
     }
 }
 </style>
- 

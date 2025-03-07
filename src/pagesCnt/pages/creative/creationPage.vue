@@ -457,7 +457,7 @@ const queryList = (pageNumber: number, pageSize: number) => {
             if (res.isFrozen == 1) {
                 uni.showModal({
                     title: '账号冻结',
-                    content: '您的个体创作者账号因违规操作，现已被平台冻结，如有疑问请联系保椿生活客服：400-2132-1231咨询。',
+                    content: '您的个体创作者账号因违规操作，现已被平台冻结，如有疑问请联系保椿照护客服：400-2132-1231咨询。',
                     showCancel: false,
                     success: function() {
                         pageController.back()
@@ -505,7 +505,7 @@ const toupArticle = () => {
 
 const toAuthentication = () => {
     if (data.getClient == 'WEIXIN') {
-        bcNotify.value.show('因技术升级原因,请您前往保椿生活APP进行实名认证')
+        bcNotify.value.show('因技术升级原因,请您前往保椿照护APP进行实名认证')
         return
     }
 

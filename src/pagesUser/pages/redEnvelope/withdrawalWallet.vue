@@ -196,7 +196,7 @@ const clickWithd = () => {
     homePage({}).then((res: any) => {
         if (!res.cardId) {
             if (getClient.value == 'WEIXIN') {
-                bcNotify.value.show('因技术升级原因,请您前往保椿生活APP进行实名认证')
+                bcNotify.value.show('因技术升级原因,请您前往保椿照护APP进行实名认证')
                 return
             }
             else if (getClient.value == 'APP') {

@@ -1,6 +1,6 @@
 <template>
     <z-paging
-        ref="paging" 
+        ref="paging"
 		:auto="false"
 		:refresher-enabled="false"
     >
@@ -16,7 +16,7 @@
                 <view class="rule_title">榜单介绍</view>
             </view>
             <view class="rule_text">
-                保椿生活基于平台海量用户真实消费和评价行为，综合评选出“销量高，评价好，体验佳”的优质商户，每月更新推出“康养点评”，致力于为消费者提供“接地气，”的实用康养指南。
+                保椿照护基于平台海量用户真实消费和评价行为，综合评选出“销量高，评价好，体验佳”的优质商户，每月更新推出“康养点评”，致力于为消费者提供“接地气，”的实用康养指南。
             </view>
             <view class="rule_text">
                 “康养点评”评选均来自平台客观真实数据，不收取任何评选费用。
@@ -54,12 +54,12 @@
             <view class="rule_text">
                 广州，佛山，具体以榜单页面显示为准。
             </view>
-            
+
 
         </view>
 
         <BCNotify ref="bcNotify"></BCNotify>
-        
+
     </z-paging>
 </template>
 
@@ -100,7 +100,7 @@ onMounted(()=>{
 
 const paging = ref()
 const queryList = async (pageNumber:number, pageSize:number)=>{
-    
+
 }
 
 

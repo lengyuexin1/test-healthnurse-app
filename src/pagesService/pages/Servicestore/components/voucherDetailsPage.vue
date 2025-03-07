@@ -11,7 +11,7 @@
             </template>
             <view class="voucher_details">
                 <div class="voucher_header">
-                    <div class="voucher_header_title">保椿生活代金券</div>
+                    <div class="voucher_header_title">保椿照护代金券</div>
                     <div class="voucher_header_desc">{{ data.voucherObj.name }}</div>
                     <div class="voucher_header_week">{{data.voucherObj.isRestrictTime==0?'全部时间可用': data.voucherObj.restrictTimeDesc }}</div>
                 </div>

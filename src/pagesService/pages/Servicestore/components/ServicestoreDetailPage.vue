@@ -1,10 +1,10 @@
 <template>
     <view class="contraner">
         <z-paging
-            ref="paging"
-            :auto="false"
-            :refresher-enabled="false"
-            >
+              ref="paging"
+              :auto="false"
+              :refresher-enabled="false"
+        >
             <template #top>
                 <PageTopbg></PageTopbg>
                 <bc-page-navbar :title="'详情'">
@@ -18,18 +18,19 @@
             </template>
             <view class="details_box" v-if="data.detailObj.id">
                 <div class="swiper_box">
-                    <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500" @change="swiperchang">
+                    <swiper class="swiper" circular :autoplay="true" :interval="5000" :duration="500"
+                            @change="swiperchang">
                         <swiper-item
-                            v-for="(item, index) in showswiper(
+                              v-for="(item, index) in showswiper(
                                 data.detailObj.covers
                             )"
-                            :key="index"
+                              :key="index"
                         >
                             <image
-                                class="swiper_item"
-                                :src="item"
-                                mode="aspectFill"
-                                @click="
+                                  class="swiper_item"
+                                  :src="item"
+                                  mode="aspectFill"
+                                  @click="
                                     preImage(
                                         index,
                                         showswiper(data.detailObj.covers)
@@ -40,12 +41,12 @@
                     </swiper>
                     <div class="swiper_indicator">
                         <div
-                            class="swiper_indicator_item"
-                            v-for="(item, index) in showswiper(
+                              class="swiper_indicator_item"
+                              v-for="(item, index) in showswiper(
                                 data.detailObj.covers
                             )"
-                            :key="index"
-                            :class="{
+                              :key="index"
+                              :class="{
                                 isswiper: data.swiperIndex == index,
                                 one_notright: notright(data.detailObj.covers, index)
                             }"
@@ -62,19 +63,19 @@
                             </div>
                             <div class="introduce_rate_box">
                                 <TnRate
-                                    v-model="data.detailObj.score"
-                                    inactive-color="#EBEBEB"
-                                    active-color="#FEE111"
-                                    gutter="4rpx"
-                                    size="24rpx"
-                                    :readonly="true"
+                                      v-model="data.detailObj.score"
+                                      inactive-color="#EBEBEB"
+                                      active-color="#FEE111"
+                                      gutter="4rpx"
+                                      size="24rpx"
+                                      :readonly="true"
                                 />
                                 <div class="introduce_num">{{ data.detailObj.score ? data.detailObj.score : 0 }}</div>
                                 <div class="introduce_rate">
                                     {{
-                                    data.detailObj.commentCnt
-                                    ? data.detailObj.commentCnt + "条"
-                                    : "暂无评论"
+                                        data.detailObj.commentCnt
+                                              ? data.detailObj.commentCnt + "条"
+                                              : "暂无评论"
                                     }}
                                 </div>
                             </div>
@@ -82,20 +83,21 @@
                         <div class="introduce_icon">
                             <div class="icon_item_box" @click="setColl">
                                 <image
-                                    class="icon_item_img"
-                                    :src="
+                                      class="icon_item_img"
+                                      :src="
                                         getAssetsUrl(
                                             data.isColl
                                                 ? '/channel/collect_highlight.svg'
                                                 : '/channel/collect.svg'
                                         )
                                     "
-                                    mode="scaleToFill"
+                                      mode="scaleToFill"
                                 />
                                 <text>收藏</text>
                             </div>
                             <div class="icon_item_box" @click="share">
-                                <image class="icon_item_img" :src="getAssetsUrl('/channel/share.svg')" mode="scaleToFill" />
+                                <image class="icon_item_img" :src="getAssetsUrl('/channel/share.svg')"
+                                       mode="scaleToFill"/>
                                 <text>分享</text>
                             </div>
                         </div>
@@ -104,15 +106,16 @@
                         <div class="price_box" v-if="data.detailObj.minPrice || data.detailObj.maxPrice">
                             ￥
                             <text class="price_number">
-                                {{( data.detailObj.minPrice / 100)}}
-                            </text>/月
+                                {{ (data.detailObj.minPrice / 100) }}
+                            </text>
+                            /月
                         </div>
                         <div class="introduce_item_title">
                             <div class="title_text">营业时间</div>
                             <div class="title_content" v-if="data.detailObj.businessTime">
                                 <div v-if="data.detailObj.businessStatus == 1">
                                     <text
-                                        v-if="
+                                          v-if="
                                             showDays(
                                                 data.detailObj.businessTime
                                                     .businessDays
@@ -120,17 +123,17 @@
                                         "
                                     >
                                         {{
-                                        formatTimeString(
-                                            data.detailObj.businessTime
-                                        .businessDays
-                                        )
+                                            formatTimeString(
+                                                  data.detailObj.businessTime
+                                                        .businessDays
+                                            )
                                         }}
                                     </text>
                                     <div>
                                         {{
-                                        getbusinessTime(
-                                            data.detailObj.businessTime
-                                        )
+                                            getbusinessTime(
+                                                  data.detailObj.businessTime
+                                            )
                                         }}
                                     </div>
                                 </div>
@@ -143,36 +146,38 @@
                         </div>
                         <div class="address">
                             <div>
-                                <div class="address_title">{{ data.detailObj.area }} {{ data.detailObj.address }} ></div>
+                                <div class="address_title">{{ data.detailObj.area }} {{ data.detailObj.address }} >
+                                </div>
                                 <!--  -->
                                 <div class="address_bace" v-if="data.positioning">
                                     驾车
                                     {{
-                                    getdistance(
-                                        data.detailObj.lat,
-                                        data.detailObj.lng
-                                    )
+                                        getdistance(
+                                              data.detailObj.lat,
+                                              data.detailObj.lng
+                                        )
                                     }}km 需约{{
-                                    getdrivingtime(
-                                        data.detailObj.lat,
-                                        data.detailObj.lng
-                                    )
+                                        getdrivingtime(
+                                              data.detailObj.lat,
+                                              data.detailObj.lng
+                                        )
                                     }}
                                 </div>
                             </div>
                             <div class="address_icon_box">
                                 <div class="address_icon" @click="address">
                                     <image
-                                        class="address_img"
-                                        :src="
+                                          class="address_img"
+                                          :src="
                                             getAssetsUrl('/agency/address.svg')
                                         "
-                                        mode="scaleToFill"
+                                          mode="scaleToFill"
                                     />
                                     <div class="address_icon_text">地址</div>
                                 </div>
                                 <div class="address_icon" @click="openAuth">
-                                    <image class="address_img" :src="getAssetsUrl('/agency/call.svg')" mode="scaleToFill" />
+                                    <image class="address_img" :src="getAssetsUrl('/agency/call.svg')"
+                                           mode="scaleToFill"/>
                                     <div class="address_icon_text">电话</div>
                                 </div>
                             </div>
@@ -190,7 +195,8 @@
                         <view class="more_coupon_left">
                             <view class="more_coupon_left_title">{{ item.name }}</view>
                             <view class="more_coupon_left_desc">
-                                {{item.isRestrictTime == 0 ? '全部时间可用' : item.restrictTimeDesc }} | {{`${item.isAccrual == 0 ? '不可累加' : `单次可用${item.cntAccrual || 0}张`}`}}
+                                {{ item.isRestrictTime == 0 ? '全部时间可用' : item.restrictTimeDesc }} |
+                                {{ `${item.isAccrual == 0 ? '不可累加' : `单次可用${item.cntAccrual || 0}张`}` }}
                             </view>
                             <div class="more_coupon_left_price">￥{{ item.price / 100 }}</div>
 
@@ -208,7 +214,7 @@
                     <div class="more_room_item" v-for="item in showRoom(data.productList)" :key="item.id">
                         <div class="more_room_item_right">
                             <!-- mainPics -->
-                            <image class="more_right_img" :src="item.mainPics[0]" mode="aspectFill" />
+                            <image class="more_right_img" :src="item.mainPics[0]" mode="aspectFill"/>
                             <div class="more_right_text">
                                 <div class="more_right_title">{{ item.name }}</div>
                                 <div class="more_right_dace" v-if="item.isRestrictTime == 0">
@@ -246,23 +252,23 @@
                         </div>
                     </div>
                     <div
-                        class="comment_box_item"
-                        :class="{ not_bottom: data.commentList.length == index + 1 }"
-                        v-for="(item, index) in data.commentList"
-                        :key="item.id"
+                          class="comment_box_item"
+                          :class="{ not_bottom: data.commentList.length == index + 1 }"
+                          v-for="(item, index) in data.commentList"
+                          :key="item.id"
                     >
                         <div class="comment_top">
-                            <image class="comment_top_img" :src="item.userThumb" mode="scaleToFill" />
+                            <image class="comment_top_img" :src="item.userThumb" mode="scaleToFill"/>
                             <div>
                                 <div class="comment_top_name">{{ item.userName }}</div>
                                 <div class="comment_top_rate">
                                     <TnRate
-                                        v-model="item.score"
-                                        inactive-color="#EBEBEB"
-                                        active-color="#FEE111"
-                                        gutter="4rpx"
-                                        size="24rpx"
-                                        :readonly="true"
+                                          v-model="item.score"
+                                          inactive-color="#EBEBEB"
+                                          active-color="#FEE111"
+                                          gutter="4rpx"
+                                          size="24rpx"
+                                          :readonly="true"
 
                                     />
                                 </div>
@@ -271,12 +277,12 @@
                         <div class="comment_text">{{ item.comment }}</div>
                         <div class="comment_img_list" v-if="item.pictures.length > 0">
                             <image
-                                v-for="(imgItem, imgIndex) in item.pictures"
-                                :key="imgIndex"
-                                class="comment_img"
-                                :src="imgItem"
-                                mode="aspectFill"
-                                @click="preImage(imgIndex, item.pictures)"
+                                  v-for="(imgItem, imgIndex) in item.pictures"
+                                  :key="imgIndex"
+                                  class="comment_img"
+                                  :src="imgItem"
+                                  mode="aspectFill"
+                                  @click="preImage(imgIndex, item.pictures)"
                             />
                         </div>
                         <div class="shop_reply_comment" v-if="item.reply">商家回复:{{ item.reply }}</div>
@@ -286,7 +292,7 @@
                 <div class="not_comment_box" v-else-if="data.commentList.length == 0 && !data.needlogin">
                     <div class="not_comment_title">全部评论</div>
                     <div class="not_img_box">
-                        <image class="not_img" :src="getAssetsUrl('/empty/empty_icon_data.png')" mode="scaleToFill" />
+                        <image class="not_img" :src="getAssetsUrl('/empty/empty_icon_data.png')" mode="scaleToFill"/>
                         <div class="not_text">暂无评论</div>
                     </div>
                 </div>
@@ -298,26 +304,28 @@
                 <div class="img_list">
                     <div class="img_list_title">机构图集</div>
                     <div class="img_box">
-                        <image class="img_box_right" :src="data.detailObj.albums && data.detailObj.albums[0]" mode="aspectFill" />
+                        <image class="img_box_right" :src="data.detailObj.albums && data.detailObj.albums[0]"
+                               mode="aspectFill"/>
                         <div class="img_box_left">
                             <image
-                                class="img_box_left_top"
-                                :src="
+                                  class="img_box_left_top"
+                                  :src="
                                     data.detailObj.albums && data.detailObj.albums[1]
                                         ? data.detailObj.albums &&
                                           data.detailObj.albums[1]
                                         : data.detailObj.albums &&
                                           data.detailObj.albums[0]
                                 "
-                                mode="aspectFill"
+                                  mode="aspectFill"
                             />
                             <div class="img_box_left_bottom" @click="toimgdetails(data.detailObj.shopId)">
-                                <image class="view_img" :src="getAssetsUrl('/channel/view_box.png')" mode="scaleToFill" />
+                                <image class="view_img" :src="getAssetsUrl('/channel/view_box.png')"
+                                       mode="scaleToFill"/>
                                 <div class="view_text_box">
                                     <image
-                                        class="view_text_box_icon"
-                                        :src="getAssetsUrl('/channel/view_icon.png')"
-                                        mode="scaleToFill"
+                                          class="view_text_box_icon"
+                                          :src="getAssetsUrl('/channel/view_icon.png')"
+                                          mode="scaleToFill"
                                     />
                                     <text class="view_text">查看图片</text>
                                 </div>
@@ -327,7 +335,8 @@
                 </div>
 
                 <!-- 客服 -->
-                <image class="shop-service" :src="getAssetsUrl('/leyou/icon/customer_service.png')" mode="scaleToFill" @tap="clickCustomerService" />
+                <image class="shop-service" :src="getAssetsUrl('/leyou/icon/customer_service.png')" mode="scaleToFill"
+                       @tap="clickCustomerService"/>
 
 
             </view>
@@ -336,23 +345,25 @@
 
         </z-paging>
 
-        <shareView ref="shareBox" @sharePage="sharePage" @sharePoster="sharePoster" :status="data.status" :imgUrl="data.shareimgUrl"></shareView>
-        <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="254" height="344" style="width:254px; height:344px"></canvas>
+        <shareView ref="shareBox" @sharePage="sharePage" @sharePoster="sharePoster" :status="data.status"
+                   :imgUrl="data.shareimgUrl"></shareView>
+        <canvas class="bilvas" canvas-id="mycanvas" id="mycanvas" width="254" height="344"
+                style="width:254px; height:344px"></canvas>
 
     </view>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted, getCurrentInstance } from 'vue'
+import { computed, getCurrentInstance, onMounted, reactive, ref } from 'vue'
 import PageTopbg from '@/components/page-topbg/page-topbg.vue'
 import { getAssetsPic } from '@/common/setPicture'
 import { businessTime } from '@/utils/businessTime'
 import { getDistances } from '@/utils/distance'
 import { formattime } from '@/common/formatTime'
 
-import { organizationDetail, healthlist, godsCommList, addShopBrowerHistory } from '@/api/service-api'
-import { voucherDetails, gotohealthproductDetails, serviceComment, toimgInstitution } from '@/routes/service-routes'
-import { unHealthShop, addHealthShop } from '@/api/user-api'
+import { addShopBrowerHistory, godsCommList, healthlist, organizationDetail } from '@/api/service-api'
+import { serviceComment, toimgInstitution, voucherDetails } from '@/routes/service-routes'
+import { addHealthShop, getQrcode, unHealthShop } from '@/api/user-api'
 
 import TnRate from '@tuniao/tnui-vue3-uniapp/components/rate/src/rate.vue'
 import TnIcon from '@tuniao/tnui-vue3-uniapp/components/icon/src/icon.vue'
@@ -360,42 +371,42 @@ import BCNotify from '@/components/notify/index.vue'
 
 import shareView from '@/pagesService/components/shareView/shareView.vue'
 
-import { gotoIndex } from "@/routes/public-routes"
+import { gotoIndex, gotoLogin } from "@/routes/public-routes"
 import { drawBGIMG } from '@/libs/canvas-tools'
-import { getQrcode } from "@/api/user-api"
 import { PlatformManage } from "@bc/sys"
-import { gotoLogin } from "@/routes/public-routes"
 
 import { createTeam } from "@/api/nim-api"
 import { gotoChatPage } from "@/routes/nim-routes"
+import { gotohealthproductDetails } from "@/routes/plateform-routes"
 
 
 interface Props {
-    shopId:string,
-    isAd:number,
+    shopId: string,
+    isAd: number,
 }
 
 const props = defineProps<Props>()
 
 
 interface Data {
-    detailObj:any,
-    swiperIndex:number,
-    rateValue:number,
-    isColl:boolean,
-    positioning:boolean,
-    latitude:number,
-    longitude:number,
-    showmoreroom:boolean,
-    productList:any,
-    commentList:any,
-    total:number,
-    needlogin:boolean,
-    vouchersList:any,
-    status:number,
-    shareimgUrl:string,
+    detailObj: any,
+    swiperIndex: number,
+    rateValue: number,
+    isColl: boolean,
+    positioning: boolean,
+    latitude: number,
+    longitude: number,
+    showmoreroom: boolean,
+    productList: any,
+    commentList: any,
+    total: number,
+    needlogin: boolean,
+    vouchersList: any,
+    status: number,
+    shareimgUrl: string,
     userId: string,
 }
+
 const data = reactive<Data>({
     detailObj: {},
     swiperIndex: 1,
@@ -421,11 +432,11 @@ const data = reactive<Data>({
 const emit = defineEmits(["saveShareObj"])
 
 
-const getAssetsUrl = computed(() => (src:string) => {
+const getAssetsUrl = computed(() => (src: string) => {
     return getAssetsPic(src)
 })
 
-const showswiper = computed(() => (list:any) => {
+const showswiper = computed(() => (list: any) => {
     if (!list.length) {
         return
     }
@@ -437,7 +448,7 @@ const showswiper = computed(() => (list:any) => {
     }
 })
 
-const notright = computed(() => (list:any, index:number) => {
+const notright = computed(() => (list: any, index: number) => {
     if (list.length == 1) {
         return true
     }
@@ -449,9 +460,9 @@ const notright = computed(() => (list:any, index:number) => {
     }
 })
 
-const showDays = computed(() => (dayList:any) => {
+const showDays = computed(() => (dayList: any) => {
     const days = new Date().getDay()
-    const findDay = dayList.find((timeItem:any) => {
+    const findDay = dayList.find((timeItem: any) => {
         return timeItem == days
     })
     if (days == 0 && findDay == 7) {
@@ -465,9 +476,9 @@ const showDays = computed(() => (dayList:any) => {
     }
 })
 
-const formatTimeString = computed(() => (days:any) => {
+const formatTimeString = computed(() => (days: any) => {
     let timeStr = ""
-    days.forEach((daysItem:any) => {
+    days.forEach((daysItem: any) => {
         switch (Number(daysItem)) {
             case 1:
                 timeStr = timeStr + " 周一"
@@ -497,27 +508,27 @@ const formatTimeString = computed(() => (days:any) => {
     return timeStr
 })
 
-const getbusinessTime = computed(() => (timeObj:any) => {
+const getbusinessTime = computed(() => (timeObj: any) => {
     return businessTime(timeObj)
 })
 
-const getdistance = computed(() => (lat:number, lng:number) => {
+const getdistance = computed(() => (lat: number, lng: number) => {
     // 计算距离 传入目标经纬度
     const distance = getDistances(
-        data.latitude,
-        data.longitude,
-        lat,
-        lng
+          data.latitude,
+          data.longitude,
+          lat,
+          lng
     )
     return distance
 })
 
-const getdrivingtime = computed(() => (lat:number, lng:number) => {
+const getdrivingtime = computed(() => (lat: number, lng: number) => {
     const distance = getDistances(
-        data.latitude,
-        data.longitude,
-        lat,
-        lng
+          data.latitude,
+          data.longitude,
+          lat,
+          lng
     )
     const speed = (40 * 1000) / 60 / 60 // 速度转换为m/s
     const drivingtime = (distance * 1000) / speed
@@ -532,7 +543,7 @@ const getdrivingtime = computed(() => (lat:number, lng:number) => {
 })
 
 
-const showRoom = computed(() => (list:any) => {
+const showRoom = computed(() => (list: any) => {
     if (!data.showmoreroom) {
         return list.slice(0, 2)
     }
@@ -542,7 +553,7 @@ const showRoom = computed(() => (list:any) => {
 })
 
 
-const timeformat = computed(() => (time:number) => {
+const timeformat = computed(() => (time: number) => {
     return formattime(time, 'YYYY-MM-DD')
 })
 
@@ -554,7 +565,7 @@ onMounted(() => {
             getorganizationDetail(props.shopId)
             return
         }
-        PlatformManage.getToken().then((res:any) => {
+        PlatformManage.getToken().then((res: any) => {
             data.userId = res.id ? res.id : ''
             getorganizationDetail(props.shopId, data.userId)
         })
@@ -564,13 +575,13 @@ onMounted(() => {
     getgodsCommList(props.shopId)
 })
 
-const getorganizationDetail = (shopId:string, userId:string = '') => {
+const getorganizationDetail = (shopId: string, userId: string = '') => {
 
     organizationDetail({
         shopId,
         userId,
         isAd: props.isAd
-    }).then((res:any) => {
+    }).then((res: any) => {
         data.detailObj = res || {}
         data.isColl = res.isFavorite == 1
 
@@ -582,27 +593,28 @@ const getorganizationDetail = (shopId:string, userId:string = '') => {
         }
         emit('saveShareObj', shareObj)
 
-        addShopBrowerHistory({ shopId: data.detailObj.shopId, applyId: data.detailObj.applyId }).then((res) => {})
+        addShopBrowerHistory({ shopId: data.detailObj.shopId, applyId: data.detailObj.applyId }).then((res) => {
+        })
     })
 }
 
-const gethealthlist = (shopId:string) => {
+const gethealthlist = (shopId: string) => {
     healthlist({
         pageSize: 10,
         pageNumber: 1,
         query: {
             shopId
         }
-    }).then((res:any) => {
-        data.productList = res.data.filter((item:any) => item.typeId == 1)
-        data.vouchersList = res.data.filter((item:any) => item.typeId == 2)
+    }).then((res: any) => {
+        data.productList = res.data.filter((item: any) => item.typeId == 1)
+        data.vouchersList = res.data.filter((item: any) => item.typeId == 2)
         console.log('data.productList', data.productList)
         console.log('data.vouchersList', data.vouchersList)
 
     })
 }
 
-const getgodsCommList = (shopId:string) => {
+const getgodsCommList = (shopId: string) => {
     godsCommList({
         pageNumber: 1,
         pageSize: 3,
@@ -610,17 +622,17 @@ const getgodsCommList = (shopId:string) => {
             itemId: null,
             shopId
         }
-    }).then((res:any) => {
+    }).then((res: any) => {
         data.commentList = res.data
         data.total = res.total
     })
 }
 
 
-const swiperchang = (item:any) => {
+const swiperchang = (item: any) => {
     data.swiperIndex = item.detail.current
 }
-const preImage = (current:number, urls:any) => {
+const preImage = (current: number, urls: any) => {
     uni.previewImage({
         current,
         urls
@@ -668,12 +680,12 @@ const openAuth = () => {
 }
 
 
-const clickVoucherDetails = (id:string) => {
+const clickVoucherDetails = (id: string) => {
     // 超值券详情
     voucherDetails({ id })
 }
 
-const tuproduct = (itemId:string) => {
+const tuproduct = (itemId: string) => {
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
             bcNotify.value.show('请先登录')
@@ -682,7 +694,8 @@ const tuproduct = (itemId:string) => {
             }, 2000)
         }
         else {
-            gotohealthproductDetails({ itemId })
+            // gotoproductDetails(itemId, props.shopId)
+            gotohealthproductDetails(itemId)
         }
     })
     // 产品详情
@@ -698,11 +711,11 @@ const gotohealthComment = () => {
 
 }
 
-const tochoiceDetails = (itemId:string, isAd:number, tologin:boolean = false) => {
+const tochoiceDetails = (itemId: string, isAd: number, tologin: boolean = false) => {
     // 登录后查询详情
 }
 
-const toimgdetails = (itemId:string) => {
+const toimgdetails = (itemId: string) => {
     // 机构图集详情
     toimgInstitution({ itemId })
 }
@@ -770,7 +783,7 @@ const sharePoster = async () => {
 
     const coverUrl = await drawBGIMG(data.detailObj.thumb)
     // 二维码链接图片
-    const qrimg =  await getQrcode(`/pagesService/pages/Servicestore/ServicestoreDetail?shopId=${data.detailObj.shopId}`).then((img:any) => {
+    const qrimg = await getQrcode(`/pagesService/pages/Servicestore/ServicestoreDetail?shopId=${data.detailObj.shopId}`).then((img: any) => {
         return img
     })
     const qrimgUrl = await drawBGIMG(qrimg)
@@ -835,28 +848,28 @@ const sharePoster = async () => {
     context.restore()
 
     context.draw(
-        false,
-        setTimeout(async () => {
-            uni.canvasToTempFilePath({
-                canvasId: 'mycanvas',
-                success: (res:any) => {
-                    data.shareimgUrl = res.tempFilePath
-                    data.status = 2
-                    title = ''
-                },
-                fail: err => {
-                    console.log(err)
-                    uni.showToast({
-                        icon: 'none',
-                        title: '生成失败,请稍后重试'
-                    })
-                },
-                complete: (ret) => {
-                    console.log('生成中....')
-                    uni.hideLoading()
-                }
-            }, instance)
-        }, 3000)
+          false,
+          setTimeout(async () => {
+              uni.canvasToTempFilePath({
+                  canvasId: 'mycanvas',
+                  success: (res: any) => {
+                      data.shareimgUrl = res.tempFilePath
+                      data.status = 2
+                      title = ''
+                  },
+                  fail: err => {
+                      console.log(err)
+                      uni.showToast({
+                          icon: 'none',
+                          title: '生成失败,请稍后重试'
+                      })
+                  },
+                  complete: (ret) => {
+                      console.log('生成中....')
+                      uni.hideLoading()
+                  }
+              }, instance)
+          }, 3000)
     )
 
 
@@ -887,10 +900,12 @@ const goback = () => {
     display: flex;
     align-items: center;
 }
+
 .contraner {
     .details_box {
         padding: 20rpx;
         box-sizing: border-box;
+
         .swiper_box {
             width: 100%;
             height: 710rpx;
@@ -898,9 +913,11 @@ const goback = () => {
             overflow: hidden;
             position: relative;
             margin-bottom: 20rpx;
+
             .swiper {
                 width: 100%;
                 height: 100%;
+
                 .swiper_item {
                     width: 100%;
                     height: 100%;
@@ -908,6 +925,7 @@ const goback = () => {
                     background: #ffffff;
                 }
             }
+
             .swiper_indicator {
                 position: absolute;
                 bottom: 20rpx;
@@ -921,6 +939,7 @@ const goback = () => {
                 justify-content: space-between;
                 padding: 8rpx 12rpx;
                 box-sizing: border-box;
+
                 .swiper_indicator_item {
                     width: 12rpx;
                     height: 12rpx;
@@ -928,16 +947,19 @@ const goback = () => {
                     border-radius: 50%;
                     opacity: 0.4;
                     margin-right: 8rpx;
+
                     &.isswiper {
                         background: #ffffff;
                         opacity: 1;
                     }
+
                     &.one_notright {
                         margin-right: 0rpx;
                     }
                 }
             }
         }
+
         .introduce {
             width: 100%;
             // height: 744rpx;
@@ -946,19 +968,23 @@ const goback = () => {
             padding: 30rpx;
             box-sizing: border-box;
             margin-bottom: 20rpx;
+
             .introduce_top {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 margin-bottom: 28rpx;
+
                 .introduce_title_box {
                     width: 75%;
+
                     .introduce_title {
                         color: #333333;
                         font-size: 34rpx;
                         margin-bottom: 16rpx;
                         font-weight: bold;
                         display: flex;
+
                         .introduce_name {
                             width: 75%;
                             overflow: hidden;
@@ -967,6 +993,7 @@ const goback = () => {
                             -webkit-line-clamp: 2;
                             -webkit-box-orient: vertical;
                         }
+
                         .businessStatus_tag {
                             width: 24%;
                             height: 38rpx;
@@ -978,36 +1005,43 @@ const goback = () => {
                             box-sizing: border-box;
                             background: #29c86f;
                             border-radius: 24rpx;
+
                             &.red_tag {
                                 background: #f32b44;
                             }
                         }
                     }
+
                     .introduce_rate_box {
                         display: flex;
                         align-items: center;
+
                         .introduce_num {
                             color: #ff9f3e;
                             margin-right: 16rpx;
                             margin-left: 8rpx;
                             font-size: 24rpx;
                         }
+
                         .introduce_rate {
                             color: #333333;
                             font-size: 24rpx;
                         }
                     }
                 }
+
                 .introduce_icon {
                     width: 120rpx;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+
                     .icon_item_box {
                         color: #878787;
                         font-size: 20rpx;
                         display: flex;
                         flex-direction: column;
+
                         .icon_item_img {
                             width: 40rpx;
                             height: 40rpx;
@@ -1016,15 +1050,18 @@ const goback = () => {
                     }
                 }
             }
+
             .introduce_item {
                 .price_box {
                     color: #ff0000;
                     font-size: 24rpx;
                     margin-bottom: 40rpx;
+
                     .price_number {
                         font-size: 40rpx;
                     }
                 }
+
                 .introduce_item_title {
                     display: flex;
                     align-items: center;
@@ -1036,12 +1073,15 @@ const goback = () => {
                         margin-right: 40rpx;
                         flex-shrink: 0;
                     }
+
                     .title_content {
                         color: #666666;
                     }
+
                     .tag_list {
                         display: flex;
                         align-items: center;
+
                         .tag_item {
                             padding: 8rpx 16rpx;
                             box-sizing: border-box;
@@ -1053,6 +1093,7 @@ const goback = () => {
                         }
                     }
                 }
+
                 .address {
                     display: flex;
                     align-items: center;
@@ -1061,18 +1102,22 @@ const goback = () => {
                     padding-top: 24rpx;
                     box-sizing: border-box;
                     border-top: 2rpx solid #f0f0f0;
+
                     .address_title {
                         font-size: 26rpx;
                         color: #111111;
                         margin-bottom: 6rpx;
                     }
+
                     .address_bace {
                         color: #777777;
                         font-size: 24rpx;
                     }
+
                     .address_icon_box {
                         display: flex;
                         align-items: center;
+
                         .address_icon {
                             width: 108rpx;
                             height: 92rpx;
@@ -1080,10 +1125,12 @@ const goback = () => {
                             align-items: center;
                             justify-content: center;
                             flex-direction: column;
+
                             .address_img {
                                 width: 48rpx;
                                 height: 48rpx;
                             }
+
                             .address_icon_text {
                                 color: #777777;
                                 font-size: 24rpx;
@@ -1091,6 +1138,7 @@ const goback = () => {
                         }
                     }
                 }
+
                 .more_btn {
                     border-radius: 12rpx;
                     background: #f2f3f5;
@@ -1099,10 +1147,12 @@ const goback = () => {
                     display: flex;
                     align-items: center;
                     justify-content: center;
+
                     .more_text {
                         color: #231815;
                         font-size: 26rpx;
                     }
+
                     .more_icon {
                         width: 32rpx;
                         height: 32rpx;
@@ -1111,6 +1161,7 @@ const goback = () => {
                 }
             }
         }
+
         .more_room {
             background: #ffffff;
             width: 100%;
@@ -1120,9 +1171,11 @@ const goback = () => {
             border-radius: 24rpx;
             position: relative;
             margin-bottom: 20rpx;
+
             &.have_max {
                 max-height: 480rpx;
             }
+
             .more_room_title {
                 padding: 30rpx;
                 box-sizing: border-box;
@@ -1132,12 +1185,14 @@ const goback = () => {
                 font-weight: bold;
                 border-bottom: 2rpx solid #f2f2f2;
             }
+
             .favour_box {
                 display: flex;
                 align-items: center;
                 padding: 0rpx 30rpx;
                 padding-bottom: 20rpx;
                 box-sizing: border-box;
+
                 .favour {
                     width: 30rpx;
                     height: 30rpx;
@@ -1149,11 +1204,13 @@ const goback = () => {
                     text-align: center;
                     line-height: 30rpx;
                 }
+
                 .favour_text {
                     color: #333333;
                     font-size: 24rpx;
                 }
             }
+
             .more_room_item {
                 display: flex;
                 align-items: center;
@@ -1161,37 +1218,45 @@ const goback = () => {
                 margin-bottom: 40rpx;
                 padding: 0rpx 30rpx;
                 box-sizing: border-box;
+
                 .more_room_item_right {
                     display: flex;
+
                     .more_right_img {
                         width: 96rpx;
                         height: 96rpx;
                         border-radius: 8rpx;
                         margin-right: 20rpx;
                     }
+
                     .more_right_text {
                         width: 338rpx;
+
                         .more_right_title {
                             font-weight: bold;
                             color: #333333;
                             font-size: 28rpx;
                             margin-bottom: 8rpx;
                         }
+
                         .more_right_dace {
                             color: #777777;
                             font-size: 24rpx;
                             margin-bottom: 8rpx;
                         }
-                        .more_right_price{
+
+                        .more_right_price {
                             font-size: 24rpx;
                             color: #FF0000;
                         }
                     }
                 }
+
                 .more_room_item_left {
                     display: flex;
                     align-items: center;
                     flex-direction: column;
+
                     .show_btn {
                         width: 96rpx;
                         height: 44rpx;
@@ -1203,12 +1268,14 @@ const goback = () => {
                         background: #29c86f;
                         margin-bottom: 4rpx;
                     }
+
                     .more_room_text {
                         color: #777777;
                         font-size: 20rpx;
                     }
                 }
             }
+
             .show_more_room {
                 display: flex;
                 align-items: center;
@@ -1219,11 +1286,13 @@ const goback = () => {
                 height: 100rpx;
                 background: #fff;
                 margin-left: 30rpx;
+
                 .show_more_room_text {
                     color: #333333;
                     font-size: 24rpx;
                     margin-right: 4rpx;
                 }
+
                 .show_more_not_room_text {
                     color: #777777;
                     font-size: 24rpx;
@@ -1231,64 +1300,76 @@ const goback = () => {
             }
         }
     }
+
     .comment_box {
         padding: 36rpx 30rpx;
         box-sizing: border-box;
         background: #fff;
         border-radius: 24rpx;
+
         .comment_box_title_box {
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 40rpx;
+
             .comment_box_title {
                 color: #333333;
                 font-size: 32rpx;
             }
+
             .comment_box_show {
                 color: #999999;
                 font-size: 28rpx;
                 display: flex;
                 align-items: center;
             }
+
             .not_img {
                 width: 100%;
                 height: 250rpx;
                 margin: auto;
             }
         }
+
         .comment_box_item {
             margin-bottom: 30rpx;
             padding-bottom: 30rpx;
             box-sizing: border-box;
             border-bottom: 2rpx solid #f2f2f2;
+
             &.not_bottom {
                 margin-bottom: 0rpx;
                 padding-bottom: 0rpx;
                 border-bottom: none;
             }
+
             .comment_top {
                 display: flex;
                 align-items: center;
                 margin-bottom: 28rpx;
+
                 .comment_top_img {
                     width: 68rpx;
                     height: 68rpx;
                     border-radius: 50%;
                     margin-right: 20rpx;
                 }
+
                 .comment_top_name {
                     color: #333333;
                     font-size: 28rpx;
                 }
             }
+
             .comment_text {
                 margin-bottom: 28rpx;
                 line-height: 44rpx;
                 color: #333333;
                 font-size: 28rpx;
             }
+
             .comment_img_list {
                 width: 100%;
                 margin-bottom: 28rpx;
@@ -1302,6 +1383,7 @@ const goback = () => {
                     margin-right: 10rpx;
                 }
             }
+
             .shop_reply_comment {
                 padding: 24rpx;
                 box-sizing: border-box;
@@ -1311,35 +1393,42 @@ const goback = () => {
                 font-size: 26rpx;
                 color: #666;
             }
+
             .comment_time {
                 font-size: 24rpx;
                 color: #999999;
             }
         }
     }
+
     .not_comment_box {
         padding: 36rpx 30rpx;
         box-sizing: border-box;
         background: #fff;
         border-radius: 24rpx;
+
         .not_comment_title {
             color: #333333;
             font-size: 32rpx;
         }
+
         .not_img_box {
             display: flex;
             align-items: center;
             flex-direction: column;
+
             .not_img {
                 width: 350rpx;
                 height: 350rpx;
             }
+
             .not_text {
                 font-size: 28rpx;
                 color: #999999;
             }
         }
     }
+
     .login_comment {
         padding: 36rpx 30rpx;
         box-sizing: border-box;
@@ -1348,10 +1437,12 @@ const goback = () => {
         display: flex;
         align-items: center;
         justify-content: space-between;
+
         .login_comment_title {
             color: #333333;
             font-size: 28rpx;
         }
+
         .login_btn {
             background: #29c86f;
             color: #fff;
@@ -1362,6 +1453,7 @@ const goback = () => {
             border-radius: 24rpx;
         }
     }
+
     .img_list {
         width: 100%;
         height: 490rpx;
@@ -1370,23 +1462,27 @@ const goback = () => {
         background: #fff;
         border-radius: 24rpx;
         margin-top: 20rpx;
+
         .img_list_title {
             color: #333333;
             font-size: 28rpx;
             margin-bottom: 30rpx;
         }
+
         .img_box {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
             height: 364rpx;
+
             .img_box_right {
                 width: 364rpx;
                 height: 100%;
                 border-radius: 8rpx;
                 // border: 1px solid red;
             }
+
             .img_box_left {
                 width: 270rpx;
                 height: 100%;
@@ -1394,22 +1490,26 @@ const goback = () => {
                 align-items: center;
                 justify-content: space-between;
                 flex-direction: column;
+
                 .img_box_left_top {
                     width: 100%;
                     height: 270rpx;
                     border-radius: 8rpx;
                     // border: 1px solid red;
                 }
+
                 .img_box_left_bottom {
                     width: 100%;
                     height: 80rpx;
                     border-radius: 8rpx;
                     overflow: hidden;
                     position: relative;
+
                     .view_img {
                         width: 100%;
                         height: 100%;
                     }
+
                     .view_text_box {
                         position: absolute;
                         display: flex;
@@ -1421,10 +1521,12 @@ const goback = () => {
                         top: 50%;
                         left: 50%;
                         transform: translate(-50%, -50%);
+
                         .view_text_box_icon {
                             width: 32rpx;
                             height: 32rpx;
                         }
+
                         .view_text {
                             margin-left: 4rpx;
                         }
@@ -1443,6 +1545,7 @@ const goback = () => {
         padding-bottom: 48rpx;
         box-sizing: border-box;
         background: #ffffff;
+
         .contact {
             width: 340rpx;
             height: 90rpx;
@@ -1453,6 +1556,7 @@ const goback = () => {
             line-height: 90rpx;
             text-align: center;
         }
+
         .call {
             width: 340rpx;
             height: 90rpx;
@@ -1481,26 +1585,31 @@ const goback = () => {
     .more_coupon_left {
         display: flex;
         flex-direction: column;
+
         .more_coupon_left_title {
             font-size: 28rpx;
             font-weight: 500;
             margin-bottom: 10rpx;
             color: #333333;
         }
+
         .more_coupon_left_desc {
             font-size: 24rpx;
             color: #666666;
             margin-bottom: 10rpx;
 
         }
-        .more_coupon_left_price{
+
+        .more_coupon_left_price {
             font-size: 24rpx;
             color: #FF0000;
         }
     }
+
     .more_coupon_right {
         display: flex;
         flex-direction: column;
+
         .button {
             font-size: 24rpx;
             color: #ffffff;
@@ -1509,6 +1618,7 @@ const goback = () => {
             border-radius: 24rpx;
             padding: 8rpx 24rpx;
         }
+
         .desc {
             margin-top: 12rpx;
             font-size: 20rpx;
@@ -1517,7 +1627,8 @@ const goback = () => {
         }
     }
 }
-.bilvas{
+
+.bilvas {
     border-radius: 20rpx;
     position: relative;
     left: -750px;

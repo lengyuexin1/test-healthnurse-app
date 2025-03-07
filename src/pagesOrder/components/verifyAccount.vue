@@ -22,13 +22,11 @@
         </view>
     </view>
 </template>
-    
+
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { PlatformManage } from "@bc/sys"
-import { gotoIndex } from "@/routes/public-routes"
-import { gotoLogin } from "@/routes/public-routes"
-import TnPopup from '@tuniao/tnui-vue3-uniapp/components/popup/src/popup.vue'
+import { gotoIndex, gotoLogin } from "@/routes/public-routes"
 
 
 interface Props {
@@ -39,31 +37,32 @@ const props = defineProps<Props>()
 interface Data {
     showBox: boolean
 }
+
 const data = reactive<Data>({
     showBox: false
 })
 
 
-onMounted(()=>{
+onMounted(() => {
 })
 
-const checkUser = (userId:string) => {
-    console.log('userId',userId);
+const checkUser = (userId: string) => {
+    console.log('userId', userId)
 
     PlatformManage.isRequireLogin().then((isRequireLogin) => {
         if (isRequireLogin) {
             tologin()
             return
         }
-        PlatformManage.getToken().then((res:any) => {
+        PlatformManage.getToken().then((res: any) => {
             if (userId.replace(/["\s]+/g, '') == res.id) {
-                console.log('账号一致不需要登录');
+                console.log('账号一致不需要登录')
                 return
             }
             data.showBox = true
         })
     })
-    
+
 }
 
 const delFun = () => {
@@ -71,23 +70,23 @@ const delFun = () => {
 }
 
 const tologin = () => {
-    let routes = getCurrentPages() as any; 
-    let curRoute = routes[routes.length - 1].route 
-    let curParam = routes[routes.length - 1].options; 
+    let routes = getCurrentPages() as any
+    let curRoute = routes[routes.length - 1].route
+    let curParam = routes[routes.length - 1].options
 
     let param = ''
     for (let key in curParam) {
         param += '&' + key + '=' + curParam[key]
     }
-    param = '?' + param.slice(1);
-    console.log('');
-    
-    console.log('curRoute',curRoute);
-    console.log('param',param);
-    console.log(curRoute+param);
-    
+    param = '?' + param.slice(1)
+    console.log('')
 
-    uni.setStorageSync('saveCurRoute', curRoute+param)
+    console.log('curRoute', curRoute)
+    console.log('param', param)
+    console.log(curRoute + param)
+
+
+    uni.setStorageSync('saveCurRoute', curRoute + param)
     gotoLogin({
         toSaveRoute: 1
     })
@@ -95,13 +94,13 @@ const tologin = () => {
 
 
 defineExpose({
-    checkUser,
+    checkUser
 })
 
 </script>
-  
+
 <style lang="scss" scoped>
-.bg_box{
+.bg_box {
     position: absolute;
     top: 0;
     left: 0;
@@ -109,7 +108,8 @@ defineExpose({
     bottom: 0;
     background: rgba(0, 0, 0, 0.2);
 }
-.container{
+
+.container {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -119,28 +119,33 @@ defineExpose({
     background: #fff;
     border-radius: 20rpx;
     z-index: 10;
-    .text_box{
+
+    .text_box {
         padding: 48rpx;
         box-sizing: border-box;
         color: #333333;
         font-size: 30rpx;
     }
-    .bottom_box{
+
+    .bottom_box {
         display: flex;
         align-items: center;
         width: 100%;
         border-top: 2rpx solid #F0F0F0;
-        .btn_box{
+
+        .btn_box {
             width: 49%;
             padding: 20rpx 0rpx;
             box-sizing: border-box;
             font-size: 28rpx;
             color: #666666;
             text-align: center;
-            &.del{
+
+            &.del {
                 border-right: 2rpx solid #F0F0F0;
             }
-            &.confirm{
+
+            &.confirm {
                 color: #399BFC;
             }
         }
@@ -148,4 +153,3 @@ defineExpose({
 
 }
 </style>
-  

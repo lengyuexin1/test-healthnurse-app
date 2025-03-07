@@ -37,7 +37,7 @@
                     </view>
                 </view>
             </view>
-            
+
         </template>
 
         <view class="list-wrap">
@@ -89,7 +89,7 @@
     </BCPopup>
     <ReflectPopup ref="reflectPopup" @startReflect="startReflect" @startFacial="startFacial"></ReflectPopup>
 </template>
-    
+
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
@@ -158,7 +158,7 @@ onLoad((options) => {
         code: '001RFFll2VIcoe4Dtknl2JK2I33RFFla'
     }).then((res1) => {
         console.log('6767676', res1)
-        
+
         uni.setStorageSync('openid', res1)
         weixinInitSubmit()
     }).catch((err) => {
@@ -198,7 +198,7 @@ const submit = () => {
         if (!res.cardId) {
             if (data.getClient == 'WEIXIN') {
                 data.showPopup = false
-                bcNotify.value.show('因技术升级原因,请您前往保椿生活APP进行实名认证')
+                bcNotify.value.show('因技术升级原因,请您前往保椿照护APP进行实名认证')
                 return
             }
             else if (data.getClient == 'APP') {
@@ -278,13 +278,13 @@ const initSubmit = () => {
             provider: 'weixin',
             success: (res) => {
                 console.log('45454', res)
-                
+
                 if (res.code) { //微信登录成功 已拿到code
                     getWechatOpenid({
                         code: res.code
                     }).then((res1) => {
                         console.log('6767676', res1)
-                        
+
                         uni.setStorageSync('openid', res1)
                         weixinInitSubmit()
                     }).catch((err) => {
@@ -346,7 +346,7 @@ const cancel = () => {
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .wrap {
     display: flex;
@@ -384,7 +384,7 @@ const cancel = () => {
 
         .tips {
             font-size: 24rpx;
-            color: rgba(255, 255, 255, .6);  
+            color: rgba(255, 255, 255, .6);
         }
     }
 }
@@ -523,4 +523,4 @@ const cancel = () => {
 }
 
 </style>
- 
+
