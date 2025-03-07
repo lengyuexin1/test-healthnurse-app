@@ -1,23 +1,31 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-.DS_Store
-dist
-*.local
-
-
-# Editor directories and files
-.idea
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-pnpm-lock.yaml
+# 排除所有文件和文件夹
+/*
+# 只保留文件夹及其内容
+!/pagesCnt
+!/pagesCnt/*
+!/pagesCreateSplit
+!/pagesCreateSplit/*
+!/pagesDevice
+!/pagesDevice/*
+!/pagesGoods
+!/pagesGoods/*
+!/pagesMall
+!/pagesMall/*
+!/pagesOldExpo
+!/pagesOldExpo/*
+!/pagesOrder
+!/pagesOrder/*
+!/pagesService
+!/pagesService/*
+!/pagesTuya
+!/pagesTuya/*
+!/pagesUser
+!/pagesUser/*
+!/routes
+!/routes/*
+!/sys
+!/sys/*
+!/libs
+!/libs/*
+!/events
+!/events/*
