@@ -371,6 +371,10 @@ const getQuCou = (item: any) => {
         })
         item.status = 1
     }).catch((err: any) => {
+        uni.showToast({
+            icon: 'none',
+            title: err.message
+        })
         console.log(err.message)
     })
 }
@@ -677,7 +681,7 @@ const seeMonr = (item: any) => {
 
     .swiper {
         width: 100%;
-        height: 144rpx;
+        height: 200rpx;
 
         .swiper_item {
             width: 100%;
@@ -777,14 +781,14 @@ const seeMonr = (item: any) => {
             width: 25%;
 
             .cateIcon {
-                width: 55rpx;
-                height: 55rpx;
+                width: 80rpx;
+                height: 80rpx;
                 align-items: center;
             }
 
             .cateName {
                 margin-top: 20rpx;
-                font-size: 22rpx;
+                font-size: 24rpx;
                 color: #1B1B1B;
                 width: 120rpx;
                 overflow: hidden;

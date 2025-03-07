@@ -111,7 +111,7 @@ defineExpose({
     box-sizing: border-box;
 
     .menu_item {
-        padding: 30rpx;
+        padding: 30rpx 30rpx 10rpx 30rpx;
         box-sizing: border-box;
         background: #FFFFFF;
         border-radius: 32rpx;
@@ -125,35 +125,37 @@ defineExpose({
         }
 
         .icon_list {
-            display: grid;
-            gap: 10rpx;
-            grid-template-columns: repeat(5, 1fr);
+            // display: grid;
+            // gap: 10rpx;
+            // grid-template-columns: repeat(5, 1fr);
             // grid-template-columns: auto auto auto auto auto;
             // padding: 0rpx 16rpx;
-            box-sizing: border-box;
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            
 
             .icon_item {
-                width: 120rpx;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 flex-direction: column;
+                width: 20%;
 
                 .item_img {
-                    width: 100%;
-                    height: 96rpx;
+                    width: 80rpx;
+                    height: 80rpx;
                     margin-bottom: 12rpx;
                     border-radius: 10rpx;
                 }
 
                 .item_text {
-                    // width: 120rpx;
-                    font-size: 28rpx;
+                    font-size: 24rpx;
                     color: #333333;
                     font-weight: 400;
-                    height: 40rpx;
-                    overflow: hidden;
-                    padding-bottom: 10rpx;
+                    // height: 40rpx;
+                    margin-bottom: 20rpx;
+                    text-align: center;
                 }
             }
         }

@@ -922,7 +922,7 @@ defineExpose({
 
         .swiper {
             width: 100%;
-            height: 144rpx;
+            height: 200rpx;
 
             .swiper_item {
                 width: 100%;
@@ -1009,7 +1009,7 @@ defineExpose({
     border-radius: 16rpx;
 
     .Tabs_deitem {
-        width: 20%;
+        width: 25%;
         display: flex;
         flex-direction: column;
         align-items: center;
