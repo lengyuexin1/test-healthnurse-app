@@ -58,7 +58,7 @@ import { PlatformManage } from "@bc/sys"
 import { gotoIndex } from "@/routes/public-routes"
 import { getcoursefollowList, getappcontentList } from '@/api/create-api'
 import WaterfallsFlow from '../../channel/components/WaterfallsFlow.vue'
-import { gotocourseVideo, gotoarticledetails } from '@/routes/create-routes'
+import { gotovideoPreview, gotoarticledetails } from '@/routes/create-routes'
 import { TempStorage } from "@bc/base"
 
 
@@ -158,7 +158,7 @@ const waterItem = (item:any) => {
         const listId = TempStorage.savewx({
             videoIdlist: [item.id]
         })
-        gotocourseVideo(listId)
+        gotovideoPreview({ videoId: item.id, videoPagetype: 0, categoryId: 10 })
     }
 }
 
