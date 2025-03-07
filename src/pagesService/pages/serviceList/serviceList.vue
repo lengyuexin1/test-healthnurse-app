@@ -302,7 +302,7 @@ const kuaiRou = (data: any) => {
         console.log(res[0].categoryIds)
         conApi.value = true
         dataCates.value = res[0].categoryIds
-        queryList(1, 10)
+        // queryList(1, 10)
     })
 }
 

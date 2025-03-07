@@ -156,6 +156,7 @@ defineExpose({
                     // height: 40rpx;
                     margin-bottom: 20rpx;
                     text-align: center;
+                    padding: 0 6rpx;
                 }
             }
         }
