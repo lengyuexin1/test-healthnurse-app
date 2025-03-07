@@ -371,6 +371,10 @@ const getQuCou = (item: any) => {
         })
         item.status = 1
     }).catch((err: any) => {
+        uni.showToast({
+            icon: 'none',
+            title: err.message
+        })
         console.log(err.message)
     })
 }

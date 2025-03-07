@@ -1009,7 +1009,7 @@ defineExpose({
     border-radius: 16rpx;
 
     .Tabs_deitem {
-        width: 20%;
+        width: 25%;
         display: flex;
         flex-direction: column;
         align-items: center;
