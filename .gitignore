@@ -17,16 +17,16 @@ lerna-debug.log*
 /dist
 
 # 排除子包
-/pagesCnt
-/pagesCreateSplit
-/pagesDevice
-/pagesGoods
-/pagesMall
-/pagesOldExpo
-/pagesOrder
-/pagesService
-/pagesTuya
-/pagesUser
+/src/pagesCnt
+/src/pagesCreateSplit
+/src/pagesDevice
+/src/pagesGoods
+/src/pagesMall
+/src/pagesOldExpo
+/src/pagesOrder
+/src/pagesService
+/src/pagesTuya
+/src/pagesUser
 
 
 # 排除公共包跟插件
