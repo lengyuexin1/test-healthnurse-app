@@ -632,7 +632,6 @@ export const marketingDetail = (id: string) => {
 export const getReportList = (req: any) => {
     return http.content.post('/v1/bc/app/denounce/list', req)
 }
-
 /** 删除举报 */
 export const delReport = (req: _v1_bc_app_item_browse_history_del_post_req) => {
     return http.content.post('/v1/bc/app/denounce/remove', req)
@@ -647,6 +646,7 @@ export const reportDetail = (id: string) => {
 export const authDetail = () => {
     return http.user.get('/v1/bc/app/user/shopBinding/detail')
 }
+
 
 /** 用户绑定商家 */
 export const authShopBinding = (req: any) => {

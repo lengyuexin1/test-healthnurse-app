@@ -1,31 +1,49 @@
-# 排除所有文件和文件夹
-/*
-# 只保留文件夹及其内容
-!/pagesCnt
-!/pagesCnt/*
-!/pagesCreateSplit
-!/pagesCreateSplit/*
-!/pagesDevice
-!/pagesDevice/*
-!/pagesGoods
-!/pagesGoods/*
-!/pagesMall
-!/pagesMall/*
-!/pagesOldExpo
-!/pagesOldExpo/*
-!/pagesOrder
-!/pagesOrder/*
-!/pagesService
-!/pagesService/*
-!/pagesTuya
-!/pagesTuya/*
-!/pagesUser
-!/pagesUser/*
-!/routes
-!/routes/*
-!/sys
-!/sys/*
-!/libs
-!/libs/*
-!/events
-!/events/*
+# 排除日志文件夹
+# 如果项目生成日志文件，通常不需要上传
+/logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# 排除依赖文件夹
+# node_modules 由 package.json 管理，安装时自动生成，不需要上传
+/node_modules
+.DS_Store
+# 排除构建输出目录
+# 这个文件夹由 `vite build` 生成，无需上传到 Git
+/dist
+
+# 排除子包
+/pagesCnt
+/pagesCreateSplit
+/pagesDevice
+/pagesGoods
+/pagesMall
+/pagesOldExpo
+/pagesOrder
+/pagesService
+/pagesTuya
+/pagesUser
+
+# 排除公共包跟插件
+/m-pkgs
+
+*.local
+
+
+
+# 排除 IDE 配置文件（可选）
+.idea
+.aliyun
+.vscode
+.hbuilderx
+.lh
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+pnpm-lock.yaml

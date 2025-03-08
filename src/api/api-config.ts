@@ -1,4 +1,4 @@
-import { apiVersion } from './config.js'
+import { apiVersion } from './config'
 
 /* 接口模块分类 */
 export const apiPrefix = {
