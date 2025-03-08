@@ -28,6 +28,7 @@ lerna-debug.log*
 /pagesTuya
 /pagesUser
 
+
 # 排除公共包跟插件
 /m-pkgs
 
