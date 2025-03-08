@@ -14,23 +14,23 @@ lerna-debug.log*
 .DS_Store
 # 排除构建输出目录
 # 这个文件夹由 `vite build` 生成，无需上传到 Git
-/dist
+dist
 
 # 排除子包
-/src/pagesCnt
-/src/pagesCreateSplit
-/src/pagesDevice
-/src/pagesGoods
-/src/pagesMall
-/src/pagesOldExpo
-/src/pagesOrder
-/src/pagesService
-/src/pagesTuya
-/src/pagesUser
+src/pagesCnt/
+src/pagesCreateSplit/
+src/pagesDevice/
+src/pagesGoods/
+src/pagesMall/
+src/pagesOldExpo/
+src/pagesOrder/
+src/pagesService/
+src/pagesTuya/
+src/pagesUser/
 
 
 # 排除公共包跟插件
-/m-pkgs
+m-pkgs/
 
 *.local
 
